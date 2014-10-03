@@ -1,0 +1,4 @@
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Attr\bin\Debug\Said.Attr.dll
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Attr\bin\Debug\Said.Attr.pdb
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Attr\obj\Debug\Said.Attr.dll
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Attr\obj\Debug\Said.Attr.pdb

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Said")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("[ Dying In The Sun ]")]
+[assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Said")]
-[assembly: AssemblyCopyright("版权所有(C) [ Dying In The Sun ] 2014")]
+[assembly: AssemblyCopyright("版权所有(C) Microsoft 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("fab781fe-40c3-4701-a9d0-142089dff27c")]
+[assembly: Guid("f5ecd356-f5a2-4125-af13-e99302885bed")]
 
 // 程序集的版本信息由下列四个值组成:
 //

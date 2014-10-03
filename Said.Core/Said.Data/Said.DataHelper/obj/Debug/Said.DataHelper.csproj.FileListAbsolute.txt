@@ -1,0 +1,5 @@
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataHelper\obj\Debug\Said.DataHelper.csprojResolveAssemblyReference.cache
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataHelper\bin\Debug\Said.DataHelper.dll
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataHelper\bin\Debug\Said.DataHelper.pdb
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataHelper\obj\Debug\Said.DataHelper.dll
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataHelper\obj\Debug\Said.DataHelper.pdb

@@ -1,0 +1,5 @@
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Models\obj\Debug\Said.Models.csprojResolveAssemblyReference.cache
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Models\bin\Debug\Said.Models.dll
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Models\bin\Debug\Said.Models.pdb
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Models\obj\Debug\Said.Models.dll
+E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Models\obj\Debug\Said.Models.pdb
