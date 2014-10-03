@@ -1,21 +1,57 @@
-﻿html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; list-style: none; font: 14px/24px "Microsoft YaHei"; color: #333333; }
+﻿html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; list-style: none; font: 14px/24px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; }
 textarea { resize: vertical; font: 14px/24px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; outline: none; }
-/*body { margin: 0; padding: 0; font: 13px/24px "Microsoft YaHei"; background: url("../images/content_bg.png") repeat; color: #666666; }*/
-
+body { margin: 0; padding: 0; background: #FAFAFA; color: #666666; }
+*, *:before, *:after { box-sizing: border-box; }
+    /**::selection, *::-moz-selection, *::-wibkit-selection { background: none repeat scroll 0 0 #ea4c89; color: rgba(255, 255, 255, 0.85);background:#0099cc;}*/
+    *::-moz-selection { background: none repeat scroll 0 0 #ea4c89; color: rgba(255, 255, 255, 0.85); }
+    *::-wibkit-selection { background: none repeat scroll 0 0 #ea4c89; color: rgba(255, 255, 255, 0.85); /*background:#0099cc;*/ }
+    *::selection { background: none repeat scroll 0 0 #ea4c89; color: rgba(255, 255, 255, 0.85); /*background:#0099cc;*/ }
 /*
 a { color: #0197E4; text-decoration: none; }
 a:hover {  color: #59c6ff; text-decoration:underline; }
+#03a9f4
+#00d0ff
 */
-a { text-decoration: none; transition: all 0.2s ease-in-out 0s; }
-    /*Transition：css3动画特性*/
-    a:hover { text-decoration: none; transition: all 0.2s ease-in-out 0s; }
+/*【【【【【【【【【【【【【【【【【【chrome闪烁的问题很是蛋疼啊】】】】】】】】】】】】】】】】】】】】】】】*/
+a { backface-visibility: hidden; transform-style: preserve-3d; text-decoration: none; transition: all 0.2s ease-in-out 0s; }
+    a:hover { backface-visibility: hidden; transform-style: preserve-3d; transition: all 0.2s ease-in-out 0s; }
 .clear { clear: both; float: none !important; }
-/*!important：优先级——最高！*/
 table { border-collapse: collapse; }
 /*折叠，表格折叠*/
-input { width: 155px; height: 15px; border: 1px solid #929596; font-family: "Microsoft YaHei"; }
-/*Page width*/
-div#page_container { margin: 0 auto; max-width: 1600px; min-width: 1002px; }
+input { border: 1px solid #929596; font-family: "Microsoft YaHei"; padding: 2px 5px; }
 
-/*箭头*/
-.arrow { border-style: solid; border-width: 5px; border-color: #646464 transparent transparent; }
+/*.arrow { border-style: solid; border-width: 5px; border-color: #646464 transparent transparent; }*/
+
+/*layout*/
+#said-page { position: relative; z-index: 3; background-color: #FAFAFA; }
+#content, #header, #footer-content { min-width: 900px; max-width: 1200px; margin: 0 auto; }
+#header { padding: 18px 0 5px 0; /*border-bottom: 1px solid #CCC; height: 48px; */ }
+    #header:after { content: ''; display: block; float: none; clear: both; }
+#content { padding: 40px 0; margin-bottom: 371px; }
+#footer { overflow: hidden; position: fixed; z-index: 2; height: 371px; background: none repeat scroll 0 0 #292929; bottom: 0px; left: 0px; display: block; padding: 50px 0; width: 100%; color: #f1f1f1; }
+    #footer dt, #footer dd, #footer a { font-size: 16px; }
+    #footer dt { font-weight: bold; font-size: 20px; line-height: 50px; }
+    #footer dd, #footer .footer-recm li { line-height: 35px; }
+    #footer dl { float: left; padding-right: 100px; height: 100%; width: 33.2%; }
+        #footer dl:last-child { padding-right: 0; }
+    #footer a { color: #CCC; }
+        #footer a:hover { color: #CCC; text-decoration: underline; color: #FFF; }
+#footer-content { height: 100%; }
+    #footer-content .footer-copyright { border-top: #505050; color: #a3a2a2; line-height: 24px; }
+        #footer-content .footer-copyright a { }
+/*nav*/
+#nav-logo { float: left; }
+#nav { float: right; position: relative; z-index: 1; }
+#nav-flip, #said-search-con { overflow: hidden; float: left; }
+    #nav-flip li { float: left; }
+    #nav-flip a { display: block; width: 70px; text-align: center; height: 48px; line-height: 48px; color: #606060; }
+        #nav-flip a:hover { color: #59c6ff; }
+    #nav-flip .nav-active { color: #028cd3!important; cursor: default; }
+/*search*/
+#said-search { overflow: hidden; padding-top: 11px; width: 231px; position: relative; left: 0px; height: 37px; }
+#said-search-btn { background: url("/Content/Images/nav-icon_search.png") no-repeat; height: 28px; width: 50px; }
+#said-search-btn, #said-search-form { float: left; }
+#said-search-input { width: 170px; height: 24px; line-height: 24px; border: none; border-bottom: 1px solid #ccc; background-color: transparent; }
+.said-search-focus #said-search-input { border-bottom: 1px solid #33b5e5; }
+.said-search-focus #said-search-btn { background-position: 0 -28px; }
+#nav-hover { width: 70px; border-bottom: 1px solid #33b5e5; position: absolute; bottom: -6px; z-index: 5; transition: all 0.2s ease-in-out 0s; }
