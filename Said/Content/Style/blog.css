@@ -1,7 +1,7 @@
 ﻿.said-blog-content, .said-blog-item { padding: 10px; }
 .said-blog { border: 1px solid #e8e8e8; transition: all 0.2s ease-in-out 0s; padding: 2px; }
     .said-blog:hover { border: 1px solid #03a9f4; box-shadow: 0 0 3px #00d0ff; }
-.said-blog-item { color: #FFFFFF; background-color: #0099CC; }
+.said-blog-item { background-color: #FFFFFF; /*color: #FFFFFF;background-color: #0099CC;*/ }
 .blog-title { padding: 0 15px 0 27px; font: 2.4em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; }
 .blog-content { }
 .blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 0 4px; }
