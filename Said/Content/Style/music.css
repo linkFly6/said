@@ -1,0 +1,11 @@
+﻿.music-song { padding-top: 60px; }
+.music-song-content { height: 128px; border-top: 1px solid #CCC; padding: 10px 20px; height: 150px; position: relative; width: 100%; }
+    .music-song-content:after { float: none; clear: both; content: ''; display: block; }
+.music-song-img { border: 1px solid #FFF; background-color: #FAFAFA; top: -80px; position: relative; padding: 1px; }
+    .music-song-img img { width: 200px; height: 200px; vertical-align: top; }
+.music-song-img, .music-song-play { position: absolute; }
+.music-song-info { padding: 0 266px; }
+.music-song-name { font-size: 14pt; font-weight: bold; line-height: 65px; }
+.music-song-summary { line-height: 25px; }
+.music-song-link { }
+.music-song-play { right: 0; top: 0; margin: 10px 0; padding: 0 10px; border-left: 1px dashed blue; width: 265px; }
