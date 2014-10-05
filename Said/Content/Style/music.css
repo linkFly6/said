@@ -1,4 +1,5 @@
-﻿.music-song { padding-top: 60px; }
+﻿/*#said-page { background: url(/Content/Images/night-sky.jpg); background-size: cover; }*/
+.music-song { padding-top: 60px; }
 .music-song-content { height: 128px; border-top: 1px solid #CCC; padding: 10px 20px; height: 150px; position: relative; width: 100%; }
     .music-song-content:after { float: none; clear: both; content: ''; display: block; }
 .music-song-img { border: 1px solid #FFF; background-color: #FAFAFA; top: -80px; position: relative; padding: 1px; }
