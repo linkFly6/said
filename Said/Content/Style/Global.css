@@ -15,6 +15,7 @@ a:hover {  color: #59c6ff; text-decoration:underline; }
 /*【【【【【【【【【【【【【【【【【【chrome闪烁的问题很是蛋疼啊】】】】】】】】】】】】】】】】】】】】】】】*/
 a { backface-visibility: hidden; transform-style: preserve-3d; text-decoration: none; transition: all 0.2s ease-in-out 0s; }
     a:hover { backface-visibility: hidden; transform-style: preserve-3d; transition: all 0.2s ease-in-out 0s; }
+    a:visited { color: #c03980; }
 .clear { clear: both; float: none !important; }
 table { border-collapse: collapse; }
 /*折叠，表格折叠*/
