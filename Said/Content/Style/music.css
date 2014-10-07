@@ -1,19 +1,20 @@
 ﻿/*#said-page { background: url(/Content/Images/night-sky.jpg); background-size: cover; }*/
 .music-song { padding-top: 60px; }
-.music-song-content { height: 128px; border-top: 1px solid #CCC; padding: 10px 20px; height: 116px; position: relative; width: 100%; }
+.music-song-content { height: 128px; padding: 10px 20px; height: 116px; position: relative; width: 100%; }
     .music-song-content:after, .music-song-play:after, .music-play-detail:after { float: none; clear: both; content: ''; display: block; }
 .music-song-img { border: 1px solid #FFF; background-color: #FAFAFA; top: -80px; position: relative; padding: 1px; }
     .music-song-img img { width: 200px; height: 200px; vertical-align: top; }
 .music-song-img, .music-song-play { position: absolute; }
 .music-song-info { padding: 0 371px 0 266px; }
-.music-song-name { font-size: 14pt; font-weight: bold; }
+.music-song-name { font-size: 14pt; font-weight: bold; color: #75b4f4; }
 .music-song-summary { line-height: 25px; }
 .music-song-link { color: #028cd3; }
     .music-song-link:hover { color: #59c6ff; }
 /*.music-song-link:visited { color:#c03980; }*/
 .music-song-play { right: 0; top: 0; margin: 10px 0; padding: 0 10px 0 20px; width: 370px; height: 100%; background: url(/Content/Images/sidebar-bg.jpg) no-repeat; background-size: contain; }
-
-
+/*content-bg*/
+.content-bg { border-bottom: 1px solid white;position: absolute; top: 0; left: 0; height: 172px; width: 100%; overflow: hidden;  }
+.content-bg-img { width: 200%; height: 200%; background: url(/Content/Images/o_bg-clouds.png) repeat; position: relative; left: 0; transition: left 10s linear 0s; }
 .music-play-status { float: left; position: relative; top: 45px; }
     .music-play-status:first-child { width: 35px; top: 51px; }
     .music-play-status span { font-size: 12px; }
@@ -31,23 +32,28 @@
 .music-play-progress, .play-progress { height: 6px; border-radius: 4px; cursor: pointer; }
 .music-play-progress { background: #ededed; width: 300px; }
 .play-progress { background-color: #99CCFF; }
-
-
+/*blog*/
 .music-content { padding-top: 30px; }
 .blog-title { padding: 0 15px 0 27px; font: 2.4em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; border-bottom: 1px dashed #CCC; color: #666; }
-.blog-content * { font-size: 16px; padding: 10px; text-indent: 2em; text-align: justify; word-wrap: break-word; word-break: normal; line-height: 30px; }
-/*content-bg*/
-@keyframes myfirst {
-    0% { border: 1px solid blue; }
-    50% { border: 1px solid yellow; }
-    75% { border: 1px solid red; }
-}
-
-@-moz-keyframes myfirst {
-    0% { border: 1px solid blue; }
-    50% { border: 1px solid yellow; }
-    75% { border: 1px solid red; }
-}
-
-.content-bg { border: 1px solid red; position: absolute; top: 0; left: 0; height: 172px; width: 100%; overflow: hidden; }
-.content-bg-img { width: 200%; height: 200%; background: url(/Content/Images/o_bg-clouds.png) repeat; position: relative; -moz-animation: myfirst 5s; animation: myfirst 5s; left: 0; }
+.blog-content { padding: 10px 0 20px; }
+    .blog-content * { font-size: 16px; padding: 10px; text-indent: 2em; text-align: justify; word-wrap: break-word; word-break: normal; line-height: 30px; }
+/*footer&more*/
+.blog-more-info { padding: 50px 0; }
+.blog-more-head { position: relative; bottom: -1px; height: 40px; }
+.blog-comment-txt { height: 40px; border: 1px solid #99CCFF; background-color: white; border-bottom: 1px solid #FAFAFA; width: 120px; text-align: center; position: relative; left: 100px; padding: 1px 1px 0 1px; }
+    .blog-comment-txt span { color: #75b4f4; font-size: 22px; display: block; line-height: 40px; height: 40px; border: none; background-color: #FAFAFA; position: absolute; top: 1px; left: 1px; width: 116px; }
+.blog-info { position: absolute; right: 10px; bottom: 5px; overflow: hidden; }
+    .blog-info li { float: right; color: #999; padding-left: 25px; }
+        .blog-info li:first-child { padding-left: 10px; }
+        .blog-info li span { background-color: #FAFAFA; padding-right: 10px; }
+.blog-more-comment { border-top: 1px solid #99CCFF; background-color: white; padding-top: 1px; }
+.blog-comment-content { background-color: #FAFAFA; }
+.blog-info-like, .blog-info-PV { background: url(/Content/Images/work_tool_001.png) no-repeat -334px 8px; }
+.blog-info-like { background-position: -361px 8px; }
+/*page-btn*/
+.blog-page-btn { background: url(/Content/Images/ico_sliding_910.png) no-repeat scroll 0 0 rgba(0, 0, 0, 0); height: 65px; margin-top: -36px; overflow: hidden; position: fixed; text-indent: 100%; top: 40%; white-space: nowrap; width: 40px; z-index: 10; display: inline; transition: none; }
+    .blog-page-btn:hover { transition:none; }
+.blog-prev { background-position: 0 -432px; left: 30px; }
+    .blog-prev:hover { background-position: 0 -498px}
+.blog-next { background-position: -80px -432px; right: 30px; }
+    .blog-next:hover { background-position: -80px -498px; }
