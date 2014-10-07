@@ -36,3 +36,18 @@
 .music-content { padding-top: 30px; }
 .blog-title { padding: 0 15px 0 27px; font: 2.4em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; border-bottom: 1px dashed #CCC; color: #666; }
 .blog-content * { font-size: 16px; padding: 10px; text-indent: 2em; text-align: justify; word-wrap: break-word; word-break: normal; line-height: 30px; }
+/*content-bg*/
+@keyframes myfirst {
+    0% { border: 1px solid blue; }
+    50% { border: 1px solid yellow; }
+    75% { border: 1px solid red; }
+}
+
+@-moz-keyframes myfirst {
+    0% { border: 1px solid blue; }
+    50% { border: 1px solid yellow; }
+    75% { border: 1px solid red; }
+}
+
+.content-bg { border: 1px solid red; position: absolute; top: 0; left: 0; height: 172px; width: 100%; overflow: hidden; }
+.content-bg-img { width: 200%; height: 200%; background: url(/Content/Images/o_bg-clouds.png) repeat; position: relative; -moz-animation: myfirst 5s; animation: myfirst 5s; left: 0; }
