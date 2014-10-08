@@ -12,7 +12,7 @@ a:hover {  color: #59c6ff; text-decoration:underline; }
 #03a9f4
 #00d0ff
 */
-/*【【【【【【【【【【【【【【【【【【chrome闪烁的问题很是蛋疼啊】】】】】】】】】】】】】】】】】】】】】】】*/
+/*chrome下a标签闪烁的事情，添加一个script标签（并且标签里有内容），则没有闪动，如果页面有form，则把form去掉，也可以*/
 a { backface-visibility: hidden; transform-style: preserve-3d; text-decoration: none; transition: all 0.2s ease-in-out 0s; }
     a:hover { backface-visibility: hidden; transform-style: preserve-3d; transition: all 0.2s ease-in-out 0s; }
     a:visited { color: #c03980; }
