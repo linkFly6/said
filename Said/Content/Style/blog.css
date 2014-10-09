@@ -10,11 +10,17 @@
 .blog-footer { text-align: right; }
 
 /*right other*/
-.said-blog-other { border: 1px solid red; position: absolute; top: 0; right: 0; padding: 10px; }
+.said-blog-other { position: absolute; top: 0; right: 0; padding: 10px; }
 .blog-other-content { width: 270px; border: 1px solid #e0e0e0; }
-.blog-other-title { background-color: #f9f9f9; height: 45px; line-height: 45px; padding-left: 17px; color: #028cd3; font-size: 16px; }
-.blog-other-content li { border-top: 1px solid #f3f3f3; }
-.blog-other-list a { display: block; padding-left: 17px; height: 35px; line-height: 35px; }
+.blog-other-title { background-color: #f9f9f9; height: 45px; line-height: 45px; padding-left: 47px; color: #028cd3; font-size: 16px; }
+.blog-other-list li { border-top: 1px solid #f3f3f3; padding-left: 2px; transition: background-color 0.2s ease-in-out 0s; }
+    .blog-other-list li:first-child { border-top: 1px solid #e0e0e0; }
+    .blog-other-list li:hover { background-color: #3ea7cb; transition: background-color 0.2s ease-in-out 0s; }
+        .blog-other-list li:hover a { background-color: #fdfdfd; }
+        .blog-other-list li:hover img { transform: rotate(360deg) scale(1.2); transition: all 0.2s ease-in-out 0s; }
+    .blog-other-list li img { transition: all 0.2s ease-in-out 0s; }
+.blog-other-list a { display: block; padding-left: 17px; line-height: 38px; background-color: #FFF; }
+.blog-other-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 10px; }
 /*
     #b4c88b
     #0099CC
