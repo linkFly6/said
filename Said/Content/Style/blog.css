@@ -1,4 +1,6 @@
-﻿.said-blog-content, .said-blog-item { padding: 10px; }
+﻿.said-content { position: relative; }
+.said-blog-list { padding-right: 300px; }
+.said-blog-content, .said-blog-item { padding: 10px; }
 .said-blog { border: 1px solid #e8e8e8; transition: all 0.2s ease-in-out 0s; padding: 2px; }
     .said-blog:hover { border: 1px solid #03a9f4; box-shadow: 0 0 3px #00d0ff; }
 .said-blog-item { background-color: #FFFFFF; /*color: #FFFFFF;background-color: #0099CC;*/ }
@@ -6,6 +8,13 @@
 .blog-content { }
 .blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 0 4px; }
 .blog-footer { text-align: right; }
+
+/*right other*/
+.said-blog-other { border: 1px solid red; position: absolute; top: 0; right: 0; padding: 10px; }
+.blog-other-content { width: 270px; border: 1px solid #e0e0e0; }
+.blog-other-title { background-color: #f9f9f9; height: 45px; line-height: 45px; padding-left: 17px; color: #028cd3; font-size: 16px; }
+.blog-other-content li { border-top: 1px solid #f3f3f3; }
+.blog-other-list a { display: block; padding-left: 17px; height: 35px; line-height: 35px; }
 /*
     #b4c88b
     #0099CC
