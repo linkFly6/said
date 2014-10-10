@@ -4,20 +4,24 @@
 .said-blog { border: 1px solid #e8e8e8; transition: all 0.2s ease-in-out 0s; padding: 2px; }
     .said-blog:hover { border: 1px solid #03a9f4; box-shadow: 0 0 3px #00d0ff; }
 .said-blog-item { background-color: #FFFFFF; /*color: #FFFFFF;background-color: #0099CC;*/ }
-.blog-title { padding: 0 15px 0 27px; font: 2.4em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; }
-.blog-content { }
-.blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 0 4px; }
-.blog-footer { text-align: right; }
+.blog-title a { display: block; padding: 0 15px 0 27px; font: 1.6em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; color: #444; }
+    .blog-title a:hover { color: #5fa4e9; }
+.blog-content { position: relative; }
+.blog-imgContent { padding-left: 220px; }
+.blog-img { position: absolute; left: 0; top: 10px; display: block; padding: 1px; border: 1px solid #CCC; }
+.blog-content-img { width: 200px; height: 150px; display: block; }
+.blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 0 10px; height: 138px; overflow: hidden; color: #666; }
+.blog-footer { text-align: right; padding-bottom: 3px; }
 
 /*right other*/
 .said-blog-other { position: absolute; top: 0; right: 0; padding: 10px; }
-.blog-other-content { width: 270px; border: 1px solid #e0e0e0; }
+.blog-other-content { width: 270px; border: 1px solid #e0e0e0; margin-bottom: 30px; }
 .blog-other-title { background-color: #f9f9f9; height: 45px; line-height: 45px; padding-left: 47px; color: #028cd3; font-size: 16px; }
 .blog-other-list li { border-top: 1px solid #f3f3f3; padding-left: 2px; transition: background-color 0.2s ease-in-out 0s; }
     .blog-other-list li:first-child { border-top: 1px solid #e0e0e0; }
-    .blog-other-list li:hover { background-color: #3ea7cb; transition: background-color 0.2s ease-in-out 0s; }
+    .blog-other-list li:hover { background-color: #3ea7cb; transition: background-color 0.4s ease-in-out 0s; }
         .blog-other-list li:hover a { background-color: #fdfdfd; }
-        .blog-other-list li:hover img { transform: rotate(360deg) scale(1.2); transition: all 0.2s ease-in-out 0s; }
+        .blog-other-list li:hover img { transform: rotate(360deg) scale(1.2); transition: all 0.4s ease-in-out 0s; }
     .blog-other-list li img { transition: all 0.2s ease-in-out 0s; }
 .blog-other-list a { display: block; padding-left: 17px; line-height: 38px; background-color: #FFF; }
 .blog-other-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 10px; }
