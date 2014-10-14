@@ -2,7 +2,7 @@
     .said-content a { color: #028cd3; }
 .said-blog-list, .said-blog-notfound { padding-right: 300px; }
 .said-blog-content, .said-blog-item { padding: 10px; }
-.said-blog { border: 1px solid #e8e8e8; transition: all 0.2s ease-in-out 0s; padding: 2px; }
+.said-blog { border: 1px solid #CCC; transition: all 0.2s ease-in-out 0s; }
     .said-blog:hover { border: 1px solid #03a9f4; box-shadow: 0 0 3px #00d0ff; }
 .said-blog-item { background-color: #FFFFFF; /*color: #FFFFFF;background-color: #0099CC;*/ }
 .blog-title { position: relative; }
