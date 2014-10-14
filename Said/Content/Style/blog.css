@@ -1,6 +1,8 @@
 ﻿.said-content { position: relative; min-height: 1000px; }
     .said-content a { color: #028cd3; }
 .said-blog-list, .said-blog-notfound { padding-right: 300px; }
+.said-blog-title { font-size: 18px; height: 22px; line-height: 22px; padding-left: 10px; }
+    .said-blog-title span { border-left: 3px solid #75b4f4; padding-right: 10px; vertical-align: middle; font-size: 13px; }
 .said-blog-content, .said-blog-item { padding: 10px; }
 .said-blog { border: 1px solid #CCC; transition: all 0.2s ease-in-out 0s; }
     .said-blog:hover { border: 1px solid #03a9f4; box-shadow: 0 0 3px #00d0ff; }
@@ -37,12 +39,12 @@
     .blog-other-content a { color: #555; }
         .blog-other-content a:hover { color: #028cd3; }
 .blog-other-title { background-color: #f9f9f9; height: 45px; line-height: 45px; padding-left: 47px; color: #028cd3; font-size: 16px; }
-.blog-other-list li { border-top: 1px solid #f3f3f3; transition: border-color 0.2s ease-in-out 0s; border-left: 2px solid #FFF; }
+.blog-other-list li { border-top: 1px solid #f3f3f3; transition: border-color 0.4s ease-in-out 0s; border-left: 2px solid #FFF; }
     .blog-other-list li:first-child { border-top: 1px solid #e0e0e0; }
     .blog-other-list li:hover { transition: border-color 0.4s ease-in-out 0s; border-left-color: #3ea7cb; }
         .blog-other-list li:hover a { background-color: #fdfdfd; }
         .blog-other-list li:hover img { transform: rotate(360deg) scale(1.2); transition: all 0.4s ease-in-out 0s; }
-    .blog-other-list li img { transition: all 0.2s ease-in-out 0s; }
+    .blog-other-list li img { transition: all 0.4s ease-in-out 0s; }
 .blog-other-list a { display: block; padding-left: 17px; line-height: 38px; background-color: #FFF; }
 .blog-other-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 10px; }
 /*
