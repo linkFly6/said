@@ -1,15 +1,18 @@
 ﻿.said-blog-content, .said-blog-item { padding: 10px; }
-.said-blog { border: 1px solid #FFFFFF; transition: all 0.2s ease-in-out 0s; padding: 1px; margin-bottom: 20px; }
+.said-blog-content { padding-top: 100px; }
+    .said-blog-content:after { display: block; content: ''; float: none!important; clear: both; }
+.said-blog { border: 1px solid #FFFFFF; transition: border-color 0.2s ease-in-out 0s; padding: 1px; margin-bottom: 20px; /*color: #FFFFFF;background-color: #0099CC;*/ min-width: 430px; max-width: 580px; float: left; position: relative; z-index: 2; }
+    .said-blog:nth-child(even) { float: right; }
     .said-blog:hover { border: 1px solid #03a9f4; box-shadow: 0 0 3px #00d0ff; }
-.said-blog-item { background-color: #FFFFFF; /*color: #FFFFFF;background-color: #0099CC;*/ }
-.blog-title a { display: block; padding: 0 15px 0 27px; font: 2.4em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; color: #666; }
+        .said-blog:hover .blog-img { top: -100px; transition: top 0.2s ease-in-out 0s;}
+.blog-img { transition: top 0.2s ease-in-out 0s;position: absolute; left: 20px; top: -70px; border-radius: 150px; overflow: hidden; background-color: #FFF; }
+    .blog-img img { width: 200px; height: 200px; display: block; }
+.blog-title a { display: block; padding: 0 15px 0 27px; font: 1.6em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; color: #666; }
     .blog-title a:hover { color: #59c6ff; }
-.blog-content { overflow: hidden; }
-.blog-img img { width: 200px; height: 200px; }
-.blog-summary { }
-.blog-img { padding: 15px; float: left; }
-.blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 0 4px; }
-.blog-preview { height: 185px; }
+.blog-content { overflow: hidden; background-color: #FFF; position: relative; }
+
+.blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 10px 4px; }
+.blog-preview { height: 120px; overflow: hidden; }
 .blog-footer { text-align: right; }
 /*
     #b4c88b
