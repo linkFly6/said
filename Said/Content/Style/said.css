@@ -1,11 +1,11 @@
 ﻿.said-blog-content, .said-blog-item { padding: 10px; }
 .said-blog-content { padding-top: 100px; }
     .said-blog-content:after { display: block; content: ''; float: none!important; clear: both; }
-.said-blog { border: 1px solid #FFFFFF; transition: border-color 0.2s ease-in-out 0s; padding: 1px; margin-bottom: 20px; /*color: #FFFFFF;background-color: #0099CC;*/ min-width: 430px; max-width: 580px; float: left; position: relative; z-index: 2; }
+.said-blog { border: 1px solid #FFFFFF; padding: 1px; transition: border-color 0.2s ease-in-out 0s; /*color: #FFFFFF;background-color: #0099CC;*/ width: 460px; float: left; }
     .said-blog:nth-child(even) { float: right; }
     .said-blog:hover { border: 1px solid #03a9f4; box-shadow: 0 0 3px #00d0ff; }
-        .said-blog:hover .blog-img { top: -100px; transition: top 0.2s ease-in-out 0s;}
-.blog-img { transition: top 0.2s ease-in-out 0s;position: absolute; left: 20px; top: -70px; border-radius: 150px; overflow: hidden; background-color: #FFF; }
+        .said-blog:hover .blog-img { top: -100px; transition: top 0.2s ease-in-out 0s; }
+.blog-img { transition: top 0.2s ease-in-out 0s; position: absolute; left: 20px; top: -70px; border-radius: 150px; overflow: hidden; background-color: #FFF; }
     .blog-img img { width: 200px; height: 200px; display: block; }
 .blog-title a { display: block; padding: 0 15px 0 27px; font: 1.6em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; color: #666; }
     .blog-title a:hover { color: #59c6ff; }
@@ -28,3 +28,8 @@
     #006699
     #66CC99
     */
+.said-bg-img { height: 400px; overflow: hidden; border: 1px solid #dcdcdc; border-left: none; border-right: none; }
+    .said-bg-img img { width: 100%; }
+.said-blog { margin: 40px auto; padding: 3px; position: relative; background-color: white; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 100% 100%, 50% 10%, from(#fff), to(#f3f3f3), color-stop(.1,#fff)); border: 1px solid #ccc; box-shadow: 1px 1px 4px rgba(0,0,0, 0.1); border-bottom-right-radius: 60px 5px; }
+    .said-blog:before { content: ''; width: 98%; z-index: -1; height: 98%; padding: 0 0 1px 0; position: absolute; bottom: 0; right: 0; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#f3f3f3), to(#f6f6f6), color-stop(.1,#fff)); border: 1px solid #ccc; box-shadow: 0px 0px 8px rgba(0,0,0, 0.1);border-bottom-right-radius: 60px 5px; transform:skew(2deg,1deg) translate(2px,6px); }
+    .said-blog:after { content: ''; z-index: -1; width: 60%; height: 98%; position: absolute; bottom: 0; right: 0;box-shadow: 0px 0px 8px rgba(0,0,0, 0.1); transform: skew(6deg,1deg) translate(-14px,1px); border:1px solid #CCC; }
