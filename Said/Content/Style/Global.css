@@ -25,8 +25,8 @@ input { border: 1px solid #929596; font-family: "Microsoft YaHei"; padding: 2px 
 
 /*layout*/
 #said-page { position: relative; z-index: 3; background-color: #FFF; /*background: url(/Content/Images/said-backgournd.jpg) fixed #FAFAFA center top; background-size: cover; transition: all 0.5s linear 0s;*/  background: url(../../UED/beat-Imgs/bg_texture.jpg) repeat;  }
-#content, #header, #footer-content { min-width: 900px; max-width: 1200px; margin: 0 auto; }
-#header { padding: 18px 0 5px 0; /*border-bottom: 1px solid #CCC; height: 48px; */ }
+#content, #header, #footer-content { width: 980px; margin: 0 auto; }
+#header { padding: 18px 0 20px 0; /*border-bottom: 1px solid #CCC; height: 48px; */ }
     #header:after { content: ''; display: block; float: none; clear: both; }
 #content { padding: 40px 0; margin-bottom: 371px; }
 #footer { overflow: hidden; position: fixed; z-index: 2; height: 371px; background: none repeat scroll 0 0 #292929; bottom: 0px; left: 0px; display: block; padding: 50px 0; width: 100%; color: #f1f1f1; }
