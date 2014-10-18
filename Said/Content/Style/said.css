@@ -4,23 +4,29 @@
 .said-blog { border: 1px solid #FFFFFF; padding: 1px; transition: box-shadow 0.2s ease-in-out 0s; /*color: #FFFFFF;background-color: #0099CC;*/ }
     .said-blog:hover { }
 
-.blog-img { transition: top 0.2s ease-in-out 0s; position: absolute; overflow: hidden; background-color: #FFF; }
-    .blog-img img { width: 300px; height: 300px; display: block; }
-.said-blog-context { margin-left: 310px; }
-.blog-title { margin: 0 20px 0 10px; }
-    .blog-title a { display: block; padding: 0 15px 0 27px; font: 1.6em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; color: #666; }
+.blog-img { display: block;  position: absolute; overflow: hidden; background-color: #FFF; }
+    .blog-img img { width: 300px; height: 300px; display: block;}
+
+.said-blog-context { margin-left: 310px; padding: 0 20px 0 10px; }
+.blog-title { }
+    .blog-title a { display: block; padding: 0 15px 0 5px; font: 1.6em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; border-bottom: 1px dashed #CCC; color: #666; }
         .blog-title a:hover { color: #59c6ff; }
 .blog-content { overflow: hidden; background-color: #FFF; position: relative; }
     .blog-content:hover .blog-img { transition: top 0.2s ease-in-out 0s; }
-.blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 10px 4px; }
-.blog-preview { height: 140px; overflow: hidden; padding:0 8px 0 25px; margin-top: 20px; border-left: 3px solid #b0d7fe; }
+.blog-summary { text-align: justify; word-break: break-all; text-indent: 2em; padding: 12px 0 4px; }
+.blog-preview { height: 140px; overflow: hidden; padding-left: 25px; margin-top: 20px; border-left: 3px solid #b0d7fe; }
 .blog-footer { text-align: right; overflow: hidden; padding-top: 30px; position: relative; }
-.blog-music { float: left; overflow: hidden;text-align: left; }
+.blog-music { float: left; overflow: hidden; text-align: left; }
 .blog-music-img { padding: 2px; border: 1px solid #CCC; left: 0; display: inline-block; vertical-align: middle; overflow: hidden; border-radius: 50px; position: absolute; left: 0; bottom: 0; }
     .blog-music-img img { display: block; height: 45px; width: 45px; border-radius: 45px; }
 .blog-music-info { width: 400px; margin-left: 30px; }
-    .blog-music-info li:first-child { color:#65abf1; }
-    .blog-music-info li:last-child { color:#CCC; }
+    .blog-music-info li { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .blog-music-info li:first-child { color: #65abf1; }
+        .blog-music-info li:last-child { color: #CCC; }
+.blog-more-info { vertical-align: bottom; position: absolute; right: 0; bottom: 3px; }
+    .blog-more-info time { background-color: #999; border-radius: 8px; color: #fff; font-size: 13px; padding: 1px 12px; }
+    .blog-more-info span { background: url("/Content/Images/work_tool_001.png") no-repeat -338px 3px; margin-right: 10px; padding-left: 18px; }
+        .blog-more-info span i { background-color: #fff; color: #888; padding: 1px 5px; }
 /*
     #b4c88b
     #0099CC
@@ -36,7 +42,7 @@
     #66CC99
     */
 .said-bg-img { height: 400px; overflow: hidden; border: 1px solid #dcdcdc; border-left: none; border-right: none; }
-    .said-bg-img img { width: 100%; }
+    .said-bg-img img { width: 100%; transition: all 4s ease-in-out 0s; position:relative; }
 .said-blog { margin: 40px auto; padding: 3px; position: relative; background-color: white; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 100% 100%, 50% 10%, from(#fff), to(#f3f3f3), color-stop(.1,#fff)); border: 1px solid #ccc; box-shadow: 1px 1px 4px rgba(0,0,0, 0.1); border-bottom-right-radius: 60px 5px; }
     .said-blog:first-child { margin-top: 0; }
     .said-blog:before { content: ''; width: 98%; z-index: -1; height: 98%; padding: 0 0 1px 0; position: absolute; bottom: 0; right: 0; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#f3f3f3), to(#f6f6f6), color-stop(.1,#fff)); border: 1px solid #ccc; box-shadow: 0px 0px 8px rgba(0,0,0, 0.1); border-bottom-right-radius: 60px 5px; transform: skew(2deg,1deg) translate(2px,6px); }
