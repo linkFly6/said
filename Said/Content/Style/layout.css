@@ -1,0 +1,16 @@
+﻿/*banner img*/
+.said-bg-img { height: 400px; overflow: hidden; border: 1px solid #dcdcdc; border-left: none; border-right: none; }
+    .said-bg-img img { width: 100%; transition: all 4s ease-in-out 0s; position: relative; }
+/*page*/
+.page-index { background-color: #dfdfdf; color: #666; border-radius: 3px; padding: 5px 10px; margin-left: 5px; transition: none!important; }
+span.page-index { background-color: #75b4f4!important; color: #FAFAFA; }
+.page-pre, .page-next { padding: 5px 10px; background-color: #dfdfdf; color: #666; position: relative; border-radius: 2px 3px 3px 2px; transition: none!important; }
+    .page-pre:after, .page-next:after { border: 13px solid transparent; border-right-color: #dfdfdf; position: absolute; content: ''; left: -26px; }
+.page-next { border-radius: 3px 2px 2px 3px; margin-left: 5px; }
+    .page-next:after { left: 61px; border: 13px solid transparent; border-left-color: #dfdfdf; }
+.page-break { color: #7d7d7d; padding: 0 5px; font-weight: bold; }
+.page-pre:hover,
+.page-next:hover,
+.page-index:hover { background-color: #75b4f4; color: #FAFAFA; }
+    .page-next:hover:after { border-left-color: #75b4f4; }
+    .page-pre:hover:after { border-right-color: #75b4f4; }

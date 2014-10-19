@@ -4,8 +4,8 @@
 .said-blog { border: 1px solid #FFFFFF; padding: 1px; transition: box-shadow 0.2s ease-in-out 0s; /*color: #FFFFFF;background-color: #0099CC;*/ }
     .said-blog:hover { }
 
-.blog-img { display: block;  position: absolute; overflow: hidden; background-color: #FFF; }
-    .blog-img img { width: 300px; height: 300px; display: block;}
+.blog-img { display: block; position: absolute; overflow: hidden; background-color: #FFF; }
+    .blog-img img { width: 300px; height: 300px; display: block; }
 
 .said-blog-context { margin-left: 310px; padding: 0 20px 0 10px; }
 .blog-title { }
@@ -41,9 +41,19 @@
     #006699
     #66CC99
     */
-.said-bg-img { height: 400px; overflow: hidden; border: 1px solid #dcdcdc; border-left: none; border-right: none; }
-    .said-bg-img img { width: 100%; transition: all 4s ease-in-out 0s; position:relative; }
 .said-blog { margin: 40px auto; padding: 3px; position: relative; background-color: white; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 100% 100%, 50% 10%, from(#fff), to(#f3f3f3), color-stop(.1,#fff)); border: 1px solid #ccc; box-shadow: 1px 1px 4px rgba(0,0,0, 0.1); border-bottom-right-radius: 60px 5px; }
     .said-blog:first-child { margin-top: 0; }
     .said-blog:before { content: ''; width: 98%; z-index: -1; height: 98%; padding: 0 0 1px 0; position: absolute; bottom: 0; right: 0; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#f3f3f3), to(#f6f6f6), color-stop(.1,#fff)); border: 1px solid #ccc; box-shadow: 0px 0px 8px rgba(0,0,0, 0.1); border-bottom-right-radius: 60px 5px; transform: skew(2deg,1deg) translate(2px,6px); }
     .said-blog:after { content: ''; z-index: -1; width: 60%; height: 98%; position: absolute; bottom: 0; right: 0; box-shadow: 0px 0px 8px rgba(0,0,0, 0.1); transform: skew(6deg,1deg) translate(-14px,1px); border: 1px solid #CCC; }
+/*page*/
+.said-blog-page { text-align: center;  }
+/*    .said-blog-page a { transition: none!important; }
+.page-pre, .page-next { background: url("/Content/Images/icon-common.png") no-repeat scroll -70px -300px rgba(0, 0, 0, 0); color: #7d7d7d; display: inline-block; height: 25px; line-height: 22px; margin-right: 3px; text-indent: 4px; width: 64px;  }
+    .page-pre:hover { background-position: -70px -330px; color: #FFF; }
+.page-next { background-position: -70px -360px; text-indent: -6px; }
+    .page-next:hover { background-position: -70px -390px; color: #FFF; }
+.page-index { background-color: #f2f2f2; border-radius: 3px; color: #7d7d7d; display: inline-block; height: 25px; line-height: 25px; margin-right: 5px; min-width: 26px; }
+    .page-index:hover { background-color:#fdd9d9; }
+span.page-index { background-color: #dd5862; color: #fff; }
+.page-disabled, .page-disabled:hover { }*/
+

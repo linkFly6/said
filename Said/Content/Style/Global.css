@@ -13,8 +13,8 @@ a:hover {  color: #59c6ff; text-decoration:underline; }
 #00d0ff
 */
 /*chrome下a标签闪烁的事情，添加一个script标签（并且标签里有内容），则没有闪动，如果页面有form，则把form去掉，也可以*/
-a { backface-visibility: hidden; transform-style: preserve-3d; text-decoration: none; transition: all 0.2s ease-in-out 0s; }
-    a:hover { backface-visibility: hidden; transform-style: preserve-3d; transition: all 0.2s ease-in-out 0s; }
+a { text-decoration: none; transition: all 0.2s ease-in-out 0s; }
+    a:hover { transition: all 0.2s ease-in-out 0s; }
     a:visited { color: #c03980; }
 .clear { clear: both; float: none !important; }
 table { border-collapse: collapse; }
@@ -56,3 +56,45 @@ input { border: 1px solid #929596; font-family: "Microsoft YaHei"; padding: 2px 
 .said-search-focus #said-search-input { border-bottom: 1px solid #33b5e5; }
 .said-search-focus #said-search-btn { background-position: 0 -28px; }
 #nav-hover { width: 70px; border-bottom: 1px solid #33b5e5; position: absolute; bottom: -6px; z-index: 5; transition: all 0.2s ease-in-out 0s; }
+
+/*loading animate*/
+.loading-round .loading-dot:nth-child(1):after, .loading-line .loading-dot:nth-child(1) { background-color: #a29fd3; }
+.loading-round .loading-dot:nth-child(2):after, .loading-line .loading-dot:nth-child(2) { background-color: #bfdc8e; }
+.loading-round .loading-dot:nth-child(3):after, .loading-line .loading-dot:nth-child(3) { background-color: #a1dcf0; }
+.loading-round .loading-dot:nth-child(4):after, .loading-line .loading-dot:nth-child(4) { background-color: #ffcd68; }
+.loading-round .loading-dot:nth-child(5):after, .loading-line .loading-dot:nth-child(5) { background-color: #fc9595; }
+/*round*/
+.loading-round { position: relative; display: inline-block; height: 50px; width: 100px; margin: 0 auto; }
+    .loading-round .loading-dot { position: absolute; opacity: 0; width: 35px; height: 35px; transform: rotate(225deg); animation: 5.28s linear 0s normal none infinite loading-round; }
+        .loading-round .loading-dot:after { content: ""; position: absolute; width: 6px; height: 6px; border-radius: 50%; }
+        .loading-round .loading-dot:nth-child(2) { animation-delay: .23s; }
+        .loading-round .loading-dot:nth-child(3) { animation-delay: .46s; }
+        .loading-round .loading-dot:nth-child(4) { animation-delay: .69s; }
+        .loading-round .loading-dot:nth-child(5) { animation-delay: .92s; }
+
+@keyframes loading-round {
+    0% { transform: rotate(225deg); opacity: 1; animation-timing-function: ease-out; }
+    8% { transform: rotate(345deg); animation-timing-function: linear; }
+    30% { transform: rotate(455deg); animation-timing-function: ease-in-out; }
+    40% { transform: rotate(690deg); animation-timing-function: linear; }
+    60% { transform: rotate(815deg); opacity: 1; animation-timing-function: ease-out; }
+    75% { transform: rotate(965deg); animation-timing-function: ease-out; }
+    76% { opacity: 0; }
+    100% { opacity: 0; }
+}
+/*line*/
+.loading-line { position: relative; height: 30px; }
+    .loading-line .loading-dot { animation: 2s cubic-bezier(0.1, 0.48, 0.9, 0.52) 0s normal none infinite loading-line; height: 6px; width: 6px; opacity: 0; position: absolute; text-indent: -9999px; border-radius: 50%; }
+        .loading-line .loading-dot:nth-child(1) { animation-delay: 0.15s; }
+        .loading-line .loading-dot:nth-child(2) { animation-delay: 0.3s; }
+        .loading-line .loading-dot:nth-child(3) { animation-delay: 0.45s; }
+        .loading-line .loading-dot:nth-child(4) { animation-delay: 0.6s; }
+        .loading-line .loading-dot:nth-child(5) { animation-delay: 0.75s; }
+
+@keyframes loading-line {
+    0% { left: 0; opacity: 0; }
+    5% { opacity: 1; }
+    95% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+}
+
