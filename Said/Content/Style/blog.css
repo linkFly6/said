@@ -1,7 +1,7 @@
 ﻿.said-content { position: relative; min-height: 1000px; }
     .said-content a { color: #028cd3; }
 .said-blog-list, .said-blog-notfound { padding-right: 300px; }
-.said-blog-title { font-size: 18px; height: 22px; line-height: 22px; padding-left: 10px; }
+.said-blog-title { font-size: 18px; line-height: 22px; padding: 21px 0 0px 10px; }
     .said-blog-title span { border-left: 3px solid #75b4f4; padding-right: 10px; vertical-align: middle; font-size: 13px; }
 .said-blog-content, .said-blog-item { padding: 10px; }
 .said-blog { border: 1px solid #CCC; transition: all 0.2s ease-in-out 0s; }
@@ -47,6 +47,19 @@
     .blog-other-list li img { transition: all 0.4s ease-in-out 0s; }
 .blog-other-list a { display: block; padding-left: 17px; line-height: 38px; background-color: #FFF; }
 .blog-other-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 10px; }
+/*project*/
+.blog-project-list { }
+.project-item, .blog-tag { display: block; padding: 10px 15px; background-color: #FFF; border-top: 1px solid #e0e0e0; }
+    .project-item:hover .project-name { text-decoration: underline; }
+.project-img { float: left; padding: 1px; margin-right: 10px; }
+    .project-img img { width: 50px; height: 50px; display: block; }
+.project-name { display: inline-block; color: #4183c4; font-weight: bold; }
+.project-summary { display: block; color: #666; }
+.project-name, .project-summary { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 176px; }
+/*tag*/
+.blog-tag-item { display: inline-block; background-color: #ededed; border-radius: 3px; padding: 2px 8px; margin: 0 5px 5px 0; }
+    .blog-tag-item:hover { background-color: #75b4f4; color: #FAFAFA!important; }
+
 /*
     #b4c88b
     #0099CC
