@@ -1,5 +1,5 @@
 ﻿/*#said-page { background: url(/Content/Images/night-sky.jpg); background-size: cover; }*/
-.music-song { padding-top: 60px; }
+.music-song { padding-top: 60px;background:#f3f3f3;  }
 .music-song-content { height: 128px; padding: 10px 20px; height: 116px; position: relative; width: 100%; }
     .music-song-content:after, .music-song-play:after, .music-play-detail:after { float: none; clear: both; content: ''; display: block; }
 .music-song-img { border: 1px solid #FFF; background-color: #FAFAFA; top: -80px; position: relative; padding: 1px; }
@@ -11,11 +11,11 @@
 .music-song-link { color: #028cd3; }
     .music-song-link:hover { color: #59c6ff; }
 /*.music-song-link:visited { color:#c03980; }*/
-.music-song-play { right: 0; top: 0; margin: 10px 0; padding: 0 10px 0 20px; width: 370px; height: 100%; background: url(/Content/Images/sidebar-bg.jpg) no-repeat; background-size: contain; }
+.music-song-play { right: 0; top: 0; margin: 10px 0; padding: 0 10px 0 20px; width: 370px; height: 100%; /*background: url(/Content/Images/sidebar-bg.jpg) no-repeat; background-size: contain;*/ border-left:1px solid #FCFCFC; }
 /*content-bg*/
 .content-bg { border-bottom: 1px solid white;position: absolute; top: 0; left: 0; height: 172px; width: 100%; overflow: hidden;  }
 .content-bg-img { width: 200%; height: 200%; background: url(/Content/Images/o_bg-clouds.png) repeat; position: relative; left: 0; transition: left 10s linear 0s; }
-.music-play-status { float: left; position: relative; top: 45px; }
+.music-play-status { float: left; position: relative; top: 45px;  }
     .music-play-status:first-child { width: 35px; top: 51px; }
     .music-play-status span { font-size: 12px; }
 .play-btn { background: url(/Content/Images/icon-player.png) -50px -170px no-repeat; height: 26px; display: block; text-indent: -9999px; transition: none; }
@@ -33,7 +33,9 @@
 .music-play-progress { background: #ededed; width: 300px; }
 .play-progress { background-color: #99CCFF; }
 /*blog*/
-.music-content { padding-top: 30px; }
+.music-content { padding-top: 30px; background:#FCFCFC;  background-color: white; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 100% 100%, 50% 10%, from(#fff), to(#f3f3f3), color-stop(.1,#fff));}
+
+
 .blog-title { padding: 0 15px 0 27px; font: 2.4em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; border-bottom: 1px dashed #CCC; color: #666; }
 .blog-content { padding: 10px 0 20px; }
     .blog-content * { font-size: 16px; padding: 10px; text-indent: 2em; text-align: justify; word-wrap: break-word; word-break: normal; line-height: 30px; }
