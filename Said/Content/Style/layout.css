@@ -1,6 +1,13 @@
 ﻿/*banner img*/
-.said-bg-img { height: 400px; overflow: hidden; border: 1px solid #dcdcdc; border-left: none; border-right: none; }
+.said-bg-img { height: 400px; overflow: hidden; border: 1px solid #dcdcdc; border-left: none; border-right: none; position: relative; }
     .said-bg-img img { width: 100%; transition: all 4s ease-in-out 0s; position: relative; }
+.said-bg-topics { position: absolute; background: url(/Content/Images/index_focus_bg.png) no-repeat; z-index: 2; height: 200px; width: 700px; left: 20%; bottom: 10%; overflow: hidden; }
+.said-topics-title { font-size: 36px; line-height: 70px; }
+.said-tpics-content { }
+    .said-tpics-content ul { padding-left: 15px; }
+        .said-tpics-content ul li { list-style: outside; }
+.said-topics-title, .said-tpics-content { text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6); }
+
 /*page*/
 .page-index { background-color: #dfdfdf; color: #666; border-radius: 3px; padding: 5px 10px; margin-left: 5px; transition: none!important; }
 span.page-index { background-color: #75b4f4!important; color: #FAFAFA; }
