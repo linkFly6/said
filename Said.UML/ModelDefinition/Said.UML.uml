@@ -212,6 +212,47 @@
         isAbstract="false"
         isLeaf="false"
         isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="d84bc65a-f1f3-4090-ac5d-b3c0b0a60705"
+            isDerived="false"
+            sourceEndRoleName="BClassifyId"
+            targetEndRoleName="+ ClassifyId : String"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="0ce66ed5-8fa0-4aae-b04b-2ca6b0a4befc"
+              LastKnownName="Classify"
+              LastKnownLocation="Said.UML.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="357b9800-b851-46a7-ae30-78950263f44c"
+                  name="BClassifyId"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="54fcbcf0-0ee3-42c7-b2a2-5ec0f77b45e6"
+                  name="+ ClassifyId : String"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
         <ownedAttributesInternal>
           <property
             Id="2fcc4f06-c9e2-4c6a-b83c-73a5e06605bd"
@@ -291,7 +332,7 @@
           </property>
           <property
             Id="4d268ec0-eccf-460c-a42b-0ab5daa86ed6"
-            name="IsDel"
+            name="BIsDel"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"
@@ -490,7 +531,7 @@
             isDerivedUnion="false"
             aggregation="None"
             isComposite="false">
-            <description>描述（页面显示的短描述）</description>
+            <description>描述（页面无图的短描述）</description>
             <type_NamedElement>
               <primitiveTypeMoniker
                 Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
@@ -593,6 +634,25 @@
                 LastKnownLocation="Said.UML.uml" />
             </type_NamedElement>
           </property>
+          <property
+            Id="144cbe4b-137f-41b9-a938-7a1d57b4cc30"
+            name="BSummaryTrim"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>描述（页面有图的短描述）</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
       </class>
     </packageHasNamedElement>
@@ -600,6 +660,596 @@
       <undefinedType
         Id="831dd152-4514-4bf0-9c22-2ecb0ce899dc"
         name="Interger" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="d53c94dc-8bc1-488c-a803-6e002c259f46"
+        name="Class1"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="31014673-c540-4154-9786-c50b6c3fc87b"
+        name="Said"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <targetEnds>
+          <association
+            Id="c7db5bb6-956f-4ca9-95a1-c23329266dd8"
+            isDerived="false"
+            sourceEndRoleName="+ SSongId"
+            targetEndRoleName="Song"
+            isLeaf="false"
+            isAbstract="false">
+            <classMoniker
+              Id="f7db4d87-f26b-4a11-a593-83cb628815f6"
+              LastKnownName="Song"
+              LastKnownLocation="Said.UML.uml" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="92c57a29-95e6-46c6-9117-ed1633789623"
+                  name="+ SSongId"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false"
+                  isNavigableOwned="false" />
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd
+                  Id="3ad6882d-9306-4f49-96b3-9a95c0fed0b0"
+                  name="Song"
+                  isLeaf="false"
+                  isStatic="false"
+                  isReadOnly="false"
+                  isDerived="false"
+                  isDerivedUnion="false"
+                  aggregation="None"
+                  isComposite="false" />
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+          </association>
+        </targetEnds>
+        <ownedAttributesInternal>
+          <property
+            Id="67b966f3-baf0-4825-bebe-70199e548664"
+            name="STitle"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>Blogbiaoti </description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="0e54780c-2e04-4a77-b01c-f466756332b6"
+            name="SContext"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章内容（MarkDown）</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="6996b1e3-b47b-4106-b068-744a62652b33"
+            name="SHTML"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章HTML</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="9d05ae7d-927d-412d-96e2-a418b5123f69"
+            name="SDate"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章时间</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="744c3908-9174-4687-8388-4f64f364c6e4"
+            name="IsDel"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>是否删除：0-否、1-是</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                LastKnownName="Integer"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="c061c93d-d6ab-4842-8b81-1ff79d1728fa"
+            name="SClassifyId"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章类别（保留：可能分听、说）</description>
+            <type_NamedElement>
+              <classMoniker
+                Id="0ce66ed5-8fa0-4aae-b04b-2ca6b0a4befc"
+                LastKnownName="Classify"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="a6ea7cb4-c1a0-4289-ab6b-eb56fefd981b"
+            name="SCSS"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章外部引用的CSS</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="22f6fb45-f013-4d88-8047-ab2904f631b7"
+            name="SScript"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>外部脚本</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="ee5e21f5-fd1c-4f3e-93d7-7ba7eba77d7b"
+            name="SPV"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>PV量</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                LastKnownName="Integer"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="e1834a91-c5ee-4e8c-99de-f4cb2059a293"
+            name="Scomment"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>评论量</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                LastKnownName="Integer"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="523f73c3-8152-406a-b182-9f7690878537"
+            name="SaidId"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>ID</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="1c028ee9-274d-4269-a18a-2aae58e31211"
+            name="SReprint"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>是否是转载（0-否、1-是）</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                LastKnownName="Boolean"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="abc58f4d-dca9-413c-a961-21848835daa2"
+            name="SIsTop"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>是否置顶</description>
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="831dd152-4514-4bf0-9c22-2ecb0ce899dc"
+                LastKnownName="Interger"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="e5c9fa63-ff1c-4443-bec1-06d568efb06b"
+            name="SImg"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>缩略图</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="60cd35df-15c9-4fe9-917c-8e7b56202204"
+            name="SSummary"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>描述（页面无图的短描述）</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="74bd5332-4d88-4a94-bb44-16b5cfae747d"
+            name="SLastComment"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章最后一次评论</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="28e1e3f4-0879-4bec-a4ba-b8e0ab985aa4"
+            name="SLastCommentUser"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章最后一次评论用户</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="5c526e21-6392-4b41-ae3d-466ee90968a4"
+            name="STag"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章标签（用,、;号分隔）</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="e638f2bc-6cd7-4727-97f4-92b29a34e978"
+            name="SImgTrim"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章后的缩略图</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="8a99c63d-7727-45c6-8a79-b89d490f2e93"
+            name="SXML"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>文章XML</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="0beac20f-79a7-4ac1-9140-7e920634a359"
+            name="SSummaryTrim"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>描述（页面有图的短描述）</description>
+            <type_NamedElement>
+              <primitiveTypeMoniker
+                Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="30f293d2-7f2c-4fe0-aab8-7af10d7bef2a"
+            name="SSongId"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌曲ID</description>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="f7db4d87-f26b-4a11-a593-83cb628815f6"
+        name="Song"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <ownedAttributesInternal>
+          <property
+            Id="4dc33b5d-d3b5-48ae-999c-893d178cbec4"
+            name="SongName"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌曲名称</description>
+          </property>
+          <property
+            Id="dc44b6d6-8481-4cda-9f91-d85665d17d40"
+            name="SongAlbum"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌曲专辑</description>
+          </property>
+          <property
+            Id="7f9150b3-412e-468d-a81a-4d1afbc2245b"
+            name="SongUrl"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌曲Url</description>
+          </property>
+          <property
+            Id="2ca62b01-5aa9-4c5a-9d71-788b1b1ecc1e"
+            name="SongImg"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌曲图片</description>
+          </property>
+          <property
+            Id="e91080ba-f781-44ab-95c9-976325221cd2"
+            name="SongArtist"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌手</description>
+          </property>
+          <property
+            Id="3c6a2675-f2ac-437a-a05d-83902a218fca"
+            name="SongLikeCount"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌曲Like数量</description>
+          </property>
+          <property
+            Id="b1787613-d125-4019-a6b3-7858d7a77fa1"
+            name="SongID"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>歌曲ID</description>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="017bb272-d1db-43d4-ab61-54c19431ec6d"
+        name="Class3"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="60ef0866-7bd6-455a-91f3-64140332803e"
+        name="Class4"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType
