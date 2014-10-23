@@ -53,19 +53,18 @@
 .blog-more-comment { border-top: 1px solid #CCC; background-color: white; padding-top: 1px; padding: 20px; }
 .blog-comment-content { }
 .blog-comment-portrait, .comment-form { display: inline-block; vertical-align: top; }
-.comment-form { width: 702px; padding-left: 35px; }
+.comment-form { width: 735px; padding-left: 35px; }
 .blog-comment-portrait img { display: block; height: 70px; width: 70px; }
 .blog-comment-info { padding-bottom: 15px; }
     .blog-comment-info li { display: inline-block; }
     .blog-comment-info input[type=checkbox] { vertical-align: middle; margin-bottom: 0px; margin-top: -1px; height: 14px; }
     .blog-comment-info input, #comment-context { border: 1px solid #CCC; }
-#comment-context { width: 700px;padding:5px;  }
-.comment-more-bar { }
+#comment-context { width: 700px; padding: 5px; display: block; min-height:80px;}
+.comment-more-bar { position: relative;  }
 /*comment*/
-#comment-submit { background-color:#54a3f3; color: #FFF; height: 35px; width: 120px; box-shadow:0 1px 1px #d5d5d5; text-shadow:1px 1px 1px rgba(102, 102, 102, 0.6); border-color:#8dc5da #669fd8 #63abc7; border-radius:1px; cursor:pointer; }
-    #comment-submit:hover { 
-        background-color: #75b4f4;
-    }
+.comment-more-bg { height: 36px; background-color: #fbfbfb; border: 1px solid #CCC; border-top: none; padding: 0 200px 0 100px;}
+#comment-submit { background-color: #54a3f3; color: #FFF; height: 33px; width: 110px; text-shadow: 1px 1px 1px rgba(102, 102, 102, 0.6); border-color: #8dc5da #669fd8 #63abc7; border-radius: 1px; cursor: pointer; position: absolute; right: 2px; top: 1px; }
+    #comment-submit:hover { background-color: #75b4f4; }
 /*comment-context*/
 
 /*page-btn*/

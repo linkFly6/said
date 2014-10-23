@@ -9,6 +9,7 @@
 .said-topics-title, .said-tpics-content { text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6); }
 
 /*page*/
+.said-blog-page { text-align: center; padding-top:15px;  }
 .page-index { background-color: #dfdfdf; color: #666; border-radius: 3px; padding: 5px 10px; margin-left: 5px; transition: none!important; }
 span.page-index { background-color: #75b4f4!important; color: #FAFAFA; }
 .page-pre, .page-next { padding: 5px 10px; background-color: #dfdfdf; color: #666; position: relative; border-radius: 2px 3px 3px 2px; transition: none!important; }

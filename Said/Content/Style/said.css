@@ -46,7 +46,6 @@
     .said-blog:before { content: ''; width: 98%; z-index: -1; height: 98%; padding: 0 0 1px 0; position: absolute; bottom: 0; right: 0; background: -moz-linear-gradient(top,#f3f3f3,#FFF); background: -webkit-gradient(linear, 0% 20%, 0% 100%, from(#f3f3f3), to(#f6f6f6), color-stop(.1,#fff)); border: 1px solid #ccc; box-shadow: 0px 0px 8px rgba(0,0,0, 0.1); border-bottom-right-radius: 60px 5px; transform: skew(2deg,1deg) translate(2px,6px); }
     .said-blog:after { content: ''; z-index: -1; width: 60%; height: 98%; position: absolute; bottom: 0; right: 0; box-shadow: 0px 0px 8px rgba(0,0,0, 0.1); transform: skew(6deg,1deg) translate(-14px,1px); border: 1px solid #CCC; }
 /*page*/
-.said-blog-page { text-align: center;  }
 /*    .said-blog-page a { transition: none!important; }
 .page-pre, .page-next { background: url("/Content/Images/icon-common.png") no-repeat scroll -70px -300px rgba(0, 0, 0, 0); color: #7d7d7d; display: inline-block; height: 25px; line-height: 22px; margin-right: 3px; text-indent: 4px; width: 64px;  }
     .page-pre:hover { background-position: -70px -330px; color: #FFF; }
