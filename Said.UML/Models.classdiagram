@@ -1,19 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="a798c23c-19eb-4ace-9f3d-586672e6f0e2" name="Models" linkedPackageId="eaa4a4dd-ac59-4332-88b0-452f720223f7" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
-  <profileInstances>
-    <packageHasProfileInstances Id="356cdcb0-1446-408a-9a2d-533c8c1c12d3">
-      <profileInstance Id="e7e55d9f-7b9a-4c2b-8933-14144b1fffde" name="StandardProfileL2">
-        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
-      </profileInstance>
-      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="18988644-ddb0-4d79-a793-2ba67befab14">
-      <profileInstance Id="dfefc86b-0866-42cd-80bd-70291460089c" name="StandardProfileL3">
-        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
-      </profileInstance>
-      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
-    </packageHasProfileInstances>
-  </profileInstances>
   <packagedElements>
     <packageHasNamedElement>
       <referencedType Id="f174d874-7069-4a95-b52c-d40f2a57a799" name="String" isAbstract="false" isLeaf="false" cachedFullName="String">
@@ -185,11 +171,11 @@
               <referencedTypeMoniker Id="4b883f7f-7a25-43bd-8efb-bd151b088d55" LastKnownName="Boolean" />
             </type_NamedElement>
           </property>
-          <property Id="c6644703-36ba-4329-8b6d-5649da3b0ffa" name="IsTop" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          <property Id="c6644703-36ba-4329-8b6d-5649da3b0ffa" name="BIsTop" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <description>是否置顶</description>
             <elementDefinition Id="99e13249-46ac-46c2-8fb1-12a635779c99" />
             <type_NamedElement>
-              <referencedTypeMoniker Id="ac74194c-d313-4f55-b343-9f4d18840ae7" LastKnownName="Interger" />
+              <referencedTypeMoniker Id="74f6062c-f23f-4967-acae-ccd6dedddc8a" LastKnownName="Interger" />
             </type_NamedElement>
           </property>
           <property Id="158dd2fc-8233-48c8-9ea8-5fa85b3bd678" name="BImg" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
@@ -248,6 +234,19 @@
               <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
             </type_NamedElement>
           </property>
+          <property Id="8aeb85c1-e6b9-49ca-97e9-1fe7eeba3ca0" name="IsDel" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="3368c518-5769-4dfd-8b45-dcee8c175db5" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
+            </type_NamedElement>
+          </property>
+          <property Id="e988b364-3679-467c-b75e-e89476eda7df" name="BName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>文件名</description>
+            <elementDefinition Id="d3655516-b5ff-44e2-9029-2dd4b83b780b" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
@@ -264,11 +263,6 @@
     <packageHasNamedElement>
       <referencedType Id="4b883f7f-7a25-43bd-8efb-bd151b088d55" name="Boolean" isAbstract="false" isLeaf="false" cachedFullName="Boolean">
         <elementDefinition Id="8943dc84-709e-4f62-b15a-a3273aa6f165" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="ac74194c-d313-4f55-b343-9f4d18840ae7" name="Interger" isAbstract="false" isLeaf="false" cachedFullName="Interger">
-        <elementDefinition Id="831dd152-4514-4bf0-9c22-2ecb0ce899dc" />
       </referencedType>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -459,6 +453,13 @@
             <description>歌曲ID</description>
             <elementDefinition Id="30f293d2-7f2c-4fe0-aab8-7af10d7bef2a" />
           </property>
+          <property Id="ef0c893f-c8f1-46d6-9eac-c88420428021" name="SName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>文件名</description>
+            <elementDefinition Id="b12489a7-f193-445d-9bda-184b11e916af" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
@@ -599,11 +600,204 @@
             <description>歌曲ID</description>
             <elementDefinition Id="b1787613-d125-4019-a6b3-7858d7a77fa1" />
           </property>
+          <property Id="9180b6f7-92e7-4cdb-8ab3-73a3405a4c21" name="IsDel" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="e90f4783-49ff-42eb-83b1-7673351dc721" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
+            </type_NamedElement>
+          </property>
         </ownedAttributesInternal>
       </class>
     </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="aa0f3965-9a39-4bb9-8e6f-520923a9cb14" name="Reply" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <description>回复</description>
+        <elementDefinition Id="e0bf2211-7041-46f7-8630-e2646236de5f" />
+        <ownedAttributesInternal>
+          <property Id="1b61b423-833e-4d0f-b029-14baceb1e7cc" name="ReplyId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>回复ID</description>
+            <elementDefinition Id="b8401b46-93f2-4e8e-8d33-2b9a46e69285" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="843c164b-7760-410d-bfa1-065edefc49b1" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="8744b54a-b85a-4508-92a3-86bee02feee4" name="RContext" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>回复内容</description>
+            <elementDefinition Id="44fe8760-31ec-4118-9c5f-eee4dc25d1c6" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="cba1010f-f05e-47b9-b1b8-602b1f154c40" name="RUserId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>用户ID</description>
+            <elementDefinition Id="899b51cf-2470-4b92-9a66-08e1ec1907b8" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="a7f4b0d3-ad63-4f62-9c0f-5092ee9991e6" name="RType" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>回复类型：是回复文章还是回复用户的某条评论</description>
+            <elementDefinition Id="bce82fb5-681d-4cb0-a92f-821296fbcbee" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
+            </type_NamedElement>
+          </property>
+          <property Id="8fb1858e-b7ec-4bba-997f-23a5c657e98c" name="RToUserId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>被回复的用户ID</description>
+            <elementDefinition Id="1e271b1d-1468-4a63-8a1c-4d3180d3be85" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="746456ea-f418-4955-9883-6fb0b7030a73" name="RToArticleId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>被回复的文章（said或blog）</description>
+            <elementDefinition Id="dd0c36e2-e898-4bef-a009-4ca9f0407c18" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="4d775187-6ab3-41bb-9efe-edbefcadd084" name="IsDel" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="d7e5118d-7933-4d93-a8a5-ac1f9a996cf9" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
+            </type_NamedElement>
+          </property>
+          <property Id="830bc6a2-47c5-4134-b7a5-bbf2bc146fa2" name="RDate" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>回复时间</description>
+            <elementDefinition Id="87ece3ba-fefc-430c-807f-e472f6666558" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="5b975ce3-b04f-444e-828b-2f820fb54bc3" LastKnownName="Datetime" />
+            </type_NamedElement>
+          </property>
+          <property Id="771c8851-86f2-4321-8ab8-a1e819557b1d" name="RIsMaster" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>是否是管理员</description>
+            <elementDefinition Id="f08dc7f5-5049-4ca1-a144-0922334bd16f" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
+            </type_NamedElement>
+          </property>
+          <property Id="5baac581-e05a-4ad3-8d5b-94197a7a0693" name="RIsAnonymous" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>是否匿名（没有站点）</description>
+            <elementDefinition Id="bed2c0d9-2d88-40c4-8d8c-abc09c5b75a2" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="843c164b-7760-410d-bfa1-065edefc49b1" name="String" isAbstract="false" isLeaf="false" cachedFullName="String">
+        <elementDefinition Id="59259974-6d55-42c6-b7bd-763d77ac8ef9" />
+      </referencedType>
+    </packageHasNamedElement>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="8ad85163-f148-4836-8815-02b5e7b83356" name="User" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <description>用户表</description>
+        <elementDefinition Id="2baa2826-81b8-4444-b92b-9423c4fa88bb" />
+        <ownedAttributesInternal>
+          <property Id="0cc0ae89-e5bb-474c-8ec6-3d4bb1b5cfcf" name="UserId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>用户ID</description>
+            <elementDefinition Id="ef40d98e-6a10-4729-bae6-19a99e6f8091" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="25e86688-4829-4417-aaf4-0de2510d34e4" name="UNickName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>用户昵称</description>
+            <elementDefinition Id="b87b0398-a49d-4576-bbda-21ba56f0d3ac" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="9ebb3de4-7edd-4d7d-938f-6ce08d4099b3" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="87f16e5a-a27c-4e10-8bd4-dfc992878629" name="UEmail" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>Email</description>
+            <elementDefinition Id="2e63dbad-2743-473b-9913-4f86752292af" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="fa5d1105-5da2-4a96-8510-29131b843175" name="USaite" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>用户站点</description>
+            <elementDefinition Id="740a48d4-5bef-47ca-b5f3-d149040c5574" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="61dc3d46-aa66-4ff9-8942-0a208cfe9958" name="UPortrait" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>用户头像</description>
+            <elementDefinition Id="df94736f-e9b6-49b6-acb2-235104dd4c25" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="92729a38-1a3e-4632-beb0-59ef1326bdc6" name="ULastDate" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>最后一次用户登录时间</description>
+            <elementDefinition Id="6bf3a838-19af-4ea3-a92b-8073e9eb9a85" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="5b975ce3-b04f-444e-828b-2f820fb54bc3" LastKnownName="Datetime" />
+            </type_NamedElement>
+          </property>
+          <property Id="ccd7029f-5c0f-47cc-9bce-6b26a16d5bd3" name="ULastIP" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>最近一次用户登录IP</description>
+            <elementDefinition Id="75f9696e-a21c-4fc7-9ea8-c7aaf9097c84" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="b875fdc2-0680-4534-b46b-26dc0e5aa31b" name="ULockOver" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>用户解锁时间</description>
+            <elementDefinition Id="76144134-c02a-4b45-aaba-b2c647cb17bc" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="96f326e1-1918-4568-947e-d5c63c851a38" LastKnownName="Date" />
+            </type_NamedElement>
+          </property>
+          <property Id="c9ccd296-9077-4b4b-9e28-1da68d14f038" name="UIsLock" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>用户是否被锁</description>
+            <elementDefinition Id="43be65cb-51fa-456f-a016-15985edbf074" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <packageHasNamedElement>
+      <referencedType Id="5b975ce3-b04f-444e-828b-2f820fb54bc3" name="Datetime" isAbstract="false" isLeaf="false" cachedFullName="Datetime">
+        <elementDefinition Id="821ca57e-1bf9-4706-94e8-d21284839146" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="9ebb3de4-7edd-4d7d-938f-6ce08d4099b3" name="String" isAbstract="false" isLeaf="false" cachedFullName="String">
+        <elementDefinition Id="59259974-6d55-42c6-b7bd-763d77ac8ef9" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="96f326e1-1918-4568-947e-d5c63c851a38" name="Date" isAbstract="false" isLeaf="false" cachedFullName="Date">
+        <elementDefinition Id="981a5945-2d54-4735-94a0-8a28721be1cd" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="74f6062c-f23f-4967-acae-ccd6dedddc8a" name="Interger" isAbstract="false" isLeaf="false" cachedFullName="Interger">
+        <elementDefinition Id="831dd152-4514-4bf0-9c22-2ecb0ce899dc" />
+      </referencedType>
+    </packageHasNamedElement>
   </packagedElements>
   <package Id="eaa4a4dd-ac59-4332-88b0-452f720223f7" name="Said.UML">
     <elementDefinition Id="e6cd1916-3365-4084-83e5-22ad1c92c075" />
+    <profileInstances>
+      <packageHasProfileInstances Id="356cdcb0-1446-408a-9a2d-533c8c1c12d3">
+        <profileInstance Id="e7e55d9f-7b9a-4c2b-8933-14144b1fffde" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="18988644-ddb0-4d79-a793-2ba67befab14">
+        <profileInstance Id="dfefc86b-0866-42cd-80bd-70291460089c" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+    </profileInstances>
   </package>
 </logicalClassDesignerModel>
