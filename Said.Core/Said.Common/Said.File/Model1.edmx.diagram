@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="46cc9e6b8ef741f8ad9e4e13c2952a1e" Name="关系图1" >
+        <EntityTypeShape EntityType="Model1.实体1" Width="1.5" PointX="1.75" PointY="1.125" />
+        <EntityTypeShape EntityType="Model1.实体2" Width="2.25" PointX="0.625" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.实体3" Width="1.5" PointX="4.375" PointY="2.375" />
+        <EntityTypeShape EntityType="Model1.Fuck" Width="1.5" PointX="7.375" PointY="4" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
