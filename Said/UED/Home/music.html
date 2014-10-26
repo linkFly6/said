@@ -263,7 +263,7 @@
                         <span>评论(0)</span>
                     </div>
                     <ul class="blog-info">
-                        <li class="blog-info-date">2014/10/08 00:21:51发布</li>
+                        <li class="blog-info-date"><time>2014/10/08 00:21:51</time></li>
                         <li class="blog-info-like" title="like"><span>12</span></li>
                         <li class="blog-info-PV" title="浏览"><span>15</span></li>
                     </ul>
@@ -271,11 +271,11 @@
                 <div class="blog-more-comment">
                     <div class="blog-comment-content">
                         <div class="blog-comment-bar">
-                            <div class="blog-comment-portrait">
+                            <div class="comment-portrait">
                                 <img alt="github" src="/Content/Images/github.png" />
                             </div>
                             <form action="/" class="comment-form">
-                                <ul class="blog-comment-info">
+                                <ul class="blog-comment-info" style="">
                                     <li>
                                         <input placeholder="名称" /></li>
                                     <li>
@@ -283,10 +283,10 @@
                                     <li>
                                         <input type="url" placeholder="您的站点" /></li>
                                     <li>
-                                        <input type="checkbox" id="comment-cookie" /><label for="comment-cookie">保存信息</label></li>
+                                        <input type="checkbox" id="comment-cookie" /><label for="comment-cookie">下次自动填写</label></li>
                                 </ul>
                                 <div class="comment-bar">
-                                    <textarea name="comment" id="comment-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
+                                    <textarea name="comment" class="cmt-context" id="comment-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
                                     <div class="comment-more-bar">
                                         <div class="comment-more-bg">
                                             <ul style="" class="loading-line">
@@ -298,12 +298,247 @@
                                             </ul>
                                         </div>
                                         <span></span>
-                                        <input type="submit" id="comment-submit" value="提交评论" />
+                                        <input type="submit" class="submitLock ct-submit" id="comment-submit" value="提交评论" />
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="blog-comment-context">
+                            <ul class="comment-list">
+                                <li class="comment-item">
+                                    <div class="comment-portrait">
+                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
+                                            <img alt="github" src="/Content/Images/github.png" />
+                                        </a>
+                                    </div>
+                                    <div class="ctitem-content">
+                                        <div class="ct-top said-ellipsis">
+                                            <a href="javascript:;" class="ct-name" target="_blank" title="查看ta的站点">linkFly</a>
+                                        </div>
+                                        <p class="ct-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                        <div class="ct-footer">
+                                            <span class="ct-num">#1</span>
+                                            <time class="ct-time">2小时前</time>
+                                            <a href="javascript:;" class="ct-reply">回复</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="comment-item">
+                                    <div class="comment-portrait">
+                                        <img alt="github" src="/Content/Images/testImg-Paramore.Ps.jpg" />
+                                    </div>
+                                    <div class="ctitem-content">
+                                        <div class="ct-top said-ellipsis">
+                                            <a href="javascript:;" class="ct-name" style="display: none;">linkFly</a>
+                                            <span class="ct-name ">linkFly</span>
+                                        </div>
+                                        <p class="ct-context wordbreak">linkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFly</p>
+                                        <div class="ct-footer">
+                                            <span class="ct-num">#2 </span>
+                                            <time class="ct-time">昨天</time>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="comment-item">
+                                    <div class="comment-portrait">
+                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
+                                            <img alt="github" src="/Content/Images/UEDImg/demoImg.jpg" />
+                                        </a>
+                                    </div>
+                                    <div class="ctitem-content">
+                                        <div class="ct-top said-ellipsis">
+                                            <a href="javascript:;" class="ct-name" style="display: none;" target="_blank" title="查看ta的站点">linkFly</a>
+                                            <a class="ct-name " href="/">linkFly</a>
+                                        </div>
+                                        <p class="ct-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                        <div class="ct-footer">
+                                            <span class="ct-num">#3</span>
+                                            <time class="ct-time">昨天</time>
+                                            <a href="javascript:;" class="ct-reply">回复</a>
+                                        </div>
+                                        <!--二级评论-->
+                                        <div class="comment-reply">
+                                            <div class="arrow-border cr-arrow">
+                                            </div>
+                                            <ul class="cr-container">
+                                                <li class="cr-item">
+                                                    <div class="cr-portrait">
+                                                        <a class="cr-link" href="javascript:;" target="_blank" title="查看ta的站点">
+                                                            <img src="/Content/Images/testImg-Paramore.Ps.jpg" alt="github" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="cr-content">
+                                                        <div class="ct-top said-ellipsis">
+                                                            <a href="/" class="ct-name " target="_blank" title="查看ta的站点">风住过的地方</a>
+                                                        </div>
+                                                        <p class="cr-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                                        <div class="cr-footer">
+                                                            <time class="cr-time">昨天</time>
+                                                            <a class="cr-reply" href="javascript:;">回复</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="cr-item">
+                                                    <div class="cr-portrait">
+                                                        <img src="/Content/Images/github.png" alt="github" />
+                                                    </div>
+                                                    <div class="cr-content">
+                                                        <div class="ct-top said-ellipsis">
+                                                            <span class="ct-name ">linkFly</span>&nbsp;&nbsp;回复&nbsp;&nbsp;<a style="" class="ct-name" href="javascript:;">风住过的地方</a>
+
+                                                        </div>
+                                                        <p class="cr-context wordbreak">linkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFly</p>
+                                                        <div class="cr-footer">
+                                                            <time class="cr-time">昨天</time>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="comment-item">
+                                    <div class="comment-portrait">
+                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
+                                            <img alt="github" src="/Content/Images/UEDImg/demoImg3.jpg" />
+                                        </a>
+                                    </div>
+                                    <div class="ctitem-content">
+                                        <div class="ct-top said-ellipsis">
+                                            <a href="javascript:;" class="ct-name" target="_blank" title="查看ta的站点">linkFly</a>
+                                        </div>
+                                        <p class="ct-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                        <div class="ct-footer">
+                                            <span class="ct-num">#1</span>
+                                            <time class="ct-time">2小时前</time>
+                                            <a href="javascript:;" class="ct-reply">回复</a>
+                                        </div>
+                                        <!--回复评论-->
+                                        <div class="comment-reply">
+                                            <div class="arrow-border rc-arrow">
+                                            </div>
+                                            <div class="reply-bar">
+                                                <form action="/" class="comment-form" name="reply-form">
+                                                    <ul class="blog-comment-info" style="">
+                                                        <li>
+                                                            <input placeholder="名称" name="reply-name" /></li>
+                                                        <li>
+                                                            <input type="email" placeholder="Email" name="reply-email" /></li>
+                                                        <li>
+                                                            <input type="url" placeholder="您的站点" name="reply-site" /></li>
+                                                        <li>
+                                                            <input type="checkbox" id="Checkbox1" /><label for="comment-cookie">下次自动填写</label></li>
+                                                    </ul>
+                                                    <div class="comment-bar">
+                                                        <textarea name="comment" id="reply-context" class="cmt-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
+                                                        <div class="comment-more-bar">
+                                                            <div class="comment-more-bg">
+                                                                <ul style="" class="loading-line">
+                                                                    <li class="loading-dot">1</li>
+                                                                    <li class="loading-dot">2</li>
+                                                                    <li class="loading-dot">3</li>
+                                                                    <li class="loading-dot">4</li>
+                                                                    <li class="loading-dot">5</li>
+                                                                </ul>
+                                                            </div>
+                                                            <span></span>
+                                                            <input type="submit" class="ct-submit" id="reply-submit" value="提交评论" />
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="comment-item">
+                                    <div class="comment-portrait">
+                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
+                                            <img alt="github" src="/Content/Images/UEDImg/demo-img5.jpg" />
+                                        </a>
+                                    </div>
+                                    <div class="ctitem-content">
+                                        <div class="ct-top said-ellipsis">
+                                            <a href="javascript:;" class="ct-name" style="display: none;" target="_blank" title="查看ta的站点">linkFly</a>
+                                            <a class="ct-name " href="/">linkFly</a>
+                                        </div>
+                                        <p class="ct-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                        <div class="ct-footer">
+                                            <span class="ct-num">#3</span>
+                                            <time class="ct-time">昨天</time>
+                                            <a href="javascript:;" class="ct-reply">回复</a>
+                                        </div>
+                                        <!--二级评论-->
+                                        <div class="comment-reply">
+                                            <div class="arrow-border rc-arrow">
+                                            </div>
+                                            <div class="reply-bar">
+                                                <form action="/" class="comment-form" name="reply-form">
+                                                    <ul class="blog-comment-info" style="">
+                                                        <li>
+                                                            <input placeholder="名称" name="reply-name" /></li>
+                                                        <li>
+                                                            <input type="email" placeholder="Email" name="reply-email" /></li>
+                                                        <li>
+                                                            <input type="url" placeholder="您的站点" name="reply-site" /></li>
+                                                        <li>
+                                                            <input type="checkbox" id="Checkbox2" /><label for="comment-cookie">下次自动填写</label></li>
+                                                    </ul>
+                                                    <div class="comment-bar">
+                                                        <textarea name="comment" id="Textarea1" class="cmt-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
+                                                        <div class="comment-more-bar">
+                                                            <div class="comment-more-bg">
+                                                                <ul style="" class="loading-line">
+                                                                    <li class="loading-dot">1</li>
+                                                                    <li class="loading-dot">2</li>
+                                                                    <li class="loading-dot">3</li>
+                                                                    <li class="loading-dot">4</li>
+                                                                    <li class="loading-dot">5</li>
+                                                                </ul>
+                                                            </div>
+                                                            <span></span>
+                                                            <input type="submit" class="ct-submit" id="Submit1" value="提交评论" />
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <ul class="cr-container">
+                                                <li class="cr-item">
+                                                    <div class="cr-portrait">
+                                                        <a class="cr-link" href="javascript:;" target="_blank" title="查看ta的站点">
+                                                            <img src="/Content/Images/testImg-Paramore.Ps.jpg" alt="github" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="cr-content">
+                                                        <div class="ct-top said-ellipsis">
+                                                            <a href="/" class="ct-name " target="_blank" title="查看ta的站点">风住过的地方</a>
+                                                        </div>
+                                                        <p class="cr-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                                        <div class="cr-footer">
+                                                            <time class="cr-time">昨天</time>
+                                                            <a class="cr-reply" href="javascript:;">回复</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="cr-item">
+                                                    <div class="cr-portrait">
+                                                        <img src="/Content/Images/github.png" alt="github" />
+                                                    </div>
+                                                    <div class="cr-content">
+                                                        <div class="ct-top said-ellipsis">
+                                                            <span class="ct-name ">linkFly</span>&nbsp;&nbsp;回复&nbsp;&nbsp;<a style="" class="ct-name" href="javascript:;">风住过的地方</a>
+
+                                                        </div>
+                                                        <p class="cr-context wordbreak">linkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFlylinkFly</p>
+                                                        <div class="cr-footer">
+                                                            <time class="cr-time">昨天</time>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

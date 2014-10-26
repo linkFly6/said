@@ -133,11 +133,19 @@
     <Content Include="Content\Images\night-sky.jpg" />
     <Content Include="Content\Images\not-blog.gif" />
     <Content Include="Content\Images\o_bg-clouds.png" />
+<<<<<<< HEAD
     <Content Include="Content\Images\sidebar-bg.jpg" />
     <Content Include="Content\Images\test-said-img.jpg" />
     <Content Include="Content\Images\testImg-Paramore.Ps.jpg" />
     <Content Include="Content\Images\said-backgournd.jpg" />
     <Content Include="Content\Images\Said.png" />
+=======
+    <Content Include="Content\Images\said-backgournd.jpg" />
+    <Content Include="Content\Images\Said.png" />
+    <Content Include="Content\Images\sidebar-bg.jpg" />
+    <Content Include="Content\Images\test-said-img.jpg" />
+    <Content Include="Content\Images\testImg-Paramore.Ps.jpg" />
+>>>>>>> 1cfd8404e74034297b808d8cef5df820be96fccb
     <Content Include="Content\Images\work_tool_001.png" />
     <Content Include="Content\JavaScript\jquery-1.11.1.js" />
     <Content Include="Content\JavaScript\jquery-2.1.1.js" />
@@ -148,6 +156,7 @@
     <Content Include="Content\Style\music.css" />
     <Content Include="Content\Style\said.css" />
     <Content Include="Global.asax" />
+<<<<<<< HEAD
     <Content Include="UED\beat-Imgs\bg_main.gif" />
     <Content Include="UED\beat-Imgs\bg_texture.jpg" />
     <Content Include="UED\beat-Imgs\camera-bg.jpg" />
@@ -156,6 +165,8 @@
     <Content Include="UED\beat-Imgs\s-light1.png" />
     <Content Include="UED\beat-Imgs\s-light2.png" />
     <Content Include="UED\beat-Imgs\s-light3.png" />
+=======
+>>>>>>> 1cfd8404e74034297b808d8cef5df820be96fccb
     <Content Include="UED\Home\blog.html" />
     <Content Include="UED\Home\music.html" />
     <Content Include="UED\Home\Public.html" />
