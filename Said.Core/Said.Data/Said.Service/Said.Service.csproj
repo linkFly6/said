@@ -48,7 +48,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Said.DataBase\Said.Dal\Said.Dal.csproj">
       <Project>{8e8730e2-865b-446c-ac9c-653fd14f43e2}</Project>
-      <Name>Said.Dal</Name>
+      <Name>Said.Dal %28Said.Core\Said.DataBase\Said.Dal%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Said.DataBase\Said.IDal\Said.IDal.csproj">
       <Project>{e4fb09d8-5e1f-46dd-8889-fc41a74a2651}</Project>

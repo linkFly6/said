@@ -84,6 +84,7 @@
             isDerivedUnion="false"
             aggregation="None"
             isComposite="false">
+            <description>类别名称</description>
             <type_NamedElement>
               <primitiveTypeMoniker
                 Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
@@ -928,7 +929,7 @@
           </property>
           <property
             Id="e1834a91-c5ee-4e8c-99de-f4cb2059a293"
-            name="Scomment"
+            name="SComment"
             isLeaf="false"
             isStatic="false"
             isReadOnly="false"
@@ -1183,6 +1184,24 @@
               <primitiveTypeMoniker
                 Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
                 LastKnownName="String"
+                LastKnownLocation="Said.UML.uml" />
+            </type_NamedElement>
+          </property>
+          <property
+            Id="210c2cd4-971d-4ced-bb6f-0dc91e829779"
+            name="SClick"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="c1585d4a-475f-43be-8c0f-03d2f088c860"
+                LastKnownName="Int"
                 LastKnownLocation="Said.UML.uml" />
             </type_NamedElement>
           </property>
@@ -1787,6 +1806,11 @@
       <undefinedType
         Id="981a5945-2d54-4735-94a0-8a28721be1cd"
         name="Date" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="c1585d4a-475f-43be-8c0f-03d2f088c860"
+        name="Int" />
     </packageHasNamedElement>
   </packagedElements>
   <primitiveType

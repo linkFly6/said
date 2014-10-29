@@ -12,6 +12,7 @@
         <elementDefinition Id="0ce66ed5-8fa0-4aae-b04b-2ca6b0a4befc" />
         <ownedAttributesInternal>
           <property Id="6a8ad36d-72a0-4936-8eff-312e53cdaa81" name="CName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <description>类别名称</description>
             <elementDefinition Id="1b7ca725-b5f9-44f5-8f69-d4bf4909abf0" />
             <type_NamedElement>
               <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
@@ -365,11 +366,11 @@
               <referencedTypeMoniker Id="cc10d543-5a4a-4007-aa24-734f44222ebb" LastKnownName="Integer" />
             </type_NamedElement>
           </property>
-          <property Id="2261a1d2-dfa2-4d67-9d40-9a70c0c2cfbe" name="Scomment" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+          <property Id="2261a1d2-dfa2-4d67-9d40-9a70c0c2cfbe" name="SComment" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
             <description>评论量</description>
             <elementDefinition Id="e1834a91-c5ee-4e8c-99de-f4cb2059a293" />
             <type_NamedElement>
-              <referencedTypeMoniker Id="50ef079a-357c-49de-91a1-0cc95770fd61" LastKnownName="Integer" />
+              <referencedTypeMoniker Id="350bfbe6-2936-4fd6-a88d-32e331c26ee3" LastKnownName="Integer" />
             </type_NamedElement>
           </property>
           <property Id="8d3fee29-5066-478b-a7cf-8987805b43bf" name="SaidId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
@@ -458,6 +459,12 @@
             <elementDefinition Id="b12489a7-f193-445d-9bda-184b11e916af" />
             <type_NamedElement>
               <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
+            </type_NamedElement>
+          </property>
+          <property Id="c941257f-5ccf-4899-98d2-d65e51badfe8" name="SClick" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="210c2cd4-971d-4ced-bb6f-0dc91e829779" />
+            <type_NamedElement>
+              <referencedTypeMoniker Id="1fe285a6-f354-49c5-9dbb-55ec65c45698" LastKnownName="Int" />
             </type_NamedElement>
           </property>
         </ownedAttributesInternal>
@@ -561,11 +568,6 @@
     <packageHasNamedElement>
       <referencedType Id="3191c913-a523-41c9-89f2-13f4897c3c97" name="String" isAbstract="false" isLeaf="false" cachedFullName="String">
         <elementDefinition Id="59259974-6d55-42c6-b7bd-763d77ac8ef9" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="50ef079a-357c-49de-91a1-0cc95770fd61" name="Integer" isAbstract="false" isLeaf="false" cachedFullName="Integer">
-        <elementDefinition Id="220a3521-e091-4221-bae9-3ef9018e845c" />
       </referencedType>
     </packageHasNamedElement>
     <logicalClassDesignerModelHasTypes>
@@ -780,6 +782,16 @@
     <packageHasNamedElement>
       <referencedType Id="74f6062c-f23f-4967-acae-ccd6dedddc8a" name="Interger" isAbstract="false" isLeaf="false" cachedFullName="Interger">
         <elementDefinition Id="831dd152-4514-4bf0-9c22-2ecb0ce899dc" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="350bfbe6-2936-4fd6-a88d-32e331c26ee3" name="Integer" isAbstract="false" isLeaf="false" cachedFullName="Integer">
+        <elementDefinition Id="220a3521-e091-4221-bae9-3ef9018e845c" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="1fe285a6-f354-49c5-9dbb-55ec65c45698" name="Int" isAbstract="false" isLeaf="false" cachedFullName="Int">
+        <elementDefinition Id="c1585d4a-475f-43be-8c0f-03d2f088c860" />
       </referencedType>
     </packageHasNamedElement>
   </packagedElements>
