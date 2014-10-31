@@ -2,3 +2,7 @@ E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Log\bin\Debug\Sa
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Log\bin\Debug\Said.Log.pdb
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Log\obj\Debug\Said.Log.dll
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Log\obj\Debug\Said.Log.pdb
+F:\Github\Said\Said.Core\Said.Data\Said.Log\bin\Debug\Said.Log.dll
+F:\Github\Said\Said.Core\Said.Data\Said.Log\bin\Debug\Said.Log.pdb
+F:\Github\Said\Said.Core\Said.Data\Said.Log\obj\Debug\Said.Log.dll
+F:\Github\Said\Said.Core\Said.Data\Said.Log\obj\Debug\Said.Log.pdb

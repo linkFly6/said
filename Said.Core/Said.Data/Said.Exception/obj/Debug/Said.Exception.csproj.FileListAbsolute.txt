@@ -3,3 +3,8 @@ E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Exception\bin\De
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Exception\obj\Debug\Said.Exception.csprojResolveAssemblyReference.cache
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Exception\obj\Debug\Said.Exception.dll
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Exception\obj\Debug\Said.Exception.pdb
+F:\Github\Said\Said.Core\Said.Data\Said.Exception\bin\Debug\Said.Exception.dll
+F:\Github\Said\Said.Core\Said.Data\Said.Exception\bin\Debug\Said.Exception.pdb
+F:\Github\Said\Said.Core\Said.Data\Said.Exception\obj\Debug\Said.Exception.csprojResolveAssemblyReference.cache
+F:\Github\Said\Said.Core\Said.Data\Said.Exception\obj\Debug\Said.Exception.dll
+F:\Github\Said\Said.Core\Said.Data\Said.Exception\obj\Debug\Said.Exception.pdb

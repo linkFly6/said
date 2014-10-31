@@ -2,3 +2,7 @@ E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Cache\bin\Debug\
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Cache\bin\Debug\Said.Cache.pdb
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Cache\obj\Debug\Said.Cache.dll
 E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.Cache\obj\Debug\Said.Cache.pdb
+F:\Github\Said\Said.Core\Said.Data\Said.Cache\bin\Debug\Said.Cache.dll
+F:\Github\Said\Said.Core\Said.Data\Said.Cache\bin\Debug\Said.Cache.pdb
+F:\Github\Said\Said.Core\Said.Data\Said.Cache\obj\Debug\Said.Cache.dll
+F:\Github\Said\Said.Core\Said.Data\Said.Cache\obj\Debug\Said.Cache.pdb

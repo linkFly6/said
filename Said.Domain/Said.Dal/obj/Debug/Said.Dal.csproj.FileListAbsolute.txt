@@ -1,0 +1,5 @@
+F:\Github\Said\Said.Domain\Said.Dal\bin\Debug\Said.Dal.dll
+F:\Github\Said\Said.Domain\Said.Dal\bin\Debug\Said.Dal.pdb
+F:\Github\Said\Said.Domain\Said.Dal\obj\Debug\Said.Dal.csprojResolveAssemblyReference.cache
+F:\Github\Said\Said.Domain\Said.Dal\obj\Debug\Said.Dal.dll
+F:\Github\Said\Said.Domain\Said.Dal\obj\Debug\Said.Dal.pdb
