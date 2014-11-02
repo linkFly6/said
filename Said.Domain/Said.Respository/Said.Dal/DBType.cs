@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Said.Dal
+{
+    internal enum DBType
+    {
+        SqlServer = 0,
+        Oracle = 1,
+        MySql = 2
+    }
+}

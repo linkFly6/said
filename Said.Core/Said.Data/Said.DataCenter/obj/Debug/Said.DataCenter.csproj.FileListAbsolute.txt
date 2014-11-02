@@ -1,8 +1,0 @@
-E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataCenter\bin\Debug\Said.DataCenter.dll
-E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataCenter\bin\Debug\Said.DataCenter.pdb
-E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataCenter\obj\Debug\Said.DataCenter.dll
-E:\Visual Studio 2012本地内容\Said\Said.Core\Said.Data\Said.DataCenter\obj\Debug\Said.DataCenter.pdb
-F:\Github\Said\Said.Core\Said.Data\Said.DataCenter\bin\Debug\Said.DataCenter.dll
-F:\Github\Said\Said.Core\Said.Data\Said.DataCenter\bin\Debug\Said.DataCenter.pdb
-F:\Github\Said\Said.Core\Said.Data\Said.DataCenter\obj\Debug\Said.DataCenter.dll
-F:\Github\Said\Said.Core\Said.Data\Said.DataCenter\obj\Debug\Said.DataCenter.pdb

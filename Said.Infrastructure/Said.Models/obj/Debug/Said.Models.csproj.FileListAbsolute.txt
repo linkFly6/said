@@ -1,4 +1,0 @@
-F:\Github\Said\Said.Infrastructure\Said.Models\bin\Debug\Said.Models.dll
-F:\Github\Said\Said.Infrastructure\Said.Models\bin\Debug\Said.Models.pdb
-F:\Github\Said\Said.Infrastructure\Said.Models\obj\Debug\Said.Models.dll
-F:\Github\Said\Said.Infrastructure\Said.Models\obj\Debug\Said.Models.pdb
