@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C7B5D3A8-ACCF-41EA-9897-7DFCDEA4A198}</ProjectGuid>
+    <ProjectGuid>{091572D4-C9EE-473A-BDF3-992D5301D65C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Said.Entity</RootNamespace>
-    <AssemblyName>Said.Entity</AssemblyName>
+    <RootNamespace>Said.Models</RootNamespace>
+    <AssemblyName>Said.Models</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,15 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDentity.cs" />
+    <Compile Include="BaseModel.cs" />
+    <Compile Include="Classify.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Said.Model\Classify.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Said.Dal\Said.Dal.csproj">
-      <Project>{3e0b0e1c-d09a-4587-8a37-ea7975a5eb03}</Project>
-      <Name>Said.Dal %28Said.Domain\Said.Domain.Services\Said.Dal%29</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

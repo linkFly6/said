@@ -1,7 +1,0 @@
-F:\Github\Said\Said.Domain\Said.Entity\bin\Debug\Said.Entity.dll
-F:\Github\Said\Said.Domain\Said.Entity\bin\Debug\Said.Entity.pdb
-F:\Github\Said\Said.Domain\Said.Entity\bin\Debug\Said.Dal.dll
-F:\Github\Said\Said.Domain\Said.Entity\bin\Debug\Said.Dal.pdb
-F:\Github\Said\Said.Domain\Said.Entity\obj\Debug\Said.Entity.csprojResolveAssemblyReference.cache
-F:\Github\Said\Said.Domain\Said.Entity\obj\Debug\Said.Entity.dll
-F:\Github\Said\Said.Domain\Said.Entity\obj\Debug\Said.Entity.pdb
