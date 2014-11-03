@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Said.Models
 {
     /// <summary>
-    /// DTO Model：分类
+    /// 分类
     /// </summary>
     public class Classify : BaseModel
     {
