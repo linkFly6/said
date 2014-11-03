@@ -46,6 +46,8 @@
     <Compile Include="Said.Entity\Said.Entiry\Classify.cs" />
     <Compile Include="Said.Entity\Said.Entiry\IEntity.cs" />
     <Compile Include="Said.Entity\Said.Entiry\Said.cs" />
+    <Compile Include="Said.Respository\IClassifyRespository.cs" />
+    <Compile Include="Said.Respository\IRespository.cs" />
     <Compile Include="Said.Respository\Said.Dal\DataFactory.cs" />
     <Compile Include="Said.Respository\Said.Dal\DBType.cs" />
     <Compile Include="Said.Respository\Said.Dal\IDBHelper.cs" />
@@ -53,10 +55,10 @@
     <Compile Include="Said.Respository\Said.Dal\OracleDBHelper.cs" />
     <Compile Include="Said.Respository\Said.Dal\SqlDBHelper.cs" />
     <Compile Include="Said.Respository\Said.EntiryRespository\ClassifyRespository.cs" />
+    <Compile Include="Said.Services\Said.Services\ClassifyService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Said.Respository\Said.AggregateRespository\" />
-    <Folder Include="Said.Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Said.Infrastructure\Said.Infrastructure.csproj">
