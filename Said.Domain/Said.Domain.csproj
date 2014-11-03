@@ -49,6 +49,7 @@
     <Compile Include="Said.Dal\SqlDBHelper.cs" />
     <Compile Include="Said.Services\Said.IServices\BaseService.cs" />
     <Compile Include="Said.Services\Said.IServices\IClassifyService.cs" />
+    <Compile Include="Said.Services\Said.IServices\ISaidService.cs" />
     <Compile Include="Said.Services\Said.Services\ClassifyService.cs" />
     <Compile Include="Said.Services\Said.Services\IService.cs" />
     <Compile Include="Said.Services\Said.SQL\ClassifySQL.cs" />
