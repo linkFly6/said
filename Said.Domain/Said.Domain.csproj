@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{761AA147-0AFC-41E7-92A3-AE18C3CAEFBD}</ProjectGuid>
+    <ProjectGuid>{CCFB5416-BE3E-4AB1-8F7E-D21D0833ACDE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Said.Domain</RootNamespace>
@@ -41,25 +41,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Said.Aggregate\SaidAggregate.cs" />
-    <Compile Include="Said.Entity\BaseEntity.cs" />
-    <Compile Include="Said.Entity\Said.Entiry\Classify.cs" />
-    <Compile Include="Said.Entity\Said.Entiry\IEntity.cs" />
-    <Compile Include="Said.Entity\Said.Entiry\Said.cs" />
-    <Compile Include="Said.Respository\IClassifyRespository.cs" />
-    <Compile Include="Said.Respository\IRespository.cs" />
-    <Compile Include="Said.Respository\Said.Dal\DataFactory.cs" />
-    <Compile Include="Said.Respository\Said.Dal\DBType.cs" />
-    <Compile Include="Said.Respository\Said.Dal\IDBHelper.cs" />
-    <Compile Include="Said.Respository\Said.Dal\MySqlDBHelper.cs" />
-    <Compile Include="Said.Respository\Said.Dal\OracleDBHelper.cs" />
-    <Compile Include="Said.Respository\Said.Dal\SqlDBHelper.cs" />
-    <Compile Include="Said.Respository\Said.EntiryRespository\ClassifyRespository.cs" />
+    <Compile Include="Said.Dal\DataFactory.cs" />
+    <Compile Include="Said.Dal\DBType.cs" />
+    <Compile Include="Said.Dal\IDBHelper.cs" />
+    <Compile Include="Said.Dal\MySqlDBHelper.cs" />
+    <Compile Include="Said.Dal\OracleDBHelper.cs" />
+    <Compile Include="Said.Dal\SqlDBHelper.cs" />
+    <Compile Include="Said.Services\Said.IServices\BaseService.cs" />
+    <Compile Include="Said.Services\Said.IServices\IClassifyService.cs" />
     <Compile Include="Said.Services\Said.Services\ClassifyService.cs" />
+    <Compile Include="Said.Services\Said.Services\IService.cs" />
+    <Compile Include="Said.Services\Said.SQL\ClassifySQL.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Said.Respository\Said.AggregateRespository\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Said.Infrastructure\Said.Infrastructure.csproj">
       <Project>{3bb3d704-d274-42ef-a140-7c261622df5c}</Project>

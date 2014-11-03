@@ -1,7 +1,7 @@
-F:\Github\Said\Said.Domain\obj\Debug\Said.Domain.csprojResolveAssemblyReference.cache
-F:\Github\Said\Said.Domain\bin\Debug\Said.Domain.dll
-F:\Github\Said\Said.Domain\bin\Debug\Said.Domain.pdb
-F:\Github\Said\Said.Domain\bin\Debug\Said.Infrastructure.dll
-F:\Github\Said\Said.Domain\bin\Debug\Said.Infrastructure.pdb
-F:\Github\Said\Said.Domain\obj\Debug\Said.Domain.dll
-F:\Github\Said\Said.Domain\obj\Debug\Said.Domain.pdb
+D:\Git\Said\Said.Domain\obj\Debug\Said.Domain.csprojResolveAssemblyReference.cache
+D:\Git\Said\Said.Domain\bin\Debug\Said.Domain.dll
+D:\Git\Said\Said.Domain\bin\Debug\Said.Domain.pdb
+D:\Git\Said\Said.Domain\obj\Debug\Said.Domain.dll
+D:\Git\Said\Said.Domain\obj\Debug\Said.Domain.pdb
+D:\Git\Said\Said.Domain\bin\Debug\Said.Infrastructure.dll
+D:\Git\Said\Said.Domain\bin\Debug\Said.Infrastructure.pdb

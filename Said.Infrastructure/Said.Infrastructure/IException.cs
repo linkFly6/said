@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Said.Dal
+namespace Said.Infrastructure.Said.Infrastructure
 {
-    internal enum DBType
+    public class IException : Exception
     {
-        SqlServer = 0,
-        Oracle = 1,
-        MySql = 2
+
     }
 }

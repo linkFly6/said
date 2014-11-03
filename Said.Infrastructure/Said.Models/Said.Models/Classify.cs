@@ -9,7 +9,7 @@ namespace Said.Models
     /// <summary>
     /// DTO Model：分类
     /// </summary>
-    public class Classify
+    public class Classify : BaseModel
     {
         #region 属性
         /// <summary>

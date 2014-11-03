@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Said.Domain.Said.Respository
+namespace Said.Domain.Said.Services
 {
-    interface IRespository<T>
+    interface IService<T>
     {
-        int Insert();
         IList<T> Find();
-        T Find();
+        T One();
+        int Insert();
         int Update();
         int Del();
+        int Delete();
     }
 }

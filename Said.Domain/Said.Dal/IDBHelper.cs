@@ -12,7 +12,7 @@ namespace Said.Dal
     /// <summary>
     /// 数据访问抽象类
     /// </summary>
-    internal abstract class IDBHelper
+    public abstract class IDBHelper
     {
 
         /// <summary>
