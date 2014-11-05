@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SaidDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="SaidDBModelStoreContainer">
+          <EntitySet Name="Classify" EntityType="SaidDBModel.Store.Classify" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Said" EntityType="SaidDBModel.Store.Said" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Song" EntityType="SaidDBModel.Store.Song" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="SaidDBModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="Classify">
+          <Key>
+            <PropertyRef Name="ClassifyId" />
+          </Key>
+          <Property Name="ClassifyId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CCount" Type="int" Nullable="false" />
+          <Property Name="CIcon" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="CLastBlogId" Type="nvarchar" MaxLength="50" />
+          <Property Name="CLastBlogName" Type="nvarchar" MaxLength="200" />
+          <Property Name="CName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsDel" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Said">
+          <Key>
+            <PropertyRef Name="SaidId" />
+          </Key>
+          <Property Name="SaidId" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="SXML" Type="nvarchar(max)" />
+          <Property Name="STitle" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="STag" Type="nvarchar" MaxLength="50" />
+          <Property Name="SSummaryTrim" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="SSummary" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="SSongId" Type="int" Nullable="false" />
+          <Property Name="SScript" Type="nvarchar(max)" />
+          <Property Name="SReprint" Type="int" Nullable="false" />
+          <Property Name="SPV" Type="int" Nullable="false" />
+          <Property Name="SName" Type="nvarchar" Nullable="false" MaxLength="66" />
+          <Property Name="SLastCommentUser" Type="nvarchar" MaxLength="50" />
+          <Property Name="SLastComment" Type="nvarchar" MaxLength="300" />
+          <Property Name="SIsTop" Type="int" />
+          <Property Name="SImgTrim" Type="nvarchar" MaxLength="255" />
+          <Property Name="SImg" Type="nvarchar" MaxLength="255" />
+          <Property Name="SHTML" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SDate" Type="datetime" Nullable="false" />
+          <Property Name="SCSS" Type="nvarchar(max)" />
+          <Property Name="SContext" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SComment" Type="int" Nullable="false" />
+          <Property Name="SClick" Type="int" Nullable="false" />
+          <Property Name="SClassifyId" Type="int" />
+          <Property Name="IsDel" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Song">
+          <Key>
+            <PropertyRef Name="SongId" />
+          </Key>
+          <Property Name="SongId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SongUrl" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="SongName" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="SongLikeCount" Type="int" />
+          <Property Name="SongImg" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="SongArtist" Type="nvarchar" MaxLength="100" />
+          <Property Name="SongAlbum" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsDel" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SaidDBModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SaidDBEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Classify" EntityType="SaidDBModel.Classify" />
+          <EntitySet Name="Said" EntityType="SaidDBModel.Said" />
+          <EntitySet Name="Song" EntityType="SaidDBModel.Song" />
+          <EntitySet Name="sysdiagrams" EntityType="SaidDBModel.sysdiagrams" />
+        </EntityContainer>
+        <EntityType Name="Classify">
+          <Key>
+            <PropertyRef Name="ClassifyId" />
+          </Key>
+          <Property Name="ClassifyId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="CCount" Type="Int32" Nullable="false" />
+          <Property Name="CIcon" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CLastBlogId" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CLastBlogName" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="CName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsDel" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Said">
+          <Key>
+            <PropertyRef Name="SaidId" />
+          </Key>
+          <Property Name="SaidId" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SXML" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="STitle" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="STag" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SSummaryTrim" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="SSummary" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="SSongId" Type="Int32" Nullable="false" />
+          <Property Name="SScript" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SReprint" Type="Int32" Nullable="false" />
+          <Property Name="SPV" Type="Int32" Nullable="false" />
+          <Property Name="SName" Type="String" Nullable="false" MaxLength="66" Unicode="true" FixedLength="false" />
+          <Property Name="SLastCommentUser" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SLastComment" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="SIsTop" Type="Int32" />
+          <Property Name="SImgTrim" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SImg" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SHTML" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SCSS" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SContext" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SComment" Type="Int32" Nullable="false" />
+          <Property Name="SClick" Type="Int32" Nullable="false" />
+          <Property Name="SClassifyId" Type="Int32" />
+          <Property Name="IsDel" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Song">
+          <Key>
+            <PropertyRef Name="SongId" />
+          </Key>
+          <Property Name="SongId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="SongUrl" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SongName" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="SongLikeCount" Type="Int32" />
+          <Property Name="SongImg" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SongArtist" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="SongAlbum" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="IsDel" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SaidDBModelStoreContainer" CdmEntityContainer="SaidDBEntities">
+          <EntitySetMapping Name="Classify">
+            <EntityTypeMapping TypeName="SaidDBModel.Classify">
+              <MappingFragment StoreEntitySet="Classify">
+                <ScalarProperty Name="ClassifyId" ColumnName="ClassifyId" />
+                <ScalarProperty Name="CCount" ColumnName="CCount" />
+                <ScalarProperty Name="CIcon" ColumnName="CIcon" />
+                <ScalarProperty Name="CLastBlogId" ColumnName="CLastBlogId" />
+                <ScalarProperty Name="CLastBlogName" ColumnName="CLastBlogName" />
+                <ScalarProperty Name="CName" ColumnName="CName" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Said">
+            <EntityTypeMapping TypeName="SaidDBModel.Said">
+              <MappingFragment StoreEntitySet="Said">
+                <ScalarProperty Name="SaidId" ColumnName="SaidId" />
+                <ScalarProperty Name="SXML" ColumnName="SXML" />
+                <ScalarProperty Name="STitle" ColumnName="STitle" />
+                <ScalarProperty Name="STag" ColumnName="STag" />
+                <ScalarProperty Name="SSummaryTrim" ColumnName="SSummaryTrim" />
+                <ScalarProperty Name="SSummary" ColumnName="SSummary" />
+                <ScalarProperty Name="SSongId" ColumnName="SSongId" />
+                <ScalarProperty Name="SScript" ColumnName="SScript" />
+                <ScalarProperty Name="SReprint" ColumnName="SReprint" />
+                <ScalarProperty Name="SPV" ColumnName="SPV" />
+                <ScalarProperty Name="SName" ColumnName="SName" />
+                <ScalarProperty Name="SLastCommentUser" ColumnName="SLastCommentUser" />
+                <ScalarProperty Name="SLastComment" ColumnName="SLastComment" />
+                <ScalarProperty Name="SIsTop" ColumnName="SIsTop" />
+                <ScalarProperty Name="SImgTrim" ColumnName="SImgTrim" />
+                <ScalarProperty Name="SImg" ColumnName="SImg" />
+                <ScalarProperty Name="SHTML" ColumnName="SHTML" />
+                <ScalarProperty Name="SDate" ColumnName="SDate" />
+                <ScalarProperty Name="SCSS" ColumnName="SCSS" />
+                <ScalarProperty Name="SContext" ColumnName="SContext" />
+                <ScalarProperty Name="SComment" ColumnName="SComment" />
+                <ScalarProperty Name="SClick" ColumnName="SClick" />
+                <ScalarProperty Name="SClassifyId" ColumnName="SClassifyId" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Song">
+            <EntityTypeMapping TypeName="SaidDBModel.Song">
+              <MappingFragment StoreEntitySet="Song">
+                <ScalarProperty Name="SongId" ColumnName="SongId" />
+                <ScalarProperty Name="SongUrl" ColumnName="SongUrl" />
+                <ScalarProperty Name="SongName" ColumnName="SongName" />
+                <ScalarProperty Name="SongLikeCount" ColumnName="SongLikeCount" />
+                <ScalarProperty Name="SongImg" ColumnName="SongImg" />
+                <ScalarProperty Name="SongArtist" ColumnName="SongArtist" />
+                <ScalarProperty Name="SongAlbum" ColumnName="SongAlbum" />
+                <ScalarProperty Name="IsDel" ColumnName="IsDel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SaidDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

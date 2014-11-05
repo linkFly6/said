@@ -33,6 +33,9 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,25 +44,68 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Said.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Said.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Said.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Said.tt</DependentUpon>
+    </Compile>
     <Compile Include="Said.Dal\DataFactory.cs" />
     <Compile Include="Said.Dal\DBType.cs" />
     <Compile Include="Said.Dal\IDBHelper.cs" />
     <Compile Include="Said.Dal\MySqlDBHelper.cs" />
     <Compile Include="Said.Dal\OracleDBHelper.cs" />
     <Compile Include="Said.Dal\SqlDBHelper.cs" />
+    <Compile Include="Said.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Said.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Said.Services\Said.IServices\BaseService.cs" />
     <Compile Include="Said.Services\Said.IServices\IClassifyService.cs" />
     <Compile Include="Said.Services\Said.IServices\ISaidService.cs" />
     <Compile Include="Said.Services\Said.Services\ClassifyService.cs" />
     <Compile Include="Said.Services\Said.Services\IService.cs" />
     <Compile Include="Said.Services\Said.SQL\ClassifySQL.cs" />
+    <Compile Include="SaidEntities.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EntityDeploy Include="Said.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Said.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Said.Infrastructure\Said.Infrastructure.csproj">
       <Project>{3bb3d704-d274-42ef-a140-7c261622df5c}</Project>
       <Name>Said.Infrastructure %28Said.Infrastructure\Said.Infrastructure%29</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Said.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Said.edmx</DependentUpon>
+      <LastGenOutput>Said.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Said.edmx.diagram">
+      <DependentUpon>Said.edmx</DependentUpon>
+    </None>
+    <None Include="Said.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Said.edmx</DependentUpon>
+      <LastGenOutput>Said.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
