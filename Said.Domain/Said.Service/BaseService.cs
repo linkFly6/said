@@ -111,10 +111,12 @@ namespace Said.Domain.Said.IServices
         #endregion
 
         #region linQ通用
-        public T One(int id)
-        { 
-            return this.context.Set<T>
+        public virtual T GetById(int id)
+        {
+            return this.context.Set<T>().Find(id);
         }
+
+
         #endregion
     }
 }
