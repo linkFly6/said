@@ -10,7 +10,7 @@ namespace Said.Domain.Said.Data
 {
     public class SaidDbContext : DbContext
     {
-        public SaidDbContext(string databaseName = "DbContext")
+        public SaidDbContext(string databaseName = "SaidEntities")
             : base(databaseName)
         {
             //databaseName是connectionString
@@ -19,6 +19,11 @@ namespace Said.Domain.Said.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
+        }
+
+        public virtual void Commit()
+        {
+            base.SaveChanges();
         }
 
         #region 实体

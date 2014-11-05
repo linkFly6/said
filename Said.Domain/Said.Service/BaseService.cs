@@ -110,7 +110,7 @@ namespace Said.Domain.Said.IServices
         }
         #endregion
 
-        #region linQ通用
+        #region linq通用
         public virtual T GetById(int id)
         {
             return this.context.Set<T>().Find(id);
