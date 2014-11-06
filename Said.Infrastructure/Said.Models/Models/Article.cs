@@ -103,5 +103,9 @@ namespace Said.Models
         /// 类型ID（如果有的话）
         /// </summary>
         public int SClassifyId { get; set; }
+        /// <summary>
+        /// 类型对象
+        /// </summary>
+        public Classify Classify { get; set; }
     }
 }

@@ -8,8 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Said.Domain.Said.Service
+namespace Said.Service
 {
+    /// <summary>
+    /// 听说（文章）服务接口
+    /// </summary>
     public interface IArticleService
     {
         /// <summary>
@@ -22,6 +25,9 @@ namespace Said.Domain.Said.Service
 
 
     }
+    /// <summary>
+    /// 听说（文章）服务
+    /// </summary>
     public class ArticleService : BaseService<Article>, IArticleService
     {
 
@@ -62,5 +68,6 @@ namespace Said.Domain.Said.Service
             //           SClassifyId = c.ClassifyId
             //       });
         }
+
     }
 }

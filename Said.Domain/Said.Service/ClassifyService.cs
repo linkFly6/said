@@ -32,7 +32,7 @@ namespace Said.Service
 
     #region ClassifyService
     /// <summary>
-    /// 分类服务实现
+    /// 分类服务
     /// </summary>
     public class ClassifyService : BaseService<Classify>, IClassifyService
     {
