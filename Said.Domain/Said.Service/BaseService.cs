@@ -1,12 +1,15 @@
-﻿using Said.Common;
+﻿using PagedList;
+using Said.Common;
 using Said.Domain.Said.Data;
-using Said.Infrastructure.Said.Common;
 using Said.Models;
+using Said.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +19,24 @@ namespace Said.Domain.Said.IServices
     public class BaseService<T> where T : BaseModel
     {
         /// <summary>
+        /// 数据库上下文工厂
+        /// </summary>
+        protected DatabaseFactory Factory;
+        /// <summary>
+        /// 数据库实体上下文
+        /// </summary>
+        private SaidDbContext context;
+        /// <summary>
+        /// 相应实体存储单元
+        /// </summary>
+        private readonly IDbSet<T> dbset;
+        /// <summary>
         /// 数据库连接
         /// </summary>
-        protected SaidDbContext context;
-        public BaseService(SaidDbContext context)
+        public BaseService(DatabaseFactory factory)
         {
-            this.context = context;
+            this.Factory = factory;
+            this.dbset = context.Set<T>();
         }
 
         #region Sql通用查询
@@ -110,11 +125,132 @@ namespace Said.Domain.Said.IServices
         }
         #endregion
 
+        protected SaidDbContext Context { get { return context ?? (context = Factory.Get()); } }
+
         #region linq通用
-        public virtual T GetById(int id)
+
+        #region 增删改
+        /// <summary>
+        /// 添加一个对象到存储单元
+        /// </summary>
+        /// <param name="model">实体对象</param>
+        public virtual void Add(T model)
         {
-            return this.context.Set<T>().Find(id);
+            dbset.Add(model);
         }
+        /// <summary>
+        /// 修改一个对象到存储单元
+        /// </summary>
+        /// <param name="model">实体对象</param>
+        public virtual void Update(T model)
+        {
+            dbset.Attach(model);
+            context.Entry(model).State = EntityState.Modified;
+        }
+
+        /// <summary>
+        /// 从存储单元中【真正】删除一个对象
+        /// </summary>
+        /// <param name="model">要删除的实体对象</param>
+        public virtual void Delete(T model)
+        {
+            dbset.Remove(model);
+        }
+        /// <summary>
+        /// 从存储单元中【真正】删除一组对象
+        /// </summary>
+        /// <param name="where">要删除的实体对象过滤表达式</param>
+        public virtual void Delete(Expression<Func<T, bool>> where)
+        {
+            IEnumerable<T> models = dbset.Where(where).AsEnumerable();
+            foreach (var model in models)
+                dbset.Remove(model);
+        }
+
+        /// <summary>
+        /// 从存储单元中【标志一个对象为删除状态】
+        /// </summary>
+        /// <param name="model">要标志删除的实体对象</param>
+        public virtual void Del(T model)
+        {
+            model.IsDel = 1;
+            Update(model);
+        }
+        /// <summary>
+        /// 从存储单元中【标志一组对象为删除状态】
+        /// </summary>
+        /// <param name="where">查询表达式，结果为一组要删除标志的实体对象</param>
+        public virtual void Del(Expression<Func<T, bool>> where)
+        {
+            IEnumerable<T> models = dbset.Where(where).AsEnumerable();
+            foreach (var model in models)
+                Del(model);
+        }
+
+        #endregion
+
+        #region 查询
+        /// <summary>
+        /// 无条件查询全部
+        /// </summary>
+        /// <returns></returns>
+        public virtual IEnumerable<T> GetAll()
+        {
+            return dbset.ToList();
+        }
+
+        /// <summary>
+        /// 根据long ID查询一条
+        /// </summary>
+        /// <param name="id">类型为long的ID</param>
+        /// <returns></returns>
+        public virtual T GetById(long id)
+        {
+            return dbset.Find(id);
+        }
+        /// <summary>
+        /// 根据ID查询一条
+        /// </summary>
+        /// <param name="id">类型为string的ID</param>
+        /// <returns></returns>
+        public virtual T GetById(string id)
+        {
+            return dbset.Find(id);
+        }
+        /// <summary>
+        /// 根据条件查询
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> GetMany(Expression<Func<T, bool>> where)
+        {
+            return dbset.Where(where).ToList();
+        }
+        /// <summary>
+        /// 查询一条
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <returns></returns>
+        public virtual T Get(Expression<Func<T, bool>> where)
+        {
+            return dbset.Where(where).FirstOrDefault();
+        }
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <typeparam name="TOrder">实体</typeparam>
+        /// <param name="page">分页对象</param>
+        /// <param name="where">分页表达式</param>
+        /// <param name="order">排序表达式</param>
+        /// <returns></returns>
+        public virtual IPagedList<T> GetPage<TOrder>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order)
+        {
+            var results = dbset.OrderBy(order).Where(where).GetPage(page).ToList();
+            var total = dbset.Count(where);
+            return new StaticPagedList<T>(results, page.PageNumber, page.PageSize, total);
+        }
+
+        #endregion
 
 
         #endregion

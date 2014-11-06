@@ -41,14 +41,13 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Said.Models\BaseModel.cs" />
-    <Compile Include="Said.Models\Common\ModelCommon.cs" />
+    <Compile Include="Said.Infrastructure\Common\ModelCommon.cs" />
+    <Compile Include="Said.Models\Data\Page.cs" />
     <Compile Include="Said.Models\Models\Classify.cs" />
     <Compile Include="Said.Models\Models\Article.cs" />
     <Compile Include="Said.Models\Models\Song.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Said.Infrastructure\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

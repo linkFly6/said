@@ -21,10 +21,15 @@ namespace Said.Domain.Said.Data
             throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
         }
 
+        #region SaveChanges
+        /// <summary>
+        /// 保存到数据库中
+        /// </summary>
         public virtual void Commit()
         {
             base.SaveChanges();
-        }
+        } 
+        #endregion
 
         #region 实体
         public DbSet<Classify> Classify { get; set; }
