@@ -693,90 +693,9 @@
         <elementDefinition Id="59259974-6d55-42c6-b7bd-763d77ac8ef9" />
       </referencedType>
     </packageHasNamedElement>
-    <logicalClassDesignerModelHasTypes>
-      <class Id="8ad85163-f148-4836-8815-02b5e7b83356" name="User" isAbstract="false" isLeaf="false" isActiveClass="false">
-        <description>用户表</description>
-        <elementDefinition Id="2baa2826-81b8-4444-b92b-9423c4fa88bb" />
-        <ownedAttributesInternal>
-          <property Id="0cc0ae89-e5bb-474c-8ec6-3d4bb1b5cfcf" name="UserId" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>用户ID</description>
-            <elementDefinition Id="ef40d98e-6a10-4729-bae6-19a99e6f8091" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
-            </type_NamedElement>
-          </property>
-          <property Id="25e86688-4829-4417-aaf4-0de2510d34e4" name="UNickName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>用户昵称</description>
-            <elementDefinition Id="b87b0398-a49d-4576-bbda-21ba56f0d3ac" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="9ebb3de4-7edd-4d7d-938f-6ce08d4099b3" LastKnownName="String" />
-            </type_NamedElement>
-          </property>
-          <property Id="87f16e5a-a27c-4e10-8bd4-dfc992878629" name="UEmail" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>Email</description>
-            <elementDefinition Id="2e63dbad-2743-473b-9913-4f86752292af" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
-            </type_NamedElement>
-          </property>
-          <property Id="fa5d1105-5da2-4a96-8510-29131b843175" name="USaite" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>用户站点</description>
-            <elementDefinition Id="740a48d4-5bef-47ca-b5f3-d149040c5574" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
-            </type_NamedElement>
-          </property>
-          <property Id="61dc3d46-aa66-4ff9-8942-0a208cfe9958" name="UPortrait" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>用户头像</description>
-            <elementDefinition Id="df94736f-e9b6-49b6-acb2-235104dd4c25" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
-            </type_NamedElement>
-          </property>
-          <property Id="92729a38-1a3e-4632-beb0-59ef1326bdc6" name="ULastDate" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>最后一次用户登录时间</description>
-            <elementDefinition Id="6bf3a838-19af-4ea3-a92b-8073e9eb9a85" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="5b975ce3-b04f-444e-828b-2f820fb54bc3" LastKnownName="Datetime" />
-            </type_NamedElement>
-          </property>
-          <property Id="ccd7029f-5c0f-47cc-9bce-6b26a16d5bd3" name="ULastIP" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>最近一次用户登录IP</description>
-            <elementDefinition Id="75f9696e-a21c-4fc7-9ea8-c7aaf9097c84" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="f174d874-7069-4a95-b52c-d40f2a57a799" LastKnownName="String" />
-            </type_NamedElement>
-          </property>
-          <property Id="b875fdc2-0680-4534-b46b-26dc0e5aa31b" name="ULockOver" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>用户解锁时间</description>
-            <elementDefinition Id="76144134-c02a-4b45-aaba-b2c647cb17bc" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="96f326e1-1918-4568-947e-d5c63c851a38" LastKnownName="Date" />
-            </type_NamedElement>
-          </property>
-          <property Id="c9ccd296-9077-4b4b-9e28-1da68d14f038" name="UIsLock" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
-            <description>用户是否被锁</description>
-            <elementDefinition Id="43be65cb-51fa-456f-a016-15985edbf074" />
-            <type_NamedElement>
-              <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
-            </type_NamedElement>
-          </property>
-        </ownedAttributesInternal>
-      </class>
-    </logicalClassDesignerModelHasTypes>
     <packageHasNamedElement>
       <referencedType Id="5b975ce3-b04f-444e-828b-2f820fb54bc3" name="Datetime" isAbstract="false" isLeaf="false" cachedFullName="Datetime">
         <elementDefinition Id="821ca57e-1bf9-4706-94e8-d21284839146" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="9ebb3de4-7edd-4d7d-938f-6ce08d4099b3" name="String" isAbstract="false" isLeaf="false" cachedFullName="String">
-        <elementDefinition Id="59259974-6d55-42c6-b7bd-763d77ac8ef9" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
-      <referencedType Id="96f326e1-1918-4568-947e-d5c63c851a38" name="Date" isAbstract="false" isLeaf="false" cachedFullName="Date">
-        <elementDefinition Id="981a5945-2d54-4735-94a0-8a28721be1cd" />
       </referencedType>
     </packageHasNamedElement>
     <packageHasNamedElement>
