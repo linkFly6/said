@@ -1,1 +1,4 @@
-﻿
+﻿header .nav > li.dropdown .dropdown-toggle .badge { background-color: #e02222; border-radius: 12px !important; font-size: 11px !important; font-weight: 300; height: 14px; padding: 2px 6px; position: absolute; right: 24px; text-align: center; text-shadow: none !important; top: 8px; }
+header .nav li.dropdown .dropdown-toggle .badge { padding: 1px 6px 3px; }
+.header .nav > li.dropdown .dropdown-toggle { margin: 0; padding: 15px 10px 7px; }
+.page-container { margin-top: 50px; }
