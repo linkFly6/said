@@ -159,6 +159,17 @@
     <Content Include="Content\Style\music.css" />
     <Content Include="Content\Style\said.css" />
     <Content Include="Global.asax" />
+    <Content Include="UED\Back\Frmework\css\bootstrap-theme.css" />
+    <Content Include="UED\Back\Frmework\css\bootstrap-theme.min.css" />
+    <Content Include="UED\Back\Frmework\css\bootstrap.css" />
+    <Content Include="UED\Back\Frmework\css\bootstrap.min.css" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="UED\Back\Frmework\js\bootstrap.js" />
+    <Content Include="UED\Back\Frmework\js\bootstrap.min.js" />
+    <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.min.js" />
+    <Content Include="UED\Back\Frmework\js\npm.js" />
+    <Content Include="UED\Back\Frmework\Login.html" />
+    <Content Include="UED\Back\Index.html" />
     <Content Include="UED\beat-Imgs\bg_main.gif" />
     <Content Include="UED\beat-Imgs\bg_texture.jpg" />
     <Content Include="UED\beat-Imgs\camera-bg.jpg" />
@@ -189,11 +200,17 @@
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Source\" />
-    <Folder Include="UED\Back\" />
     <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UED\Back\Frmework\css\bootstrap-theme.css.map" />
+    <Content Include="UED\Back\Frmework\css\bootstrap.css.map" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.woff" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
