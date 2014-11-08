@@ -1,1 +1,5 @@
 ﻿header .navbar-inner { background-color: #212121 !important; background-image: none !important; filter: none !important; }
+.arrow-border { display: block; height: 15px; overflow: hidden; position: absolute; width: 18px; }
+    .arrow-border:before, .arrow-border:after { content: '◆'; display: block; font-family: "SimSun"; font-size: 20px; height: 15px; overflow: hidden; }
+    .arrow-border:before { color: #EEE; margin-top: -3px; }
+    .arrow-border:after { color: #f9f9f9; height: 13px; margin-top: -13px; }

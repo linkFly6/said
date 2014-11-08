@@ -19,44 +19,92 @@
     <![endif]-->
 </head>
 <body>
-    <div class="container">
-        <header class="navbar navbar-default navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <button data-target="#example-navbar-collapse" data-toggle="collapse" class="navbar-toggle">
-                            <span class="sr-only">切换的导航</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="#">Said</a>
-                    </div>
-                    <ul class="nav pull-right">
-                        <li class="dropdown pull-left">
-                            <a href="javascript:;" class="dropdown-toggle">
-                                <i class="icon-envelope"></i>
-                                <span class="badge">1</span>
-                            </a>
-                        </li>
-                        <li class="dropdown  pull-left">
-                            <a href="javascript:;" class="dropdown-toggle">Said首页</a>
-                        </li>
-                    </ul>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button data-target="#example-navbar-collapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">切换的导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Said</a>
                 </div>
-            </div>
-        </header>
-        <section class="page-container">
-            <nav class="collapse navbar-collapse" id="example-navbar-collapse">
-                <ul>
-                    <li>哈哈</li>
-                    <li>测试</li>
+                <ul class="nav pull-right">
+                    <li class="dropdown pull-left">
+                        <a href="javascript:;" class="dropdown-toggle">
+                            <i class="icon-envelope"></i>
+                            <span class="badge">1</span>
+                        </a>
+                    </li>
+                    <li class="dropdown  pull-left">
+                        <a href="javascript:;" class="dropdown-toggle">Said首页</a>
+                    </li>
                 </ul>
-            </nav>
-            <section></section>
-        </section>
-        <footer></footer>
-    </div>
+            </div>
+        </div>
+    </header>
+    <section class="page-container">
+        <nav class="page-sidebar nav-collapse collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="page-sidebar-menu">
+                <li>
+                    <form class="sidebar-search">
+                        <div class="input-box">
+                            <a class="remove" href="javascript:;"></a>
+                            <input type="text" placeholder="Search...">
+                            <input type="button" value=" " class="submit">
+                        </div>
+                    </form>
+                </li>
+                <li class="active">
+                    <a href="javascript:;">
+                        <i class="icon-cogs"></i>
+                        <span class="title">控制中心</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-cogs"></i>
+                        <span class="title">Said管理</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-cogs"></i>
+                        <span class="title">文章管理</span>
+                    </a>
+                </li>
+                <li class="complex">
+                    <a href="javascript:;">
+                        <i class="icon-sitemap"></i>
+                        <span class="title">3 Level Menu</span>
+                        <span class="arrow-border"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="#">Sample Link 1</a></li>
+                        <li><a href="#">Sample Link 2</a></li>
+                        <li><a href="#">Sample Link 3</a></li>
+                    </ul>
+                </li>
+                <li class="complex open">
+                    <a href="javascript:;">
+                        <i class="icon-sitemap"></i>
+                        <span class="title">3 Level Menu</span>
+                        <span class="arrow-border"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="#">Sample Link 1</a></li>
+                        <li><a href="#">Sample Link 2</a></li>
+                        <li><a href="#">Sample Link 3</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <section></section>
+    </section>
+    <footer></footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="Frmework/js/jQuery-2.1.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
