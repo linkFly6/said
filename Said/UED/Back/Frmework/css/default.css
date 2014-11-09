@@ -4,3 +4,4 @@
     .arrow-border:before { color: #EEE; margin-top: -3px; }
     .arrow-border:after { color: #f9f9f9; height: 13px; margin-top: -13px; }
 body { padding-top: 40px; color: #666; }
+a { outline: none!important; }
