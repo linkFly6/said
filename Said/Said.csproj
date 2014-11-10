@@ -166,7 +166,9 @@
     <Content Include="UED\Back\Frmework\css\default.css" />
     <Content Include="UED\Back\Frmework\css\font-awesome.css" />
     <Content Include="UED\Back\Frmework\css\font-awesome.min.css" />
+    <Content Include="UED\Back\Frmework\css\grid-table.css" />
     <Content Include="UED\Back\Frmework\css\said-index.css" />
+    <Content Include="UED\Back\Frmework\css\said-said.css" />
     <Content Include="UED\Back\Frmework\fonts\fontawesome-webfont.svg" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UED\Back\Frmework\js\bootstrap.js" />
@@ -175,6 +177,7 @@
     <Content Include="UED\Back\Frmework\js\npm.js" />
     <Content Include="UED\Back\Frmework\Login.html" />
     <Content Include="UED\Back\Index.html" />
+    <Content Include="UED\Back\Said.html" />
     <Content Include="UED\beat-Imgs\bg_main.gif" />
     <Content Include="UED\beat-Imgs\bg_texture.jpg" />
     <Content Include="UED\beat-Imgs\camera-bg.jpg" />
