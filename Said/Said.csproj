@@ -171,6 +171,7 @@
     <Content Include="UED\Back\Frmework\css\said-said.css" />
     <Content Include="UED\Back\Frmework\fonts\fontawesome-webfont.svg" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="UED\Back\Frmework\js\bootgrid.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.min.js" />
     <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.min.js" />
