@@ -1,8 +1,1 @@
-﻿.bootgrid { width: 100%; max-width: 100%; margin-bottom: 20px; position: relative; background-color: #cdcdcd; border-collapse: separate!important; border-spacing: 1px; }
-    .bootgrid thead { }
-        .bootgrid thead th { border: 1px solid #FFF; background-color: #e6eeee; }
-    .bootgrid tr { }
-    .bootgrid > tbody > tr:nth-child(2n+1) { background-color: #f9f9f9; }
-    .bootgrid > tbody > tr:hover { background-color: #F1F1F1; }
-    .bootgrid th, .grid-table td { padding: 5px; }
-.bootgrid { background-color: #DDD!important; }
+﻿
