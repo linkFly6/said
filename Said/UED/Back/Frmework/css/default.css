@@ -5,3 +5,7 @@
     .arrow-border:after { color: #f9f9f9; height: 13px; margin-top: -13px; }
 body { padding-top: 40px; color: #666; }
 a { outline: none!important; }
+input { border: 1px solid #929596; font-family: "Microsoft YaHei"; padding: 2px 5px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset; transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; }
+    input:hover, input:focus { box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6); border-color: #66afe9; }
+/*ellipsis*/
+.said-ellipsis { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
