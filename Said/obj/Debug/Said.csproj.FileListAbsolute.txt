@@ -35,17 +35,6 @@ E:\Visual Studio 2012本地内容\Said\Said\obj\Debug\Said.dll
 E:\Visual Studio 2012本地内容\Said\Said\obj\Debug\Said.pdb
 F:\Github\Said\Said\bin\Said.dll
 F:\Github\Said\Said\bin\Said.pdb
-F:\Github\Said\Said\bin\Microsoft.Web.Infrastructure.dll
-F:\Github\Said\Said\bin\Newtonsoft.Json.dll
-F:\Github\Said\Said\bin\System.Net.Http.Formatting.dll
-F:\Github\Said\Said\bin\System.Web.Helpers.dll
-F:\Github\Said\Said\bin\System.Web.Http.dll
-F:\Github\Said\Said\bin\System.Web.Http.WebHost.dll
-F:\Github\Said\Said\bin\System.Web.Mvc.dll
-F:\Github\Said\Said\bin\System.Web.Razor.dll
-F:\Github\Said\Said\bin\System.Web.WebPages.Deployment.dll
-F:\Github\Said\Said\bin\System.Web.WebPages.dll
-F:\Github\Said\Said\bin\System.Web.WebPages.Razor.dll
 F:\Github\Said\Said\bin\Newtonsoft.Json.xml
 F:\Github\Said\Said\bin\System.Net.Http.Formatting.xml
 F:\Github\Said\Said\bin\System.Web.Helpers.xml

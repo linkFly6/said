@@ -11,6 +11,71 @@
     <link href="Frmework/css/font-awesome.min.css" rel="stylesheet" />
     <link href="Frmework/css/default.css" rel="stylesheet" />
     <link href="Frmework/css/saidList.css" rel="stylesheet" />
+    <script src="Frmework/js/require2-1-11.js" data-main="Frmework/js/main"></script>
+    <script type="text/javascript">
+        var option = {
+            title: {
+                text: '某楼盘销售情况',
+                subtext: '纯属虚构'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['意向', '预购', '成交']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '成交',
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    data: [10, 12, 21, 54, 260, 830, 710]
+                },
+                {
+                    name: '预购',
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    data: [30, 182, 434, 791, 390, 30, 10]
+                },
+                {
+                    name: '意向',
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    data: [1320, 1132, 601, 234, 120, 90, 20]
+                }
+            ]
+        };
+        require(['echarts-2.1.8/src/echarts', 'echarts-2.1.8/src/chart/line'], function (ec) {
+            var echar = ec.init(document.getElementById('userChart'));
+            echar.setOption(option);
+        });
+    </script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -125,8 +190,7 @@
             </div>
             <div class="main-context">
                 <div class="row context-chart">
-                    <div class="col-md-6">
-                        <h3>用户访问图表，支持年月日走势</h3>
+                    <div class="col-md-6" id="userChart">
                     </div>
                     <div class="col-md-6">
                         <h3>用户访问地区</h3>
