@@ -1325,6 +1325,17 @@
                 LastKnownLocation="Said.UML.uml" />
             </type_NamedElement>
           </property>
+          <property
+            Id="45de025d-2855-4329-97fe-d8ba3b7927ae"
+            name="SongFileName"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false" />
         </ownedAttributesInternal>
       </class>
     </packageHasNamedElement>

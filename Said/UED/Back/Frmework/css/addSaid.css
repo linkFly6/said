@@ -1,5 +1,35 @@
-﻿.said-title-con { width: 70%; margin: 0 auto; }
-.said-title { border-width: 0 0 1px 0; width: 100%; box-shadow: none!important; padding: 2px 15px; font-size: 2.4em; text-align: center; }
+﻿.said-title-con { width: 90%; margin: 0 auto; }
+.said-title { border-width: 0 0 1px 0; width: 100%; padding: 15px; line-height: 40px; font-size: 2.4em; text-align: center; }
+.said-title, .said-context, .said-dis { box-shadow: none!important; }
 .said-context-content { padding: 20px 0; }
-.said-context { resize: none; border: 1px dashed #CCC; border-width: 0 1px 1px; width: 99%; font: 16px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; line-height: 30px; text-align: justify; color: #222; overflow-y: visible!important; min-height: 400px; padding: 0 15px; }
+.said-context { resize: none; border: 1px dashed #929596; border-width: 0 1px 1px; width: 99%; font: 16px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; line-height: 30px; text-align: justify; color: #222; overflow-y: visible!important; min-height: 400px; padding: 0 15px; }
+/*music*/
+.said-music-container { position: relative; }
+.said-music { margin: 0 auto; width: 741px; padding: 20px 10px; }
+    .said-music .music-img { padding: 0; }
+.input-group { margin: 10px 0; }
+.music-info .input-group:first-child { margin: 15px 0 10px 0; }
+.music-info .input-group:last-child { margin: 10px 0 0; }
+.music-img, .music-img img { height: 200px; width: 200px; display: block; margin: 0 auto; overflow: hidden; }
+/*said-article*/
+.said-article { padding: 20px 0; }
+/*summary*/
+.said-dis { border: 3px solid #b0d7fe; height: 140px; margin-top: 20px; overflow: hidden; padding-left: 25px; border-width: 0 0 1px 3px; width: 584px; resize: none; }
+/*more*/
+.said-submit { background-color: transparent; border-color: #563d7c; color: #563d7c; width: 200px; }
+    .said-submit:hover, .said-submit:focus { background-color: #563d7c; color: #FFF; }
+.submit-lock { background-color: #9973d4!important; border-color: #9973d4!important; color: #FFF; opacity: 0.7; }
+.submit-container { padding: 20px 0 30px; border-top: 1px dashed #929596; }
+.panel-subTitle { border-top: 1px solid #ddd; border-radius: 0; }
+.error-check { text-align: center; padding: 5px 0 20px; }
+/*mask*/
+.said-mask { opacity: 0.8; content: ''; display: block; position: absolute; width: 100%; height: 100%; z-index: 3; cursor: pointer; background: #222 linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)); transition: opacity ease-in-out 0.2s; border: 1px solid black; }
+    .said-mask span { position: absolute; text-align: center; color: #ededed; font-size: 36px; display: block; width: 100%; top: 44.5%; }
+    .said-mask:hover { opacity: 0.6; }
 
+/*media*/
+@media (max-width: 767px) {
+    .said-music { margin: 0 auto; width: auto; }
+    .said-dis { width: 100%; }
+    .said-submit { width: 100%; }
+}

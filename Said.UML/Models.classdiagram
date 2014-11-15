@@ -608,6 +608,9 @@
               <referencedTypeMoniker Id="953374e8-0e60-46aa-b426-d68614eaa4b4" LastKnownName="Integer" />
             </type_NamedElement>
           </property>
+          <property Id="dd777f93-f9c2-465a-9ccc-7c98a01e09cd" name="SongFileName" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+            <elementDefinition Id="45de025d-2855-4329-97fe-d8ba3b7927ae" />
+          </property>
         </ownedAttributesInternal>
       </class>
     </logicalClassDesignerModelHasTypes>

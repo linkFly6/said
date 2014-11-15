@@ -9,8 +9,8 @@
     <!-- Bootstrap -->
     <link href="Frmework/css/bootstrap.min.css" rel="stylesheet">
     <link href="Frmework/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="Frmework/css/default.css" rel="stylesheet" />
     <!--<link href="Frmework/css/saidList.css" rel="stylesheet" />-->
+    <link href="Frmework/css/default.css" rel="stylesheet" />
     <link href="Frmework/css/addSaid.css" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -122,21 +122,117 @@
         </nav>
         <section class="container-main">
             <div class="page-header">
-                <h2>添加Said&nbsp;&nbsp;<small>添加一篇Said</small></h2>
+                <h2>添加Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small></h2>
             </div>
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Siad管理</a></li>
+                <li class="active">添加Said</li>
+            </ol>
             <div class="main-context">
                 <form target="_blank" action="/">
-                    <div class="said-title-con">
-                        <input name="title" class="said-title" autocomplete="off" />
+                    <div class="said-article">
+                        <div class="said-title-con">
+                            <input name="title" class="said-title" autocomplete="off" placeholder="文章标题" />
+                        </div>
+
+                        <div class="said-context-content">
+                            <textarea class="said-context">这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
+                        </div>
                     </div>
-                    <div class="said-context-content">
-                        <textarea class="said-context"></textarea>
+                    <div class="row said-view-container">
+                        <div class="col-md-6">
+                            <div class="panel panel-default said-music-container">
+                                <div class="said-mask">
+                                    <span>上传歌曲</span>
+                                    <input type="file" name="music-file" class="hidden-file" />
+                                </div>
+                                <div class="panel-heading">歌曲</div>
+                                <div class="panel-body">
+                                    <div class="said-music afterClear">
+                                        <div class="music-img col-md-4">
+                                            <img src="../../Content/Images/testImg-Paramore.Ps.jpg" />
+                                        </div>
+                                        <div class="music-info col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">歌曲</span>
+                                                <input type="text" name="songName" class="form-control music-input" placeholder="歌曲名称">
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">专辑</span>
+                                                <input type="text" name="SongAlbum" class="form-control music-input" placeholder="歌曲专辑">
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">歌手</span>
+                                                <input type="text" name="songArtist" class="form-control music-input" placeholder="艺术家">
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">文件</span>
+                                                <input type="text" name="songFileName" class="form-control music-input" placeholder="文件名">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">描述</div>
+                                <div class="panel-body">
+                                    <textarea class="said-dis" name="said-summary" placeholder="简介[支持HTML]"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">附加信息</div>
+                                <div class="panel-body">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">标签</span>
+                                        <input type="text" name="saidTag" class="form-control" placeholder='标签，支持[、,空格]分隔'>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">分类</span>
+                                        <input type="text" name="saidType" class="form-control" placeholder="分类名称">
+                                    </div>
+                                </div>
+                                <div class="panel-heading panel-subTitle">可选信息</div>
+                                <div class="panel-body">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">文件</span>
+                                        <input type="text" name="saidFileName" class="form-control" placeholder="文章发布的（文件）名称">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>JavaScript</label>
+                                        <textarea rows="3" class="form-control" placeholder="自定义JavaScript"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CSS</label>
+                                        <textarea rows="3" class="form-control" placeholder="自定义CSS"></textarea>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" />是否转载</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-container">
+                        <div class="error-check">
+                            发布前会进行错误检测
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%">
+                                <span class="sr-only">20% Complete</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-lg said-submit center-block submit-lock" id="submit" type="submit" disabled="disabled">发布</button>
                     </div>
                 </form>
             </div>
         </section>
     </section>
-    <footer></footer>
+    <footer>
+    </footer>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="Frmework/js/jQuery-2.1.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

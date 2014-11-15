@@ -16,7 +16,7 @@ a:hover {  color: #59c6ff; text-decoration:underline; }
 a { text-decoration: none; transition: all 0.2s ease-in-out 0s; }
     a:hover { transition: all 0.2s ease-in-out 0s; }
     a:visited { color: #c03980; }
-.clear { clear: both; float: none !important; }
+.clear, .afterClear:after { clear: both; float: none !important; content: ''; display: block; }
 table { border-collapse: collapse; }
 input { border: 1px solid #929596; font-family: "Microsoft YaHei"; padding: 2px 5px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset; transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; }
     input:hover, input:focus { box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6); border-color: #66afe9; }
@@ -29,7 +29,8 @@ input { border: 1px solid #929596; font-family: "Microsoft YaHei"; padding: 2px 
     .arrow-border:before, .arrow-border:after { content: '◆'; display: block; font-family: "SimSun"; font-size: 20px; height: 15px; overflow: hidden; }
     .arrow-border:before { color: #EEE; }
     .arrow-border:after { color: #f9f9f9; height: 13px; margin-top: -13px; }
-
+/*file upload*/
+.hidden-file { display: block; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
 /*layout*/
 #said-page { position: relative; z-index: 3; background-color: #FFF; /*background: url(/Content/Images/said-backgournd.jpg) fixed #FAFAFA center top; background-size: cover; transition: all 0.5s linear 0s;*/ background: url(../../UED/beat-Imgs/bg_texture.jpg) repeat; }
