@@ -191,7 +191,7 @@
     <Content Include="Content\Style\music.css" />
     <Content Include="Content\Style\said.css" />
     <Content Include="Global.asax" />
-    <Content Include="UED\Back\addSaid.css" />
+    <Content Include="UED\Back\Frmework\css\addSaid.css" />
     <Content Include="UED\Back\AddSaid.html" />
     <Content Include="UED\Back\Frmework\css\bootstrap-theme.css" />
     <Content Include="UED\Back\Frmework\css\bootstrap-theme.min.css" />
