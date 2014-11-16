@@ -13,7 +13,7 @@ namespace Said.Service
     /// <summary>
     /// 听说（文章）服务接口
     /// </summary>
-    public interface IArticleService
+    public interface IArticleService : IService<Article>
     {
         /// <summary>
         /// 根据关键字分页查询得到文章对象

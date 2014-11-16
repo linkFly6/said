@@ -107,5 +107,10 @@ namespace Said.Models
         /// 类型对象
         /// </summary>
         public Classify Classify { get; set; }
+
+        /// <summary>
+        /// 歌曲
+        /// </summary>
+        public Song Song { get; set; }
     }
 }

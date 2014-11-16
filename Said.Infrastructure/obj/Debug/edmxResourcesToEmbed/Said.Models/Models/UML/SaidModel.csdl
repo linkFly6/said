@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="SaidModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="SaidModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="User集" EntityType="SaidModel.User" />
+    <EntitySet Name="Reply集" EntityType="SaidModel.Reply" />
+  </EntityContainer>
+  <EntityType Name="User">
+    <Documentation>
+      <Summary>用户</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="UID" />
+    </Key>
+    <Property Type="String" Name="UID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="UserName" Nullable="false" />
+    <Property Type="String" Name="UserPwd" Nullable="false" />
+    <Property Type="String" Name="UserRole" Nullable="false" />
+    <Property Type="String" Name="IsDel" Nullable="false" />
+    <Property Type="String" Name="UserKey" Nullable="false" />
+    <Property Type="String" Name="UserImg" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Reply">
+    <Documentation>
+      <Summary>回复</Summary>
+    </Documentation>
+    <Key>
+      <PropertyRef Name="RID" />
+    </Key>
+    <Property Type="Int32" Name="RID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="RUserId" Nullable="false">
+      <Documentation>
+        <LongDescription>用户ID</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RType" Nullable="false">
+      <Documentation>
+        <LongDescription>回复类型：是回复[听说]还是[Blog]</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RToArticleId" Nullable="false">
+      <Documentation>
+        <LongDescription>被回复的文章（said或blog）</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RIsMaster" Nullable="false">
+      <Documentation>
+        <LongDescription>是否是管理员</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RIsAnonymous" Nullable="false">
+      <Documentation>
+        <LongDescription>是否匿名（没有站点）</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RDate" Nullable="false">
+      <Documentation>
+        <LongDescription>回复时间</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RContext" Nullable="false">
+      <Documentation>
+        <LongDescription>回复内容</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="IsDel" Nullable="false">
+      <Documentation>
+        <LongDescription>是否删除</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RParentId" Nullable="false">
+      <Documentation>
+        <LongDescription>被回复的回复ID</LongDescription>
+      </Documentation>
+    </Property>
+    <Property Type="String" Name="RNum" Nullable="false">
+      <Documentation>
+        <LongDescription>楼层</LongDescription>
+      </Documentation>
+    </Property>
+  </EntityType>
+</Schema>

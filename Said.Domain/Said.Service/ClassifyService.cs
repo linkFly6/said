@@ -13,7 +13,7 @@ namespace Said.Service
     /// <summary>
     /// 分类服务接口
     /// </summary>
-    public interface IClassifyService
+    public interface IClassifyService : IService<Classify>
     {
         /// <summary>
         /// 根据名称查询得到结果集（支持模糊查询）

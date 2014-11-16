@@ -142,16 +142,22 @@
                     </div>
                     <div class="row said-view-container">
                         <div class="col-md-6">
-                            <div class="panel panel-default said-music-container">
+                            <div class="panel panel-default relative-container">
                                 <div class="said-mask">
                                     <span>上传歌曲</span>
                                     <input type="file" name="music-file" class="hidden-file" />
                                 </div>
                                 <div class="panel-heading">歌曲</div>
                                 <div class="panel-body">
-                                    <div class="said-music afterClear">
-                                        <div class="music-img col-md-4">
-                                            <img src="../../Content/Images/testImg-Paramore.Ps.jpg" />
+                                    <div class="afterClear">
+                                        <div class="col-md-4">
+                                            <div class="music-img">
+                                                <div class="thumbnail">
+                                                    <!--<img src="../../Content/Images/said-backgournd.jpg" />-->
+                                                    <img src="../../Content/Images/UEDImg/demo-img6.jpg" />
+                                                    <!--<img src="../../Content/Images/testImg-Paramore.Ps.jpg" />-->
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="music-info col-md-8">
                                             <div class="input-group">
@@ -170,14 +176,30 @@
                                                 <span class="input-group-addon">文件</span>
                                                 <input type="text" name="songFileName" class="form-control music-input" placeholder="文件名">
                                             </div>
+                                            <button type="button" class="btn btn-danger deleteSong" id="songDelete">删除</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default relative-container">
+                                <div class="said-mask">
+                                    <span>上传缩略图</span>
+                                    <input type="file" name="saidSummayImg" class="hidden-file" />
+                                </div>
                                 <div class="panel-heading">描述</div>
                                 <div class="panel-body">
-                                    <textarea class="said-dis" name="said-summary" placeholder="简介[支持HTML]"></textarea>
+                                    <div class="col-md-4">
+                                        <div class="music-img">
+                                            <div class="thumbnail">
+                                                <img src="../../Content/Images/test-said-img.jpg" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <textarea class="said-dis" name="said-summary" placeholder="简介[支持HTML]"></textarea>
+                                        <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete">删除</button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

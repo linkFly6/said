@@ -59,10 +59,11 @@
     <Compile Include="Said.Data\DatabaseFactory.cs" />
     <Compile Include="Said.Data\Disposable.cs" />
     <Compile Include="Said.Data\SaidDbContext.cs" />
-    <Compile Include="Said.Data\SongService.cs" />
     <Compile Include="Said.Service\ArticleService.cs" />
     <Compile Include="Said.Service\BaseService.cs" />
     <Compile Include="Said.Service\ClassifyService.cs" />
+    <Compile Include="Said.Service\IService.cs" />
+    <Compile Include="Said.Service\SongService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

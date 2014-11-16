@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Said.Domain.Said.IServices
 {
-    public class BaseService<T> where T : BaseModel
+    public class BaseService<T> : IService<T> where T : BaseModel
     {
         /// <summary>
         /// 数据库上下文工厂
