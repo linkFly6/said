@@ -3,29 +3,28 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>AngularJS学习</title>
-    <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.js"></script>
-    <!--source:http://www.bootcdn.cn/angular.js/-->
-    <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
 </head>
 <body>
     <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span2">
-                <!--Sidebar content-->
-
-                Search:
-                <input ng-model="query" />
-            </div>
-            <div class="span10">
-                <!--Body content-->
-
-                <ul class="phones">
-                    <li ng-repeat="phone in phones | filter:query">{{phone.name}}<p>{{phone.snippet}}</p>
-                    </li>
-                </ul>
-
-            </div>
+        <div ng-app="" ng-controller="personController">
+            名：
+            <input type="text" ng-model="person.firstName"><br>
+            姓：
+            <input type="text" ng-model="person.lastName"><br>
+            <br>
+            姓名： {{person.firstName + " " + person.lastName}}
         </div>
+        <script>
+            function personController($scope) {
+                $scope.person = {
+                    firstName: "John",
+                    lastName: "Doe"
+                };
+            }
+        </script>
     </div>
+    <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.js"></script>
+    <!--source:http://www.bootcdn.cn/angular.js/-->
+    <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
 </body>
 </html>

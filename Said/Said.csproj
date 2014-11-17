@@ -1100,6 +1100,7 @@
     <Content Include="UED\Back\Frmework\js\zrender-master\test\testArea.html" />
     <Content Include="UED\Back\Frmework\Login.html" />
     <Content Include="UED\Back\Index.html" />
+    <Content Include="UED\Back\LearningNg.html" />
     <Content Include="UED\Back\SaidCenter.html" />
     <Content Include="UED\Back\SaidList.html" />
     <Content Include="UED\beat-Imgs\bg_main.gif" />
