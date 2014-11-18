@@ -198,6 +198,7 @@
     <Content Include="UED\Back\Frmework\css\bootstrap.css" />
     <Content Include="UED\Back\Frmework\css\bootstrap.min.css" />
     <Content Include="UED\Back\Frmework\css\default.css" />
+    <Content Include="UED\Back\Frmework\css\flat-ui.min.css" />
     <Content Include="UED\Back\Frmework\css\font-awesome.css" />
     <Content Include="UED\Back\Frmework\css\font-awesome.min.css" />
     <Content Include="UED\Back\Frmework\css\grid-table.css" />
@@ -205,6 +206,13 @@
     <Content Include="UED\Back\Frmework\css\said-said.css" />
     <Content Include="UED\Back\Frmework\fonts\fontawesome-webfont.svg" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons\flat-ui-icons-regular.svg" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-black.svg" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bold.svg" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bolditalic.svg" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-italic.svg" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-light.svg" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-regular.svg" />
     <Content Include="UED\Back\Frmework\js\bootgrid.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.min.js" />
@@ -869,11 +877,14 @@
     <Content Include="UED\Back\Frmework\js\echarts-2.1.8\test\performance\option.js" />
     <Content Include="UED\Back\Frmework\js\echarts-2.1.8\test\performance\p.html" />
     <Content Include="UED\Back\Frmework\js\echarts-2.1.8\test\performance\p.js" />
+    <Content Include="UED\Back\Frmework\js\flat-ui.js" />
+    <Content Include="UED\Back\Frmework\js\flat-ui.min.js" />
     <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.min.js" />
     <Content Include="UED\Back\Frmework\js\main.js" />
     <Content Include="UED\Back\Frmework\js\npm.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.min.js" />
+    <Content Include="UED\Back\Frmework\js\said\addSaid.js" />
     <Content Include="UED\Back\Frmework\js\zrender-master\.gitignore" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\area.html" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\js\area.js" />
@@ -1618,6 +1629,30 @@
     <Content Include="UED\Back\Frmework\js\zrender-master\jsdoc.json" />
     <Content Include="UED\Back\Frmework\js\zrender-master\package.json" />
     <Content Include="UED\Back\Frmework\js\zrender-master\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UED\Back\Frmework\fonts\glyphicons\flat-ui-icons-regular.eot" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons\flat-ui-icons-regular.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons\flat-ui-icons-regular.woff" />
+    <Content Include="UED\Back\Frmework\fonts\glyphicons\selection.json" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-black.eot" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-black.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-black.woff" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bold.eot" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bold.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bold.woff" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bolditalic.eot" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bolditalic.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-bolditalic.woff" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-italic.eot" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-italic.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-italic.woff" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-light.eot" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-light.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-light.woff" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-regular.eot" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-regular.ttf" />
+    <Content Include="UED\Back\Frmework\fonts\lato\lato-regular.woff" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

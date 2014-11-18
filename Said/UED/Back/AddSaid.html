@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" ng-app="said">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +7,9 @@
     <title>Said后台管理</title>
 
     <!-- Bootstrap -->
+
     <link href="Frmework/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="Frmework/css/flat-ui.min.css" rel="stylesheet" />-->
     <link href="Frmework/css/font-awesome.min.css" rel="stylesheet" />
     <!--<link href="Frmework/css/saidList.css" rel="stylesheet" />-->
     <link href="Frmework/css/default.css" rel="stylesheet" />
@@ -163,6 +165,8 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon">歌曲</span>
                                                 <input type="text" name="songName" class="form-control music-input" placeholder="歌曲名称">
+                                                <span class="glyphicon glyphicon-ok form-control-feedback"
+                                                    ng-show="myForm.email.$dirty && myForm.email.$valid"></span>
                                             </div>
                                             <div class="input-group">
                                                 <span class="input-group-addon">专辑</span>
@@ -204,7 +208,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" ng-controller="attachController">
                                 <div class="panel-heading">附加信息</div>
                                 <div class="panel-body">
                                     <div class="input-group">
@@ -259,5 +263,13 @@
     <script src="Frmework/js/jQuery-2.1.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="Frmework/js/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.js"></script>
+    <!--source:http://www.bootcdn.cn/angular.js/-->
+    <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
+    <script>
+        angular.module('said', []).controller('attachController', function ($scope) {
+
+        });
+    </script>
 </body>
 </html>
