@@ -132,7 +132,7 @@
                 <li class="active">添加Said</li>
             </ol>
             <div class="main-context">
-                <form target="_blank" action="/" name="saidForm" data-ng-submit="submit($saidForm.$valid)">
+                <form action="/" name="saidForm" data-ng-submit="submitForm(saidForm.$valid)" data-ng-controller="formController" novalidate>
                     <div class="said-article">
                         <div class="said-title-con">
                             <input name="title" class="said-title" autocomplete="off" placeholder="文章标题" />
@@ -145,9 +145,10 @@
                     <div class="row said-view-container">
                         <div class="col-md-6">
                             <div class="panel panel-default relative-container">
-                                <div class="said-mask">
+                                <div class="said-mask" data-ng-class="{'said-maskError':saidForm.musicHiddenFile.$invalid&&saidForm.musicHiddenFile.$dirty  }">
                                     <span>上传歌曲</span>
-                                    <input type="file" name="music-file" class="hidden-file" />
+                                    <input type="file" name="musicFile" data-ng-model="mFile" class="hidden-file" data-ng-change="changeFileValue(mFile)"/>
+                                    <input type="hidden" name="musicHiddenFile" data-ng-model="mhFile" />
                                 </div>
                                 <div class="panel-heading">歌曲</div>
                                 <div class="panel-body">
@@ -166,7 +167,7 @@
                                                 <span class="input-group-addon">歌曲</span>
                                                 <input type="text" name="songName" class="form-control music-input" placeholder="歌曲名称">
                                                 <span class="glyphicon glyphicon-ok form-control-feedback"
-                                                    ng-show="myForm.email.$dirty && myForm.email.$valid"></span>
+                                                    data-ng-show="myForm.email.$dirty && myForm.email.$valid"></span>
                                             </div>
                                             <div class="input-group">
                                                 <span class="input-group-addon">专辑</span>
@@ -208,7 +209,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="panel panel-default" data-ng-controller="attachController">
+                            <div class="panel panel-default">
                                 <div class="panel-heading">附加信息</div>
                                 <div class="panel-body">
                                     <div class="input-group" data-ng-class="{ 'has-error':saidForm.saidTag.$invalid&&saidForm.saidTag.$dirty }">
@@ -251,7 +252,7 @@
                                 <span class="sr-only">20% Complete</span>
                             </div>
                         </div>
-                        <button class="btn btn-lg said-submit center-block submit-lock" id="submit" type="submit" disabled="disabled">发布</button>
+                        <button class="btn btn-lg said-submit center-block" id="submit" type="submit" data-ng-class="{'submit-lock':!saidForm.$valid}">发布</button>
                     </div>
                 </form>
             </div>
@@ -267,7 +268,13 @@
     <!--source:http://www.bootcdn.cn/angular.js/-->
     <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
     <script>
-        angular.module('said', []).controller('attachController', function ($scope) {
+        angular.module('said', []).controller('formController', function ($scope) {
+            $scope.submitForm = function (isValid) {
+                alert(isValid);
+            };
+            $scope.changeFileValue = function (value) {
+                alert(value);
+            };
         });
     </script>
 </body>

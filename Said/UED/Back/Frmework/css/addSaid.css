@@ -22,7 +22,7 @@
 .deleteSong { width: 200px; float: right; }
 .said-submit { background-color: transparent; border-color: #563d7c; color: #563d7c; width: 200px; }
     .said-submit:hover, .said-submit:focus { background-color: #563d7c; color: #FFF; }
-.submit-lock { background-color: #9973d4!important; border-color: #9973d4!important; color: #FFF; opacity: 0.7; }
+.submit-lock { background-color: #9973d4!important; border-color: #9973d4!important; color: #FFF; opacity: 0.7; cursor: no-drop; }
 .submit-container { padding: 20px 0 30px; border-top: 1px dashed #929596; }
 .panel-subTitle { border-top: 1px solid #ddd; border-radius: 0; }
 .error-check { text-align: center; padding: 5px 0 20px; }
@@ -30,6 +30,13 @@
 .said-mask { opacity: 0.8; content: ''; display: block; position: absolute; width: 100%; height: 100%; z-index: 3; cursor: pointer; background: #222 linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)); transition: opacity ease-in-out 0.2s; border: 1px solid black; }
     .said-mask span { position: absolute; text-align: center; color: #ededed; font-size: 36px; display: block; width: 100%; top: 44.5%; }
     .said-mask:hover { opacity: 0.6; }
+.said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
+
+@keyframes maskError {
+    0% { color: #ededed; }
+    50% { color: yellow; }
+    100% { color: #ededed; }
+}
 /*media*/
 @media (max-width: 767px) {
     .said-music { margin: 0 auto; width: auto; }

@@ -10,30 +10,17 @@
     </style>
 </head>
 <body data-ng-controller="MyCtrl">
-    1 + 2 = {{1+2}}
-    <br />
-    Expression:
-    <input type="text" data-ng-model="expr" />
-    <button data-ng-click="addExp(expr)">Evaluate</button>
-    <ul>
-        <li data-ng-repeat="expr in exprs">[<a data-ng-click="removeExp($index)" href="javascript:;">X</a>]
-        <tt>{{expr}}</tt>=><span data-ng-bind="$parent.$eval(expr)"></span>
-        </li>
-    </ul>
+    <input data-ng-model="test" type="file" data-ng-change="fuckNg()" data-ng-file-select="fuckNg()" />
     <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.js"></script>
     <!--source:http://www.bootcdn.cn/angular.js/-->
     <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
     <script type="text/javascript">
         var app = angular.module("ExpressionTest", []);
         app.controller("MyCtrl", function ($scope) {
-            var exprs = $scope.exprs = [];
-            $scope.expr = "3*10|currency";
-            $scope.addExp = function (expr) {
-                exprs.push(expr);
+            $scope.fuckNg = function (value) {
+                alert(value);
             };
-            $scope.removeExp = function (index) {
-                exprs.splice(index, 1);
-            };
+
         });
     </script>
 </body>
