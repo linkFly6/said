@@ -137,7 +137,6 @@
                         <div class="said-title-con">
                             <input name="title" class="said-title" autocomplete="off" placeholder="文章标题" />
                         </div>
-
                         <div class="said-context-content">
                             <textarea class="said-context">这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
                         </div>
@@ -145,11 +144,17 @@
                     <div class="row said-view-container">
                         <div class="col-md-6">
                             <div class="panel panel-default relative-container">
-                                <div class="said-mask" data-ng-class="{'said-maskError':saidForm.musicHiddenFile.$invalid&&saidForm.musicHiddenFile.$dirty  }">
+                                <!--<div class="said-mask" data-ng-class="{'said-maskError':saidForm.musicHiddenFile.$invalid&&saidForm.musicHiddenFile.$dirty  }">
                                     <span>上传歌曲</span>
-                                    <input type="file" name="musicFile" data-ng-model="mFile" class="hidden-file" data-ng-change="changeFileValue(mFile)"/>
+                                    <div class="progress">
+                                        <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
+                                            <span class="sr-only"></span>
+                                        </div>
+                                    </div>
+                                    <input type="file" name="musicFile" data-ng-model="mFile" class="hidden-file" data-ng-change="changeFileValue(mFile)" />
                                     <input type="hidden" name="musicHiddenFile" data-ng-model="mhFile" />
-                                </div>
+                                </div>-->
+                                <input-file></input-file>
                                 <div class="panel-heading">歌曲</div>
                                 <div class="panel-body">
                                     <div class="afterClear">
@@ -274,6 +279,64 @@
             };
             $scope.changeFileValue = function (value) {
                 alert(value);
+            };
+        }).directive('inputFile', function () {
+            return {
+                //musicFile
+                restrict: 'E',
+                scope: true,//隔离作用域，否则ctrl下相同的元素会冲突
+                template: '<div class="said-mask"><span>{{text}}</span>\
+                                        <div class="progress">\
+                                        <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">\
+                                            <span class="sr-only"></span></div></div>\
+                                    <input type="file" name="{{name}}" data-ng-model="mFile" class="hidden-file"/>\
+                                    <input type="hidden" name="musicHiddenFile" data-ng-model="mhFile" />\
+                                </div>',
+                replace: true,
+                link: function ($scope, elem, attr) {
+                    var inputs = elem.find('input'),//[input,hiddenInput(inputState)]
+                        progress = elem.find('.progress-bar'),//progress bar
+                        changeState = function (value) {
+                            //改变上传进度方法
+                        };
+                    inputs.eq(0).bind('change', function (event) {
+                        var file = this.files[0],
+                            name = file.name,
+                            size = file.size,
+                            type = file.type || '',
+                            //根据最后修改日期标志文件上传
+                            id = (file.lastModifiedDate + "").replace(/\W/g, '') + size + type.replace(/\W/g, ''),
+                            xhr = new XMLHttpRequest(),// XMLHttpRequest 2.0请求
+                            action = $scope.fileConfig.action || '/Back/ImgFileUpload',
+                            data = new FormData();
+                        data.append('name', encodeURIComponent(name));
+                        data.append('fileId', id);
+                        data.append('file', file.slice(0));
+                        xhr.open('post', action, true);
+                        xhr.upload.addEventListener("progress", function (e) {
+                            //上传中
+                        }, false);
+                        xhr.onreadystatechange = function (e) {
+                            if (xhr.readyState === 4) {
+                                if (xhr.readyState === 200) {
+                                    try {
+                                        var json = JSON.parse(xhr.responseText);
+                                    } catch (e) {
+                                        //这是什么Error
+                                        $scope.fileConfig.error && $scope.fileConfig.error(id, 1);
+                                    }
+                                }
+                            } else {
+                                //上传Error
+                                $scope.fileConfig.error && $scope.fileConfig.error(id, 2);
+                            }
+                        };
+                        xhr.send();
+                    });
+                }
+                //link: function ($scope, elem, attr) {
+                //    var file = new FileReader();
+                //}
             };
         });
     </script>

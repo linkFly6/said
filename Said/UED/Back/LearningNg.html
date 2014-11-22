@@ -10,18 +10,47 @@
     </style>
 </head>
 <body data-ng-controller="MyCtrl">
-    <input data-ng-model="test" type="file" data-ng-change="fuckNg()" data-ng-file-select="fuckNg()" />
-    <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.js"></script>
+    <form name="formHehe" data-ng-model="testForm" data-ng-submit="submitForm(formHehe.$valid)" action="/" onsubmit="return {{hehe}}">
+        <input data-ng-model="test" name="inputFile" type="file" data-ng-change="heheChange()" />
+        <input type="submit" />
+        <input-file></input-file>
+    </form>
+    <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.js"></script>-->
     <!--source:http://www.bootcdn.cn/angular.js/-->
-    <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
+    <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>
     <script type="text/javascript">
         var app = angular.module("ExpressionTest", []);
         app.controller("MyCtrl", function ($scope) {
-            $scope.fuckNg = function (value) {
-                alert(value);
+            $scope.hehe = false;
+            $scope.heheChange = function () {
+                alert('a');
+            };
+            $scope.submitForm = function (value) {
+                return false;
             };
 
+        }).directive('inputFile', function () {
+            return {
+                //musicFile
+                restrict: 'E',
+                scope: true,//隔离作用域，否则ctrl下相同的元素会冲突
+                template: '<div class="said-mask"><span>{{text}}</span>\
+                                    <input type="file" name="{{name}}" data-ng-model="mFile" class="hidden-file"/>\
+                                    <input type="hidden" name="musicHiddenFile" data-ng-model="mhFile" />\
+                                </div>',
+                replace: true,
+                link: function ($scope, elem, attr) {
+                    var inputs = elem.find('input');
+                    inputs.eq(0).bind('change', function (event) {
+                        alert(this.value, this.files);
+                    });
+                }
+                //link: function ($scope, elem, attr) {
+                //    var file = new FileReader();
+                //}
+            };
         });
+
     </script>
 </body>
 </html>
