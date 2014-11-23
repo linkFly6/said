@@ -14,7 +14,6 @@ namespace Said.Controllers.Home
         public ActionResult Index()
         {
             //主页该是动态读取
-
             return View();
         }
 

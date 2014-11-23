@@ -84,6 +84,10 @@ namespace Said.Models
         /// </summary>
         public DateTime SDate { get; set; }
         /// <summary>
+        /// JS（如果有的话）
+        /// </summary>
+        public string SJS { get; set; }
+        /// <summary>
         /// CSS（如果有的话）
         /// </summary>
         public string SCSS { get; set; }

@@ -132,7 +132,7 @@
                 <li class="active">添加Said</li>
             </ol>
             <div class="main-context">
-                <form action="/" name="saidForm" data-ng-submit="submitForm(saidForm.$valid)" data-ng-controller="formController" novalidate>
+                <form action="/" name="saidForm" method="post" data-ng-submit="submitForm(saidForm.$valid)" data-ng-controller="formController" novalidate>
                     <div class="said-article">
                         <div class="said-title-con">
                             <input name="title" class="said-title" autocomplete="off" placeholder="文章标题" />
@@ -154,7 +154,7 @@
                                     <input type="file" name="musicFile" data-ng-model="mFile" class="hidden-file" data-ng-change="changeFileValue(mFile)" />
                                     <input type="hidden" name="musicHiddenFile" data-ng-model="mhFile" />
                                 </div>-->
-                                <input-file></input-file>
+                                <input-file data-ng-model="test" data-text="呵呵"></input-file>
                                 <div class="panel-heading">歌曲</div>
                                 <div class="panel-body">
                                     <div class="afterClear">
@@ -223,26 +223,26 @@
                                     </div>
                                     <div class="input-group" data-ng-class="{'has-error':saidForm.saidType.$invalid&&saidForm.saidType.$dirty}">
                                         <span class="input-group-addon">分类</span>
-                                        <input type="text" name="saidType" class="form-control" data-ng-model="classify" placeholder="分类名称" required />
+                                        <input type="text" name="saidType" class="form-control" data-ng-model="article.classify" placeholder="分类名称" required />
                                     </div>
                                 </div>
                                 <div class="panel-heading panel-subTitle">可选信息</div>
                                 <div class="panel-body">
                                     <div class="input-group">
                                         <span class="input-group-addon">文件</span>
-                                        <input type="text" name="saidFileName" class="form-control" data-ng-model="fileName" placeholder="文章发布的（文件）名称">
+                                        <input type="text" name="saidFileName" class="form-control" data-ng-model="article.fileName" placeholder="文章发布的（文件）名称">
                                     </div>
                                     <div class="form-group">
                                         <label>JavaScript</label>
-                                        <textarea rows="3" class="form-control" name="saidJS" placeholder="自定义JavaScript" data-ng-model="codeJs"></textarea>
+                                        <textarea rows="3" class="form-control" name="article.SJS" placeholder="自定义JavaScript" data-ng-model="codeJs"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>CSS</label>
-                                        <textarea rows="3" class="form-control" name="saidCSS" placeholder="自定义CSS" data-ng-model="codeCSS"></textarea>
+                                        <textarea rows="3" class="form-control" name="article.SCSS" placeholder="自定义CSS" data-ng-model="codeCSS"></textarea>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" data-ng-mode="isRep" name="saidIsRep" />是否转载</label>
+                                            <input type="checkbox" data-ng-mode="article.isRep" name="saidIsRep" />是否转载</label>
                                     </div>
                                 </div>
                             </div>
@@ -273,18 +273,22 @@
     <!--source:http://www.bootcdn.cn/angular.js/-->
     <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
     <script>
-        angular.module('said', []).controller('formController', function ($scope) {
+        var app = angular.module('said', []).controller('formController', function ($scope) {
             $scope.submitForm = function (isValid) {
-                alert(isValid);
+                return isValid;
             };
+
             $scope.changeFileValue = function (value) {
                 alert(value);
             };
-        }).directive('inputFile', function () {
+            $scope.text = '上传图片 ';
+        });
+        app.directive('inputFile', function () {
             return {
                 //musicFile
                 restrict: 'E',
-                scope: true,//隔离作用域，否则ctrl下相同的元素会冲突
+                scope: true,
+                require: '?ngModel',
                 template: '<div class="said-mask"><span>{{text}}</span>\
                                         <div class="progress">\
                                         <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">\
@@ -293,11 +297,12 @@
                                     <input type="hidden" name="musicHiddenFile" data-ng-model="mhFile" />\
                                 </div>',
                 replace: true,
-                link: function ($scope, elem, attr) {
+                link: function ($scope, elem, attr, $model) {
                     var inputs = elem.find('input'),//[input,hiddenInput(inputState)]
                         progress = elem.find('.progress-bar'),//progress bar
                         changeState = function (value) {
                             //改变上传进度方法
+                            progress.css('width', value + '%');
                         };
                     inputs.eq(0).bind('change', function (event) {
                         var file = this.files[0],
@@ -307,7 +312,7 @@
                             //根据最后修改日期标志文件上传
                             id = (file.lastModifiedDate + "").replace(/\W/g, '') + size + type.replace(/\W/g, ''),
                             xhr = new XMLHttpRequest(),// XMLHttpRequest 2.0请求
-                            action = $scope.fileConfig.action || '/Back/ImgFileUpload',
+                            action = $scope.fileConfig && $scope.fileConfig.action || '/Back/ImgFileUpload',
                             data = new FormData();
                         data.append('name', encodeURIComponent(name));
                         data.append('fileId', id);
@@ -315,6 +320,7 @@
                         xhr.open('post', action, true);
                         xhr.upload.addEventListener("progress", function (e) {
                             //上传中
+                            changeState(e.loaded / size * 100);
                         }, false);
                         xhr.onreadystatechange = function (e) {
                             if (xhr.readyState === 4) {
@@ -323,15 +329,20 @@
                                         var json = JSON.parse(xhr.responseText);
                                     } catch (e) {
                                         //这是什么Error
-                                        $scope.fileConfig.error && $scope.fileConfig.error(id, 1);
+                                        $scope.fileConfig && $scope.fileConfig.error && $scope.fileConfig.error(id, 1);
                                     }
+                                    //上传完成
+
                                 }
                             } else {
                                 //上传Error
-                                $scope.fileConfig.error && $scope.fileConfig.error(id, 2);
+                                $scope.fileConfig && $scope.fileConfig.error && $scope.fileConfig.error(id, 2);
+                                //因为是UED，没有上传逻辑，所以先把代码放到Error中
+                                inputs.eq(1).val('200');
+                                elem.css('display', 'none');
                             }
                         };
-                        xhr.send();
+                        xhr.send(data);
                     });
                 }
                 //link: function ($scope, elem, attr) {
