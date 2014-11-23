@@ -1,6 +1,7 @@
 ﻿.said-title-con { width: 90%; margin: 0 auto; }
 .said-title { border-width: 0 0 1px 0; width: 100%; padding: 15px; line-height: 40px; font-size: 2.4em; text-align: center; }
 .said-title, .said-context, .said-dis { box-shadow: none!important; }
+
 .said-context-content { padding: 20px 0; }
 .said-context { resize: none; border: 1px dashed #929596; border-width: 0 1px 1px; width: 99%; font: 16px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; line-height: 30px; text-align: justify; color: #222; overflow-y: visible!important; min-height: 400px; padding: 0 15px; }
 /*music*/
@@ -32,6 +33,7 @@
     .said-mask:hover { opacity: 0.6; }
     .said-mask .progress { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; border-radius: 0; background-color: transparent; }
 .said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
+.said-error { border-color: #a94442!important; }
 
 @keyframes maskError {
     0% { color: #ededed; }

@@ -132,13 +132,13 @@
                 <li class="active">添加Said</li>
             </ol>
             <div class="main-context">
-                <form action="/" name="saidForm" method="post" data-ng-submit="submitForm(saidForm.$valid)" data-ng-controller="formController" novalidate>
+                <form name="saidForm" method="post" data-ng-controller="formController" novalidate>
                     <div class="said-article">
                         <div class="said-title-con">
-                            <input name="title" class="said-title" autocomplete="off" placeholder="文章标题" />
+                            <input name="sTitle" data-ng-model="article.sTitle" class="said-title" data-ng-class="{'said-error':saidForm.sTitle.$invalid&&saidForm.sTitle.$dirty }" autocomplete="off" placeholder="文章标题" required />
                         </div>
                         <div class="said-context-content">
-                            <textarea class="said-context">这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
+                            <textarea name="sContext" class="said-context" data-ng-model="article.sContext" data-ng-class="{'said-error':saidForm.sContext.$invalid&&saidForm.sContext.$dirty  }" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
                         </div>
                     </div>
                     <div class="row said-view-container">
@@ -168,25 +168,23 @@
                                             </div>
                                         </div>
                                         <div class="music-info col-md-8">
-                                            <div class="input-group">
+                                            <div class="input-group" data-ng-class="{ 'has-error':saidForm.songName.$invalid&&saidForm.songName.$dirty }">
                                                 <span class="input-group-addon">歌曲</span>
-                                                <input type="text" name="songName" class="form-control music-input" placeholder="歌曲名称">
-                                                <span class="glyphicon glyphicon-ok form-control-feedback"
-                                                    data-ng-show="myForm.email.$dirty && myForm.email.$valid"></span>
+                                                <input type="text" data-ng-model="article.songName" name="songName" class="form-control music-input" placeholder="歌曲名称" required>
                                             </div>
-                                            <div class="input-group">
+                                            <div class="input-group" data-ng-class="{ 'has-error':saidForm.songAlbum.$invalid&&saidForm.songAlbum.$dirty }">
                                                 <span class="input-group-addon">专辑</span>
-                                                <input type="text" name="SongAlbum" class="form-control music-input" placeholder="歌曲专辑">
+                                                <input type="text" data-ng-model="article.songAlbum" name="songAlbum" class="form-control music-input" placeholder="歌曲专辑" required>
                                             </div>
-                                            <div class="input-group">
+                                            <div class="input-group" data-ng-class="{ 'has-error':saidForm.songArtist.$invalid&&saidForm.songArtist.$dirty }">
                                                 <span class="input-group-addon">歌手</span>
-                                                <input type="text" name="songArtist" class="form-control music-input" placeholder="艺术家">
+                                                <input type="text" data-ng-model="article.songArtist" name="songArtist" class="form-control music-input" placeholder="艺术家" required>
                                             </div>
-                                            <div class="input-group">
+                                            <div class="input-group" data-ng-class="{ 'has-error':saidForm.songFileName.$invalid&&saidForm.songFileName.$dirty }">
                                                 <span class="input-group-addon">文件</span>
-                                                <input type="text" name="songFileName" class="form-control music-input" placeholder="文件名">
+                                                <input type="text" data-ng-model="article.songFileName" name="songFileName" class="form-control music-input" placeholder="文件名" required>
                                             </div>
-                                            <button type="button" class="btn btn-danger deleteSong" id="songDelete">删除</button>
+                                            <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="deleteInfo();">删除</button>
                                         </div>
                                     </div>
                                 </div>
@@ -206,8 +204,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-8">
-                                        <textarea class="said-dis" name="said-summary" placeholder="简介[支持HTML]"></textarea>
-                                        <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete">删除</button>
+                                        <textarea class="said-dis" data-ng-model="article.sSummary" data-ng-class="{ 'said-error':saidForm.sSummary.$invalid&&saidForm.sSummary.$dirty }" name="sSummary" placeholder="简介[支持HTML]" required></textarea>
+                                        <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="deleteInfo();">删除</button>
                                     </div>
 
                                 </div>
@@ -217,32 +215,32 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">附加信息</div>
                                 <div class="panel-body">
-                                    <div class="input-group" data-ng-class="{ 'has-error':saidForm.saidTag.$invalid&&saidForm.saidTag.$dirty }">
+                                    <div class="input-group" data-ng-class="{ 'has-error':saidForm.sTag.$invalid&&saidForm.sTag.$dirty }">
                                         <span class="input-group-addon">标签</span>
-                                        <input type="text" name="saidTag" class="form-control" data-ng-model="tag" placeholder='标签，支持[、,空格]分隔' required />
+                                        <input type="text" name="sTag" class="form-control" data-ng-model="article.STag" placeholder='标签，支持[、,空格]分隔' required />
                                     </div>
-                                    <div class="input-group" data-ng-class="{'has-error':saidForm.saidType.$invalid&&saidForm.saidType.$dirty}">
+                                    <div class="input-group" data-ng-class="{'has-error':saidForm.classify.$invalid&&saidForm.classify.$dirty}">
                                         <span class="input-group-addon">分类</span>
-                                        <input type="text" name="saidType" class="form-control" data-ng-model="article.classify" placeholder="分类名称" required />
+                                        <input type="text" name="classify" class="form-control" data-ng-model="article.Classify" placeholder="分类名称" required />
                                     </div>
                                 </div>
                                 <div class="panel-heading panel-subTitle">可选信息</div>
                                 <div class="panel-body">
                                     <div class="input-group">
                                         <span class="input-group-addon">文件</span>
-                                        <input type="text" name="saidFileName" class="form-control" data-ng-model="article.fileName" placeholder="文章发布的（文件）名称">
+                                        <input type="text" name="sName" class="form-control" data-ng-model="article.sName" placeholder="文章发布的（文件）名称">
                                     </div>
                                     <div class="form-group">
                                         <label>JavaScript</label>
-                                        <textarea rows="3" class="form-control" name="article.SJS" placeholder="自定义JavaScript" data-ng-model="codeJs"></textarea>
+                                        <textarea rows="3" class="form-control" name="sJS" placeholder="自定义JavaScript" data-ng-model="article.sJS"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>CSS</label>
-                                        <textarea rows="3" class="form-control" name="article.SCSS" placeholder="自定义CSS" data-ng-model="codeCSS"></textarea>
+                                        <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS" data-ng-model="article.sCSS"></textarea>
                                     </div>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" data-ng-mode="article.isRep" name="saidIsRep" />是否转载</label>
+                                            <input type="checkbox" data-ng-mode="article.sReprint" name="sReprint" />是否转载</label>
                                     </div>
                                 </div>
                             </div>
@@ -257,7 +255,7 @@
                                 <span class="sr-only">20% Complete</span>
                             </div>
                         </div>
-                        <button class="btn btn-lg said-submit center-block" id="submit" type="submit" data-ng-class="{'submit-lock':!saidForm.$valid}">发布</button>
+                        <button class="btn btn-lg said-submit center-block" id="submit" type="submit" data-ng-class="{'submit-lock':!saidForm.$valid}" data-ng-click="submitForm(saidForm)">发布</button>
                     </div>
                 </form>
             </div>
@@ -274,13 +272,16 @@
     <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>-->
     <script>
         var app = angular.module('said', []).controller('formController', function ($scope) {
-            $scope.submitForm = function (isValid) {
-                return isValid;
+            $scope.submitForm = function (saidForm) {
+                saidForm.$setDirty();
             };
-
+            $scope.deleteInfo = function () {
+                alert('aa');
+            };
             $scope.changeFileValue = function (value) {
                 alert(value);
             };
+
             $scope.text = '上传图片 ';
         });
         app.directive('inputFile', function () {
