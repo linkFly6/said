@@ -8,7 +8,7 @@
 .relative-container { position: relative; }
     .relative-container:first-child { margin-bottom: 21px; }
 .input-group { margin: 10px 0; }
-.music-info .input-group:first-child { margin: 0 0 10px 0; }
+
 .music-img { width: 210px; height: 210px; overflow: hidden; }
     .music-img, .music-img img { display: block; margin: 0 auto; overflow: hidden; }
         .music-img img { height: 200px; width: 200px; display: block; }
@@ -34,6 +34,13 @@
     .said-mask .progress { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; border-radius: 0; background-color: transparent; }
 .said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
 .said-error { border-color: #a94442!important; }
+
+/*query*/
+.queryInputBar { position: relative; }
+    .queryInputBar .form-control { border-radius: 0; }
+.querySelect { position: absolute; top: 34px; left: 0; z-index: 3; width: 100%; background-color: #FFF; border: 1px solid #b5b5b5; border-top: none; }
+    .querySelect .select-item { display: block; padding: 0 9px; line-height: 27px; color: #555; text-decoration: none; }
+        .querySelect .select-item:hover, .querySelect .active { background-color: #f3f3f3; }
 
 @keyframes maskError {
     0% { color: #ededed; }

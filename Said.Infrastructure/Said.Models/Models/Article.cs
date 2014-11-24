@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace Said.Models
         /// <summary>
         /// Said Id
         /// </summary>
+        [Required]
         public string SaidId { get; set; }
         /// <summary>
         /// XML
