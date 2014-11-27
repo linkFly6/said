@@ -1,56 +1,62 @@
-﻿<!DOCTYPE HTML>
-<html lang="zh-cn" data-ng-app="ExpressionTest">
+﻿<!DOCTYPE html>
+<html ng-app="Dialog">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>AngularJS学习</title>
-    <link href="Frmework/css/bootstrap.min.css" rel="stylesheet" />
-    <title>expression-e1</title>
-    <style type="text/css">
-        .ng-cloak { display: none; }
-    </style>
-</head>
-<body data-ng-controller="MyCtrl">
-    <form name="formHehe" data-ng-model="testForm" data-ng-submit="submitForm(formHehe.$valid)" action="/" onsubmit="return {{hehe}}">
-        <input data-ng-model="test" name="inputFile" type="file" data-ng-change="heheChange()" />
-        <input type="submit" />
-        <input-file></input-file>
-    </form>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>directive-dialog</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <!--<script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.js"></script>-->
     <!--source:http://www.bootcdn.cn/angular.js/-->
     <script src="http://cdn.bootcss.com/angular.js/1.3.0-beta.13/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="MyCtrl">
+        <button ng-click="show=true">show</button>
+        <dialog title="Hello {{username}}"
+                visible="{{show}}"
+                on-cancel="show=false;"
+                on-ok="show=false;methodInParentScope();">
+                <!--上面的on-cancel、on-ok，是在directive的isoloate scope中通过&引用的。如果表达式中包含函数，那么需要将函数绑定在parent scope（当前是MyCtrl的scope）中-->
+            Body goes here: username:{{username}} , title:{{title}}.
+            <ul>
+                <!--这里还可以这么玩~names是parent scope的-->
+                <li ng-repeat="name in names">{{name}}</li>
+            </ul>
+        </dialog>
+    </div>
     <script type="text/javascript">
-        var app = angular.module("ExpressionTest", []);
-        app.controller("MyCtrl", function ($scope) {
-            $scope.hehe = false;
-            $scope.heheChange = function () {
-                alert('a');
-            };
-            $scope.submitForm = function (value) {
-                return false;
-            };
-
-        }).directive('inputFile', function () {
-            return {
-                //musicFile
-                restrict: 'E',
-                scope: true,//隔离作用域，否则ctrl下相同的元素会冲突
-                template: '<div class="said-mask"><span>{{text}}</span>\
-                                    <input type="file" name="{{name}}" data-ng-model="mFile" class="hidden-file"/>\
-                                    <input type="hidden" name="musicHiddenFile" data-ng-model="mhFile" />\
-                                </div>',
-                replace: true,
-                link: function ($scope, elem, attr) {
-                    var inputs = elem.find('input');
-                    inputs.eq(0).bind('change', function (event) {
-                        alert(this.value, this.files);
-                    });
-                }
-                //link: function ($scope, elem, attr) {
-                //    var file = new FileReader();
-                //}
+        var myModule = angular.module("Dialog", []);
+        myModule.controller("MyCtrl", function ($scope) {
+            $scope.names = ["name1", "name2", "name3"];
+            $scope.show = false;
+            $scope.username = "Lcllao";
+            $scope.title = "parent title";
+            $scope.methodInParentScope = function () {
+                alert("记住。。scope里面通过&定义的东东，是在父scope中玩的！！。。。");
             };
         });
-
+        myModule.directive('dialog', function factory() {
+            return {
+                priority: 100,
+                template: ['<div ng-show="visible">',
+                    '    <h3>{{title}}</h3>',
+                    '    <div class="body" ng-transclude></div>',
+                    '    <div class="footer">',
+                    '        <button ng-click="onOk()">OK</button>',
+                    '        <button ng-click="onCancel()">Close</button>',
+                    '    </div>',
+                    '</div>'].join(""),
+                replace: false,
+                transclude: true,
+                restrict: 'E',
+                scope: {
+                    title: "@",//引用dialog标签title属性的值
+                    onOk: "&",//以wrapper function形式引用dialog标签的on-ok属性的内容
+                    onCancel: "&",//以wrapper function形式引用dialog标签的on-cancel属性的内容
+                    visible: "@"//引用dialog标签visible属性的值
+                }
+            };
+        });
     </script>
 </body>
 </html>
+

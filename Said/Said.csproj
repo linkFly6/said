@@ -884,7 +884,8 @@
     <Content Include="UED\Back\Frmework\js\npm.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.min.js" />
-    <Content Include="UED\Back\Frmework\js\said\addSaid.js" />
+    <Content Include="UED\Back\Frmework\js\said\AddSaid.js" />
+    <Content Include="UED\Back\Frmework\js\said\FuckAngular.js" />
     <Content Include="UED\Back\Frmework\js\zrender-master\.gitignore" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\area.html" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\js\area.js" />
