@@ -143,8 +143,8 @@
                     </div>
                     <div class="row said-view-container">
                         <div class="col-md-6">
-                            <div class="panel panel-default relative-container">
-                                <div class="said-mask" data-inputfile="" data-ng-model="maskState" data-ng-show="maskState.show===null">
+                            <div class="panel panel-default relative-container" data-inputfile="" data-ng-model="songImg">
+                                <div class="said-mask"  data-ng-show="songImg===null">
                                     <span>上传歌曲</span>
                                     <div class="progress">
                                         <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
@@ -152,7 +152,7 @@
                                         </div>
                                     </div>
                                     <input type="file" name="songImgFile" data-ng-model="article.songImgFile" class="hidden-file" />
-                                    <input type="hidden" name="songImg" data-ng-model="fuckhidden" />
+                                    <!--<input type="hidden" name="songImg" data-ng-model="fuckhidden" />-->
                                     <!--article.hidden-->
                                 </div>
                                 <div class="panel-heading">歌曲</div>
@@ -184,7 +184,7 @@
                                                 <span class="input-group-addon">文件</span>
                                                 <input type="text" data-ng-model="article.songFileName" name="songFileName" class="form-control music-input" placeholder="文件名" required>
                                             </div>
-                                            <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="deleteInfo();">删除</button>
+                                            <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="deleteInfo();">{{songImg}}</button>
                                         </div>
                                     </div>
                                 </div>

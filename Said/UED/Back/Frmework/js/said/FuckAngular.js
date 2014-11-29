@@ -1,6 +1,6 @@
-﻿var app = angular.module('said', []).controller('formController', function ($scope) {
-    'use strict';
-    $scope.maskState = { show: null };
+﻿'use strict';
+var app = angular.module('said', []).controller('formController', function ($scope) {
+    $scope.songImg = null;
     var article = $scope.article = {
         dirty: false
     };
@@ -89,9 +89,11 @@ app.directive('inputfile', function () {
     return {
         /*妈蛋，传递model要这么传*/
         scope: {
-            maskState: '=ngModel',
+            model: '=ngModel',
+            deleteInfo: '&'
         },
-        link: function ($scope, elem, attr, $model) {
+        link: function ($scope, elem, attr) {
+            $scope.text = 'text';
             var inputs = elem.find('input'),//[input,hiddenInput(inputState)]
                 progress = elem.find('.progress-bar'),//progress bar
                 changeState = function (value) {
@@ -133,14 +135,16 @@ app.directive('inputfile', function () {
                         $scope.fileConfig && $scope.fileConfig.error && $scope.fileConfig.error(id, 2);
                         //因为是UED，没有上传逻辑，所以先把代码放到Error中
                         //因为异步了，所以ng无法得知当前是否更新model，手动$apply
-                        $scope.maskState = '200';
-                        inputs.eq(1).val('200');
+                        $scope.model = '200';
                         $scope.$apply();
                     }
                 };
                 xhr.send(data);
             });
-
+            $scope.deleteInfo = function () {
+                console.log($scope);
+                $scope.model = null;
+            };
         }
     };
 });
