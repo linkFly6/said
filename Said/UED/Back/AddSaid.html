@@ -143,8 +143,8 @@
                     </div>
                     <div class="row said-view-container">
                         <div class="col-md-6">
-                            <div class="panel panel-default relative-container" data-inputfile="" data-ng-model="songImg">
-                                <div class="said-mask"  data-ng-show="songImg===null">
+                            <div class="panel panel-default relative-container">
+                                <div class="said-mask" data-ng-show="ac.songImg===null" data-inputfile="" data-ng-model="ac.songImg">
                                     <span>上传歌曲</span>
                                     <div class="progress">
                                         <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
@@ -184,13 +184,13 @@
                                                 <span class="input-group-addon">文件</span>
                                                 <input type="text" data-ng-model="article.songFileName" name="songFileName" class="form-control music-input" placeholder="文件名" required>
                                             </div>
-                                            <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="deleteInfo();">{{songImg}}</button>
+                                            <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="ac.deleteImg()">删除</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="panel panel-default relative-container">
-                                <div class="said-mask" data-inputfile="">
+                                <div class="said-mask" data-inputfile="" data-ng-model="ac.saidImg" data-ng-show="ac.saidImg===null">
                                     <span>上传缩略图</span>
                                     <div class="progress">
                                         <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
@@ -211,7 +211,7 @@
                                     </div>
                                     <div class="col-md-8">
                                         <textarea class="said-dis" data-ng-model="article.sSummary" data-ng-class="{ 'said-error':saidForm.sSummary.$invalid&&(saidForm.sSummary.$dirty||article.dirty) }" name="sSummary" placeholder="简介[支持HTML]" required></textarea>
-                                        <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="deleteInfo();">删除</button>
+                                        <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="ac.deleteSaidImg()">删除</button>
                                     </div>
 
                                 </div>

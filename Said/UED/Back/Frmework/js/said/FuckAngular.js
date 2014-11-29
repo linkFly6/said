@@ -1,9 +1,22 @@
 ﻿'use strict';
 var app = angular.module('said', []).controller('formController', function ($scope) {
-    $scope.songImg = null;
     var article = $scope.article = {
         dirty: false
+    },
+    ac = $scope.ac = {
+        //歌曲图片
+        songImg: null,
+        //删除歌曲图片
+        deleteImg: function () {
+            ac.songImg = null;
+            //清空图片项
+        },
+        saidImg: null,
+        deleteSaidImg: function () {
+            ac.saidImg = null;
+        }
     };
+
     article.tags = [
         'javascript',
         'ECMAScript',
@@ -22,16 +35,7 @@ var app = angular.module('said', []).controller('formController', function ($sco
                 alert('ok');
             else
                 alert('reject');
-        },
-        deleteInfo: function () {
-            alert('aa');
-        },
-        changeFileValue: function (value) {
-            alert(value);
-        },
-        //删除图片操作
-        deleteFile: function (model) {
-            model = null;
+            return false;
         }
     });
 
@@ -39,14 +43,15 @@ var app = angular.module('said', []).controller('formController', function ($sco
 }).filter('search', function () {
     //搜索
     return function (list, target, defValue) {
-        defValue = defValue || '没有查询到相关结果，默认新增';
+        //defValue = defValue || '没有查询到相关结果，默认新增';
         var res = [], value = (target.$viewValue || '').toLowerCase();
         jQuery.each(list, function (i, item) {
             item.toLowerCase().indexOf(value) !== -1 && res.push(item);
             return res.length !== 10;
         });
-        if (res.length === 0)
-            res.push(defValue);
+        console.log(list.length);
+        //if (res.length === 0)
+        //    res.push(defValue);
         return res;
     }
 }).directive('queryselect', function () {
@@ -75,10 +80,13 @@ var app = angular.module('said', []).controller('formController', function ($sco
                         active = list.eq(--i).addClass('active');
                     }
                         break;
+                    case 13: {
+                        alert('回车');
+                    }
+                        break;
                     default:
                         i = -1;
                         break;
-
                 }
             });
         }
@@ -89,8 +97,13 @@ app.directive('inputfile', function () {
     return {
         /*妈蛋，传递model要这么传*/
         scope: {
-            model: '=ngModel',
-            deleteInfo: '&'
+            model: '=ngModel'
+        },
+        controller: function ($scope) {
+            $scope.deleteinfo = function () {
+                console.log($scope);
+                $scope.model = null;
+            };
         },
         link: function ($scope, elem, attr) {
             $scope.text = 'text';
@@ -136,12 +149,13 @@ app.directive('inputfile', function () {
                         //因为是UED，没有上传逻辑，所以先把代码放到Error中
                         //因为异步了，所以ng无法得知当前是否更新model，手动$apply
                         $scope.model = '200';
+                        changeState(0);
                         $scope.$apply();
                     }
                 };
                 xhr.send(data);
             });
-            $scope.deleteInfo = function () {
+            $scope.deleteinfo = function () {
                 console.log($scope);
                 $scope.model = null;
             };
