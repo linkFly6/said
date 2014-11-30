@@ -884,8 +884,11 @@
     <Content Include="UED\Back\Frmework\js\npm.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.min.js" />
-    <Content Include="UED\Back\Frmework\js\said\AddSaid.js" />
+    <Content Include="UED\Back\Frmework\js\said\addSaid.js" />
     <Content Include="UED\Back\Frmework\js\said\FuckAngular.js" />
+    <Content Include="UED\Back\Frmework\js\so.js" />
+    <Content Include="UED\Back\Frmework\js\so\search\search.js" />
+    <Content Include="UED\Back\Frmework\js\so\validate\validate.js" />
     <Content Include="UED\Back\Frmework\js\zrender-master\.gitignore" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\area.html" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\js\area.js" />
@@ -1110,6 +1113,7 @@
     <Content Include="UED\Back\Frmework\js\zrender-master\test\smoothline.html" />
     <Content Include="UED\Back\Frmework\js\zrender-master\test\test.jpeg" />
     <Content Include="UED\Back\Frmework\js\zrender-master\test\testArea.html" />
+    <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.js" />
     <Content Include="UED\Back\Frmework\Login.html" />
     <Content Include="UED\Back\Index.html" />
     <Content Include="UED\Back\LearningNg.html" />

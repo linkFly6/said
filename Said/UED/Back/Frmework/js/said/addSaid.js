@@ -1,7 +1,6 @@
 ﻿define(['jquery'], function ($) {
-    return {
-        color: 'linkFLy'
+    return function () {
+
     };
-
-
-}); 
+    //return {};
+});
