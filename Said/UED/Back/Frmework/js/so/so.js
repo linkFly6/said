@@ -1,6 +1,6 @@
 ﻿'use strict';
 define(function () {
-    var toString = Array.prototype.toString,
+    var toString = Object.prototype.toString,
         slice = Array.prototype.slice,
         splice = Array.prototype.splice,
         isArray = Array.isArray,
@@ -29,7 +29,7 @@ define(function () {
     'Boolean Number String Function Array Date RegExp Object Error'.split(' ').forEach(function (name) {
         class2type["[object " + name + "]"] = name.toUpperCase();
     });
-    so.extend = so.fn.extend = function () {
+    so.extend = so.prototype.extend = function () {
         var options, name, src, copy, copyIsArray, clone,
             target = arguments[0] || {},
             i = 1,
@@ -83,7 +83,7 @@ define(function () {
         isXML: function (doc) {
             return doc && doc.createElement && doc.createElement('P').nodeName !== doc.createElement('p').nodeName;
         },
-        each: function (target, callabck) {
+        each: function (target, callback) {
             var i, key;
             if (isArrayLike(target)) {
                 for (i = 0; i < target.length; i++)
@@ -148,4 +148,5 @@ define(function () {
             return Parm;
         }(window.location.search)
     });
+    return so;
 });

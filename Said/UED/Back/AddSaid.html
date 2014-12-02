@@ -219,10 +219,10 @@
                                     <div class="input-group" data-ng-class="{ 'has-error':saidForm.sTag.$invalid&&(saidForm.sTag.$dirty||article.dirty) }">
                                         <span class="input-group-addon">标签</span>
                                         <div class="queryInputBar" data-queryselect="">
-                                            <input type="text" class="form-control" name="sTag" data-ng-model="article.STag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" required />
-                                            <div class="querySelect" data-ng-show="saidForm.sTag.$valid">
+                                            <input type="text" class="form-control" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" required />
+                                            <!--<div class="querySelect" data-ng-show="saidForm.sTag.$valid">
                                                 <a class="select-item" href="javascript:;" data-ng-repeat="item in article.tags | search:saidForm.sTag" data-name="{{item}}" data-index="{{$index}}">{{item}}</a>
-                                            </div>
+                                            </div>-->
                                         </div>
                                     </div>
                                     <div class="input-group" data-ng-class="{'has-error':saidForm.classify.$invalid&&(saidForm.classify.$dirty||article.dirty)}">
@@ -275,9 +275,16 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="Frmework/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        require(['jquery', 'said/addSaid'], function ($, addSaid) {
+        require(['jquery', 'so/so', 'so/plug/search', 'said/addSaid'], function ($, so, search, addSaid) {
             $(function () {
-                console.log(addSaid);
+                search(stag, ['javascript',
+                              'ECMAScript',
+                              'C#',
+                              '.NET',
+                              'jQuery',
+                              '.NET MVC',
+                              'Sql Server',
+                              'NodeJS']);
             });
         });
 
