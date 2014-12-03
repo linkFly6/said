@@ -1,5 +1,5 @@
 ﻿using Said.Domain.Said.Data;
-using Said.Domain.Said.IServices;
+using Said.IServices;
 using Said.Models;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Said.Domain.Said.Service
+namespace Said.Service
 {
     /// <summary>
     /// 歌曲服务接口

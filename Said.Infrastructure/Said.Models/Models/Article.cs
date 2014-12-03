@@ -96,10 +96,13 @@ namespace Said.Models
         /// <summary>
         /// 源码（markdown）
         /// </summary>
+        [Required(ErrorMessage = "必须输入")]
+        [Display(Name = "源码")]
         public string SContext { get; set; }
         /// <summary>
         /// 评论量
         /// </summary>
+        [Required(ErrorMessage = "")]
         public int SComment { get; set; }
         /// <summary>
         /// 点击量
@@ -118,5 +121,12 @@ namespace Said.Models
         /// 歌曲
         /// </summary>
         public Song Song { get; set; }
+
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrEmpty(SContext))
+                yield return new ValidationResult("内容不允许为空");
+
+        }
     }
 }

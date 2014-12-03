@@ -185,7 +185,7 @@
                                 </div>
                             </div>
                             <div class="panel panel-default relative-container">
-                                <div class="said-mask" data-inputfile="" data-ng-model="ac.saidImg" data-ng-show="ac.saidImg===null">
+                                <div class="said-mask">
                                     <span>上传缩略图</span>
                                     <div class="progress">
                                         <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
@@ -212,11 +212,14 @@
                                 </div>
                             </div>
                         </div>
+                        <template>
+
+                        </template>
                         <div class="col-md-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">附加信息</div>
                                 <div class="panel-body">
-                                    <div class="input-group" data-ng-class="{ 'has-error':saidForm.sTag.$invalid&&(saidForm.sTag.$dirty||article.dirty) }">
+                                    <div class="input-group">
                                         <span class="input-group-addon">标签</span>
                                         <div class="queryInputBar" data-queryselect="">
                                             <input type="text" class="form-control" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" required />

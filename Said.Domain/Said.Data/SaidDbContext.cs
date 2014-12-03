@@ -25,10 +25,10 @@ namespace Said.Domain.Said.Data
         /// <summary>
         /// 保存到数据库中
         /// </summary>
-        public virtual void Commit()
+        public virtual int Commit()
         {
-            base.SaveChanges();
-        } 
+            return base.SaveChanges();
+        }
         #endregion
 
         #region 实体

@@ -14,7 +14,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Said.Domain.Said.IServices
+namespace Said.IServices
 {
     public class BaseService<T> : IService<T> where T : BaseModel
     {
@@ -254,5 +254,15 @@ namespace Said.Domain.Said.IServices
 
 
         #endregion
+
+
+        /// <summary>
+        /// 提交并保存数据
+        /// </summary>
+        /// <returns></returns>
+        public int Submit()
+        {
+            return this.Context.Commit();
+        }
     }
 }

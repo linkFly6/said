@@ -37,5 +37,10 @@ namespace Said.Models
         /// </summary>
         public string CName { get; set; }
         #endregion
+
+        public override IEnumerable<System.ComponentModel.DataAnnotations.ValidationResult> Validate(System.ComponentModel.DataAnnotations.ValidationContext validationContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

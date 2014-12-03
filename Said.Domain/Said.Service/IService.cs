@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Said.Domain.Said.IServices
+namespace Said.IServices
 {
     public interface IService<T> where T : BaseModel
     {
@@ -97,6 +97,10 @@ namespace Said.Domain.Said.IServices
         /// <returns></returns>
         IPagedList<T> GetPage<TOrder>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order);
 
+        #endregion
+
+        #region 提交
+        int Submit();
         #endregion
     }
 }

@@ -27,7 +27,7 @@ namespace Said.Common
                 //object obj = Activator.CreateInstance(type);
                 props = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
             }
-            catch (Exception ex)
+            catch (Exception)
             { }
             return props;
         }

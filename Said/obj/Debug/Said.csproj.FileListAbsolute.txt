@@ -33,30 +33,6 @@ E:\Visual Studio 2012本地内容\Said\Said\bin\zh-Hans\System.Web.WebPages.Razo
 E:\Visual Studio 2012本地内容\Said\Said\obj\Debug\Said.csprojResolveAssemblyReference.cache
 E:\Visual Studio 2012本地内容\Said\Said\obj\Debug\Said.dll
 E:\Visual Studio 2012本地内容\Said\Said\obj\Debug\Said.pdb
-F:\Github\Said\Said\bin\Said.dll
-F:\Github\Said\Said\bin\Said.pdb
-F:\Github\Said\Said\bin\Newtonsoft.Json.xml
-F:\Github\Said\Said\bin\System.Net.Http.Formatting.xml
-F:\Github\Said\Said\bin\System.Web.Helpers.xml
-F:\Github\Said\Said\bin\System.Web.Http.xml
-F:\Github\Said\Said\bin\System.Web.Http.WebHost.xml
-F:\Github\Said\Said\bin\System.Web.Mvc.xml
-F:\Github\Said\Said\bin\System.Web.Razor.xml
-F:\Github\Said\Said\bin\System.Web.WebPages.xml
-F:\Github\Said\Said\bin\System.Web.WebPages.Deployment.xml
-F:\Github\Said\Said\bin\System.Web.WebPages.Razor.xml
-F:\Github\Said\Said\bin\zh-Hans\System.Net.Http.Formatting.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.Helpers.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.Http.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.Http.WebHost.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.Mvc.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.Razor.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.WebPages.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll
-F:\Github\Said\Said\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
-F:\Github\Said\Said\obj\Debug\Said.csprojResolveAssemblyReference.cache
-F:\Github\Said\Said\obj\Debug\Said.dll
-F:\Github\Said\Said\obj\Debug\Said.pdb
 D:\Git\Said\Said\bin\Said.dll
 D:\Git\Said\Said\bin\Said.pdb
 D:\Git\Said\Said\bin\Newtonsoft.Json.xml
@@ -81,3 +57,8 @@ D:\Git\Said\Said\bin\zh-Hans\System.Web.WebPages.Razor.resources.dll
 D:\Git\Said\Said\obj\Debug\Said.csprojResolveAssemblyReference.cache
 D:\Git\Said\Said\obj\Debug\Said.dll
 D:\Git\Said\Said\obj\Debug\Said.pdb
+F:\Github\Said\Said\bin\Said.dll
+F:\Github\Said\Said\bin\Said.pdb
+F:\Github\Said\Said\obj\Debug\Said.csprojResolveAssemblyReference.cache
+F:\Github\Said\Said\obj\Debug\Said.dll
+F:\Github\Said\Said\obj\Debug\Said.pdb
