@@ -17,10 +17,29 @@ namespace Said.Application
             get { return service ?? (service = new SongService(new Domain.Said.Data.DatabaseFactory())); }
         }
 
-        private static int UploadSong(Song song)
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="song">实体</param>
+        /// <returns></returns>
+        public static string Add(Song song)
         {
-            
-            return -1;
+            if (string.IsNullOrEmpty(song.SongId))
+                song.SongId = new Guid().ToString();
+            if (service.Submit() < 1)
+                return string.Empty;
+            return song.SongId;
+        }
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="song"></param>
+        /// <returns></returns>
+        public static int Update(Song song)
+        {
+            if (string.IsNullOrEmpty(song.SongId)) return -1;
+            service.Update(song);
+            return service.Submit(); 
         }
 
     }
