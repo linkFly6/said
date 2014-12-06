@@ -128,6 +128,7 @@ define(function () {
         isXML: function (doc) {
             return doc && doc.createElement && doc.createElement('P').nodeName !== doc.createElement('p').nodeName;
         },
+        type: type,
         each: function (target, callback) {
             var i, key;
             if (isArrayLike(target)) {
@@ -136,8 +137,22 @@ define(function () {
             }
             else
                 for (key in target)
-                    if (callback.call(target[key], key, target[key]) === false) return false;
+                    if (callback.call(target, key, target[key]) === false) return false;
             return target;
+        },
+        map: function () {
+            var res = [];
+            so.each(arguments, function (arg) {
+                if (isArray(arg))
+                    res.concat(arg);
+                else if (isArrayLike(arg))
+                    so.each(arg, function (tmp) {
+                        res.push(tmp);
+                    });
+                else if (arg != null)
+                    res.push(tmp);
+            });
+            return res;
         },
         //扩展函数
         format: function (str, object) {

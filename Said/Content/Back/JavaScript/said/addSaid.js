@@ -7,7 +7,7 @@ define(['jquery', 'so'], function ($, so) {
         elem = so(elem);
         var that = this,
             lock = false,
-            item = elem[0],
+            item = that.element = elem[0],
             progress = that.progress = item.getElementsByClassName('progress-bar')[0],
             changeState = function (value) {
                 progress.style.width = value + '%';
@@ -76,23 +76,11 @@ define(['jquery', 'so'], function ($, so) {
         changeState: function (value) {
 
         },
-        //val: function (value) {
-        //    if (value == null)
-        //        return this.value;
-        //    this.value = '';
-        //},
         reset: function () {
-            that[0].style.display = '';
+            this.element.style.display = '';
         }
     });
-    var saidForm = function (form) {
-
-    }, validateForm = function (model) {
-
-    };
     return {
-        saidForm: saidForm,
-        validateForm: validateForm,
         Upload: Upload
     };
 

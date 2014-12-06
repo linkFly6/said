@@ -17,11 +17,11 @@
     {
         <div class="said-article">
             <div class="said-title-con">
-                @Html.TextBoxFor(Model => Model.STitle, new { @class = "said-title", @autocomplete = "off", @placeholder = "文章标题", @required = "required" })
+                @Html.TextBoxFor(Model => Model.STitle, new { @class = "said-title", @autocomplete = "off", @placeholder = "文章标题", @required = "", validate = "" })
             </div>
             <div class="said-context-content">
                 <!-- said-error-->
-                @Html.TextAreaFor(Model => Model.SContext, new { @class = "said-context", required = "required", @placeholder = "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！" })
+                @Html.TextAreaFor(Model => Model.SContext, new { @class = "said-context", required = "", @placeholder = "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！", validate = "" })
             </div>
         </div>
         <div class="row said-view-container">
@@ -49,19 +49,19 @@
                             <div class="music-info col-md-8">
                                 <div class="input-group">
                                     <span class="input-group-addon">歌曲</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongName, new { @class = "form-control music-input", placeholder = "歌曲名称", autocomplete = "off", required = "required" })
+                                    @Html.TextBoxFor(Model => Model.Song.SongName, new { @class = "form-control music-input", placeholder = "歌曲名称", autocomplete = "off", required = "required", validate = "" })
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon">专辑</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongAlbum, new { @class = "form-control music-input", placeholder = "歌曲专辑", autocomplete = "off", required = "required" })
+                                    @Html.TextBoxFor(Model => Model.Song.SongAlbum, new { @class = "form-control music-input", placeholder = "歌曲专辑", autocomplete = "off", required = "required", validate = "" })
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon">歌手</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongArtist, new { @class = "form-control music-input", placeholder = "艺术家", autocomplete = "off", required = "required" })
+                                    @Html.TextBoxFor(Model => Model.Song.SongArtist, new { @class = "form-control music-input", placeholder = "艺术家", autocomplete = "off", required = "required", validate = "" })
                                 </div>
                                 <div class="input-group" data-ng-class="has-error">
                                     <span class="input-group-addon">文件</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new { @class = "form-control music-input", placeholder = "文件名", autocomplete = "off", required = "required" })
+                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new { @class = "form-control music-input", placeholder = "文件名", autocomplete = "off", required = "required", validate = "" })
                                 </div>
                                 <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="ac.deleteImg()">删除</button>
                             </div>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            @Html.TextBoxFor(Model => Model.SSummary, new { @class = "said-dis", required = "required", placeholder = "简介[支持HTML]" })
+                            @Html.TextBoxFor(Model => Model.SSummary, new { @class = "said-dis", required = "required", placeholder = "简介[支持HTML]", validate = "" })
                             <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="ac.deleteSaidImg()">删除</button>
                         </div>
 
@@ -100,27 +100,27 @@
                         <div class="input-group">
                             <span class="input-group-addon">标签</span>
                             <div class="queryInputBar" data-queryselect="">
-                                @Html.TextBoxFor(Model => Model.STag, new { @class = "form-control", placeholder = "标签，支持[、,空格]分隔", autocomplete = "off", required = "required" })
+                                @Html.TextBoxFor(Model => Model.STag, new { @class = "form-control", placeholder = "标签，支持[、,空格]分隔", autocomplete = "off", required = "required", validate = "" })
                             </div>
                         </div>
-                        <div class="input-group has-error">
+                        <div class="input-group">
                             <span class="input-group-addon">分类</span>
-                            @Html.TextBoxFor(Model => Model.Classify.CLastBlogName, new { @class = "form-control", placeholder = "分类名称", autocomplete = "off", required = "required" })
+                            @Html.TextBoxFor(Model => Model.Classify.CLastBlogName, new { @class = "form-control", placeholder = "分类名称", autocomplete = "off", required = "required", validate = "" })
                         </div>
                     </div>
                     <div class="panel-heading panel-subTitle">可选信息</div>
                     <div class="panel-body">
                         <div class="input-group">
                             <span class="input-group-addon">文件</span>
-                            @Html.TextBoxFor(Model => Model.SName, new { @class = "form-control", placeholder = "文章发布的（文件）名称", autocomplete = "off", required = "required" })
+                            @Html.TextBoxFor(Model => Model.SName, new { @class = "form-control", placeholder = "文章发布的（文件）名称", autocomplete = "off" })
                         </div>
                         <div class="form-group">
                             <label>JavaScript</label>
-                            @Html.TextAreaFor(Model => Model.SJS, new { @class = "form-control", placeholder = "自定义JavaScript", autocomplete = "off", required = "required" })
+                            @Html.TextAreaFor(Model => Model.SJS, new { @class = "form-control", placeholder = "自定义JavaScript", autocomplete = "off" })
                         </div>
                         <div class="form-group">
                             <label>CSS</label>
-                            @Html.TextAreaFor(Model => Model.SCSS, new { @class = "form-control", placeholder = "自定义CSS", autocomplete = "off", required = "required" })
+                            @Html.TextAreaFor(Model => Model.SCSS, new { @class = "form-control", placeholder = "自定义CSS", autocomplete = "off" })
                         </div>
                         <div class="checkbox">
                             <label>
@@ -163,13 +163,27 @@
             img: '/Source/SaidImg',
             form: '/Back/AddSaid'
         };
-        require(['jquery', 'so', 'so/plug/search', 'said/addSaid'], function ($, so, search, addSaid) {
+        require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'said/addSaid'], function ($, so, search, validate, addSaid) {
             var _ = function (id) {
                 return document.getElementById(id);
-            };
-            addSaid.Upload('uploadSong', Action.song, [], function (value) {
+            },
+            //Upload组件
+            songUpload = addSaid.Upload('uploadSong', Action.song, [], function (value) {
+
+            }),
+            //validate插件
+            formValidate = validate(window.saidForm, function (checked, key, value, pattern) {
+                if (this.tagName === 'INPUT' && this.type !== 'checkbox')
+                    checked ? this.parentNode.classList.remove('has-error') : this.parentNode.classList.add('has-error');
+                else
+                    checked ? this.classList.remove('said-error') : this.classList.add('said-error');
+            }, function (checked, key, value, pattern) {
 
             });
+            so('songDelete').on('click', function () {
+                songUpload.reset();
+            });
+            //search插件
             $(function () {
                 search(_('STag'), ['javascript',
                               'ECMAScript',
