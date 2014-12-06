@@ -1,0 +1,188 @@
+﻿@model Said.Models.Article
+@{
+    ViewBag.Title = "AddSaid";
+    Layout = "~/Views/Shared/_LayoutBack.cshtml";
+}
+
+<div class="page-header">
+    <h2>添加Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small></h2>
+</div>
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Siad管理</a></li>
+    <li class="active">添加Said</li>
+</ol>
+<div class="main-context">
+    @using (Html.BeginForm("AddSaid", "Back", FormMethod.Post, new { spellcheck = "spellcheck", name = "saidForm", novalidate = "novalidate", OnSubmit = "return false;" }))
+    {
+        <div class="said-article">
+            <div class="said-title-con">
+                @Html.TextBoxFor(Model => Model.STitle, new { @class = "said-title", @autocomplete = "off", @placeholder = "文章标题", @required = "required" })
+            </div>
+            <div class="said-context-content">
+                <!-- said-error-->
+                @Html.TextAreaFor(Model => Model.SContext, new { @class = "said-context", required = "required", @placeholder = "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！" })
+            </div>
+        </div>
+        <div class="row said-view-container">
+            <div class="col-md-6">
+                <div class="panel panel-default relative-container">
+                    <div class="said-mask" id="uploadSong">
+                        <span>上传歌曲</span>
+                        <div class="progress">
+                            <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info"></div>
+                        </div>
+                        @Html.TextBoxFor(Model => Model.Song.SongId, new { @class = "hidden-file", type = "file" })
+                    </div>
+                    <div class="panel-heading">歌曲</div>
+                    <div class="panel-body">
+                        <div class="afterClear">
+                            <div class="col-md-4">
+                                <div class="music-img">
+                                    <div class="thumbnail">
+                                        <!--<img src="../../Content/Images/said-backgournd.jpg" />-->
+                                        <img src="../../Content/Images/UEDImg/demo-img6.jpg" />
+                                        <!--<img src="../../Content/Images/testImg-Paramore.Ps.jpg" />-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="music-info col-md-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon">歌曲</span>
+                                    @Html.TextBoxFor(Model => Model.Song.SongName, new { @class = "form-control music-input", placeholder = "歌曲名称", autocomplete = "off", required = "required" })
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">专辑</span>
+                                    @Html.TextBoxFor(Model => Model.Song.SongAlbum, new { @class = "form-control music-input", placeholder = "歌曲专辑", autocomplete = "off", required = "required" })
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">歌手</span>
+                                    @Html.TextBoxFor(Model => Model.Song.SongArtist, new { @class = "form-control music-input", placeholder = "艺术家", autocomplete = "off", required = "required" })
+                                </div>
+                                <div class="input-group" data-ng-class="has-error">
+                                    <span class="input-group-addon">文件</span>
+                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new { @class = "form-control music-input", placeholder = "文件名", autocomplete = "off", required = "required" })
+                                </div>
+                                <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="ac.deleteImg()">删除</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default relative-container">
+                    <div class="said-mask" id="uploadImg">
+                        <span>上传缩略图</span>
+                        <div class="progress">
+                            <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info"></div>
+                        </div>
+                        @Html.TextBoxFor(Model => Model.SImg, new { @class = "hidden-file", type = "file" })
+                    </div>
+                    <div class="panel-heading">描述</div>
+                    <div class="panel-body">
+                        <div class="col-md-4">
+                            <div class="music-img">
+                                <div class="thumbnail">
+                                    <img src="../../Content/Images/test-said-img.jpg" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextBoxFor(Model => Model.SSummary, new { @class = "said-dis", required = "required", placeholder = "简介[支持HTML]" })
+                            <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="ac.deleteSaidImg()">删除</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">附加信息</div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">标签</span>
+                            <div class="queryInputBar" data-queryselect="">
+                                @Html.TextBoxFor(Model => Model.STag, new { @class = "form-control", placeholder = "标签，支持[、,空格]分隔", autocomplete = "off", required = "required" })
+                            </div>
+                        </div>
+                        <div class="input-group has-error">
+                            <span class="input-group-addon">分类</span>
+                            @Html.TextBoxFor(Model => Model.Classify.CLastBlogName, new { @class = "form-control", placeholder = "分类名称", autocomplete = "off", required = "required" })
+                        </div>
+                    </div>
+                    <div class="panel-heading panel-subTitle">可选信息</div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">文件</span>
+                            @Html.TextBoxFor(Model => Model.SName, new { @class = "form-control", placeholder = "文章发布的（文件）名称", autocomplete = "off", required = "required" })
+                        </div>
+                        <div class="form-group">
+                            <label>JavaScript</label>
+                            @Html.TextAreaFor(Model => Model.SJS, new { @class = "form-control", placeholder = "自定义JavaScript", autocomplete = "off", required = "required" })
+                        </div>
+                        <div class="form-group">
+                            <label>CSS</label>
+                            @Html.TextAreaFor(Model => Model.SCSS, new { @class = "form-control", placeholder = "自定义CSS", autocomplete = "off", required = "required" })
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                @Html.TextBoxFor(Model => Model.SReprint, new { @type = "checkbox" })是否转载</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="submit-container">
+            <div class="error-check">
+                发布前会进行错误检测
+            </div>
+            <div class="progress">
+                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%">
+                    <span class="sr-only">20% Complete</span>
+                </div>
+            </div>
+
+            <button class="btn btn-lg said-submit center-block" id="submit" type="submit">发布</button>
+            <!--data-ng-class="{'submit-lock':!saidForm.$valid}"-->
+        </div>
+    }
+</div>
+@section Css{
+    <link href="@Url.Content("~/Content/Back/Style/addSaid.css")" rel="stylesheet" />
+}
+@*@section HeadJs{
+    <script src="@Url.Content("")"></script>
+}*@
+@section FootJs{
+    @*var Action = {
+            song:@Url.Content("~/Source/Said/Song")
+            img:@Url.Content("~/Source/Said/Img"),
+            form:@Url.Action("AddSaid", "Back")
+        };*@
+    <script type="text/javascript">
+        var Action = {
+            song: '/Source/SaidSong',
+            img: '/Source/SaidImg',
+            form: '/Back/AddSaid'
+        };
+        require(['jquery', 'so', 'so/plug/search', 'said/addSaid'], function ($, so, search, addSaid) {
+            var _ = function (id) {
+                return document.getElementById(id);
+            };
+            addSaid.Upload('uploadSong', Action.song, [], function (value) {
+
+            });
+            $(function () {
+                search(_('STag'), ['javascript',
+                              'ECMAScript',
+                              'C#',
+                              '.NET',
+                              'jQuery',
+                              '.NET MVC',
+                              'Sql Server',
+                              'NodeJS']);
+            });
+            _('submit').addEventListener('click', function () {
+
+            });
+        });
+    </script>
+}

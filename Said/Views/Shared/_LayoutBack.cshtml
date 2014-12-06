@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Back/Style/bootstrap.min.css")" rel="stylesheet">
+    <!--<link href="Frmework/css/flat-ui.min.css" rel="stylesheet" />-->
+    <link href="@Url.Content("~/Content/Back/Style/font-awesome.min.css")" rel="stylesheet" />
+    <!--<link href="Frmework/css/saidList.css" rel="stylesheet" />-->
+    <link href="@Url.Content("~/Content/Back/Style/default.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Content/Back/JavaScript/require2-1-11.js")" data-main="@Url.Content("~/Content/Back/JavaScript/main")"></script>
+    @{
+        if (IsSectionDefined("Css"))
+        {
+        @RenderSection("Css")        
+        }
+    }
+    @{
+        if (IsSectionDefined("HeadJs"))
+        {
+        @RenderSection("HeadJs")        
+        }
+    }
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button data-target="#example-navbar-collapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">切换的导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Said</a>
+                </div>
+                <ul class="nav pull-right">
+                    <li class="dropdown pull-left">
+                        <a href="javascript:;" class="dropdown-toggle">
+                            <i class="icon-envelope"></i>
+                            <span class="badge">1</span>
+                        </a>
+                    </li>
+                    <li class="dropdown  pull-left">
+                        <a href="javascript:;" class="dropdown-toggle">Said首页</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-container">
+        <nav class="page-sidebar nav-collapse collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="page-sidebar-menu">
+                <!--<li>
+                    <form class="sidebar-search">
+                        <div class="input-box">
+                            <a class="remove" href="javascript:;"></a>
+                            <input type="text" placeholder="Search...">
+                            <input type="button" value=" " class="submit">
+                        </div>
+                    </form>
+                </li>-->
+                <li class="active">
+                    <a href="javascript:;">
+                        <i class="icon-home"></i>
+                        <span class="title">控制中心</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-edit"></i>
+                        <span class="title">Said管理</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-laptop"></i>
+                        <span class="title">文章管理</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-credit-card"></i>
+                        <span class="title">实验室</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-tags"></i>
+                        <span class="title">标签管理</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-cogs"></i>
+                        <span class="title">消息中心</span>
+                    </a>
+                </li>
+                <li class="complex">
+                    <a href="javascript:;">
+                        <i class="icon-bar-chart"></i>
+                        <span class="title">统计中心</span>
+                        <span class="arrow icon-angle-down"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="javascript:;">访问概况</a></li>
+                        <li><a href="javascript:;">访客地区</a></li>
+                        <li><a href="javascript:;">时段分析</a></li>
+                        <li><a href="javascript:;">回复统计</a></li>
+                    </ul>
+                </li>
+                <li class="complex open">
+                    <a href="javascript:;">
+                        <i class="icon-sitemap"></i>
+                        <span class="title">配置中心</span>
+                        <span class="arrow icon-angle-up"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="javascript:;">页面配置</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <section class="container-main">
+            @RenderBody()
+        </section>
+    </section>
+    <footer>
+    </footer>
+    <script src="@Url.Content("~/Content/Back/JavaScript/jQuery-2.1.1.min.js")"></script>
+    <script src="@Url.Content("~/Content/Back/JavaScript/bootstrap.min.js")"></script>
+    @{
+        if (IsSectionDefined("FootJs"))
+        {
+        @RenderSection("FootJs")        
+        }
+    }
+</body>
+</html>

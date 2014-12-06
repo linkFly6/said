@@ -48,7 +48,7 @@ namespace Said.Models
         /// <summary>
         /// 是否转载（0:否 1：是）
         /// </summary>
-        public int SReprint { get; set; }
+        public bool SReprint { get; set; }
         /// <summary>
         /// 浏览量
         /// </summary>

@@ -1,0 +1,61 @@
+﻿.said-title-con { width: 90%; margin: 0 auto; }
+.said-title { border-width: 0 0 1px 0; width: 100%; padding: 15px; line-height: 40px; font-size: 2.4em; text-align: center; }
+.said-title, .said-context, .said-dis { box-shadow: none!important; }
+
+.said-context-content { padding: 20px 0; }
+.said-context { resize: none; border: 1px dashed #929596; border-width: 0 1px 1px; width: 99%; font: 16px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; line-height: 30px; text-align: justify; color: #222; overflow-y: visible!important; min-height: 400px; padding: 0 15px; }
+/*music*/
+.relative-container { position: relative; }
+    .relative-container:first-child { margin-bottom: 21px; }
+.input-group { margin: 10px 0; }
+
+.music-img { width: 210px; height: 210px; overflow: hidden; }
+    .music-img, .music-img img { display: block; margin: 0 auto; overflow: hidden; }
+        .music-img img { height: 200px; width: 200px; display: block; }
+        .music-img .thumbnail { margin-bottom: 0; }
+
+/*said-article*/
+.said-article { padding: 20px 0; }
+/*summary*/
+.said-dis { border: 3px solid #b0d7fe; display: block; height: 191px; overflow: hidden; padding-left: 25px; border-width: 0 0 0 3px; width: 100%; resize: none; }
+.line-layout { display: inline-block!important; width: auto; }
+/*more*/
+.deleteSong { width: 200px; float: right; }
+.said-submit { background-color: transparent; border-color: #563d7c; color: #563d7c; width: 200px; }
+    .said-submit:hover, .said-submit:focus { background-color: #563d7c; color: #FFF; }
+.submit-lock { background-color: #9973d4!important; border-color: #9973d4!important; color: #FFF; opacity: 0.7; cursor: no-drop; }
+.submit-container { padding: 20px 0 30px; border-top: 1px dashed #929596; }
+.panel-subTitle { border-top: 1px solid #ddd; border-radius: 0; }
+.error-check { text-align: center; padding: 5px 0 20px; }
+/*mask*/
+.said-mask { opacity: 0.8; content: ''; display: block; position: absolute; width: 100%; height: 100%; z-index: 3; cursor: pointer; background: #222 linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)); transition: opacity ease-in-out 0.2s; border: 1px solid black; }
+    .said-mask span { position: absolute; text-align: center; color: #ededed; font-size: 36px; display: block; width: 100%; top: 44.5%; }
+    .said-mask:hover { opacity: 0.6; }
+    .said-mask .progress { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; border-radius: 0; background-color: transparent; }
+.said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
+.said-error { border-color: #a94442!important; }
+
+/*query*/
+.queryInputBar { position: relative; }
+    .queryInputBar .form-control { border-radius: 0; }
+.querySelect { position: absolute; top: 34px; left: 0; z-index: 3; width: 100%; background-color: #FFF; border: 1px solid #b5b5b5; border-top: none; }
+    .querySelect .select-item { display: block; padding: 0 9px; line-height: 27px; color: #555; text-decoration: none; }
+        .querySelect .select-item:hover, .querySelect .active { background-color: #f3f3f3; }
+
+@keyframes maskError {
+    0% { color: #ededed; }
+    50% { color: yellow; }
+    100% { color: #ededed; }
+}
+/*media*/
+@media (max-width: 767px) {
+    .said-music { margin: 0 auto; width: auto; }
+    .music-info .input-group:first-child { margin: 15px 0 10px 0; }
+    .line-layout { display: block; width: 100%; }
+    .said-dis { width: 100%; margin: 20px 0; }
+    .said-submit, .deleteSong { width: 100%; }
+}
+
+@media (max-width:1693px) {
+    .summay-img, .music-img, .music-img img, .summay-img img { width: auto; height: auto; }
+}
