@@ -25,6 +25,7 @@ define(function () {
         return isObject(obj) && !isWindow(obj) && Object.getPrototypeOf(obj) == Object.prototype;
     }
     function isArrayLike(obj) {
+        if (obj == null) return false;
         var length = obj.length, t = type(obj);
         return t === 'array' || !isFunction(obj) &&
         (+length === length && //正数
@@ -150,7 +151,21 @@ define(function () {
                         res.push(tmp);
                     });
                 else if (arg != null)
-                    res.push(tmp);
+                    res.push(arg);
+            });
+            return res;
+        },
+        toArray: function () {
+            var res = [];
+            so.each(arguments, function (arg) {
+                if (isArray(arg))
+                    res.concat(arg);
+                else if (isArrayLike(arg) || isObject(arg))
+                    so.each(arg, function (tmp) {
+                        res.push(tmp);
+                    });
+                else if (arg != null)
+                    res.push(arg);
             });
             return res;
         },

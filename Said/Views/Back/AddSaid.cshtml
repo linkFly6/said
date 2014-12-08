@@ -1,6 +1,5 @@
 ﻿@model Said.Models.Article
 @{
-    ViewBag.Title = "AddSaid";
     Layout = "~/Views/Shared/_LayoutBack.cshtml";
 }
 
@@ -172,13 +171,11 @@
 
             }),
             //validate插件
-            formValidate = validate(window.saidForm, function (checked, key, value, pattern) {
-                if (this.tagName === 'INPUT' && this.type !== 'checkbox')
-                    checked ? this.parentNode.classList.remove('has-error') : this.parentNode.classList.add('has-error');
+            formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {
+                if (elem.tagName === 'INPUT' && elem.type !== 'checkbox')
+                    checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
                 else
-                    checked ? this.classList.remove('said-error') : this.classList.add('said-error');
-            }, function (checked, key, value, pattern) {
-
+                    checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
             });
             so('songDelete').on('click', function () {
                 songUpload.reset();
@@ -195,7 +192,10 @@
                               'NodeJS']);
             });
             _('submit').addEventListener('click', function () {
-
+                console.log(formValidate);
+                formValidate.test(function (elem, checked, key, value, pattern) {
+                    console.log(elem, checked, key, value, pattern);
+                });
             });
         });
     </script>
