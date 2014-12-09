@@ -34,7 +34,9 @@ define(['so'], function (so) {
     dataAttr = function (elem, callback) {
         //获取验证信息，返回一个动态的验证对象
         var res = {}, key;
-        if ((elem.getAttribute('data-validate') || elem.getAttribute("validate")) == null) return res;
+        if (elem.getAttribute('data-validate') == null) {//空字符串和null的冲突，无法简写
+            if (elem.getAttribute("validate") == null) return res;
+        }
         so.each(elem.attributes, function (attr) {//HTML 4.1
             key = attr.name.replace('data-', '').toLowerCase();
             if (globalAttrs.indexOf(key) !== -1)
@@ -123,8 +125,9 @@ define(['so'], function (so) {
     so.extend(Validate.prototype, {
         each: function (callback) {//[key,model]，this同样指向model
             if (!so.isFunction(callback)) return this;
-            var tmp;
-            so.each(this.keys, function (key) {
+            var tmp, self = this;
+            so.each(self.keys, function (key) {
+                tmp = self[key];
                 if (callback.call(tmp, key, tmp) === false) return false;
             });
             return this;

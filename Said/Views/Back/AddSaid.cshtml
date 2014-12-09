@@ -16,11 +16,11 @@
     {
         <div class="said-article">
             <div class="said-title-con">
-                @Html.TextBoxFor(Model => Model.STitle, new { @class = "said-title", @autocomplete = "off", @placeholder = "文章标题", @required = "", validate = "" })
+                @Html.TextBoxFor(Model => Model.STitle, new Dictionary<string, object>() { { "class", "said-title" }, { "autocomplete", "off" }, { "placeholder", "文章标题" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.error" } })
             </div>
             <div class="said-context-content">
                 <!-- said-error-->
-                @Html.TextAreaFor(Model => Model.SContext, new { @class = "said-context", required = "", @placeholder = "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！", validate = "" })
+                @Html.TextAreaFor(Model => Model.SContext, new Dictionary<string, object>() { { "class", "said-context" }, { "autocomplete", "off" }, { "placeholder", "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.error" } })
             </div>
         </div>
         <div class="row said-view-container">
@@ -48,7 +48,9 @@
                             <div class="music-info col-md-8">
                                 <div class="input-group">
                                     <span class="input-group-addon">歌曲</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongName, new { @class = "form-control music-input", placeholder = "歌曲名称", autocomplete = "off", required = "required", validate = "" })
+                                    <div class="queryInputBar">
+                                        @Html.TextBoxFor(Model => Model.Song.SongName, new Dictionary<string, object>() { { "class", "form-control music-input" }, { "autocomplete", "off" }, { "placeholder", "歌曲名称" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.query" } })
+                                    </div>
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon">专辑</span>
@@ -98,13 +100,15 @@
                     <div class="panel-body">
                         <div class="input-group">
                             <span class="input-group-addon">标签</span>
-                            <div class="queryInputBar" data-queryselect="">
-                                @Html.TextBoxFor(Model => Model.STag, new { @class = "form-control", placeholder = "标签，支持[、,空格]分隔", autocomplete = "off", required = "required", validate = "" })
+                            <div class="queryInputBar">
+                                @Html.TextBoxFor(Model => Model.STag, new Dictionary<string, object>() { { "class", "form-control" }, { "autocomplete", "off" }, { "placeholder", "标签，支持[、,空格]分隔" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.query" } })
                             </div>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon">分类</span>
-                            @Html.TextBoxFor(Model => Model.Classify.CLastBlogName, new { @class = "form-control", placeholder = "分类名称", autocomplete = "off", required = "required", validate = "" })
+                            <div class="queryInputBar">
+                                @Html.TextBoxFor(Model => Model.Classify.CLastBlogName, new Dictionary<string, object>() { { "class", "form-control" }, { "autocomplete", "off" }, { "placeholder", "分类名称" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.query" } })
+                            </div>
                         </div>
                     </div>
                     <div class="panel-heading panel-subTitle">可选信息</div>
@@ -163,6 +167,7 @@
             form: '/Back/AddSaid'
         };
         require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'said/addSaid'], function ($, so, search, validate, addSaid) {
+            //$(function () {
             var _ = function (id) {
                 return document.getElementById(id);
             },
@@ -170,33 +175,47 @@
             songUpload = addSaid.Upload('uploadSong', Action.song, [], function (value) {
 
             }),
-            //validate插件
-            formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {
-                if (elem.tagName === 'INPUT' && elem.type !== 'checkbox')
-                    checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
-                else
+            checkFns = {
+                'said.error': function (elem, checked, key, value, pattern) {
                     checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
+                },
+                'said.query': function (elem, checked, key, value, pattern) {
+                    checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
+                }
+            },
+            validateData = function (callback) {
+
+            },
+            //validate插件
+            temp,
+            formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {
+                if (temp = checkFns[elem.dataset.check]) //特殊的样式改变
+                    temp(elem, checked, key, value, pattern);
+                else//正常的样式改变
+                    checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
             });
             so('songDelete').on('click', function () {
                 songUpload.reset();
             });
             //search插件
-            $(function () {
-                search(_('STag'), ['javascript',
-                              'ECMAScript',
-                              'C#',
-                              '.NET',
-                              'jQuery',
-                              '.NET MVC',
-                              'Sql Server',
-                              'NodeJS']);
-            });
+
+            search(_('STag'), ['javascript',
+                          'ECMAScript',
+                          'C#',
+                          '.NET',
+                          'jQuery',
+                          '.NET MVC',
+                          'Sql Server',
+                          'NodeJS']);
+
             _('submit').addEventListener('click', function () {
                 console.log(formValidate);
                 formValidate.test(function (elem, checked, key, value, pattern) {
                     console.log(elem, checked, key, value, pattern);
+
                 });
             });
         });
+        //});
     </script>
 }
