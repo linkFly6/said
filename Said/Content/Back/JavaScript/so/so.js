@@ -24,6 +24,13 @@ define(function () {
     function isPlainObject(obj) {//判断是否是纯粹的js对象
         return isObject(obj) && !isWindow(obj) && Object.getPrototypeOf(obj) == Object.prototype;
     }
+    function isEmptyObject(obj) {//判断对象是否为空
+        var name;
+        for (name in obj) {
+            return false;
+        }
+        return true;
+    }
     function isArrayLike(obj) {
         if (obj == null) return false;
         var length = obj.length, t = type(obj);
@@ -125,6 +132,7 @@ define(function () {
         isDocument: isDocument,
         isObject: isObject,
         isPlainObject: isPlainObject,
+        isEmptyObject: isEmptyObject,
         isArrayLike: isArrayLike,
         isXML: function (doc) {
             return doc && doc.createElement && doc.createElement('P').nodeName !== doc.createElement('p').nodeName;

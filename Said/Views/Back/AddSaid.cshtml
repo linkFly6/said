@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            @Html.TextBoxFor(Model => Model.SSummary, new { @class = "said-dis", required = "required", placeholder = "简介[支持HTML]", validate = "" })
+                            @Html.TextBoxFor(Model => Model.SSummary, new Dictionary<string, object>() { { "class", "said-dis" }, { "autocomplete", "off" }, { "placeholder", "简介[支持HTML]" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.error" } })
                             <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="ac.deleteSaidImg()">删除</button>
                         </div>
 
@@ -134,15 +134,14 @@
             </div>
         </div>
         <div class="submit-container">
-            <div class="error-check">
+            <div class="error-check" id="errorTip">
                 发布前会进行错误检测
             </div>
             <div class="progress">
-                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%">
+                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0;" id="errorProgress">
                     <span class="sr-only">20% Complete</span>
                 </div>
             </div>
-
             <button class="btn btn-lg said-submit center-block" id="submit" type="submit">发布</button>
             <!--data-ng-class="{'submit-lock':!saidForm.$valid}"-->
         </div>
@@ -168,37 +167,18 @@
         };
         require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'said/addSaid'], function ($, so, search, validate, addSaid) {
             //$(function () {
-            var _ = function (id) {
-                return document.getElementById(id);
+            var _ = function (name) {
+                return document.getElementById(name);
             },
             //Upload组件
             songUpload = addSaid.Upload('uploadSong', Action.song, [], function (value) {
 
-            }),
-            checkFns = {
-                'said.error': function (elem, checked, key, value, pattern) {
-                    checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
-                },
-                'said.query': function (elem, checked, key, value, pattern) {
-                    checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
-                }
-            },
-            validateData = function (callback) {
-
-            },
-            //validate插件
-            temp,
-            formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {
-                if (temp = checkFns[elem.dataset.check]) //特殊的样式改变
-                    temp(elem, checked, key, value, pattern);
-                else//正常的样式改变
-                    checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
             });
             so('songDelete').on('click', function () {
                 songUpload.reset();
             });
-            //search插件
 
+            //search插件
             search(_('STag'), ['javascript',
                           'ECMAScript',
                           'C#',
@@ -208,12 +188,48 @@
                           'Sql Server',
                           'NodeJS']);
 
+            //form验证
+            var checkFns = {
+                'said.error': function (elem, checked, key, value, pattern) {
+                    checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
+                },
+                'said.query': function (elem, checked, key, value, pattern) {
+                    checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
+                }
+            },
+            temp,
+            validateData = function (elem, checked, key, value, pattern) {
+                if (temp = checkFns[elem.dataset.check]) //特殊的样式改变
+                    temp(elem, checked, key, value, pattern);
+                else//正常的样式改变
+                    checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
+            },
+            //validate插件
+            formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {
+                validateData(elem, checked, key, value, pattern);
+            }),
+            //表单验证进度
+            validateProgress = function () {
+                var length = formValidate.keys.length, index = 1, txt = _('errorTip'), progress = _('errorProgress');
+                return function (value) {
+                    if (value != null)
+                        index = value;
+                    progress.style.width = (index++ / length * 100) + '%';
+                    //console.log(index - 1, length, (index - 1) / length, (index - 1) / length * 100);
+                    txt.innerHTML = index > length ? (index = 1, '检测完毕，重新检测请再次点击') : '检测中';
+                };
+            }();
+            //form提交
             _('submit').addEventListener('click', function () {
                 console.log(formValidate);
-                formValidate.test(function (elem, checked, key, value, pattern) {
-                    console.log(elem, checked, key, value, pattern);
-
+                var checkResult = formValidate.test(function (elem, checked, key, value, pattern) {
+                    //console.log(elem, checked, key, value, pattern);
+                    validateProgress();
+                    validateData(elem, checked, key, value, pattern);
                 });
+                if (!checkResult) {
+                    //检测完毕，如果有错误应该清空检测进度，需要调整
+                }
             });
         });
         //});

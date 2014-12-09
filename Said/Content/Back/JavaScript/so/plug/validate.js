@@ -74,7 +74,7 @@ define(['so'], function (so) {
         if (!so.isFunction(listener)) return;
         elems.forEach(function (elem) {//循环表单项
             var attrs = dataAttr(elem), model;
-            if (!!attrs) {//判定对象是否是空
+            if (!so.isEmptyObject(attrs)) {//判定对象是否是空
                 model = self[elemName = elem.getAttribute('name')] = {};//建立model => ：Validate.Said={};
                 self.keys.push(elemName);
                 model.element = elem;
