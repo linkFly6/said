@@ -1,6 +1,6 @@
 ﻿'use strict';
 define(['jquery', 'so'], function ($, so) {
-    var Upload = function (elem, action, filters, callback, def) {
+    var Upload = function (elem, action, filters, callback) {
         //(要建立upload对象的元素/id,要上传的路径,过滤文件,上传成功后执行的回调函数,初始化给定的默认值)
         if (!(this instanceof Upload))
             return new Upload(elem, action, filters, callback, def);
@@ -70,14 +70,11 @@ define(['jquery', 'so'], function ($, so) {
         });
     };
     so.extend(Upload.prototype, {
-        //send: function () {
-
-        //},
         changeState: function (value) {
 
         },
-        reset: function () {
-            this.element.style.display = '';
+        toggle: function (isHide) {
+            this.element.style.display = isHide == true ? 'none' : '';
         }
     });
     return {

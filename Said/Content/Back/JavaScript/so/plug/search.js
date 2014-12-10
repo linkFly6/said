@@ -9,11 +9,13 @@ define(['../so'], function (so) {
         active: 'active'
         //id: null
         //, def: '没有检索到相关信息'
+        //,callback:function(){} - 参数[选中项的值，选中项的索引]，this指向选中项，返回值将作为选中项的值
     },
     query = function (data, value, def) {
         /*
         根据定义的数据查找
         支持['javascript','linkFly']和[{javascript:'jsjavascript','lf':'lflinkFly'}]
+        优化，预先把数据调整好，后面就不用再检测数据合法了
         */
         value = String(value).toLowerCase();
         var res = [];
@@ -77,6 +79,7 @@ define(['../so'], function (so) {
             len = 0,
             itemClass,
             activeClass = [itemClass = option.itemClass, option.active].join(' '),
+            callback = so.isFunction(option.callback) ? option.callback : false,//指定回调函数
             reset = function (isHide) {
                 active = null;
                 i = -1;
@@ -109,7 +112,7 @@ define(['../so'], function (so) {
                 case 13: {//enter
                     stop(e);//防止表单提交
                     if (!active) return false;
-                    elem.value = list[i];
+                    elem.value = callback ? String(callback.call(active, active.innerHTML, active.dataset.index)) : list[i];
                     reset(true);
                 } break;
                 default: {
@@ -135,7 +138,7 @@ define(['../so'], function (so) {
         //注册监听（如果注重移动端效果，则需要为每个元素注册）
         content.addEventListener('click', function (e) {
             if (e.target.nodeName === 'A') { //侦听到下面的a
-                elem.value = e.target.innerHTML;
+                elem.value = callback ? String(callback.call(e.target, e.target.innerHTML, e.target.index)) : e.target.innerHTML;
                 reset(true);
             }
         });
