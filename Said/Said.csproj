@@ -823,6 +823,7 @@
     <Content Include="Content\Back\JavaScript\require2-1-11.min.js" />
     <Content Include="Content\Back\JavaScript\said\addSaid.js" />
     <Content Include="Content\Back\JavaScript\said\FuckAngular.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\model.js" />
     <Content Include="Content\Back\JavaScript\so\plug\search.js" />
     <Content Include="Content\Back\JavaScript\so\plug\validate.js" />
     <Content Include="Content\Back\JavaScript\so\so.js" />

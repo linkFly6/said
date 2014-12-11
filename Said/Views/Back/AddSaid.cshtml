@@ -40,7 +40,7 @@
                                 <div class="music-img">
                                     <div class="thumbnail">
                                         <!--<img src="../../Content/Images/said-backgournd.jpg" />-->
-                                        <img src="../../Content/Images/UEDImg/demo-img6.jpg" />
+                                        <img src="../../Content/Images/UEDImg/demo-img6.jpg" id="songImg" />
                                         <!--<img src="../../Content/Images/testImg-Paramore.Ps.jpg" />-->
                                     </div>
                                 </div>
@@ -165,56 +165,70 @@
             song: '/Source/SaidSong',
             img: '/Source/SaidImg',
             form: '/Back/AddSaid'
-        };
-        require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'said/addSaid'], function ($, so, search, validate, addSaid) {
-            //$(function () {
-            var _ = function (name) {
-                return document.getElementById(name);
+        },
+        DataCenter = {
+            songs: {
+                'Flying Without Wings': 'fwwwestlife西城男孩',
+                'Home': 'homewestlife西城男孩',
+                'Yellow': 'Yellowcoldplay酷玩乐队',
+                'You Raise Me Up': 'yourraisemeupyouraisemeupwestlife西城男孩西域男孩'
             },
-            model = function () {
-                //是否以后扩展到so的核心？ TODO
-                var said = window.saidForm,
-                    elems = so.map(said.getElementsByTagName('input'), said.getElementsByTagName('textarea')), model = Object.create(null);
-                elems.forEach(function (elem) {
-                    var name = elem.getAttribute('name'), type = elem.type, special = type === 'checkbox' || type === 'radio';
-                    //需要针对这些特殊的元素特殊搞定：input-type:radio、input-type:checkbox、select
-                    if (name in model && special) {
-                        //检测出按组(radio)提交值的数据，原型链则hasOwnProperty()
-
-
-                    } else {
-                        Object.defineProperty(model, name, {//支持动态访问
-                            enumerable: true,
-                            value: elem.value,
-                            get: function () {
-                                return elem.value;
-                            },
-                            set: function (value) {
-                                elem.value = elem.value;
-                            }
-                        });
-                    }
-                });
-                return model;
-            }(),
-            //Upload组件
-            songUpload = addSaid.Upload('uploadSong', Action.song, [], function (value) {
-
-            });
-            so('songDelete').on('click', function () {
-                songUpload.reset();
-            });
-            //search插件
-            search(_('STag'), ['javascript',
+            songsData: {
+                'Flying Without Wings': {
+                    id: '1',
+                    name: 'Flying Without Wings',
+                    album: 'Face To Face',
+                    artist: 'Westlife',
+                    fileName: '0',
+                    img: './fww.jpg'
+                },
+                'Home': {
+                    id: '2',
+                    name: 'Home',
+                    album: 'Home',
+                    artist: 'Westlife',
+                    fileName: '1',
+                    img: 'h.jpg'
+                },
+                'Yellow': {
+                    id: '3',
+                    name: 'Yellow',
+                    album: 'Yellow',
+                    artist: 'Coldplay 酷玩',
+                    fileName: '2',
+                    img: 'yellow.jpg'
+                },
+                'You Raise Me Up': {
+                    id: '1',
+                    name: 'You Raise Me Up',
+                    album: 'Westlife - The Lovesongs',
+                    artist: 'WestLife',
+                    fileName: '3',
+                    img: 'yrmu.jpg'
+                }
+            },
+            tags: ['javascript',
                           'ECMAScript',
                           'C#',
                           '.NET',
                           'jQuery',
                           '.NET MVC',
                           'Sql Server',
-                          'NodeJS']);
+                          'NodeJS'],
+            classif: ['javascript', 'ECMAScript', 'jQuery', 'C#']
+        };
+        require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid'], function ($, so, search, validate, saidModel, addSaid) {
+            //$(function () {
+            var _ = function (name) {
+                return document.getElementById(name);
+            };
+            so('songDelete').on('click', function () {
+                songUpload.reset();
+            });
+            // => search插件
+            search(_('STag'), DataCenter.tags);
 
-            //form验证
+            // => form验证
             var checkFns = {
                 'said.error': function (elem, checked, key, value, pattern) {
                     checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
@@ -230,7 +244,7 @@
                 else//正常的样式改变
                     checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
             },
-            //validate插件
+            // => validate插件
             formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {
                 validateData(elem, checked, key, value, pattern);
             }),
@@ -257,23 +271,43 @@
                     }
                 }
             }();
-            var submitBtn = _('submit');//页面交互元素
 
-            //构建歌曲模型
+            // => 页面交互元素 => Model插件
+            var model = saidModel(window.saidForm),//根据表单构建表单Model，源于so.model
+                submitBtn = _('submit');
+
+            // => 构建歌曲模型
             //{mask:蒙板DOM,img:Img存放DOM, del:删除按钮, songs:歌曲,models：模型对象, model:初始化模型对象}
             var Song = function (mask, img, del, action, filters, songs, models, model) {
-                var content = _('songModel'),
-                    song = {
+                var upload = addSaid.Upload(mask, action, filters, function (value) {
 
-                    },
-                    upload = Upload(mask, action, filters, function (location) {
-
+                }),
+                    tmpModel,
+                    selectData = false,
+                    songName = search(model.get('Song.SongName'), songs, function (key) {
+                        //检查这两个方法调用了木有！！
+                        tmpModel = models[key];
+                        model['Song.SongName'] = tmpModel.name;
+                        model['Song.SongAlbum'] = tmpModel.album;
+                        model['Song.SongArtist'] = tmpModel.artist;
+                        model['Song.SongFileName'] = tmpModel.fileName;
+                        selectData = true;
+                    }, function () {
+                        selectData = false;
                     });
-                if (so.isPlainObj(model)) {
-                    model = {};//歌曲模型{}
-                }
-            }();
-
+                return {
+                    get: function () {
+                        return tmpModel;
+                    },
+                    state: function () {
+                        return selectData;
+                    },
+                    reset: function () {
+                        model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
+                        upload.toggle();
+                    }
+                };
+            }(_('uploadSong'), _('songImg'), _('songDelete'), Action.img, [''], DataCenter.songs, DataCenter.songsData, model);
             //form提交
             submitBtn.addEventListener('click', function () {
                 console.log(formValidate);

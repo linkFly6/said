@@ -3,7 +3,7 @@ define(['jquery', 'so'], function ($, so) {
     var Upload = function (elem, action, filters, callback) {
         //(要建立upload对象的元素/id,要上传的路径,过滤文件,上传成功后执行的回调函数,初始化给定的默认值)
         if (!(this instanceof Upload))
-            return new Upload(elem, action, filters, callback, def);
+            return new Upload(elem, action, filters, callback);
         elem = so(elem);
         var that = this,
             lock = false,

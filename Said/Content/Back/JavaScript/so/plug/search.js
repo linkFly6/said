@@ -9,13 +9,15 @@ define(['../so'], function (so) {
         active: 'active'
         //id: null
         //, def: '没有检索到相关信息'
-        //,callback:function(){} - 参数[选中项的值，选中项的索引]，this指向选中项，返回值将作为选中项的值
+        //,callback:function(){} - 参数[文本框的值，选中项的值，选中项的索引]，this指向选中项，返回值将作为选中项的值
+        //,listener:function(){} - 参数[event事件]，this指向文本框
     },
     query = function (data, value, def) {
         /*
         根据定义的数据查找
         支持['javascript','linkFly']和[{javascript:'jsjavascript','lf':'lflinkFly'}]
         优化，预先把数据调整好，后面就不用再检测数据合法了
+        以后要搞个能挂数据的格式...
         */
         value = String(value).toLowerCase();
         var res = [];
@@ -80,6 +82,7 @@ define(['../so'], function (so) {
             itemClass,
             activeClass = [itemClass = option.itemClass, option.active].join(' '),
             callback = so.isFunction(option.callback) ? option.callback : false,//指定回调函数
+            listener = so.isFunction(option.listener) ? option.listener : false,
             reset = function (isHide) {
                 active = null;
                 i = -1;
@@ -112,7 +115,7 @@ define(['../so'], function (so) {
                 case 13: {//enter
                     stop(e);//防止表单提交
                     if (!active) return false;
-                    elem.value = callback ? String(callback.call(active, active.innerHTML, active.dataset.index)) : list[i];
+                    elem.value = callback ? String(callback.call(active, elem.value, active.innerHTML, active.dataset.index)) : list[i];
                     reset(true);
                 } break;
                 default: {
@@ -133,7 +136,8 @@ define(['../so'], function (so) {
             list = query(data, this.value, option.def);
             (len = list.length) ?
                 (content.innerHTML = get(list, option), content.style.display = '') :
-                    (content.style.display = option.def == null ? 'none' : '')
+                    (content.style.display = option.def == null ? 'none' : '');
+            listener && listener.call(elem, e);
         });
         //注册监听（如果注重移动端效果，则需要为每个元素注册）
         content.addEventListener('click', function (e) {
@@ -145,15 +149,21 @@ define(['../so'], function (so) {
         return content;
     };
     return function (elem, data, option) {
+        //data支持对象和数组，option支持Function
         elem = document.getElementById(elem + '') || elem;
         if (!elem || elem.nodeType !== 1 || !so.isArrayLike(data)) return elem;
-        var option = so.extend({}, globalOption, option), content;
-        elem.insertAdjacentHTML('afterEnd', so.format(option.tmpContent, {
-            className: option.className || '',
-            id: option.id == null ? '' : 'id="' + option.id + '"',
+        var currOption = so.extend({}, globalOption, option), content;
+        if (so.isFunction(option)) {
+            currOption.callback = option;
+            if (arguments.length > 3 && so.isFunction(arguments[3]))
+                currOption.listener = arguments[4];
+        }
+        elem.insertAdjacentHTML('afterEnd', so.format(currOption.tmpContent, {
+            className: currOption.className || '',
+            id: currOption.id == null ? '' : 'id="' + currOption.id + '"',
             content: ''
         }));
-        register(elem, elem.nextElementSibling/*找到刚才生成的节点*/, data, option);
+        register(elem, elem.nextElementSibling/*找到刚才生成的节点*/, data, currOption);
         return elem;
     }
 });
