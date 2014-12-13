@@ -142,7 +142,7 @@ define(['../so'], function (so) {
         //注册监听（如果注重移动端效果，则需要为每个元素注册）
         content.addEventListener('click', function (e) {
             if (e.target.nodeName === 'A') { //侦听到下面的a
-                elem.value = callback ? String(callback.call(e.target, e.target.innerHTML, e.target.index)) : e.target.innerHTML;
+                elem.value = callback ? String(callback.call(e.target, elem.value, e.target.innerHTML, e.target.index)) : e.target.innerHTML;
                 reset(true);
             }
         });
@@ -151,7 +151,7 @@ define(['../so'], function (so) {
     return function (elem, data, option) {
         //data支持对象和数组，option支持Function
         elem = document.getElementById(elem + '') || elem;
-        if (!elem || elem.nodeType !== 1 || !so.isArrayLike(data)) return elem;
+        if (!elem || elem.nodeType !== 1 || !(so.isArrayLike(data) || so.isObject(data))) return elem;
         var currOption = so.extend({}, globalOption, option), content;
         if (so.isFunction(option)) {
             currOption.callback = option;

@@ -168,7 +168,7 @@
         },
         DataCenter = {
             songs: {
-                'Flying Without Wings': 'fwwwestlife西城男孩',
+                'Flying Without Wings': 'flyingfwwwestlife西城男孩',
                 'Home': 'homewestlife西城男孩',
                 'Yellow': 'Yellowcoldplay酷玩乐队',
                 'You Raise Me Up': 'yourraisemeupyouraisemeupwestlife西城男孩西域男孩'
@@ -284,14 +284,15 @@
                 }),
                     tmpModel,
                     selectData = false,
-                    songName = search(model.get('Song.SongName'), songs, function (key) {
+                    songName = search(model.get('Song.SongName'), songs, function (inputValue, value) {
                         //检查这两个方法调用了木有！！
-                        tmpModel = models[key];
+                        tmpModel = models[value];
                         model['Song.SongName'] = tmpModel.name;
                         model['Song.SongAlbum'] = tmpModel.album;
                         model['Song.SongArtist'] = tmpModel.artist;
                         model['Song.SongFileName'] = tmpModel.fileName;
                         selectData = true;
+                        return value;
                     }, function () {
                         selectData = false;
                     });
