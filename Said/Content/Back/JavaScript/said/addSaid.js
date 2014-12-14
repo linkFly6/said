@@ -36,9 +36,15 @@ define(['jquery', 'so'], function ($, so) {
                 data = new FormData();
             data.append('name', encodeURIComponent(name));
             data.append('fileId', id);
-            data.append('file', file.slice(0));
+            /*
+                参考：http://javascript.ruanyifeng.com/bom/ajax.html#toc1
+                formData对象append方法很碉堡...
+            */
+            data.append('saidImg', file.slice(0), encodeURIComponent(name));//
+
             xhr.open('post', action, true);
-            xhr.setRequestHeader("Content-Disposition", 'Content-Disposition: form-data; name="img"; filename="blob"');
+
+            //xhr.setRequestHeader("Content-Disposition", 'Content-Disposition: form-data; name="img"; filename="blob"');
             if (complex)
                 xhr.upload.addEventListener("progress", function (e) {
                     //上传中
@@ -46,29 +52,24 @@ define(['jquery', 'so'], function ($, so) {
                 }, false);
             xhr.onreadystatechange = function (e) {
                 if (xhr.readyState === 4) {
-                    if (xhr.readyState === 200) {
+                    if (xhr.status === 200) {
                         try {
-                            var json = JSON.parse(xhr.responseText);
-                            self.value = json;
+                            var data = JSON.parse(xhr.responseText);
+                            self.value = data;
+                            item.style.display = 'none';
+                            callback && callback.call(self, data);
                         } catch (e) {
                             //这是什么Error
-                            console.log('这是什么error', e);
+                            console.log('JSON数据转换失败');
                         }
                         //上传完成
                     } else {
 
                     }
-
-                } else {
-                    //逻辑应该放到上面
-                    item.style.display = 'none';
-                    callback && callback.call(self, self.value);
-                    //上传Error
-                    console.error('上传error', xhr);
+                    lock = false;
+                    if (complex)
+                        changeState(0);
                 }
-                lock = false;
-                if (complex)
-                    changeState(0);
             };
             xhr.send(data);
         });

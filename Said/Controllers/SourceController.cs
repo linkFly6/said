@@ -31,7 +31,7 @@ namespace Said.Controllers
 
         public JsonResult UploadSaidImg()
         {
-            HttpPostedFileBase file = Request.Files["img"];
+            HttpPostedFileBase file = Request.Files["saidImg"];
             if (file == null)
             {
                 return UploadResult(1, "没有文件");
@@ -53,7 +53,10 @@ namespace Said.Controllers
             newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
             filePath = dirPath + newFileName;
             file.SaveAs(filePath);
-            return UploadResult(0, "上传成功", filePath);
+
+            //分析上传的文件信息，返回解析得到的结果
+
+            return UploadResult(0, "上传成功", newFileName);
         }
         public ActionResult Index()
         {
