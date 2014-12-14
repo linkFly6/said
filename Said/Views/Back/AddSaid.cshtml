@@ -26,22 +26,21 @@
         <div class="row said-view-container">
             <div class="col-md-6">
                 <div class="panel panel-default relative-container">
-                    <div class="said-mask" id="uploadSong">
+                    @*  <div class="said-mask" id="uploadSong">
                         <span>上传歌曲</span>
                         <div class="progress">
                             <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info"></div>
                         </div>
                         @Html.TextBoxFor(Model => Model.Song.SongId, new { @class = "hidden-file", type = "file" })
-                    </div>
+                    </div>*@
                     <div class="panel-heading">歌曲</div>
                     <div class="panel-body" id="songModel">
                         <div class="afterClear">
                             <div class="col-md-4">
                                 <div class="music-img">
                                     <div class="thumbnail">
-                                        <!--<img src="../../Content/Images/said-backgournd.jpg" />-->
+                                        @Html.TextBoxFor(Model => Model.Song.SongId, new { @class = "song-imgUp", type = "file" })
                                         <img src="../../Content/Images/UEDImg/demo-img6.jpg" id="songImg" />
-                                        <!--<img src="../../Content/Images/testImg-Paramore.Ps.jpg" />-->
                                     </div>
                                 </div>
                             </div>
@@ -82,13 +81,13 @@
                         <div class="col-md-4">
                             <div class="music-img">
                                 <div class="thumbnail">
-                                    <img src="../../Content/Images/test-said-img.jpg" />
+                                    <img src="../../Content/Images/test-said-img.jpg" id="summaryImg" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-8">
                             @Html.TextBoxFor(Model => Model.SSummary, new Dictionary<string, object>() { { "class", "said-dis" }, { "autocomplete", "off" }, { "placeholder", "简介[支持HTML]" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.error" } })
-                            <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="ac.deleteSaidImg()">删除</button>
+                            <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete">删除</button>
                         </div>
 
                     </div>
@@ -107,7 +106,7 @@
                         <div class="input-group">
                             <span class="input-group-addon">分类</span>
                             <div class="queryInputBar">
-                                @Html.TextBoxFor(Model => Model.Classify.CLastBlogName, new Dictionary<string, object>() { { "class", "form-control" }, { "autocomplete", "off" }, { "placeholder", "分类名称" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.query" } })
+                                @Html.TextBoxFor(Model => Model.Classify.CName, new Dictionary<string, object>() { { "class", "form-control" }, { "autocomplete", "off" }, { "placeholder", "分类名称" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.query" } })
                             </div>
                         </div>
                     </div>
@@ -163,7 +162,7 @@
     <script type="text/javascript">
         var Action = {
             song: '/Source/SaidSong',
-            img: '/Source/SaidImg',
+            img: '@Url.Action("UploadSaidImg", "Source")',
             form: '/Back/AddSaid'
         },
         DataCenter = {
@@ -215,116 +214,142 @@
                           '.NET MVC',
                           'Sql Server',
                           'NodeJS'],
-            classif: ['javascript', 'ECMAScript', 'jQuery', 'C#']
+            classif: ['听说', 'linkFly', 'blog', '学习'],
+            imgFilters: ['jpg']
         };
         require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid'], function ($, so, search, validate, saidModel, addSaid) {
-            //$(function () {
-            var _ = function (name) {
-                return document.getElementById(name);
-            };
-            so('songDelete').on('click', function () {
-                songUpload.reset();
-            });
-            // => search插件
-            search(_('STag'), DataCenter.tags);
-
-            // => form验证
-            var checkFns = {
-                'said.error': function (elem, checked, key, value, pattern) {
-                    checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
-                },
-                'said.query': function (elem, checked, key, value, pattern) {
-                    checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
-                }
-            },
-            temp,
-            validateData = function (elem, checked, key, value, pattern) {
-                if (temp = checkFns[elem.dataset.check]) //特殊的样式改变
-                    temp(elem, checked, key, value, pattern);
-                else//正常的样式改变
-                    checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
-            },
-            // => validate插件
-            formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {
-                validateData(elem, checked, key, value, pattern);
-            }),
-            //表单验证进度
-            validateProgress = function () {
-                var length = formValidate.keys.length, index = 1, txt = _('errorTip'), progress = _('errorProgress');
-                return {
-                    run: function (value) {
-                        if (value != null)
-                            index = value;
-                        progress.style.width = (index++ / length * 100) + '%';
-                        txt.innerHTML = index > length ? '检测完毕，重新检测请再次点击' : '检测中';
-                    },
-                    reset: function () {
-                        index = 1;
-                        progress.style.width = '0%';
-                        txt.innerHTML = '点击进行错误检测';
-                    },
-                    toggleClass: function (className) {
-                        progress.className = className;
-                    },
-                    state: function () {
-                        return index === 1 ? false : true;
-                    }
-                }
-            }();
-
-            // => 页面交互元素 => Model插件
-            var model = saidModel(window.saidForm),//根据表单构建表单Model，源于so.model
-                submitBtn = _('submit');
-
-            // => 构建歌曲模型
-            //{mask:蒙板DOM,img:Img存放DOM, del:删除按钮, songs:歌曲,models：模型对象, model:初始化模型对象}
-            var Song = function (mask, img, del, action, filters, songs, models, model) {
-                var upload = addSaid.Upload(mask, action, filters, function (value) {
-                    //后续要用
-                }),
-                    tmpModel,
-                    selectData = false,
-                    songName = search(model.get('Song.SongName'), songs, function (inputValue, value) {
-                        //检查这两个方法调用了木有！！
-                        tmpModel = models[value];
-                        model['Song.SongName'] = tmpModel.name;
-                        model['Song.SongAlbum'] = tmpModel.album;
-                        model['Song.SongArtist'] = tmpModel.artist;
-                        model['Song.SongFileName'] = tmpModel.fileName;
-                        selectData = true;
-                        return value;
-                    }, function () {
-                        selectData = false;
-                    });
-                return {
-                    get: function () {
-                        return tmpModel;
-                    },
-                    state: function () {
-                        return selectData;
-                    },
-                    reset: function () {
-                        model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
-                        upload.toggle();
-                    }
+            $(function () {
+                var _ = function (name) {
+                    return document.getElementById(name);
                 };
-            }(_('uploadSong'), _('songImg'), _('songDelete'), Action.img, [''], DataCenter.songs, DataCenter.songsData, model);
-            //form提交
-            submitBtn.addEventListener('click', function () {
-                console.log(formValidate);
-                if (validateProgress.state()) {
-                    validateProgress.reset();
-                }
-                var checkResult = formValidate.test(function (elem, checked, key, value, pattern) {
-                    //console.log(elem, checked, key, value, pattern);
-                    validateProgress.run();
+                // => form验证
+                var checkFns = {
+                    'said.error': function (elem, checked, key, value, pattern) {
+                        checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
+                    },
+                    'said.query': function (elem, checked, key, value, pattern) {
+                        checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
+                    }
+                },
+                temp,
+                validateData = function (elem, checked, key, value, pattern) {
+                    if (temp = checkFns[elem.dataset.check]) //特殊的样式改变
+                        temp(elem, checked, key, value, pattern);
+                    else//正常的样式改变
+                        checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
+                },
+                formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {  // => validate插件
                     validateData(elem, checked, key, value, pattern);
+                }),
+                validateProgress = function () { //表单验证进度
+                    var length = formValidate.keys.length, index = 1, txt = _('errorTip'), progress = _('errorProgress');
+                    return {
+                        run: function (value) {
+                            if (value != null)
+                                index = value;
+                            progress.style.width = (index++ / length * 100) + '%';
+                            txt.innerHTML = index > length ? '检测完毕，重新检测请再次点击' : '检测中';
+                        },
+                        reset: function () {
+                            index = 1;
+                            progress.style.width = '0%';
+                            txt.innerHTML = '点击进行错误检测';
+                        },
+                        toggleClass: function (className) {
+                            progress.className = className;
+                        },
+                        state: function () {
+                            return index === 1 ? false : true;
+                        }
+                    }
+                }();
+
+                // => 页面交互元素 => Model插件
+                var model = saidModel(window.saidForm),//根据表单构建表单Model，源于so.model
+                    submitBtn = _('submit');
+
+                // => search插件
+                search(model.get('STag'), DataCenter.tags);
+                search(model.get('Classify.CName'), DataCenter.classif, function (inputValue, value) {
+                    return value;
+                }, function () {
+
                 });
-                if (!checkResult) {
-                    //检测完毕，如果有错误应该清空检测进度，需要调整
-                }
+
+                // => 构建歌曲模型
+                //{mask:蒙板DOM,img:Img存放DOM, del:删除按钮, songs:歌曲,models：模型对象, model:初始化模型对象}
+                var Song = function (mask, img, del, action, filters, songs, models, model) {
+                    var upload = addSaid.Upload(mask, action, filters, function (value) {
+                        //后续要用
+                    }),
+                        tmpModel,
+                        selectData = false,
+                        songName = search(model.get('Song.SongName'), songs, function (inputValue, value) {
+                            //检查这两个方法调用了木有！！
+                            tmpModel = models[value];
+                            model['Song.SongName'] = tmpModel.name;
+                            model['Song.SongAlbum'] = tmpModel.album;
+                            model['Song.SongArtist'] = tmpModel.artist;
+                            model['Song.SongFileName'] = tmpModel.fileName;
+                            img.src = tmpModel.img;
+                            selectData = tmpModel.id;
+                            return value;
+                        }, function () {
+                            selectData = false;
+                        });
+                    return {
+                        get: function () {
+                            return tmpModel;
+                        },
+                        model: function () {
+                            return { model: model, img: img };
+                        },
+                        data: function () {
+                            return selectData;
+                        },
+                        state: function () {
+                            return selectData;
+                        },
+                        reset: function () {
+                            model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
+                            img.src = "../../Content/Images/UEDImg/demo-img6.jpg";
+                            upload.toggle();
+                        }
+                    };
+                }('Song_SongId', _('songImg'), _('songDelete'), Action.img, DataCenter.imgFilters, DataCenter.songs, DataCenter.songsData, model);
+
+                (function (mask, img, action, del, filters) {
+                    var upload = addSaid.Upload(mask, action, filters, function (value) {
+                        //上传的value
+                        img.src = value;
+                    });
+                    del.addEventListener('click', function () {
+                        img.src = '../../Content/Images/test-said-img.jpg';
+                        upload.reset();
+                    });
+                })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters);
+
+                so('songDelete').on('click', function () {
+                    songUpload.reset();
+                });
+
+
+                //form提交
+                submitBtn.addEventListener('click', function () {
+                    console.log(formValidate);
+                    if (validateProgress.state()) {
+                        validateProgress.reset();
+                    }
+                    var checkResult = formValidate.test(function (elem, checked, key, value, pattern) {
+                        //console.log(elem, checked, key, value, pattern);
+                        validateProgress.run();
+                        validateData(elem, checked, key, value, pattern);
+                    });
+                    if (!checkResult) {
+                        //检测完毕，如果有错误应该清空检测进度，需要调整
+                    }
+                });
             });
         });
-        //});
     </script>
 }

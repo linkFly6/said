@@ -9,7 +9,7 @@ define(function () {
             if (!(this instanceof so))
                 return new so(selector);
             if (type(selector) === 'string') selector = document.getElementById(selector);
-            if (selector && selector.nodeType === 1 || selector.nodeType === 9)
+            if (selector && (selector.nodeType === 1 || selector.nodeType === 9))
                 push.call(this, selector);
         },
         type = function (obj) {

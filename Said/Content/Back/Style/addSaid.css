@@ -9,7 +9,7 @@
     .relative-container:first-child { margin-bottom: 21px; }
 .input-group { margin: 10px 0; }
 
-.music-img { width: 210px; height: 210px; overflow: hidden; }
+.music-img { width: 210px; height: 210px; overflow: hidden; position: relative; }
     .music-img, .music-img img { display: block; margin: 0 auto; overflow: hidden; }
         .music-img img { height: 200px; width: 200px; display: block; }
         .music-img .thumbnail { margin-bottom: 0; }
@@ -35,6 +35,8 @@
     .said-mask .progress { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; border-radius: 0; background-color: transparent; }
 .said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
 .said-error { border-color: #a94442!important; }
+/*song-img*/
+.song-imgUp { position: absolute; height: 100%; width: 100%; cursor: pointer; padding: 0; opacity: 0; }
 
 /*query*/
 .queryInputBar { position: relative; }

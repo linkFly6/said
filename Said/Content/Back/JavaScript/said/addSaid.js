@@ -6,13 +6,14 @@ define(['jquery', 'so'], function ($, so) {
             return new Upload(elem, action, filters, callback);
         elem = so(elem);
         var that = this,
-            lock = false,
             item = that.element = elem[0],
-            progress = that.progress = item.getElementsByClassName('progress-bar')[0],
+            complex = item.tagName === 'INPUT' ? false : true,
+            lock = false,
+            progress = that.progress = complex ? item.getElementsByClassName('progress-bar')[0] : false,
             changeState = function (value) {
                 progress.style.width = value + '%';
             };
-        that.input = item.getElementsByTagName('input')[0];
+        that.input = complex ? item.getElementsByTagName('input')[0] : item;
         that.value = '';
         that.input.addEventListener('click', function (e) {
             //e.preventDefault();
@@ -37,10 +38,12 @@ define(['jquery', 'so'], function ($, so) {
             data.append('fileId', id);
             data.append('file', file.slice(0));
             xhr.open('post', action, true);
-            xhr.upload.addEventListener("progress", function (e) {
-                //上传中
-                changeState(e.loaded / size * 100);
-            }, false);
+            xhr.setRequestHeader("Content-Disposition", 'Content-Disposition: form-data; name="img"; filename="blob"');
+            if (complex)
+                xhr.upload.addEventListener("progress", function (e) {
+                    //上传中
+                    changeState(e.loaded / size * 100);
+                }, false);
             xhr.onreadystatechange = function (e) {
                 if (xhr.readyState === 4) {
                     if (xhr.readyState === 200) {
@@ -64,7 +67,8 @@ define(['jquery', 'so'], function ($, so) {
                     console.error('上传error', xhr);
                 }
                 lock = false;
-                changeState(0);
+                if (complex)
+                    changeState(0);
             };
             xhr.send(data);
         });
@@ -77,6 +81,7 @@ define(['jquery', 'so'], function ($, so) {
             this.element.style.display = isHide == true ? 'none' : '';
         }
     });
+
     return {
         Upload: Upload
     };
