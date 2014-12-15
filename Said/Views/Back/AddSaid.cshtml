@@ -12,6 +12,19 @@
     <li class="active">添加Said</li>
 </ol>
 <div class="main-context">
+    <div class="modal fade" id="upStates">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+            </div>
+        </div>
+    </div>
     @using (Html.BeginForm("AddSaid", "Back", FormMethod.Post, new { spellcheck = "spellcheck", name = "saidForm", novalidate = "novalidate", OnSubmit = "return false;" }))
     {
         <div class="said-article">
@@ -216,7 +229,8 @@
                           'Sql Server',
                           'NodeJS'],
             classif: ['听说', 'linkFly', 'blog', '学习'],
-            imgFilters: ['jpg']
+            //MIME参考：http://www.w3school.com.cn/media/media_mimeref.asp
+            imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
         };
         require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid'], function ($, so, search, validate, saidModel, addSaid) {
             $(function () {
@@ -265,6 +279,20 @@
                     }
                 }();
 
+                //页面弹窗：
+                var dialog = function (model) {
+                    var titleElem = model.find('.modal-title')[0],
+                        body = model.find('.modal-body')[0];
+                    return function (title, context) {
+                        if (title != null)
+                            titleElem.innerHTML = title;
+                        if (context != null)
+                            body.innerHTML = context;
+                        return model.modal('show');
+                    };
+
+                }($('#upStates'));
+
                 // => 页面交互元素 => Model插件
                 var model = saidModel(window.saidForm),//根据表单构建表单Model，源于so.model
                     submitBtn = _('submit');
@@ -277,6 +305,8 @@
 
                 });
 
+
+
                 // => 构建歌曲模型
                 //{mask:蒙板DOM,img:Img存放DOM, del:删除按钮, songs:歌曲,models：模型对象, model:初始化模型对象}
                 var Song = function (mask, img, del, action, filters, songs, models, model) {
@@ -285,6 +315,18 @@
                             img.src = Action.imgLocation + data.url;
                         } else {
                             console.log(data.msg);
+                        }
+                    }, function (error, data) {
+                        switch (error.code) {
+                            case 1:
+                            case 2:
+                            case 4:
+                                dialog('上传异常', error.msg);
+                                break;
+                            case 3:
+                            default:
+                                dialog('服务器异常', '服务器响应异常');
+                                break;
                         }
                     }),
                         tmpModel,
@@ -328,15 +370,28 @@
                 }('Song_SongId', _('songImg'), _('songDelete'), Action.img, DataCenter.imgFilters, DataCenter.songs, DataCenter.songsData, model);
 
                 (function (mask, img, action, del, filters) {
-                    var upload = addSaid.Upload(mask, action, filters, function (value) {
+                    var upload = addSaid.Upload(mask, action, filters, function (value, state) {
                         //上传的value
-                        img.src = value;
+                        switch (state) {
+                            case 0:
+                                img.src = value;
+                                break;
+                            case 1:
+                                dialog();
+                                break;
+                            case 2:
+                            default:
+                                dialog();
+                                break;
+                        }
+
                     });
                     del.addEventListener('click', function () {
                         img.src = '../../Content/Images/test-said-img.jpg';
                         upload.reset();
                     });
                 })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters);
+
 
                 //form提交
                 submitBtn.addEventListener('click', function () {

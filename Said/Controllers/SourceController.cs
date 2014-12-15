@@ -40,6 +40,7 @@ namespace Said.Controllers
             {
                 return UploadResult(1, "上传文件大小超过限制");
             }
+            //file.InputStream可以获取到System.io.Stream对象，由此可以对文件进行hash加密运算
             string fileName = file.FileName,
             fileExt = Path.GetExtension(fileName).ToLower();//扩展名
             if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(IMGFILTERARRAY, fileExt.Substring(1).ToLower()) == -1)

@@ -38,30 +38,29 @@ namespace Said.Common
         /// <returns>返回文件类型（后缀名）的枚举，不是已知的文件类型返回FileExtendsion.unknown</returns>
         public static FileExtendsion GetExtension(string path)
         {
-            FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
-            BinaryReader r = new BinaryReader(fs);
-            string fileclass = "",
-            ext = string.Empty;
-            byte buffer;
-            try
+            using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
-                buffer = r.ReadByte();
-                fileclass = buffer.ToString();
-                buffer = r.ReadByte();
-                fileclass += buffer.ToString();
-            }
-            catch
-            {
-                return FileExtendsion.unknown;
-            }
-            finally
-            {
-                r.Close();
-                fs.Close();
-            }
-            foreach (FileExtendsion item in Enum.GetValues(typeof(FileExtendsion)))
-            {
-                if (item.ToString() == fileclass) return item;
+                using (BinaryReader r = new BinaryReader(fs))
+                {
+                    string fileclass = "",
+                    ext = string.Empty;
+                    byte buffer;
+                    try
+                    {
+                        buffer = r.ReadByte();
+                        fileclass = buffer.ToString();
+                        buffer = r.ReadByte();
+                        fileclass += buffer.ToString();
+                    }
+                    catch
+                    {
+                        return FileExtendsion.unknown;
+                    }
+                    foreach (FileExtendsion item in Enum.GetValues(typeof(FileExtendsion)))
+                    {
+                        if (item.ToString() == fileclass) return item;
+                    }
+                }
             }
             return FileExtendsion.unknown;
         }
