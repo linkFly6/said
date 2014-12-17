@@ -7,7 +7,7 @@
         output = window.Markdown;
         Converter = output.Converter;
     }
-        
+
     output.getSanitizingConverter = function () {
         var converter = new Converter();
         converter.hooks.chain("postConversion", sanitizeHtml);
@@ -19,16 +19,23 @@
         return html.replace(/<[^>]*>?/gi, sanitizeTag);
     }
 
+    //在这里会净化生成的html代码，如果想要解开某些标签的净化修改正则即可，sanitizeHtml()方法是入口
     // (tags that can be opened/closed) | (tags that stand alone)
-    var basic_tag_whitelist = /^(<\/?(b|blockquote|code|del|dd|dl|dt|em|h1|h2|h3|i|kbd|li|ol(?: start="\d+")?|p|pre|s|sup|sub|strong|strike|ul)>|<(br|hr)\s?\/?>)$/i;
+    var basic_tag_whitelist = /^(<\/?(div|b|blockquote|code|del|dd|dl|dt|em|h1|h2|h3|i|kbd|li|ol(?: start="\d+")?|p|pre|s|sup|sub|strong|strike|ul)(\s(?:style|class)=['"][^'"]*['"])?>|<(br|hr)\s?\/?>)$/i;
+    //var basic_tag_whitelist = /^(<\/?(b|blockquote|code|del|dd|dl|dt|em|h1|h2|h3|i|kbd|li|ol(?: start="\d+")?|p|pre|s|sup|sub|strong|strike|ul) >|<(br|hr)\s?\/?>)$/i;原标签过滤会过的很凶残，不支持属性，这里支持class和style
+
     // <a href="url..." optional title>|</a>
     var a_white = /^(<a\shref="((https?|ftp):\/\/|\/)[-A-Za-z0-9+&@#\/%?=~_|!:,.;\(\)*[\]$]+"(\stitle="[^"<>]+")?\s?>|<\/a>)$/i;
 
     // <img src="url..." optional width  optional height  optional alt  optional title
     var img_white = /^(<img\ssrc="(https?:\/\/|\/)[-A-Za-z0-9+&@#\/%?=~_|!:,.;\(\)*[\]$]+"(\swidth="\d{1,3}")?(\sheight="\d{1,3}")?(\salt="[^"<>]*")?(\stitle="[^"<>]*")?\s?\/?>)$/i;
 
+    /*
+        linkFly追加：
+    */
+    var code_white = /<code\sclass=['"][^'"]*['"]>/i;
     function sanitizeTag(tag) {
-        if (tag.match(basic_tag_whitelist) || tag.match(a_white) || tag.match(img_white))
+        if (tag.match(basic_tag_whitelist) || tag.match(a_white) || tag.match(img_white) || tag.match(code_white))
             return tag;
         else
             return "";
