@@ -2031,6 +2031,17 @@
     <Content Include="UED\Back\Frmework\js\markdown-js-0.5.0\test\interface.t.js" />
     <Content Include="UED\Back\Frmework\js\markdown-js-0.5.0\test\regressions.t.js" />
     <Content Include="UED\Back\Frmework\js\npm.js" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\demo\browser\demo.css" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\demo\browser\demo.html" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\demo\node\demo.js" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\LICENSE.txt" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\local\Markdown.local.fr.js" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\Markdown.Converter.js" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\Markdown.Editor.js" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\Markdown.Sanitizer.js" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\node-pagedown.js" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\README.txt" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\wmd-buttons.png" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.min.js" />
     <Content Include="UED\Back\Frmework\js\said\addSaid.js" />
@@ -2267,6 +2278,7 @@
     <Content Include="UED\Back\MarkdownTest.html" />
     <Content Include="UED\Back\Index.html" />
     <Content Include="UED\Back\LearningNg.html" />
+    <Content Include="UED\Back\PageDownTest.html" />
     <Content Include="UED\Back\SaidCenter.html" />
     <Content Include="UED\Back\SaidList.html" />
     <Content Include="UED\Back\AddSaid.html" />
@@ -4932,6 +4944,10 @@
     <Content Include="UED\Back\Frmework\js\highlight\LICENSE" />
     <Content Include="UED\Back\Frmework\js\highlight\README.md" />
     <Content Include="UED\Back\Frmework\js\highlight\README.ru.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UED\Back\Frmework\js\pagedown-master\package.json" />
+    <Content Include="UED\Back\Frmework\js\pagedown-master\resources\wmd-buttons.psd" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

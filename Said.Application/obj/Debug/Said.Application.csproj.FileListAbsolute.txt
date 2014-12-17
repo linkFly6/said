@@ -12,3 +12,17 @@ F:\Github\Said\Said.Application\bin\Debug\PagedList.xml
 F:\Github\Said\Said.Application\bin\Debug\zh-Hans\EntityFramework.resources.dll
 F:\Github\Said\Said.Application\obj\Debug\Said.Application.dll
 F:\Github\Said\Said.Application\obj\Debug\Said.Application.pdb
+D:\Git\Said\Said.Application\bin\Debug\Said.Application.dll
+D:\Git\Said\Said.Application\bin\Debug\Said.Application.pdb
+D:\Git\Said\Said.Application\bin\Debug\Said.Domain.dll
+D:\Git\Said\Said.Application\bin\Debug\Said.Infrastructure.dll
+D:\Git\Said\Said.Application\bin\Debug\EntityFramework.dll
+D:\Git\Said\Said.Application\bin\Debug\PagedList.dll
+D:\Git\Said\Said.Application\bin\Debug\Said.Domain.pdb
+D:\Git\Said\Said.Application\bin\Debug\Said.Infrastructure.pdb
+D:\Git\Said\Said.Application\bin\Debug\EntityFramework.xml
+D:\Git\Said\Said.Application\bin\Debug\PagedList.xml
+D:\Git\Said\Said.Application\bin\Debug\zh-Hans\EntityFramework.resources.dll
+D:\Git\Said\Said.Application\obj\Debug\Said.Application.csprojResolveAssemblyReference.cache
+D:\Git\Said\Said.Application\obj\Debug\Said.Application.dll
+D:\Git\Said\Said.Application\obj\Debug\Said.Application.pdb
