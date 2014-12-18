@@ -101,7 +101,24 @@ define(['jquery', 'so'], function ($, so) {
     });
 
     return {
-        Upload: Upload
+        Upload: Upload,
+        submit: function (data, action, done, fail) {
+            //data是FormData对象
+            var xhr = new XMLHttpRequest();
+            xhr.open('post', action);
+            xhr.onreadystatechange = function (e) {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var data = xhr.responseText;
+                        done(data, xhr);
+                    } else {
+                        //提交失败
+                        fail(xhr);
+                    }
+                }
+            }
+            xhr.send(data);
+        }
     };
 
     //$('._menuHover').each(function (i) {

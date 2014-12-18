@@ -71,8 +71,8 @@ define(['../so'], function (so) {
                 set: set
             });
         });
-        if (!so.isPlainObject(radioCaches)) {
-            $.each(radioCaches, function (name, radios) {
+        if (!so.isPlainObject(radioCaches)) {//radio需要特殊处理
+            so.each(radioCaches, function (name, radios) {
                 var len = radios;
                 Object.defineProperty(model, name, {
                     enumerable: true,
@@ -109,9 +109,24 @@ define(['../so'], function (so) {
 
             });
         }
+        model.each = function (callback) {
+            if (!so.isFunction(callback)) return model;
+            so.each(model, function (name, value) {
+                if (!so.isFunction(value))
+                    return callback.call(model, name, value);
+            });
+            return model;
+        };
         model.get = function (name) {
             return elements[name] || null;
-        }
+        };
+        model.serialize = function () {
+            var res = Object.create(null);
+            model.each(function (name, value) {
+                res[name] = value;
+            });
+            return res;
+        };
         return model;
     };
     return Model;

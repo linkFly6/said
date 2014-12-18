@@ -58,6 +58,12 @@ var test=function(){
             view.innerHTML = converter.makeHtml(this.value);
             hljs.highlightBlock(view);
         });
+        input.addEventListener('keydown', function (e) {
+            if (e.keyCode === 9) {
+                e.preventDefault();
+            }
+            return false;
+        });
         view.innerHTML = converter.makeHtml(input.value);
     </script>
 </body>
