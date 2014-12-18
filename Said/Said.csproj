@@ -2046,6 +2046,18 @@
     <Content Include="UED\Back\Frmework\js\require2-1-11.min.js" />
     <Content Include="UED\Back\Frmework\js\said\addSaid.js" />
     <Content Include="UED\Back\Frmework\js\said\FuckAngular.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\compressed\extensions\github.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\compressed\extensions\prettify.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\compressed\extensions\table.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\compressed\extensions\twitter.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\compressed\showdown.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\license.txt" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\src\extensions\github.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\src\extensions\prettify.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\src\extensions\table.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\src\extensions\twitter.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\src\showdown.js" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\src\showdown.min.js" />
     <Content Include="UED\Back\Frmework\js\so\so.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\search.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\validate.js" />
@@ -2275,6 +2287,7 @@
     <Content Include="UED\Back\Frmework\js\zrender-master\test\testArea.html" />
     <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.js" />
     <Content Include="UED\Back\Frmework\Login.html" />
+    <Content Include="UED\Back\ShowDownTest.html" />
     <Content Include="UED\Back\MarkdownTest.html" />
     <Content Include="UED\Back\Index.html" />
     <Content Include="UED\Back\LearningNg.html" />
@@ -4948,6 +4961,11 @@
   <ItemGroup>
     <Content Include="UED\Back\Frmework\js\pagedown-master\package.json" />
     <Content Include="UED\Back\Frmework\js\pagedown-master\resources\wmd-buttons.psd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UED\Back\Frmework\js\showdown-master\.travis.yml" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\package.json" />
+    <Content Include="UED\Back\Frmework\js\showdown-master\README.md" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
