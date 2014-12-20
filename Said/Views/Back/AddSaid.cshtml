@@ -232,207 +232,222 @@
             //MIME参考：http://www.w3school.com.cn/media/media_mimeref.asp
             imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
         };
-        require(['jquery', 'so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid'], function ($, so, search, validate, saidModel, addSaid) {
-            $(function () {
-                var _ = function (name) {
-                    return document.getElementById(name);
-                };
-                // => form验证
-                var checkFns = {
-                    'said.error': function (elem, checked, key, value, pattern) {
-                        checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
-                    },
-                    'said.query': function (elem, checked, key, value, pattern) {
-                        checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
-                    }
-                },
-                temp,
-                validateData = function (elem, checked, key, value, pattern) {
-                    if (temp = checkFns[elem.dataset.check]) //特殊的样式改变
-                        temp(elem, checked, key, value, pattern);
-                    else//正常的样式改变
-                        checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
-                },
-                formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {  // => validate插件
-                    validateData(elem, checked, key, value, pattern);
-                }),
-                validateProgress = function () { //表单验证进度
-                    var length = formValidate.keys.length, index = 1, txt = _('errorTip'), progress = _('errorProgress');
-                    return {
-                        run: function (value) {
-                            if (value != null)
-                                index = value;
-                            progress.style.width = (index++ / length * 100) + '%';
-                            txt.innerHTML = index > length ? '检测完毕，重新检测请再次点击' : '检测中';
-                        },
-                        reset: function () {
-                            index = 1;
-                            progress.style.width = '0%';
-                            txt.innerHTML = '点击进行错误检测';
-                        },
-                        toggleClass: function (className) {
-                            progress.className = className;
-                        },
-                        state: function () {
-                            return index === 1 ? false : true;
-                        }
-                    }
-                }();
-
-                //页面弹窗：
-                var dialog = function (model) {
-                    var titleElem = model.find('.modal-title')[0],
-                        body = model.find('.modal-body')[0];
-                    return function (title, context) {
-                        if (title != null)
-                            titleElem.innerHTML = title;
-                        if (context != null)
-                            body.innerHTML = context;
-                        return model.modal('show');
-                    };
-
-                }($('#upStates'));
-
-                // => 页面交互元素 => Model插件
-                var model = saidModel(window.saidForm),//根据表单构建表单Model，源于so.model
-                    submitBtn = _('submit');
-
-                // => search插件
-                search(model.get('STag'), DataCenter.tags);
-                search(model.get('Classify.CName'), DataCenter.classif, function (inputValue, value) {
-                    return value;
-                }, function () {
-
-                });
-
-
-
-                // => 构建歌曲模型
-                //{mask:蒙板DOM,img:Img存放DOM, del:删除按钮, songs:歌曲,models：模型对象, model:初始化模型对象}
-                var uploadErrorHandle = function (error, data) {
-                    switch (error.code) {
-                        case 1:
-                        case 2:
-                        case 4:
-                            dialog('上传异常', error.msg);
-                            break;
-                        case 3:
-                        default:
-                            dialog('服务器异常', '服务器响应异常');
-                            break;
-                    }
-                },
-                // =-> 歌曲上传
-                Song = function (mask, img, del, action, filters, songs, models, model) {
-                    var upload = addSaid.Upload(mask, action, filters, function (data) {
-                        if (data.error === 0) {//ok
-                            img.src = Action.imgLocation + data.url;
-                        } else {
-                            console.log(data.msg);
-                        }
-                    }, uploadErrorHandle),
-                        tmpModel,
-                        selectData = false,
-                        songName = search(model.get('Song.SongName'), songs, function (inputValue, value) {
-                            //检查这两个方法调用了木有！！
-                            tmpModel = models[value];
-                            model['Song.SongName'] = tmpModel.name;
-                            model['Song.SongAlbum'] = tmpModel.album;
-                            model['Song.SongArtist'] = tmpModel.artist;
-                            model['Song.SongFileName'] = tmpModel.fileName;
-                            img.src = tmpModel.img;
-                            selectData = tmpModel.id;
-                            return value;
-                        }, function () {
-                            selectData = false;
-                        }),
-                         reset = function () {
-                             model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
-                             img.src = "../../Content/Images/UEDImg/demo-img6.jpg";
-                             upload.toggle();
-                         };
-                    del.addEventListener('click', function () {
-                        reset();
-                    });
-                    return {
-                        get: function () {
-                            return tmpModel;
-                        },
-                        model: function () {
-                            return { model: model, img: img };
-                        },
-                        data: function () {
-                            return selectData;
-                        },
-                        state: function () {
-                            return !!selectData;
-                        },
-                        reset: reset
-                    };
-                }('Song_SongId', _('songImg'), _('songDelete'), Action.img, DataCenter.imgFilters, DataCenter.songs, DataCenter.songsData, model);
-                // => 缩略图
-                (function (mask, img, action, del, filters, def) {
-                    var value,
-                        upload = addSaid.Upload(mask, action, filters, function (data, state) {
-                            //上传的value
-                            if (data.error === 0) {//ok
-                                img.src = Action.imgLocation + (value = data.url);
-                            } else {
-                                console.log(data.msg);
-                            }
-                        }, uploadErrorHandle);
-                    del.addEventListener('click', function () {
-                        img.src = '../../Content/Images/test-said-img.jpg';
-                        upload.reset();
-                    });
-                    if (def)
-                        img.src = Action.imgLocation + (value = def);
-                    return {
-                        val: function () {
-                            return value;
-                        }
-                    };
-                })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters);
-                //发布
-
-
-                var lock = false;
-                //form提交
-                submitBtn.addEventListener('click', function () {
-                    //console.log(formValidate);
-                    console.log(model);
-                    if (lock) return false;
-                    if (validateProgress.state()) {
-                        validateProgress.reset();
-                    }
-                    var checkResult = formValidate.test(function (elem, checked, key, value, pattern) {
-                        //console.log(elem, checked, key, value, pattern);
-                        validateProgress.run();
-                        validateData(elem, checked, key, value, pattern);
-                    });
-                    if (!checkResult) {
-                        //检测完毕，如果有错误应该清空检测进度，需要调整
-                    } else {
-                        submitBtn.classList.add('submit-lock');
-                        submitBtn.innerHTML = '发布中';
-                        lock = true;
-                        var data = new FormData();
-                        model.each(function (name, value) {
-                            data.append(name, value);
-                        });
-                        //data.SHTML = '';
-                        if (Song.state()) {
-                            //选择了歌曲，而不是新增歌曲
-                            data.append('Song.SSongId', Song.data);
-                        }
-                        addSaid.submit(data, Action.form, function (data, xhr) {
-
-                        }, function () {
-
-                        });
-                    }
-                });
-            });
+        require(['so'], function ($) {
+            alert('test');
         });
+
+        //require(['jquery', 'so', 'so-1.0/plug/search', 'so-1.0/plug/validate', 'so-1.0/plug/model', 'said/addSaid'], function ($, so, search, validate, saidModel, addSaid) {
+        //    $(function () {
+        //        var _ = function (name) {
+        //            return document.getElementById(name);
+        //        };
+        //        // => form验证
+        //        var checkFns = {
+        //            'said.error': function (elem, checked, key, value, pattern) {
+        //                checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
+        //            },
+        //            'said.query': function (elem, checked, key, value, pattern) {
+        //                checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
+        //            }
+        //        },
+        //        temp,
+        //        validateData = function (elem, checked, key, value, pattern) {
+        //            if (temp = checkFns[elem.dataset.check]) //特殊的样式改变
+        //                temp(elem, checked, key, value, pattern);
+        //            else//正常的样式改变
+        //                checked ? elem.parentNode.classList.remove('has-error') : elem.parentNode.classList.add('has-error');
+        //        },
+        //        formValidate = validate(window.saidForm, function (elem, checked, key, value, pattern) {  // => validate插件
+        //            validateData(elem, checked, key, value, pattern);
+        //        }),
+        //        validateProgress = function () { //表单验证进度
+        //            var length = formValidate.keys.length, index = 1, txt = _('errorTip'), progress = _('errorProgress');
+        //            return {
+        //                run: function (value) {
+        //                    if (value != null)
+        //                        index = value;
+        //                    progress.style.width = (index++ / length * 100) + '%';
+        //                    txt.innerHTML = index > length ? '检测完毕，重新检测请再次点击' : '检测中';
+        //                },
+        //                reset: function () {
+        //                    index = 1;
+        //                    progress.style.width = '0%';
+        //                    txt.innerHTML = '点击进行错误检测';
+        //                },
+        //                toggleClass: function (className) {
+        //                    progress.className = className;
+        //                },
+        //                state: function () {
+        //                    return index === 1 ? false : true;
+        //                }
+        //            }
+        //        }();
+
+        //        //页面弹窗：
+        //        var dialog = function (model) {
+        //            var titleElem = model.find('.modal-title')[0],
+        //                body = model.find('.modal-body')[0];
+        //            return function (title, context) {
+        //                if (title != null)
+        //                    titleElem.innerHTML = title;
+        //                if (context != null)
+        //                    body.innerHTML = context;
+        //                return model.modal('show');
+        //            };
+
+        //        }($('#upStates'));
+
+        //        // => 页面交互元素 => Model插件
+        //        var model = saidModel(window.saidForm),//根据表单构建表单Model，源于so.model
+        //            submitBtn = _('submit');
+
+
+        //        var TagSelect = function (elem, data) {
+        //            // => tag的选择需要针对search插件进行扩展
+        //            search(elem, data, {
+        //                def: '没有检索到相关信息',
+        //                callback: function (inputValue, selectValue) {
+        //                    return selectValue;
+        //                }, listener: function () {
+
+        //                }
+        //            })
+        //        }(model.get('STag'), DataCenter.tags);
+        //        search(model.get('Classify.CName'), DataCenter.classif, function (inputValue, value) {
+        //            //分类的选择相对简单
+        //            return value;
+        //        }, function () {
+
+        //        });
+
+
+        //        // => 构建歌曲模型
+        //        //{mask:蒙板DOM,img:Img存放DOM, del:删除按钮, songs:歌曲,models：模型对象, model:初始化模型对象}
+        //        var uploadErrorHandle = function (error, data) {
+        //            switch (error.code) {
+        //                case 1:
+        //                case 2:
+        //                case 4:
+        //                    dialog('上传异常', error.msg);
+        //                    break;
+        //                case 3:
+        //                default:
+        //                    dialog('服务器异常', '服务器响应异常');
+        //                    break;
+        //            }
+        //        },
+        //        // =-> 歌曲上传
+        //        Song = function (mask, img, del, action, filters, songs, models, model) {
+        //            var upload = addSaid.Upload(mask, action, filters, function (data) {
+        //                if (data.error === 0) {//ok
+        //                    img.src = Action.imgLocation + data.url;
+        //                } else {
+        //                    console.log(data.msg);
+        //                }
+        //            }, uploadErrorHandle),
+        //                tmpModel,
+        //                selectData = false,
+        //                songName = search(model.get('Song.SongName'), songs, function (inputValue, value) {
+        //                    //检查这两个方法调用了木有！！
+        //                    tmpModel = models[value];
+        //                    model['Song.SongName'] = tmpModel.name;
+        //                    model['Song.SongAlbum'] = tmpModel.album;
+        //                    model['Song.SongArtist'] = tmpModel.artist;
+        //                    model['Song.SongFileName'] = tmpModel.fileName;
+        //                    img.src = tmpModel.img;
+        //                    selectData = tmpModel.id;
+        //                    return value;
+        //                }, function () {
+        //                    selectData = false;
+        //                }),
+        //                 reset = function () {
+        //                     model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
+        //                     img.src = "../../Content/Images/UEDImg/demo-img6.jpg";
+        //                     upload.toggle();
+        //                 };
+        //            del.addEventListener('click', function () {
+        //                reset();
+        //            });
+        //            return {
+        //                get: function () {
+        //                    return tmpModel;
+        //                },
+        //                model: function () {
+        //                    return { model: model, img: img };
+        //                },
+        //                data: function () {
+        //                    return selectData;
+        //                },
+        //                state: function () {
+        //                    return !!selectData;
+        //                },
+        //                reset: reset
+        //            };
+        //        }('Song_SongId', _('songImg'), _('songDelete'), Action.img, DataCenter.imgFilters, DataCenter.songs, DataCenter.songsData, model);
+        //        // => 缩略图
+        //        (function (mask, img, action, del, filters, def) {
+        //            var value,
+        //                upload = addSaid.Upload(mask, action, filters, function (data, state) {
+        //                    //上传的value
+        //                    if (data.error === 0) {//ok
+        //                        img.src = Action.imgLocation + (value = data.url);
+        //                    } else {
+        //                        console.log(data.msg);
+        //                    }
+        //                }, uploadErrorHandle);
+        //            del.addEventListener('click', function () {
+        //                img.src = '../../Content/Images/test-said-img.jpg';
+        //                upload.reset();
+        //            });
+        //            if (def)
+        //                img.src = Action.imgLocation + (value = def);
+        //            return {
+        //                val: function () {
+        //                    return value;
+        //                }
+        //            };
+        //        })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters);
+        //        //发布
+
+
+        //        var lock = false;
+        //        //form提交
+        //        submitBtn.addEventListener('click', function () {
+        //            //console.log(formValidate);
+        //            console.log(model);
+        //            if (lock) return false;
+        //            if (validateProgress.state()) {
+        //                validateProgress.reset();
+        //            }
+        //            var checkResult = formValidate.test(function (elem, checked, key, value, pattern) {
+        //                //console.log(elem, checked, key, value, pattern);
+        //                validateProgress.run();
+        //                validateData(elem, checked, key, value, pattern);
+        //            });
+        //            if (!checkResult) {
+        //                //检测完毕，如果有错误应该清空检测进度，需要调整
+        //            } else {
+        //                submitBtn.classList.add('submit-lock');
+        //                submitBtn.innerHTML = '发布中';
+        //                lock = true;
+        //                var data = new FormData();
+        //                model.each(function (name, value) {
+        //                    data.append(name, value);
+        //                });
+        //                //data.SHTML = '';
+        //                if (Song.state()) {
+        //                    //选择了歌曲，而不是新增歌曲
+        //                    data.append('Song.SSongId', Song.data);
+
+        //                }
+        //                addSaid.submit(data, Action.form, function (data, xhr) {
+
+        //                }, function () {
+
+        //                });
+        //            }
+        //        });
+        //    });
+        //});
     </script>
 }

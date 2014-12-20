@@ -2058,6 +2058,7 @@
     <Content Include="UED\Back\Frmework\js\showdown-master\src\extensions\twitter.js" />
     <Content Include="UED\Back\Frmework\js\showdown-master\src\showdown.js" />
     <Content Include="UED\Back\Frmework\js\showdown-master\src\showdown.min.js" />
+    <Content Include="UED\Back\Frmework\js\so\plug\model.js" />
     <Content Include="UED\Back\Frmework\js\so\so.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\search.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\validate.js" />

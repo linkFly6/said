@@ -1,5 +1,19 @@
 ﻿'use strict';
-define(function () {
+(function (global, factory) {
+    //兼容node/commonJs
+    if (typeof module === "object" && typeof module.exports === "object") {
+        module.exports = global.document ?
+			factory(global, true) :
+			function (w) {
+			    if (!w.document) {
+			        throw new Error("so requires a window with a document");
+			    }
+			    return factory(w);
+			};
+    } else {
+        factory(global);
+    }
+})(typeof window !== 'undefined' ? window : this, function (window, noGlobal) {
     var toString = Object.prototype.toString,
         slice = Array.prototype.slice,
         splice = Array.prototype.splice,
@@ -237,5 +251,14 @@ define(function () {
 
         },
     });
+    //兼容amd
+    if (typeof define === "function" && define.amd) {
+        define("so", [], function () {
+            return so;
+        });
+    }
+    if (typeof noGlobal === undefined) {
+        window.so = so;
+    }
     return so;
 });

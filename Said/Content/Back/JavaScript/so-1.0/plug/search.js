@@ -1,5 +1,5 @@
 ﻿'use strict';
-define(['../so'], function (so) {
+define(['so'], function (so) {
     //自己的这些插件一定要依赖so插件，定义模板引擎等
     var globalOption = {
         className: 'querySelect',
@@ -9,10 +9,10 @@ define(['../so'], function (so) {
         active: 'active'
         //id: null
         //, def: '没有检索到相关信息'
-        //,callback:function(){} - 参数[文本框的值，选中项的值，选中项的索引]，this指向选中项，返回值将作为选中项的值
+        //,callback:function(){} - 参数[文本框的值，选中项的值，选中项的索引，选中项DOM]，this指向文本框，返回值将作为选中项的值
         //,listener:function(){} - 参数[event事件]，this指向文本框
     },
-    query = function (data, value, def) {
+    query = function (data, value) {
         /*
         根据定义的数据查找
         支持['javascript','linkFly']和[{javascript:'jsjavascript','lf':'lflinkFly'}]
@@ -27,7 +27,7 @@ define(['../so'], function (so) {
                 } : function (str) {
                     str.toLowerCase().indexOf(value) !== -1 && res.push(str);
                 });
-        if (!res.length && def != null) res.push(def);
+        //if (!res.length && def != null) res.push(def);
         return res;
     },
     get = function (data, option) {
@@ -83,6 +83,7 @@ define(['../so'], function (so) {
             activeClass = [itemClass = option.itemClass, option.active].join(' '),
             callback = so.isFunction(option.callback) ? option.callback : false,//指定回调函数
             listener = so.isFunction(option.listener) ? option.listener : false,
+            def = option.def == null ? false : get([option.def], option),
             reset = function (isHide) {
                 active = null;
                 i = -1;
@@ -95,6 +96,7 @@ define(['../so'], function (so) {
             switch (e.keyCode) {
                 case 40: {//down
                     stop(e);//在输入框文本极端（左右）的时候，会移动焦点，阻止这一浏览器行为
+                    if (!len) return;
                     active && (active.className = itemClass);
                     if (i === len) i = -1;
                     if (i + 1 >= len) return i = -1;
@@ -103,6 +105,7 @@ define(['../so'], function (so) {
                 } break;
                 case 38: {//up
                     stop(e);
+                    if (!len) return;
                     active && (active.className = itemClass);
                     if (i === -1) i = len;
                     if (i - 1 < 0) return i = len;
@@ -114,13 +117,13 @@ define(['../so'], function (so) {
                 } break;
                 case 13: {//enter
                     stop(e);//防止表单提交
-                    if (!active) return false;
+                    if (!active || !len) return false;
                     elem.value = callback ? String(callback.call(active, elem.value, active.innerHTML, active.dataset.index)) : list[i];
                     reset(true);
                 } break;
-                default: {
+                default:
                     reset();
-                } break;
+                    break;
             }
         });
         /*
@@ -133,23 +136,58 @@ define(['../so'], function (so) {
         */
         //w3c:oninput ie:onpropertychange
         elem.addEventListener('input', function (e) {
-            list = query(data, this.value, option.def);
-            (len = list.length) ?
-                (content.innerHTML = get(list, option), content.style.display = '') :
-                    (content.style.display = option.def == null ? 'none' : '');
+            list = query(data, this.value);
+            if (len = list.length) {
+                content.innerHTML = get(list, option);
+                content.style.display = '';
+            } else if (def) {
+                content.innerHTML = def;
+                content.style.display = '';
+            } else
+                content.style.display = 'none';
             listener && listener.call(elem, e);
         });
         //注册监听（如果注重移动端效果，则需要为每个元素注册）
         content.addEventListener('click', function (e) {
-            if (e.target.nodeName === 'A') { //侦听到下面的a
-                elem.value = callback ? String(callback.call(e.target, elem.value, e.target.innerHTML, e.target.index)) : e.target.innerHTML;
+            if (e.target.nodeName === 'A' && len != 0) { //侦听到下面的a，如果指定有默认值则检测是否是默认值，如果是默认值则取消侦听
+                elem.value = callback ? String(callback.call(elem, elem.value, e.target.innerHTML, e.target.index, e.target)) : e.target.innerHTML;
                 reset(true);
             }
         });
+        //elem.addEventListener('blur', function () {
+        //    //content.style.display = 'none';
+        //    if (len === 0 && def)//指定有默认值，则清空value
+        //        elem.value = '';
+        //});
         return content;
     };
     return function (elem, data, option) {
-        //data支持对象和数组，option支持Function
+        /// <summary>
+        /// 1: 构建一个Search对象
+        /// &#10; 1.1 - Search(elem, content, data) - 根据默认配置构建Search，不指定callback、listener、模板等
+        /// &#10; 1.2 - Search(elem, content, option) - 根据option的配置（参阅globalOption）构建
+        /// &#10; 1.3 - Search(elem, content, data, callback,listener) - 构建Search，同时指定option.callback（每次从预定数据中获取数据的时候调用）和option.listener（每次值改变都会调用，可略）
+        /// </summary>
+        /// <param name="elem" type="Element">
+        /// 要监听的input元素
+        /// </param>
+        /// <param name="data" type="Object">
+        /// 允许为数组/对象，当为一维数组的时候检索和获取的值都是数组项，为对象的时候将检索对象的每个属性的value，得到该属性的name
+        /// </param>
+        /// <param name="option" type="Object">
+        /// 配置Search对象，有如下配置项
+        /// &#10;  className - 指定生成的下俩框模块的className，默认为querySelect
+        /// &#10;  itemClass - 指定每个下拉项的className,默认为select-item
+        /// &#10;  tmpContent - 指定生成的下拉框的模板，默认值：<div class="${className}" ${id}>${content}</div>
+        /// &#10;  tmpItem - 指定生成的下拉项的模板，默认值：<a data-index="${0}" href="javascript:;" class="${1}">${2}</a> 
+        /// &#10;  active - 当前激活/选中的下拉项的className：active
+        /// &#10;  id - 生成的下拉框的id
+        /// &#10;  def - 当没有检索的数据的时候，显示的默认文字，当配置该项的时候，下拉框的数据源只能从预定数据中选取，而不能自行输入
+        /// &#10;  callback - 回调函数，当选中下拉框数据源的时候会触发该函数：参数[文本框的值，选中项的值，选中项的索引，选中项DOM]，this指向文本框，返回值将作为选中项的值
+        /// &#10;  listener - 监听函数，每次输入值改变的时候都会触发该函数：参数[event事件]，this指向文本框
+        /// </param>
+        /// <returns type="Element" />
+
         elem = document.getElementById(elem + '') || elem;
         if (!elem || elem.nodeType !== 1 || !(so.isArrayLike(data) || so.isObject(data))) return elem;
         var currOption = so.extend({}, globalOption, option), content;
