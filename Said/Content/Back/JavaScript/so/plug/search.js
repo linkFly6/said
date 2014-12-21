@@ -1,5 +1,5 @@
 ﻿'use strict';
-define(['so'], function (so) {
+define(['../so'], function (so) {
     //自己的这些插件一定要依赖so插件，定义模板引擎等
     var globalOption = {
         className: 'querySelect',
@@ -10,7 +10,7 @@ define(['so'], function (so) {
         //id: null
         //, def: '没有检索到相关信息'
         //,callback:function(){} - 参数[文本框的值，选中项的值，选中项的索引，选中项DOM]，this指向文本框，返回值将作为选中项的值
-        //,listener:function(){} - 参数[event事件]，this指向文本框
+        //,listener:function(){} - 参数[输入的值，event事件]，this指向文本框
     },
     query = function (data, value) {
         /*
@@ -89,7 +89,6 @@ define(['so'], function (so) {
                 i = -1;
                 isHide === isHide && (content.style.display = 'none');
             }, stop = function (e) {
-                e.stopPropagation();
                 e.preventDefault();
             }
         elem.addEventListener('keydown', function (e) {
@@ -117,6 +116,7 @@ define(['so'], function (so) {
                 } break;
                 case 13: {//enter
                     stop(e);//防止表单提交
+                    e.stopPropagation();
                     if (!active || !len) return false;
                     elem.value = callback ? String(callback.call(active, elem.value, active.innerHTML, active.dataset.index)) : list[i];
                     reset(true);
@@ -145,7 +145,7 @@ define(['so'], function (so) {
                 content.style.display = '';
             } else
                 content.style.display = 'none';
-            listener && listener.call(elem, e);
+            listener && listener.call(elem, elem.value, e);
         });
         //注册监听（如果注重移动端效果，则需要为每个元素注册）
         content.addEventListener('click', function (e) {
@@ -154,11 +154,15 @@ define(['so'], function (so) {
                 reset(true);
             }
         });
-        //elem.addEventListener('blur', function () {
-        //    //content.style.display = 'none';
-        //    if (len === 0 && def)//指定有默认值，则清空value
-        //        elem.value = '';
-        //});
+        //这里好纠结啊，为elem注册blur，firefox下blur触发在content.click之前，所以要给document下注册事件，法克...
+        window.document.addEventListener('click', function (e) {
+            if (e.target !== content && e.target.parentNode !== content)
+                reset(true);
+        });
+        elem.addEventListener('blur', function () {
+            if (len === 0 && def)//指定有默认值，则清空value
+                elem.value = '';
+        });
         return content;
     };
     return function (elem, data, option) {
@@ -184,7 +188,7 @@ define(['so'], function (so) {
         /// &#10;  id - 生成的下拉框的id
         /// &#10;  def - 当没有检索的数据的时候，显示的默认文字，当配置该项的时候，下拉框的数据源只能从预定数据中选取，而不能自行输入
         /// &#10;  callback - 回调函数，当选中下拉框数据源的时候会触发该函数：参数[文本框的值，选中项的值，选中项的索引，选中项DOM]，this指向文本框，返回值将作为选中项的值
-        /// &#10;  listener - 监听函数，每次输入值改变的时候都会触发该函数：参数[event事件]，this指向文本框
+        /// &#10;  listener - 监听函数，每次输入值改变的时候都会触发该函数：参数[输入的值，event事件]，this指向文本框
         /// </param>
         /// <returns type="Element" />
 
@@ -194,7 +198,7 @@ define(['so'], function (so) {
         if (so.isFunction(option)) {
             currOption.callback = option;
             if (arguments.length > 3 && so.isFunction(arguments[3]))
-                currOption.listener = arguments[4];
+                currOption.listener = arguments[3];
         }
         elem.insertAdjacentHTML('afterEnd', so.format(currOption.tmpContent, {
             className: currOption.className || '',

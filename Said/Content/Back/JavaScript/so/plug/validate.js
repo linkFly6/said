@@ -1,5 +1,5 @@
 ﻿'use strict';
-define(['so'], function (so) {
+define(['../so'], function (so) {
     var globalAttrs = ['required', 'maxlength', 'minlength', 'reg', 'number', 'email', 'date', 'cn'],
         plainFn = function () { return true; },//默认方法
         validateTmp = {//方法的this都指向

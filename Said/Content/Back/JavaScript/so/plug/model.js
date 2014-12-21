@@ -1,5 +1,5 @@
 ﻿'use strict';
-define(['so'], function (so) {
+define(['../so'], function (so) {
     /*
         其实现在只是操作form，未来会扩展到model上
         1、是否以后扩展到so的核心？ TODO

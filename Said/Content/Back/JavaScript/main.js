@@ -14,7 +14,7 @@
     },
     {
         name: 'so',
-        location: 'so-1.0',
+        location: 'so',
         main: 'so'
     },
     {

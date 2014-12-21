@@ -1,11 +1,30 @@
 ﻿'use strict';
-define(function () {
+(function (global, factory) {
+    //兼容node/commonJs
+    if (typeof module === "object" && typeof module.exports === "object") {
+        module.exports = global.document ?
+			factory(global, true) :
+			function (w) {
+			    if (!w.document) {
+			        throw new Error("so requires a window with a document");
+			    }
+			    return factory(w);
+			};
+    } else {
+        factory(global);
+    }
+})(typeof window !== 'undefined' ? window : this, function (window, noGlobal) {
     var toString = Object.prototype.toString,
         slice = Array.prototype.slice,
         splice = Array.prototype.splice,
+        push = Array.prototype.push,
         isArray = Array.isArray,
-        so = function () {
-            return so;
+        so = function (selector) {
+            if (!(this instanceof so))
+                return new so(selector);
+            if (type(selector) === 'string') selector = document.getElementById(selector);
+            if (selector && (selector.nodeType === 1 || selector.nodeType === 9))
+                push.call(this, selector);
         },
         type = function (obj) {
             return obj == null ? String(obj) :
@@ -19,7 +38,15 @@ define(function () {
     function isPlainObject(obj) {//判断是否是纯粹的js对象
         return isObject(obj) && !isWindow(obj) && Object.getPrototypeOf(obj) == Object.prototype;
     }
+    function isEmptyObject(obj) {//判断对象是否为空
+        var name;
+        for (name in obj) {
+            return false;
+        }
+        return true;
+    }
     function isArrayLike(obj) {
+        if (obj == null) return false;
         var length = obj.length, t = type(obj);
         return t === 'array' || !isFunction(obj) &&
         (+length === length && //正数
@@ -27,8 +54,9 @@ define(function () {
         (length - 1) in obj); //可以被索引
     }
     'Boolean Number String Function Array Date RegExp Object Error'.split(' ').forEach(function (name) {
-        class2type["[object " + name + "]"] = name.toUpperCase();
+        class2type["[object " + name + "]"] = name.toLowerCase();
     });
+
     so.extend = so.prototype.extend = function () {
         var options, name, src, copy, copyIsArray, clone,
             target = arguments[0] || {},
@@ -72,6 +100,45 @@ define(function () {
         }
         return target;
     };
+    so.prototype.extend({
+        length: 0,
+        each: function (callback) {
+            return so.each(this, callback), this;
+        },
+        on: function (type, listaner) {
+            if (!isFunction(listaner)) return this;
+            this.each(function (elem, i) {
+                elem.addEventListener(type, function (e) {
+                    if (listaner.call(elem, e, i) === false) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                });
+            });
+            return this;
+        },
+        off: function (type, listaner) {
+            if (!isFunction(listaner)) return this;
+            this.each(function (elem) {
+                elem.body.removeEventListener(type, listaner);
+            });
+            return this;
+        },
+        //set/get attribute
+        attr: function (name, value) {
+            if (arguments.length === 1)
+                return this[0] ? this[0].getAttribute(name) || '' : '';
+            if (value == null)
+                this.each(function (elem) {
+                    elem.removeAttribute(name)
+                });
+            else
+                this.each(function (elem) {
+                    elem.setAttribute(name, value);
+                });
+            return this;
+        }
+    });
     so.extend({
         //基础函数
         isFunction: isFunction,
@@ -79,10 +146,12 @@ define(function () {
         isDocument: isDocument,
         isObject: isObject,
         isPlainObject: isPlainObject,
+        isEmptyObject: isEmptyObject,
         isArrayLike: isArrayLike,
         isXML: function (doc) {
             return doc && doc.createElement && doc.createElement('P').nodeName !== doc.createElement('p').nodeName;
         },
+        type: type,
         each: function (target, callback) {
             var i, key;
             if (isArrayLike(target)) {
@@ -91,8 +160,36 @@ define(function () {
             }
             else
                 for (key in target)
-                    if (callback.call(target[key], key, target[key]) === false) return false;
+                    if (callback.call(target, key, target[key]) === false) return false;
             return target;
+        },
+        map: function () {
+            var res = [];
+            so.each(arguments, function (arg) {
+                if (isArray(arg))
+                    res.concat(arg);
+                else if (isArrayLike(arg))
+                    so.each(arg, function (tmp) {
+                        res.push(tmp);
+                    });
+                else if (arg != null)
+                    res.push(arg);
+            });
+            return res;
+        },
+        toArray: function () {
+            var res = [];
+            so.each(arguments, function (arg) {
+                if (isArray(arg))
+                    res.concat(arg);
+                else if (isArrayLike(arg) || isObject(arg))
+                    so.each(arg, function (tmp) {
+                        res.push(tmp);
+                    });
+                else if (arg != null)
+                    res.push(arg);
+            });
+            return res;
         },
         //扩展函数
         format: function (str, object) {
@@ -148,5 +245,20 @@ define(function () {
             return Parm;
         }(window.location.search)
     });
+    //event
+    so.extend({
+        on: function () {
+
+        },
+    });
+    //兼容amd
+    if (typeof define === "function" && define.amd) {
+        define("so", [], function () {
+            return so;
+        });
+    }
+    if (typeof noGlobal === undefined) {
+        window.so = so;
+    }
     return so;
 });

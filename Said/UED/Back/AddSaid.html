@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Said后台管理</title>
+    <title>添加Said UED页面</title>
 
     <!-- Bootstrap -->
 
@@ -218,8 +218,18 @@
                                 <div class="panel-body">
                                     <div class="input-group">
                                         <span class="input-group-addon">标签</span>
-                                        <div class="queryInputBar" data-queryselect="">
-                                            <input type="text" class="form-control" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" required />
+                                        <div class="queryInputBar tagInputBar form-control" data-queryselect="">
+                                            <div class="tag-selected">
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                            </div>
+                                            <input type="text" class="tag-input" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" required />
                                             <!--<div class="querySelect" data-ng-show="saidForm.sTag.$valid">
                                                 <a class="select-item" href="javascript:;" data-ng-repeat="item in article.tags | search:saidForm.sTag" data-name="{{item}}" data-index="{{$index}}">{{item}}</a>
                                             </div>-->
