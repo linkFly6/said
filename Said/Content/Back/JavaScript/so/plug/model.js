@@ -116,6 +116,7 @@ define(['../so'], function (so) {
                     return callback.call(model, name, value);
             });
             return model;
+
         };
         model.get = function (name) {
             return elements[name] || null;

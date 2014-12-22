@@ -15,7 +15,7 @@
     }
 })(typeof window !== 'undefined' ? window : this, function (window, noGlobal) {
     var toString = Object.prototype.toString,
-		each = Array.prototype.each,
+		each = Array.prototype.forEach,
         slice = Array.prototype.slice,
         splice = Array.prototype.splice,
         push = Array.prototype.push,
@@ -50,7 +50,7 @@
         if (obj == null) return false;
         var length = obj.length, t = type(obj);
         return t === 'array' || !isFunction(obj) &&
-		t!=='string'&& //解决TypeError：invalid 'in' operand obj，字符串不允许使用in
+		t !== 'string' && //解决TypeError：invalid 'in' operand obj，字符串不允许使用in
         (+length === length && //正数
         !(length % 1) && //整数
         (length - 1) in obj); //可以被索引

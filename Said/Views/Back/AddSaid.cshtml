@@ -151,11 +151,6 @@
             <div class="error-check" id="errorTip">
                 发布前会进行错误检测
             </div>
-            <div class="progress">
-                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 0;" id="errorProgress">
-                    <span class="sr-only">20% Complete</span>
-                </div>
-            </div>
             <button class="btn btn-lg said-submit center-block" id="submit" type="submit">发布</button>
             <!--data-ng-class="{'submit-lock':!saidForm.$valid}"-->
         </div>
@@ -194,7 +189,7 @@
                     album: 'Face To Face',
                     artist: 'Westlife',
                     fileName: 'fww.mp3',
-                    img: '/Content/Images/UEDImg/demoImg2.jpg'
+                    img: '/Content/Images/UEDImg/demoImg2.jpg'//注意这个路径应该只是个图片名称
                 },
                 'Home': {
                     id: '2',
@@ -242,10 +237,10 @@
                 };
                 // => form验证
                 var checkFns = {
-                    'said.error': function (elem, checked, key, value, pattern) {
+                    'said.error': function (elem, checked/*, key, value, pattern*/) {
                         checked ? elem.classList.remove('said-error') : elem.classList.add('said-error');
                     },
-                    'said.query': function (elem, checked, key, value, pattern) {
+                    'said.query': function (elem, checked/*, key, value, pattern*/) {
                         checked ? elem.parentNode.parentNode.classList.remove('has-error') : elem.parentNode.parentNode.classList.add('has-error');
                     }
                 },
@@ -389,7 +384,8 @@
                             return value.length !== 0;
                         },
                         val: function () {
-                            return values;
+                            //获取选中项的值
+                            return value;
                         }
                     };
                 }(model.get('STag'), DataCenter.tags, ['javascript']);
@@ -423,118 +419,176 @@
                 Song = function (mask, img, del, action, filters, songs, models, model) {
                     var upload = addSaid.Upload(mask, action, filters, function (data) {
                         if (data.error === 0) {//ok
-                            img.src = Action.imgLocation + data.url;
+                            img.src = Action.imgLocation + (imgName = data.name);
                         } else {
                             console.log(data.msg);
                         }
                     }, uploadErrorHandle),
-                        tmpModel,
+                        imgName,//上传或suggestion选中项的图片名称
+                        tmpModel,//suggestion选中项的model
                         selectData = false,
-                        songName = search(model.get('Song.SongName'), songs, function (inputValue, value) {
-                            tmpModel = models[value];
-                            model['Song.SongName'] = tmpModel.name;//直接赋值即可映射到DOM
-                            model['Song.SongAlbum'] = tmpModel.album;
-                            model['Song.SongArtist'] = tmpModel.artist;
-                            model['Song.SongFileName'] = tmpModel.fileName;
-                            img.src = tmpModel.img;
-                            selectData = tmpModel.id;
-                            upload.toggle(true);
-                            return value;
-                        }, function () {
-                            selectData = false;
-                        }),
-                         reset = function () {
-                             model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
-                             img.src = "../../Content/Images/UEDImg/demo-img6.jpg";
-                             upload.toggle();
-                         };
+                        searchDOM = model.get('Song.SongName');//选中项id，如果为false则表示不是选中项的数据
+                    //songName的search()suggestion事件绑定之前绑定
+                    ['Song.SongName', 'Song.SongAlbum', 'Song.SongArtist', 'Song.SongFileName'].forEach(function (name) {
+                        model.get(name).addEventListener('input', function () {
+                            validateData(this, !!this.value.trim());
+                            selectData = false;//编辑过表示不是选中项
+                            //是不是这里不清空selectData，让服务器对比数据，如果有改动则插入，否则还是直接引用
+                        });
+                    });
+                    var songName = search(searchDOM, songs, function (inputValue, value) {
+                        validateData(searchDOM, !!searchDOM.value.trim());
+                        tmpModel = models[value];
+                        model['Song.SongName'] = tmpModel.name;//直接赋值即可映射到DOM
+                        model['Song.SongAlbum'] = tmpModel.album;
+                        model['Song.SongArtist'] = tmpModel.artist;
+                        model['Song.SongFileName'] = tmpModel.fileName;
+                        img.src = imgName = tmpModel.img;//保存选中的图片信息
+                        selectData = tmpModel.id;//获取选中项id
+                        upload.toggle(true);
+                        return value;
+                    }, function () {
+                        selectData = false;
+                    }),
+                      reset = function () {
+                          model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
+                          img.src = "../../Content/Images/UEDImg/demo-img6.jpg";
+                          tmpModel = imgName = false;
+                          upload.toggle();
+                      };
                     del.addEventListener('click', function () {
                         reset();
                     });
                     return {
-                        get: function () {
-                            //获取查找到的Model
-                            return tmpModel;
+                        img: function () {
+                            return imgName;
                         },
-                        model: function () {
-                            //获取歌曲model
-                            return { model: model, img: img };
+                        check: function () {
+                            //没有选择项，也没有上传图片
+                            return imgName && selectData;
                         },
-                        data: function () {
-                            return selectData;
-                        },
-                        state: function () {
-                            return !!selectData;
+                        val: function () {
+                            return { img: imgName, id: selectData };
                         },
                         reset: reset
                     };
                 }('Song_SongId', _('songImg'), _('songDelete'), Action.img, DataCenter.imgFilters, DataCenter.songs, DataCenter.songsData, model);
                 // => 缩略图
-                (function (mask, img, action, del, filters, def) {
+                SumImg = (function (mask, img, action, del, filters, def) {
                     var value,
+                        reset = function () {
+                            img.src = '../../Content/Images/test-said-img.jpg';
+                            value = null;
+                            upload.toggle();
+                        },
                         upload = addSaid.Upload(mask, action, filters, function (data, state) {
                             //上传的value
                             if (data.error === 0) {//ok
-                                img.src = Action.imgLocation + (value = data.url);
+                                img.src = Action.imgLocation + (value = data.name);
                             } else {
                                 console.log(data.msg);
                             }
                         }, uploadErrorHandle);
-                    del.addEventListener('click', function () {
-                        img.src = '../../Content/Images/test-said-img.jpg';
-                        value = null;
-                        upload.toggle();
-                    });
+
+                    del.addEventListener('click', reset);
                     if (def)
                         img.src = Action.imgLocation + (value = def);
                     return {
                         val: function () {
                             return value;
-                        }
+                        },
+                        reset: reset
                     };
                 })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters);
                 //发布
 
 
-                var lock = false;
+                changeState = function (logDOM) {
+                    var lock = false, change = function (mothed, text) {
+                        if (arguments.length === 2)
+                            submitBtn.classList[mothed]('submit-lock');
+                        submitBtn.innerHTML = text;
+                    };
+                    return function (state) {
+                        switch (state) {
+                            case 0://lock
+                                lock = true;
+                                change('add', '检测中');
+                                break;
+                            case 1://error
+                                lock = false;
+                                change('remove', '发布');
+                                break;
+                            case 2://submiting
+                                change('提交中');
+                                break;
+                            case 3://success
+                                lock = false;
+                                change('remove', '发布');
+                                break;
+                            default:
+                                return lock;
+                                break;
+                        }
+                        return false;
+                    }
+                    submitBtn.innerHTML = text;
+                }(_('errorTip'));
                 //form提交
                 submitBtn.addEventListener('click', function () {
                     //console.log(formValidate);
-                    console.log(model);
-                    if (lock) return false;
-                    if (validateProgress.state()) {
-                        validateProgress.reset();
-                    }
+                    //console.log(model);
+                    if (changeState()) return false;
+                    changeState(0);
                     var checkResult = formValidate.test(function (elem, checked, key, value, pattern) {
                         //console.log(elem, checked, key, value, pattern);
-                        validateProgress.run();
                         validateData(elem, checked, key, value, pattern);
                     });
                     if (!checkResult) {
                         //检测完毕，如果有错误应该清空检测进度，需要调整
+                        changeState(1);
+                        return changeState(1);
                     } else {
                         //默认检测通过，检测特殊项：歌曲、缩略图和标签
-                        if (!Song.state()) {
-                            dialog('歌曲信息错误', '请上传正确的歌曲信息');
-                            return;
+                        if (!Song.check()) {
+                            dialog('歌曲信息错误', '请上传歌曲图片或选择正确的歌曲信息');
+                            return changeState(1);
                         }
-
-                        submitBtn.classList.add('submit-lock');
-                        submitBtn.innerHTML = '发布中';
+                        //检测标签
+                        if (!TagSelect.check()) {
+                            errorLog(false);
+                            return changeState(1);
+                        }
+                        //检测缩略图
+                        if (!SumImg.val()) {
+                            dialog('缩略图错误', '请上传正确的缩略图');
+                            SumImg.reset();
+                            return changeState(1);
+                        }
+                        //至此检测完毕===========================
+                        changeState(2);
                         lock = true;
-                        var data = new FormData();
+                        var data = new FormData(),//表单值
+                            songData = Song.val();//歌曲值
                         model.each(function (name, value) {
                             data.append(name, value);
                         });
+                        //缩略图
+                        data.append('SImg', SumImg.val());
+                        //标签
+                        data.append('STag', SumImg.val());
                         //data.SHTML = '';
-                        if (Song.state()) {
+                        if (songData.id) {
                             //选择了歌曲，而不是新增歌曲
-                            data.append('Song.SSongId', Song.data);
+                            data.append('Song.SSongId', songData.id);
+                        } else if (songData.img) {
+                            //上传||suggestion选择了图片后，编辑了歌曲
+                            data.append('Song.SongImg', songData.img);
                         }
                         addSaid.submit(data, Action.form, function (data, xhr) {
 
                         }, function () {
-
+                            alert('发送信息失败');
                         });
                     }
                 });

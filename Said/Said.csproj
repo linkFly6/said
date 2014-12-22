@@ -819,8 +819,7 @@
     <Content Include="Content\Back\JavaScript\jQuery-2.1.1.min.js" />
     <Content Include="Content\Back\JavaScript\main.js" />
     <Content Include="Content\Back\JavaScript\npm.js" />
-    <Content Include="Content\Back\JavaScript\require2-1-11.js" />
-    <Content Include="Content\Back\JavaScript\require2-1-11.min.js" />
+    <Content Include="Content\Back\JavaScript\requirejs-2.1.15.js" />
     <Content Include="Content\Back\JavaScript\said\addSaid.js" />
     <Content Include="Content\Back\JavaScript\said\FuckAngular.js" />
     <Content Include="Content\Back\JavaScript\so\plug\model.js" />
@@ -2044,6 +2043,7 @@
     <Content Include="UED\Back\Frmework\js\pagedown-master\wmd-buttons.png" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.js" />
     <Content Include="UED\Back\Frmework\js\require2-1-11.min.js" />
+    <Content Include="UED\Back\Frmework\js\requirejs-2.1.15.js" />
     <Content Include="UED\Back\Frmework\js\said\addSaid.js" />
     <Content Include="UED\Back\Frmework\js\said\FuckAngular.js" />
     <Content Include="UED\Back\Frmework\js\showdown-master\compressed\extensions\github.js" />
@@ -2059,9 +2059,9 @@
     <Content Include="UED\Back\Frmework\js\showdown-master\src\showdown.js" />
     <Content Include="UED\Back\Frmework\js\showdown-master\src\showdown.min.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\model.js" />
-    <Content Include="UED\Back\Frmework\js\so\so.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\search.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\validate.js" />
+    <Content Include="UED\Back\Frmework\js\so\so.js" />
     <Content Include="UED\Back\Frmework\js\zrender-master\.gitignore" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\area.html" />
     <Content Include="UED\Back\Frmework\js\zrender-master\benchmark\js\area.js" />

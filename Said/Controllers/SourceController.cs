@@ -66,9 +66,9 @@ namespace Said.Controllers
 
 
         #region 通用方法
-        private JsonResult UploadResult(int errorCode, string msg, string url = null)
+        private JsonResult UploadResult(int errorCode, string msg, string name = null)
         {
-            return Json(new { error = errorCode, msg = msg, url = url });
+            return Json(new { error = errorCode, msg = msg, name = name });
         }
         #endregion
     }

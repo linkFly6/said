@@ -12,7 +12,7 @@ define(['../so'], function (so) {
         //,callback:function(){} - 参数[文本框的值，选中项的值，选中项的索引，选中项DOM]，this指向文本框，返回值将作为选中项的值
         //,listener:function(){} - 参数[输入的值，event事件]，this指向文本框
     },
-    query = function (data, value) {
+    query = function (data, value, max) {
         /*
         根据定义的数据查找
         支持['javascript','linkFly']和[{javascript:'jsjavascript','lf':'lflinkFly'}]
@@ -20,12 +20,15 @@ define(['../so'], function (so) {
         以后要搞个能挂数据的格式...
         */
         value = String(value).toLowerCase();
+        max = max || 10;
         var res = [];
         value !== '' && so.each(data, so.isObject(data) ?
                 function (key, str) {
-                    str.toLowerCase().indexOf(value) !== -1 && res.push(key);
+                    if (str.toLowerCase().indexOf(value) !== -1)
+                        return res.push(key) < max;
                 } : function (str) {
-                    str.toLowerCase().indexOf(value) !== -1 && res.push(str);
+                    if (str.toLowerCase().indexOf(value) !== -1)
+                        return res.push(str) < max;
                 });
         //if (!res.length && def != null) res.push(def);
         return res;
@@ -136,7 +139,7 @@ define(['../so'], function (so) {
         */
         //w3c:oninput ie:onpropertychange
         elem.addEventListener('input', function (e) {
-            list = query(data, this.value);
+            list = query(data, this.value, option.max);
             if (len = list.length) {
                 content.innerHTML = get(list, option);
                 content.style.display = '';
@@ -189,6 +192,7 @@ define(['../so'], function (so) {
         /// &#10;  def - 当没有检索的数据的时候，显示的默认文字，当配置该项的时候，下拉框的数据源只能从预定数据中选取，而不能自行输入
         /// &#10;  callback - 回调函数，当选中下拉框数据源的时候会触发该函数：参数[文本框的值，选中项的值，选中项的索引，选中项DOM]，this指向文本框，返回值将作为选中项的值
         /// &#10;  listener - 监听函数，每次输入值改变的时候都会触发该函数：参数[输入的值，event事件]，this指向文本框
+        /// &#10;  max - suggestion返回结果的个数，默认为10
         /// </param>
         /// <returns type="Element" />
 
