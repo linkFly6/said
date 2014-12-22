@@ -15,6 +15,7 @@
     }
 })(typeof window !== 'undefined' ? window : this, function (window, noGlobal) {
     var toString = Object.prototype.toString,
+		each = Array.prototype.each,
         slice = Array.prototype.slice,
         splice = Array.prototype.splice,
         push = Array.prototype.push,
@@ -179,10 +180,10 @@
         },
         toArray: function () {
             var res = [];
-            so.each(arguments, function (arg) {
+            each.call(arguments, function (arg) {
                 if (isArray(arg))
-                    res.concat(arg);
-                else if (isArrayLike(arg) || isObject(arg))
+                    res = res.concat(arg);
+                else if (isArrayLike(arg))// 过去的条件 => || isObject(arg)是错误的
                     so.each(arg, function (tmp) {
                         res.push(tmp);
                     });
