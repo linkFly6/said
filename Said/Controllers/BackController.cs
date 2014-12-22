@@ -25,7 +25,8 @@ namespace Said.Controllers.Back
         [HttpPost]
         public int AddSaid(FormCollection form)
         {
-            var test = form;
+            //终于写到服务器了...
+            var test = form[""];
 
             return -1;
         }

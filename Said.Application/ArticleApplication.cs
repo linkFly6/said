@@ -26,5 +26,16 @@ namespace Said.Application
             service.Add(model);
             return service.Submit();
         }
+
+        /// <summary>
+        /// 验证一篇said是否是有效的said
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static string ValidateSubmit(Article model)
+        {
+
+            return string.Empty;
+        }
     }
 }

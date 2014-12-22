@@ -8,6 +8,6 @@ namespace Said.Application
 {
     public static class BaseApplication
     {
-
+        
     }
 }
