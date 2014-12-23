@@ -15,7 +15,7 @@ namespace Said.Models
         /// <summary>
         /// 主键
         /// </summary>
-        public int ClassifyId { get; set; }
+        public string ClassifyId { get; set; }
         /// <summary>
         /// 类型包含的文章数量
         /// </summary>

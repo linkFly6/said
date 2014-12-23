@@ -46,7 +46,7 @@ namespace Said.Models
         /// <summary>
         /// 歌曲文件名
         /// </summary>
-        public int SongFileName { get; set; }
+        public string SongFileName { get; set; }
 
         public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

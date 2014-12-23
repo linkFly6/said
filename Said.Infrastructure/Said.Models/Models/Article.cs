@@ -126,7 +126,6 @@ namespace Said.Models
         {
             if (string.IsNullOrEmpty(SContext))
                 yield return new ValidationResult("内容不允许为空");
-
         }
     }
 }
