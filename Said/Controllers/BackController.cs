@@ -37,13 +37,13 @@ namespace Said.Controllers.Back
                 SImg = form["SImg"],
                 STag = form["STag"],
                 SDate = DateTime.Now,
-                Classify = new Classify { ClassifyId = form["Classify.ClassifyId"] }
+                SClassifyId = form["Classify.ClassifyId"]
             };
-            if (!string.IsNullOrEmpty(form["Song.SSongId"]))
+            if (!string.IsNullOrWhiteSpace(form["Song.SSongId"]))//有歌曲ID则构建歌曲id
             {
-                model.Song = new Song { SongId = form["Song.SSongId"] };
+                model.SSongId = form["Song.SSongId"].Trim();
             }
-            else if (!string.IsNullOrEmpty(form["Song.SongImg"]))
+            else if (!string.IsNullOrWhiteSpace(form["Song.SongImg"]))//否则创建新的歌曲对象
             {
                 model.Song = new Song
                 {
@@ -57,10 +57,15 @@ namespace Said.Controllers.Back
             else
                 return Json(new { code = 1, msg = "歌曲信息错误" });
             string vdResult = ArticleApplication.ValidateSubmit(model);
-            if (string.IsNullOrEmpty(vdResult))
+            if (vdResult == null)
             {
+                //生成modelID
+                model.SaidId = Guid.NewGuid().ToString();
+                if (model.Song != null)
+                    model.Song.SongId = Guid.NewGuid().ToString();
+                //生成
                 ArticleApplication.Add(model);
-                return Json(new { code = 0, msg = "ok" });
+                return Json(new { code = 0, msg = model.SaidId });
             }
             else
                 return Json(new { code = 1, msg = vdResult });

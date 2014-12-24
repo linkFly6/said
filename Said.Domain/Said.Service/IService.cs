@@ -74,6 +74,27 @@ namespace Said.IServices
         T GetById(string id);
 
         /// <summary>
+        /// 根据id检索数据是否存在
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        bool Exists(string id);
+
+        /// <summary>
+        /// 根据id（long）检索数据是否存在
+        /// </summary>
+        /// <param name="id">长id</param>
+        /// <returns></returns>
+        bool Exists(long id);
+
+        /// <summary>
+        /// 根据条件检索数据是否存在
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <returns></returns>
+        bool Exists(Expression<Func<T, bool>> where);
+
+        /// <summary>
         /// 根据条件查询
         /// </summary>
         /// <param name="where">条件表达式</param>

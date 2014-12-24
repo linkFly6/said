@@ -252,7 +252,35 @@ namespace Said.IServices
 
         #endregion
 
+        /// <summary>
+        /// 根据id检索数据是否存在
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool Exists(string id)
+        {
+            return dbset.Find(id)!=null;
+        }
 
+        /// <summary>
+        /// 根据id（long）检索数据是否存在
+        /// </summary>
+        /// <param name="id">长id</param>
+        /// <returns></returns>
+        public bool Exists(long id)
+        {
+            return dbset.Find(id) != null;
+        }
+
+        /// <summary>
+        /// 根据条件检索数据是否存在
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <returns></returns>
+        public bool Exists(Expression<Func<T, bool>> where)
+        {
+            return dbset.Count(where) > 0;
+        }
         #endregion
 
 
@@ -264,5 +292,8 @@ namespace Said.IServices
         {
             return this.Context.Commit();
         }
+
+
+
     }
 }

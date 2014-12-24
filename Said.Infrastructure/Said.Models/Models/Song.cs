@@ -48,7 +48,7 @@ namespace Said.Models
         /// </summary>
         public string SongFileName { get; set; }
 
-        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public override IEnumerable<ValidationResult> Validate()
         {
             if (string.IsNullOrEmpty(SongUrl))
                 yield return new ValidationResult("歌曲URL不能为空");

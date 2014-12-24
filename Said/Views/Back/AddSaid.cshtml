@@ -70,11 +70,11 @@
                                 </div>
                                 <div class="input-group">
                                     <span class="input-group-addon">歌手</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongArtist, new { @class = "form-control music-input", placeholder = "艺术家", autocomplete = "off", required = "required", validate = "" })
+                                    @Html.TextBoxFor(Model => Model.Song.SongArtist, new { @class = "form-control music-input", placeholder = "艺术家", autocomplete = "off"/*, required = "required", validate = ""*/ })
                                 </div>
                                 <div class="input-group" data-ng-class="has-error">
                                     <span class="input-group-addon">文件</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new { @class = "form-control music-input", placeholder = "文件名", autocomplete = "off", required = "required", validate = "" })
+                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new { @class = "form-control music-input", placeholder = "文件名", autocomplete = "off"/*, required = "required", validate = ""*/ })
                                 </div>
                                 <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="ac.deleteImg()">删除</button>
                             </div>
@@ -142,6 +142,10 @@
                             <label>
                                 @*@Html.CheckBoxFor(Model => Model.SReprint, new { @type = "checkbox" })如果是直接提交表单，则可以直接采用checkbox控件，会生成两个input，具体请查阅：http://www.cnblogs.com/freeliver54/archive/2013/05/10/3070384.html*@
                                 @Html.TextBoxFor(Model => Model.SReprint, new { @type = "checkbox" })是否转载</label>
+                            <label>
+                                <input type="checkbox" />
+                                @Html.TextBoxFor(Model => Model.SIsTop, new { @type = "checkbox" })
+                            </label>
                         </div>
                     </div>
                 </div>

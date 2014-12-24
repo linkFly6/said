@@ -1,0 +1,5 @@
+F:\Github\Said\Said.Test\bin\Debug\Said.Test.dll
+F:\Github\Said\Said.Test\bin\Debug\Said.Test.pdb
+F:\Github\Said\Said.Test\obj\Debug\Said.Test.csprojResolveAssemblyReference.cache
+F:\Github\Said\Said.Test\obj\Debug\Said.Test.dll
+F:\Github\Said\Said.Test\obj\Debug\Said.Test.pdb
