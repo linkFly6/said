@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Said.Models
         /// <summary>
         /// 主键
         /// </summary>
+        [Key]
         public string ClassifyId { get; set; }
         /// <summary>
         /// 类型包含的文章数量

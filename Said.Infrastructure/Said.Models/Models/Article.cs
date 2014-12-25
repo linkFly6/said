@@ -15,7 +15,7 @@ namespace Said.Models
         /// <summary>
         /// Said Id
         /// </summary>
-        [Required]
+        [Key]
         public string SaidId { get; set; }
         /// <summary>
         /// XML

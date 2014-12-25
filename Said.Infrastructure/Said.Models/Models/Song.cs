@@ -15,7 +15,7 @@ namespace Said.Models
         /// <summary>
         /// 歌曲ID
         /// </summary>
-        [Required]
+        [Key]
         public string SongId { get; set; }
         /// <summary>
         /// 歌曲URL
