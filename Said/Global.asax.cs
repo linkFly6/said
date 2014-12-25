@@ -19,6 +19,15 @@ namespace Said
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            RegisterDataBase();
+        }
+        /// <summary>
+        /// 测试代码，上线请删除
+        /// </summary>
+        private void RegisterDataBase()
+        {
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<BlogEntities>());
+            //AreaRegistration.RegisterAllAreas();
         }
     }
 }

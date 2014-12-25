@@ -13,13 +13,16 @@ namespace Said.Domain.Said.Data
         public SaidDbContext(string databaseName = "SaidEntities")
             : base(databaseName)
         {
-            //databaseName是connectionString
+            //databaseName是connectionString的name
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SaidDbContext>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
+            //throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
+
         }
+
 
         #region SaveChanges
         /// <summary>
