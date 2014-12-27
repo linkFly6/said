@@ -14,13 +14,13 @@ namespace Said.Domain.Said.Data
             : base(databaseName)
         {
             //databaseName是connectionString的name
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SaidDbContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SaidDbContext>());//每次重新生成Model的时候重置数据库
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
-
+            //初始化的时候需要添加测试数据到数据库
         }
 
 

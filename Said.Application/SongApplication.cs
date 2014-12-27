@@ -12,7 +12,7 @@ namespace Said.Application
     {
         private static ISongService service;
 
-        public static ISongService Service
+        public static ISongService Context
         {
             get { return service ?? (service = new SongService(new Domain.Said.Data.DatabaseFactory())); }
         }
@@ -30,6 +30,8 @@ namespace Said.Application
                 return string.Empty;
             return song.SongId;
         }
+
+
         /// <summary>
         /// 修改
         /// </summary>
@@ -39,7 +41,7 @@ namespace Said.Application
         {
             if (string.IsNullOrEmpty(song.SongId)) return -1;
             service.Update(song);
-            return service.Submit(); 
+            return service.Submit();
         }
 
     }

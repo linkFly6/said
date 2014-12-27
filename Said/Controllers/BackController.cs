@@ -36,13 +36,13 @@ namespace Said.Controllers.Back
                 SSummary = form["SSummary"],
                 SImg = form["SImg"],
                 STag = form["STag"],
-                SDate = DateTime.Now,
-                SClassifyId = form["Classify.ClassifyId"]
+                SDate = DateTime.Now
             };
+            if (string.IsNullOrWhiteSpace(form["Classify.ClassifyId"]))//分类
+                return Json(new { code = 1, msg = "分类信息错误" });
+            model.Classify = new Classify { ClassifyId = form["Classify.ClassifyId"].Trim() };
             if (!string.IsNullOrWhiteSpace(form["Song.SSongId"]))//有歌曲ID则构建歌曲id
-            {
-                model.SSongId = form["Song.SSongId"].Trim();
-            }
+                model.Song = new Song { SongId = form["Song.SSongId"].Trim() };
             else if (!string.IsNullOrWhiteSpace(form["Song.SongImg"]))//否则创建新的歌曲对象
             {
                 model.Song = new Song

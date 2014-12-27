@@ -9,10 +9,14 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
+    /// <summary>
+    /// 使用静态类为让它变得更加晦涩，如果需要静态类的语法则可以使用单例模式实现
+    /// </summary>
     public static class ArticleApplication
     {
+
         private static IArticleService service;
-        public static IArticleService context
+        public static IArticleService Context
         {
             get { return service ?? (service = new ArticleService(new Domain.Said.Data.DatabaseFactory())); }
         }
@@ -37,20 +41,19 @@ namespace Said.Application
         {
             StringBuilder str = new StringBuilder();
             //修正model数据
-            if (string.IsNullOrWhiteSpace(model.SSongId))//没有歌曲id则验证歌曲图片是否存在
+            if (string.IsNullOrWhiteSpace(model.Song.SongId))//没有歌曲id则验证歌曲图片是否存在
             {
 
             }
             else//如果有歌曲id则检索数据库
             {
-                if (!context.Exists(m => m.SaidId == model.SSongId))
-                    str.Append("歌曲信息不正确(不可获取),");
+                model.Song = SongApplication.Context.GetById(model.Song.SongId);//检索有没有歌曲信息
+                if (model.Song == null)
+                    str.Append("歌曲信息不正确(不可获取)");
             }
-            if (string.IsNullOrWhiteSpace(model.SClassifyId))//有分类，验证分类id
-            {
-                if (!context.Exists(m => m.Classify.ClassifyId == model.SClassifyId))
-                    str.Append("分类信息不正确,");
-            }
+
+            if ((model.Classify = ClassifyApplication.Context.GetById(model.Classify.ClassifyId)) == null)
+                str.Append("分类信息不正确");
             foreach (var validateResult in model.Validate())
             {
                 //validateResult.MemberNames//这个要搞懂怎么用，或许能让提示信息更全一点

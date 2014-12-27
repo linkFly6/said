@@ -37,10 +37,10 @@ namespace Said.Models
         /// 描述
         /// </summary>
         public string SSummary { get; set; }
-        /// <summary>
-        /// 歌曲ID
-        /// </summary>
-        public string SSongId { get; set; }
+        ///// <summary>
+        ///// 歌曲ID
+        ///// </summary>
+        //public string SSongId { get; set; }
         /// <summary>
         /// 脚本（如果有的话）
         /// </summary>
@@ -108,10 +108,10 @@ namespace Said.Models
         /// 点击量
         /// </summary>
         public int SClick { get; set; }
-        /// <summary>
-        /// 类型ID（如果有的话）
-        /// </summary>
-        public string SClassifyId { get; set; }
+        ///// <summary>
+        ///// 类型ID（如果有的话）
+        ///// </summary>
+        //public string SClassifyId { get; set; }
         /// <summary>
         /// 类型对象
         /// </summary>
@@ -134,24 +134,20 @@ namespace Said.Models
                 yield return new ValidationResult("图片不允许为空");
             if (string.IsNullOrWhiteSpace(STag))
                 yield return new ValidationResult("标签不允许为空");
-            if (string.IsNullOrWhiteSpace(SClassifyId))
-                yield return new ValidationResult("分类不允许为空");
-            if (string.IsNullOrWhiteSpace(SSongId))
+            if (Classify == null)
+                yield return new ValidationResult("分类信息不允许为空");
+            if (Song == null)
             {
-                if (Song == null)
-                {
-                    yield return new ValidationResult("歌曲信息不正确");
-                    if (string.IsNullOrWhiteSpace(Song.SongImg))
-                        yield return new ValidationResult("歌曲图片不允许为空");
-                    //if (string.IsNullOrWhiteSpace(Song.SongArtist))
-                    //    yield return new ValidationResult("歌手不允许为空");
-                    //if (string.IsNullOrWhiteSpace(Song.SongAlbum))
-                    //    yield return new ValidationResult("歌曲专辑不允许为空");
-                    if (string.IsNullOrWhiteSpace(Song.SongName))
-                        yield return new ValidationResult("歌曲名称不允许为空");
-                }
+                yield return new ValidationResult("歌曲信息不正确");
+                if (string.IsNullOrWhiteSpace(Song.SongImg))
+                    yield return new ValidationResult("歌曲图片不允许为空");
+                //if (string.IsNullOrWhiteSpace(Song.SongArtist))
+                //    yield return new ValidationResult("歌手不允许为空");
+                //if (string.IsNullOrWhiteSpace(Song.SongAlbum))
+                //    yield return new ValidationResult("歌曲专辑不允许为空");
+                if (string.IsNullOrWhiteSpace(Song.SongName))
+                    yield return new ValidationResult("歌曲名称不允许为空");
             }
-
         }
     }
 }
