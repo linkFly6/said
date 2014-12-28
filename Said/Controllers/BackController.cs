@@ -21,9 +21,18 @@ namespace Said.Controllers.Back
         public ActionResult AddSaid()
         {
             ViewBag.Title = "添加一篇Said";
+            //初始化歌曲数据
+            ViewData["Classifys"] = ClassifyApplication.Context.GetAll();
             return View();
         }
+        #region Pages
 
+        #endregion
+
+
+        #region Service
+
+        #region 添加一篇Said
         [HttpPost]
         public JsonResult AddSaid(FormCollection form)
         {
@@ -36,6 +45,7 @@ namespace Said.Controllers.Back
                 SSummary = form["SSummary"],
                 SImg = form["SImg"],
                 STag = form["STag"],
+                SIsTop = bool.Parse(form["SIsTop"]),
                 SDate = DateTime.Now
             };
             if (string.IsNullOrWhiteSpace(form["Classify.ClassifyId"]))//分类
@@ -70,5 +80,29 @@ namespace Said.Controllers.Back
             else
                 return Json(new { code = 1, msg = vdResult });
         }
+        #endregion
+
+        /// <summary>
+        /// 检测歌曲文件名是否已经存在
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult ExistsSongFileName()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 检测Said文件名是否已经存在
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult ExistsSaidFileName()
+        {
+            return null;
+        }
+        #endregion
+
+
+
+
     }
 }

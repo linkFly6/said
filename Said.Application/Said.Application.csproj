@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ArticleApplication.cs" />
     <Compile Include="BaseApplication.cs" />
+    <Compile Include="ClassifyApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SongApplication.cs" />
   </ItemGroup>

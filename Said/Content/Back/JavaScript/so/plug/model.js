@@ -62,7 +62,9 @@ define(['../so'], function (so) {
                 }
             } else {
                 get = function () { return elem.value; }
-                set = function (value) { elem.value = value == null ? '' : value }
+                set = function (value) {
+                    elem.value = value == null ? '' : value
+                }
             }
             Object.defineProperty(model, name, {//支持动态访问
                 enumerable: true,

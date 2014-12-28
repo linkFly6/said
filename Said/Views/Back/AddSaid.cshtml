@@ -52,7 +52,7 @@
                             <div class="col-md-4">
                                 <div class="music-img">
                                     <div class="thumbnail">
-                                        @Html.TextBoxFor(Model => Model.Song.SongId, new { @class = "song-imgUp", type = "file" })
+                                        @Html.TextBoxFor(Model => Model.Song.SongImg, new { @class = "song-Upload", type = "file" })
                                         <img src="../../Content/Images/UEDImg/demo-img6.jpg" id="songImg" />
                                     </div>
                                 </div>
@@ -76,7 +76,13 @@
                                     <span class="input-group-addon">文件</span>
                                     @Html.TextBoxFor(Model => Model.Song.SongFileName, new { @class = "form-control music-input", placeholder = "文件名", autocomplete = "off"/*, required = "required", validate = ""*/ })
                                 </div>
-                                <button type="button" class="btn btn-danger deleteSong" id="songDelete" data-ng-click="ac.deleteImg()">删除</button>
+                                <div class="songOp-btn">
+                                    <button type="button" class="btn btn-danger songBtn" id="songDelete" data-ng-click="ac.deleteImg()">删除</button>
+                                </div>
+                                <div class="songOp-btn song-up-content">
+                                    @Html.TextBoxFor(Model => Model.Song.SongId, new { @class = "song-Upload", type = "file", id = "addSongFile" })
+                                    <button type="button" class="btn btn-primary songBtn" id="addSong" data-ng-click="ac.deleteImg()">添加</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -100,7 +106,9 @@
                         </div>
                         <div class="col-md-8">
                             @Html.TextAreaFor(Model => Model.SSummary, new Dictionary<string, object>() { { "class", "said-dis" }, { "autocomplete", "off" }, { "placeholder", "简介[支持HTML]" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.error" } })
-                            <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete">删除</button>
+                            <div class="songOp-btn song-up-content">
+                                <button type="button" class="btn btn-danger songBtn" id="summaryImgDelete">删除</button>
+                            </div>
                         </div>
 
                     </div>
@@ -138,14 +146,13 @@
                             <label>CSS</label>
                             @Html.TextAreaFor(Model => Model.SCSS, new { @class = "form-control", placeholder = "自定义CSS", autocomplete = "off" })
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox said-checkbox">
                             <label>
                                 @*@Html.CheckBoxFor(Model => Model.SReprint, new { @type = "checkbox" })如果是直接提交表单，则可以直接采用checkbox控件，会生成两个input，具体请查阅：http://www.cnblogs.com/freeliver54/archive/2013/05/10/3070384.html*@
                                 @Html.TextBoxFor(Model => Model.SReprint, new { @type = "checkbox" })是否转载</label>
                             <label>
                                 <input type="checkbox" />
-                                @Html.TextBoxFor(Model => Model.SIsTop, new { @type = "checkbox" })
-                            </label>
+                                @Html.TextBoxFor(Model => Model.SIsTop, new { @type = "checkbox" })是否置顶</label>
                         </div>
                     </div>
                 </div>
@@ -176,7 +183,8 @@
         var Action = {
             song: '/Source/SaidSong',
             img: '@Url.Action("UploadSaidImg", "Source")',
-            imgLocation: '@Url.Content("~/Source/Said/")',
+            imgLocation: '@Url.Content("~/Source/Said/Images/")',
+            music: '@Url.Action("UploadMusic", "Source")',
             form: '@Url.Action("AddSaid", "Back")'
         },
         DataCenter = {
@@ -229,9 +237,11 @@
                           'Sql Server',
                           'NodeJS',
                           'Zepto', 'requireJS', 'angularJS', 'Backbone', 'linkFly', 'bootstrap'],
-            classif: ['听说', 'linkFly', 'blog', '学习'],
+            types: { 'linkFly': '0', 'C#': '1', 'Blog': '2', '.NET': '3', 'MVC': '4', 'NodeJS': '5', '学习': '6' },
+            classif: ['linkFly', 'C#', 'Blog', '.NET', 'MVC', 'NodeJS', '学习'],
             //MIME参考：http://www.w3school.com.cn/media/media_mimeref.asp
-            imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
+            imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
+            musicFilters: ['mp3', 'ogg']
         };
 
         require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid'], function ($, so, search, validate, saidModel, addSaid) {
@@ -302,106 +312,152 @@
                     submitBtn = _('submit');
 
 
-                var TagSelect = function (elem, data, def) {
-                    // => tag的选择需要针对search插件进行组合
-                    var templent = '<label><span>${0}</span><a href="javascript:;" class="_tag-selectItem">×</a></label>',
-                        value = [],
-                        parentNode = elem.parentNode.parentNode,
-                        format = so.format,
-                        content = elem.previousElementSibling,//生成标签的容器
-                        tmp,//临时使用变量
-                        insertTag = function (name) {
-                            //创建一个tag
-                            if (!name || value.indexOf(name) !== -1) return false;
-                            content.insertAdjacentHTML('beforeEnd', format(templent, name));
-                            value.push(name);
-                            return true;
-                        },
-                        checkState = function () {
-                            return value.length === 0 ?
-                                (parentNode.classList.add('has-error'), false) :
-                                (parentNode.classList.remove('has-error'), true);
-                        };
-                    if (Array.isArray(def)) {
-                        //有默认值则处理默认值
-                        var html = [];
-                        def.forEach(function (value) {
-                            html.push(so.format(templent, value));
-                        });
-                        content.innerHTML = html.join('');
-                        each.call(content.children, function (elem, i) {
-                            value.push(elem.innerHTML);
-                        });
-                        html = null;
+                // => 保存到本地数据库
+                var save = function () {
+                    model.each(function (name, value) {
+                        if (value)
+                            addSaid.DataBase.val(name, value);
+                    });
+                    //保存标签
+                    if (TagSelect.checked()) {
+                        addSaid.DataBase.val('STags', TagSelect.val().join(','));
                     }
-                    content.addEventListener('click', function (e) {
-                        //删除标签
-                        if (e.target.className === '_tag-selectItem') {
-                            tmp = e.target.previousElementSibling;
-                            value.splice(value.indexOf(tmp.innerHTML), 1);
-                            tmp.parentNode.remove();//js什么时候有了remove()方法？？
+                },
+                readDataBase = function () {//从本地数据库读取数据
+                    var database = addSaid.DataBase;
+                    var specialStr = ['SImg', 'Song.SongImg', 'Song.SongId'].join(),//图片文件无法还原
+                        value;;
+                    model.each(function (name) {
+                        //if (specialSet(name, value)) return;
+                        if (~specialStr.indexOf(name)) return;
+                        value = database.val(name);
+                        if (value != null) {
+                            model[name] = value;
                         }
                     });
-                    elem.addEventListener('keydown', function (e) {
-                        switch (e.keyCode) {
-                            case 9://tab
-                                //case 32://空格
-                            case 188://,
-                            case 190://.
-                                //case 9 | 32 | 188 | 190:
-                                //位枚举学的不好啊 囧....
-                                if (trim.call(elem.value) === '') {
+                    if (value = database.val('STags')) {
+                        //还原标签默认值
+                        tagSelectDefaultValues = value.split(',');
+                    };
+                }();
+
+
+                // => 构建标签模型
+                var tagSelectDefaultValues,//标签默认值
+                    TagSelect = function (elem, data, def) {
+                        // => tag的选择需要针对search插件进行组合
+                        var templent = '<label><span>${0}</span><a href="javascript:;" class="_tag-selectItem">×</a></label>',
+                            value = [],
+                            parentNode = elem.parentNode.parentNode,
+                            format = so.format,
+                            content = elem.previousElementSibling,//生成标签的容器
+                            tmp,//临时使用变量
+                            insertTag = function (name) {
+                                //创建一个tag
+                                if (!name || value.indexOf(name) !== -1) return false;
+                                content.insertAdjacentHTML('beforeEnd', format(templent, name));
+                                value.push(name);
+                                return true;
+                            },
+                            checkState = function () {
+                                return value.length === 0 ?
+                                    (parentNode.classList.add('has-error'), false) :
+                                    (parentNode.classList.remove('has-error'), true);
+                            };
+                        if (Array.isArray(def)) {
+                            //有默认值则处理默认值
+                            var html = [];
+                            def.forEach(function (value) {
+                                html.push(so.format(templent, value));
+                            });
+                            content.innerHTML = html.join('');
+                            each.call(content.children, function (elem, i) {
+                                value.push(elem.innerHTML);
+                            });
+                            html = null;
+                        }
+                        content.addEventListener('click', function (e) {
+                            //删除标签
+                            if (e.target.className === '_tag-selectItem') {
+                                tmp = e.target.previousElementSibling;
+                                value.splice(value.indexOf(tmp.innerHTML), 1);
+                                tmp.parentNode.remove();//js什么时候有了remove()方法？？
+                            }
+                        });
+                        elem.addEventListener('keydown', function (e) {
+                            switch (e.keyCode) {
+                                case 9://tab
+                                    //case 32://空格
+                                case 188://,
+                                case 190://.
+                                    //case 9 | 32 | 188 | 190:
+                                    //位枚举学的不好啊 囧....
+                                    if (trim.call(elem.value) === '') {
+                                        checkState();
+                                        return;
+                                    };
+                                    e.preventDefault();
+                                    insertTag(elem.value);
                                     checkState();
-                                    return;
-                                };
-                                e.preventDefault();
-                                insertTag(elem.value);
-                                checkState();
-                                elem.value = '';
-                                break;
-                            case 8://backSpace
-                                //case 46://delete
-                                if (value.length && trim.call(elem.value) === '') {
-                                    value.pop();
-                                    content.lastElementChild.remove();
-                                    checkState();
-                                }
-                                break;
-                            default:
-                                break;
+                                    elem.value = '';
+                                    break;
+                                case 8://backSpace
+                                    //case 46://delete
+                                    if (value.length && trim.call(elem.value) === '') {
+                                        value.pop();
+                                        content.lastElementChild.remove();
+                                        checkState();
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        });
+                        search(elem, data, function (inputValue, selectValue) {
+                            insertTag(selectValue);
+                            checkState();
+                            return '';
+                        }, function () {
+                            checkState();
+                        })
+                        return {
+                            check: function () {
+                                //检测是否错误，返回检测结果，同时修改样式
+                                return checkState();
+                            },
+                            checked: function () {
+                                //检测错误
+                                return value.length !== 0;
+                            },
+                            val: function () {
+                                //获取选中项的值
+                                return value;
+                            }
+                        };
+                    }(model.get('STag'), DataCenter.tags, tagSelectDefaultValues);
+
+                // => 构建分类模型，分类直接采用search
+                var ClassifyValue = function (elem, data, filters) {
+                    //[DOM，数据中心（选择id），sugg数据]
+                    var value;
+                    search(elem, filters, {
+                        def: '没有检索到相关信息',
+                        callback: function (inputValue, selectValue) {
+                            //分类的选择相对简单
+                            value = data[selectValue];
+                            return selectValue;
                         }
                     });
-                    search(elem, data, function (inputValue, selectValue) {
-                        insertTag(selectValue);
-                        checkState();
-                        return '';
-                    }, function () {
-                        checkState();
-                    })
                     return {
-                        check: function () {
-                            //检测是否错误，返回检测结果，同时修改样式
-                            return checkState();
-                        },
-                        checked: function () {
-                            //检测错误
-                            return value.length !== 0;
-                        },
-                        val: function () {
-                            //获取选中项的值
+                        val: function (newValue) {
+                            if (newValue != null)
+                                value = newValue;
                             return value;
                         }
                     };
-                }(model.get('STag'), DataCenter.tags, ['javascript']);
+                }(model.get('Classify.CName'), DataCenter.types, DataCenter.classif);
 
-                //分类直接采用search
-                search(model.get('Classify.CName'), DataCenter.classif, {
-                    def: '没有检索到相关信息',
-                    callback: function (inputValue, selectValue) {
-                        //分类的选择相对简单
-                        return selectValue;
-                    }
-                });
+
 
 
                 // => 构建歌曲模型
@@ -420,63 +476,95 @@
                     }
                 },
                 // =-> 歌曲上传
-                Song = function (mask, img, del, action, filters, songs, models, model) {
-                    var upload = addSaid.Upload(mask, action, filters, function (data) {
+                Song = function (imgMask, img, addButton, del, imgAction, fileAction, imgFilters, musicFilters, songs, models, model) {
+                    // = > 上传图片
+                    var imgUpload = addSaid.Upload(imgMask, imgAction, imgFilters, function (data) {
                         if (data.error === 0) {//ok
                             img.src = Action.imgLocation + (imgName = data.name);
                         } else {
-                            console.log(data.msg);
+                            dialog('上传歌曲图片异常，服务器响应：', data.msg);
+                            imgUpload.toggle(false);
                         }
                     }, uploadErrorHandle),
+                    // = > 上传歌曲
+                        musicFileName,
+                        addBtnDOM = addButton.parentNode,
+                        fileUpload = addSaid.Upload(addButton, fileAction, musicFilters, function (data) {
+                            if (data.error === 0) {//上传歌曲成功
+                                musicFileName = data.name;
+                            } else {
+                                dialog('上传歌曲文件异常，服务器响应：', data.msg);
+                                fileUpload.toggle(false);
+                            }
+                        }, uploadErrorHandle, 6291456),//最大6mb
                         imgName,//上传或suggestion选中项的图片名称
                         tmpModel,//suggestion选中项的model
                         selectData = false,
-                        searchDOM = model.get('Song.SongName');//选中项id，如果为false则表示不是选中项的数据
+                        searchDOM = model.get('Song.SongName'),//选中项id，如果为false则表示不是选中项的数据
+                        songDOMs = ['Song.SongName', 'Song.SongAlbum', 'Song.SongArtist', 'Song.SongFileName'].map(function (name) {
+                            //和歌曲相关联的DOM
+                            return model.get(name);
+                        });
                     //songName的search()suggestion事件绑定之前绑定
-                    ['Song.SongName', 'Song.SongAlbum', 'Song.SongArtist', 'Song.SongFileName'].forEach(function (name) {
-                        model.get(name).addEventListener('input', function () {
+                    songDOMs.forEach(function (elem) {
+                        elem.addEventListener('input', function () {
                             validateData(this, !!this.value.trim());
                             selectData = false;//编辑过表示不是选中项
                             //是不是这里不清空selectData，让服务器对比数据，如果有改动则插入，否则还是直接引用
                         });
                     });
-                    var songName = search(searchDOM, songs, function (inputValue, value) {
+                    var songName = search(searchDOM, songs, function (inputValue, value) {//从数据列表中选中
                         validateData(searchDOM, !!searchDOM.value.trim());
                         tmpModel = models[value];
                         model['Song.SongName'] = tmpModel.name;//直接赋值即可映射到DOM
                         model['Song.SongAlbum'] = tmpModel.album;
                         model['Song.SongArtist'] = tmpModel.artist;
                         model['Song.SongFileName'] = tmpModel.fileName;
+                        songDOMs.forEach(function (elem) {
+                            validateData(elem, !!elem.value.trim());
+                        });
                         img.src = imgName = tmpModel.img;//保存选中的图片信息
                         selectData = tmpModel.id;//获取选中项id
-                        upload.toggle(true);
+                        lock();//选择了歌曲就锁住
+                        addBtnDOM.style.display = 'none';
                         return value;
                     }, function () {
-                        selectData = false;
+                        lock(false);
+                        addBtnDOM.style.display = '';
+                        musicFileName = selectData = false;
                     }),
+                      lock = function (isLock) {
+                          var method = isLock === false ? 'removeAttribute' : 'setAttribute';
+                          ['Song.SongAlbum', 'Song.SongArtist', 'Song.SongFileName'].forEach(function (name) {
+                              model.get(name)[method]('disabled', 'disabled');
+                          });
+                      },
                       reset = function () {
                           model['Song.SongName'] = model['Song.SongAlbum'] = model['Song.SongArtist'] = model['Song.SongFileName'] = '';
                           img.src = "../../Content/Images/UEDImg/demo-img6.jpg";
-                          tmpModel = imgName = false;
-                          upload.toggle();
+                          lock(false);
+                          addBtnDOM.style.display = '';
+                          musicFileName = tmpModel = imgName = false;
+                          imgUpload.toggle();
                       };
                     del.addEventListener('click', function () {
                         reset();
                     });
                     return {
-                        img: function () {
-                            return imgName;
+                        //检测是否是上传的信息
+                        isUpload: function () {
+                            return !!selectData;
                         },
                         check: function () {
-                            //没有选择项，也没有上传图片
-                            return imgName && selectData;
+                            //也没有上传图片歌曲信息，也没有选择项
+                            return !!((imgName && musicFileName) || selectData);
                         },
                         val: function () {
-                            return { img: imgName, id: selectData };
+                            return { img: imgName, name: musicFileName };
                         },
                         reset: reset
                     };
-                }('Song_SongId', _('songImg'), _('songDelete'), Action.img, DataCenter.imgFilters, DataCenter.songs, DataCenter.songsData, model);
+                }('Song_SongImg', _('songImg'), _('addSongFile'), _('songDelete'), Action.img, Action.music, DataCenter.imgFilters, DataCenter.musicFilters, DataCenter.songs, DataCenter.songsData, model);
                 // => 缩略图
                 SumImg = (function (mask, img, action, del, filters, def) {
                     var value,
@@ -490,7 +578,8 @@
                             if (data.error === 0) {//ok
                                 img.src = Action.imgLocation + (value = data.name);
                             } else {
-                                console.log(data.msg);
+                                upload.toggle(false);
+                                dialog('上传缩略图异常，服务器响应：', data.msg);
                             }
                         }, uploadErrorHandle);
 
@@ -504,13 +593,17 @@
                         reset: reset
                     };
                 })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters);
-                //发布
 
+
+
+                //发布
 
                 changeState = function (logDOM) {
                     var lock = false, change = function (mothed, text) {
                         if (arguments.length === 2)
                             submitBtn.classList[mothed]('submit-lock');
+                        else
+                            text = mothed;
                         submitBtn.innerHTML = text;
                     };
                     return function (state) {
@@ -541,7 +634,8 @@
                 //form提交
                 submitBtn.addEventListener('click', function () {
                     //console.log(formValidate);
-                    //console.log(model);
+                    console.log(model);
+                    save();
                     if (changeState()) return false;
                     changeState(0);
                     var checkResult = formValidate.test(function (elem, checked, key, value, pattern) {
@@ -555,7 +649,7 @@
                     } else {
                         //默认检测通过，检测特殊项：歌曲、缩略图和标签
                         if (!Song.check()) {
-                            dialog('歌曲信息错误', '请上传歌曲图片或选择正确的歌曲信息');
+                            dialog('歌曲信息错误', '请上传歌曲图片、歌曲文件或选择正确的歌曲信息');
                             return changeState(1);
                         }
                         //检测标签
@@ -577,12 +671,13 @@
                         model.each(function (name, value) {
                             data.append(name, value);
                         });
-
                         //【【【【【【【【【【【【【【【【【【【【【【【【【文章文件名、歌曲文件名要进行异步检测】】】】】】】】】】】】】】】】】】】】】】】】】】】】
                         //缩略图
                         data.append('SImg', SumImg.val());
                         //标签
-                        data.append('STag', SumImg.val());
+                        data.append('STag', TagSelect.val().join(','));
+                        //分类
+                        data.append('Classify.ClassifyId', ClassifyValue.val());
                         //data.SHTML = '';
                         if (songData.id) {
                             //选择了歌曲，而不是新增歌曲
@@ -592,7 +687,11 @@
                             data.append('Song.SongImg', songData.img);
                         }
                         addSaid.submit(data, Action.form, function (data, xhr) {
-
+                            if (data.code === 0) {
+                                dialog('成功了！！', '添加成功！！！oh yeah!');
+                            } else {
+                                dialog('失败了', data.msg);
+                            }
                         }, function () {
                             alert('发送信息失败');
                         });

@@ -28,7 +28,7 @@ namespace Said.Application
         /// <returns></returns>
         public static int Add(Article model)
         {
-            service.Add(model);
+            Context.Add(model);
             return service.Submit();
         }
 
@@ -63,5 +63,6 @@ namespace Said.Application
                 str.Length--;//StringBuilder的length可以用于裁剪字符串？
             return str.ToString() ?? null;
         }
+
     }
 }

@@ -20,7 +20,9 @@
 .said-dis { border: 3px solid #b0d7fe; display: block; height: 191px; overflow: hidden; padding-left: 25px; border-width: 0 0 0 3px; width: 100%; resize: none; }
 .line-layout { display: inline-block!important; width: auto; }
 /*more*/
-.deleteSong { width: 200px; float: right; }
+.songOp-btn { width: 200px; float: right; }
+    .songOp-btn:last-child { margin-right: 20px; }
+    .songOp-btn button { width: 200px; }
 .said-submit { background-color: transparent; border-color: #563d7c; color: #563d7c; width: 200px; }
     .said-submit:hover, .said-submit:focus { background-color: #563d7c; color: #FFF; }
 .submit-lock { background-color: #9973d4!important; border-color: #9973d4!important; color: #FFF; opacity: 0.7; cursor: no-drop; }
@@ -35,8 +37,10 @@
     .said-mask .progress { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; border-radius: 0; background-color: transparent; }
 .said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
 .said-error { border-color: #a94442!important; }
+.said-checkbox label { padding-right: 15px; }
 /*song-img*/
-.song-imgUp { position: absolute; height: 100%; width: 100%; cursor: pointer; padding: 0; opacity: 0; }
+.song-up-content { position: relative; }
+.song-Upload { position: absolute; height: 100%; width: 100%; cursor: pointer; padding: 0; opacity: 0; }
 
 /*tag-input*/
 .tagInputBar { padding: 6px 12px 1px; height: auto; z-index: 3!important; }
@@ -66,7 +70,8 @@
     .music-info .input-group:first-child { margin: 15px 0 10px 0; }
     .line-layout { display: block; width: 100%; }
     .said-dis { width: 100%; margin: 20px 0; }
-    .said-submit, .deleteSong { width: 100%; }
+    .said-submit, .songOp-btn, .songOp-btn button { width: 100%; }
+        .songOp-btn:last-child { margin: 5px 0 0 0; }
 }
 
 @media (max-width:1693px) {

@@ -2,11 +2,14 @@
 define(['jquery', 'so'], function ($, so) {
     //得到文件后缀表达式
     var fileExttension = /\.[^\.]+/i,
-        imgMaxSize = 1000000,//图片文件允许的最大大小
-        Upload = function (elem, action, filters, callback, fail) {
+        imgMaxSize = 1048576,//图片文件允许的最大大小，1mb
+        Upload = function (elem, action, filters, callback, fail, maxSize) {
             //(要建立upload对象的元素/id,要上传的路径,过滤文件,上传成功后执行的回调函数,初始化给定的默认值)
             if (!(this instanceof Upload))
-                return new Upload(elem, action, filters, callback, fail);
+                return new Upload(elem, action, filters, callback, fail, maxSize);
+            if (typeof fail === 'number')
+                maxSize = maxSize;
+            maxSize = maxSize || imgMaxSize;
             elem = so(elem);
             var that = this,
                 item = that.element = elem[0],
@@ -34,22 +37,20 @@ define(['jquery', 'so'], function ($, so) {
                     id = (file.lastModifiedDate + "").replace(/\W/g, '') + size + type.replace(/\W/g, ''),
                     xhr = new XMLHttpRequest(),// XMLHttpRequest 2.0请求
                     data = new FormData();
-                console.log(file);
                 if (ext !== -1)
                     ext = name.substring(ext + 1).toLowerCase();
                 //尝试后缀名验证，如果后缀名验证则尝试使用文件MIME验证
                 if (ext === -1 || (filters.indexOf(ext) === -1 && type !== '' && filters.indexOf(type) === -1)) {
-                    fail && fail.call(self, { code: 2, msg: '上传的文件不是可以接受的文件类型' }, file);
+                    fail && fail.call(self, { code: 2, msg: '<p>上传的文件不是可以接受的文件类型</p><p>可接受类型：</p>' + filters.join(',') }, file);
                     return;
                 }
-                if (size > imgMaxSize) {
-                    fail && fail.call(self, { code: 1, msg: '上传的文件超过了约定的最大大小（>1MB）' }, file);
+                if (size > maxSize) {
+                    fail && fail.call(self, { code: 1, msg: '上传的文件超过了约定的最大大小（>' + Math.floor(maxSize / 1024 / 1024) + 'MB）' }, file);
                     return;
                 }
 
 
                 //验证合法性
-                console.log(file);
 
                 data.append('name', encodeURIComponent(name));
                 data.append('fileId', id);
@@ -57,7 +58,7 @@ define(['jquery', 'so'], function ($, so) {
                     参考：http://javascript.ruanyifeng.com/bom/ajax.html#toc1
                     formData对象append方法很碉堡...
                 */
-                data.append('saidImg', file.slice(0), encodeURIComponent(name));//
+                data.append('saidFile', file.slice(0), encodeURIComponent(name));//
 
                 xhr.open('post', action, true);
 
@@ -99,7 +100,50 @@ define(['jquery', 'so'], function ($, so) {
             this.element.style.display = isHide == true ? 'none' : '';
         }
     });
+    var database = function (namespace) {
+        namespace += '.';
+        var support = function () {
+            return !!window.localStorage;
+        }(),
+            getKey = function (key) {
+                if (!key) return key;
+                if (~key.indexOf('.')) {//back.addSaid,有命名空间
+                    return key;
+                }
+                return namespace + key;
+            },
+            rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/;
+        return {
+            support: support,
+            //get/set 本地数据库的值，set null表示清空该键
+            val: function (key, value) {
+                //【【【【【【【【【【后续强化对类型支持（支持对象的设置和获取）！】】】】】】】】】】
+                if (arguments.length > 1) {
+                    //set
+                    if (support)
+                        value == null ? localStorage.removeItem(getKey(key)) : localStorage.setItem(getKey(key), value);
+                    return this;
+                }
+                //get
+                value = support ? localStorage.getItem(getKey(key), value) || '' : '';
+                //来自jQuery的jQuery.data
+                return value === "true" ? true :
+                        value === "false" ? false :
+                        value === "null" ? null :
+                        +value + "" === value ? +value :
+                        rbrace.test(value) ? JSON.parse(value) :
+                        value;
+            },
+            //清空数据库的指定命名空间下的数据
+            clear: function (nameSpace) {
+                nameSpace = nameSpace || namespace;
 
+            }
+            //, on: function () {
+
+            //}
+        };
+    }('back.addSaid');
     return {
         Upload: Upload,
         submit: function (data, action, done, fail) {
@@ -109,8 +153,7 @@ define(['jquery', 'so'], function ($, so) {
             xhr.onreadystatechange = function (e) {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        var data = xhr.responseText;
-                        done(data, xhr);
+                        done(JSON.parse(xhr.responseText), xhr);
                     } else {
                         //提交失败
                         fail(xhr);
@@ -118,7 +161,8 @@ define(['jquery', 'so'], function ($, so) {
                 }
             }
             xhr.send(data);
-        }
+        },
+        DataBase: database
     };
 
     //$('._menuHover').each(function (i) {
