@@ -6,6 +6,7 @@ define(['../so'], function (so) {
         2、尚未映射到未来还会通过改变DOM生成的对象
         4、未来可以把select映射成一个数组，访问select的时候是一个数组
         5、未来可以把radio映射成一个对象，访问radio的时候是一个对象，每个不同
+        6、要可以绑定事件，这是必须的
      */
     var each = Array.prototype.forEach;
     var Model = function (formElem) {

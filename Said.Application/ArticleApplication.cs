@@ -32,6 +32,8 @@ namespace Said.Application
             return service.Submit();
         }
 
+
+        #region 逻辑
         /// <summary>
         /// 验证一篇said是否是有效的said
         /// </summary>
@@ -63,6 +65,19 @@ namespace Said.Application
                 str.Length--;//StringBuilder的length可以用于裁剪字符串？
             return str.ToString() ?? null;
         }
+        #endregion
 
+
+        #region 查询
+        /// <summary>
+        /// 查找Said的文件名
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static Article FindByFileName(string fileName)
+        {
+            return Context.Get(m => m.SName == fileName);
+        }
+        #endregion
     }
 }

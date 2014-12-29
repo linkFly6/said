@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -63,6 +64,27 @@ namespace Said.Common
                 }
             }
             return FileExtendsion.unknown;
+        }
+
+        /// <summary>
+        /// 根据Guid生成一个文件名
+        /// </summary>
+        /// <param name="isTrim">是否修剪（修剪Guid生成的-连字符）</param>
+        /// <returns>生成的文件名</returns>
+        public static string CreateFileNameByID(bool isTrim = false)
+        {
+            return isTrim ? Guid.NewGuid().ToString().Replace("-", string.Empty) : Guid.NewGuid().ToString();
+        }
+        /// <summary>
+        /// 根据时间生成一个文件名
+        /// </summary>
+        /// <param name="format">指定一个时间格式</param>
+        /// <returns>生成的文件名</returns>
+        public static string CreateFileNameByTime(string format = null)
+        {
+            if (string.IsNullOrEmpty(format))
+                format = "ffffyyyymmddHHssMM";//乱七八糟的格式~~~~
+            return DateTime.Now.ToString(format, DateTimeFormatInfo.InvariantInfo);
         }
     }
     public enum FileExtendsion

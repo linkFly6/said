@@ -21,9 +21,37 @@ namespace Said.Application
         /// </summary>
         /// <param name="song">实体</param>
         /// <returns></returns>
-        public static string Add(Classify model)
+        public static int Add(Classify model)
         {
-            return string.Empty;
+            Context.Add(model);
+            return Context.Submit();
+        }
+
+        /// <summary>
+        /// 根据长ID查找一个分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Classify Find(long id)
+        {
+            return Context.GetById(id);
+        }
+        /// <summary>
+        /// 根据ID查找一个分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Classify Find(string id)
+        {
+            return Context.GetById(id);
+        }
+        /// <summary>
+        /// 无条件查询全部
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Classify> Find()
+        {
+            return Context.GetAll();
         }
     }
 }

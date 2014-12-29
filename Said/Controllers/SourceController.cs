@@ -12,6 +12,7 @@ namespace Said.Controllers
 {
     public class SourceController : Controller
     {
+        #region Other
         /// <summary>
         /// 图片过滤
         /// </summary>
@@ -28,7 +29,10 @@ namespace Said.Controllers
         /// 音乐最大容量（6mb）
         /// </summary>
         int musicMaxSize = 6291456;
-        //
+        #endregion
+
+
+
         // GET: /Source/
         /// <summary>
         /// 上传一个文件方法
@@ -57,7 +61,7 @@ namespace Said.Controllers
                    filePath = string.Empty;
             if (string.IsNullOrEmpty(dirPath))
                 return UploadResult(1, "服务器异常");
-            newFileName = DateTime.Now.ToString("yyyyMMddHHmmss_ffff", DateTimeFormatInfo.InvariantInfo) + fileExt;
+            newFileName = FileCommon.CreateFileNameByTime() + fileExt;
             filePath = dirPath + newFileName;
             file.SaveAs(filePath);
 

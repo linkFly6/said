@@ -22,13 +22,15 @@ namespace Said.Application
         /// </summary>
         /// <param name="song">实体</param>
         /// <returns></returns>
-        public static string Add(Song song)
+        public static int Add(Song song)
         {
-            if (string.IsNullOrEmpty(song.SongId))
-                song.SongId = new Guid().ToString();
-            if (service.Submit() < 1)
-                return string.Empty;
-            return song.SongId;
+            //if (string.IsNullOrEmpty())
+            //    song.SongId = new Guid().ToString();
+            //if (service.Submit() < 1)
+            //    return string.Empty;
+            //return song.SongId;
+            Context.Add(song);
+            return Context.Submit();
         }
 
 
@@ -43,6 +45,19 @@ namespace Said.Application
             service.Update(song);
             return service.Submit();
         }
+
+        #region 查询
+        /// <summary>
+        /// 检测是否存在该文件名的歌曲
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static Song FindByFileName(string fileName)
+        {
+            return Context.Get(m => m.SongFileName == fileName);
+        }
+
+        #endregion
 
     }
 }
