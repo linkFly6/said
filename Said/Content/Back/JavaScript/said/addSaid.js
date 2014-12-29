@@ -146,7 +146,7 @@ define(['jquery', 'so'], function ($, so) {
     }('back.addSaid');
     return {
         Upload: Upload,
-        submit: function (data, action, done, fail) {
+        ajax: function (data, action, done, fail) {
             //data是FormData对象
             var xhr = new XMLHttpRequest();
             xhr.open('post', action);

@@ -185,6 +185,8 @@
             img: '@Url.Action("UploadSaidImg", "Source")',
             imgLocation: '@Url.Content("~/Source/Said/Images/")',
             music: '@Url.Action("UploadMusic", "Source")',
+            existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
+            existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
             form: '@Url.Action("AddSaid", "Back")'
         },
         DataCenter = {
@@ -505,6 +507,22 @@
                             //和歌曲相关联的DOM
                             return model.get(name);
                         });
+                    $(songDOMs[3]).tooltip();
+                    songDOMs[3].addEventListener('blur', function () {
+                        if (this.value.trim()) {
+                            var data = new FormData();
+                            data.append('fileName', this.value.trim());
+                            addSaid.ajax(data, Action.existsSongFile, function (data) {
+                                if (data.code === 0) {
+                                    dialog('没问题', '没问题');
+                                } else {
+                                    $(songDOMs[3]).tooltip('show');
+                                }
+                            }, function () {
+
+                            });
+                        }
+                    });
                     //songName的search()suggestion事件绑定之前绑定
                     songDOMs.forEach(function (elem) {
                         elem.addEventListener('input', function () {
@@ -686,7 +704,7 @@
                             //上传||suggestion选择了图片后，编辑了歌曲
                             data.append('Song.SongImg', songData.img);
                         }
-                        addSaid.submit(data, Action.form, function (data, xhr) {
+                        addSaid.ajax(data, Action.form, function (data, xhr) {
                             if (data.code === 0) {
                                 dialog('成功了！！', '添加成功！！！oh yeah!');
                             } else {

@@ -72,7 +72,7 @@ namespace Said.Controllers.Back
             else
                 return Json(new { code = 1, msg = "歌曲信息错误" });
             //验证
-            string vdResult = ArticleApplication.Context.ValidateSubmit(model);
+            string vdResult = ArticleApplication.ValidateSubmit(model);
             if (vdResult == null)
             {
                 //生成modelID
@@ -82,7 +82,7 @@ namespace Said.Controllers.Back
                 //没有文件名或文件名不合法，则生成一个新的文件名
                 if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)
                     model.SName = FileCommon.CreateFileNameByTime();
-                ArticleApplication.Context.Add(model);
+                ArticleApplication.Add(model);
                 return Json(new { code = 0, msg = model.SaidId });
             }
             else

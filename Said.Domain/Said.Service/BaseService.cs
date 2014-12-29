@@ -36,7 +36,7 @@ namespace Said.IServices
         public BaseService(DatabaseFactory factory)
         {
             this.Factory = factory;
-            this.dbset = context.Set<T>();
+            this.dbset = Context.Set<T>();
         }
 
         #region Sql通用查询
