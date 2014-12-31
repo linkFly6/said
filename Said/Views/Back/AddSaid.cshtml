@@ -74,7 +74,8 @@
                                 </div>
                                 <div class="input-group" data-ng-class="has-error">
                                     <span class="input-group-addon">文件</span>
-                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new { @class = "form-control music-input", placeholder = "文件名", autocomplete = "off"/*, required = "required", validate = ""*/ })
+
+                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new Dictionary<string, object>() { { "class", "form-control music-input" }, { "autocomplete", "off" }, { "placeholder", "文件名，为空则自动生成" }, { "data-toggle", "tooltip" }, { "data-placement", "top" }, { "title", "该文件名已经存在" } })
                                 </div>
                                 <div class="songOp-btn">
                                     <button type="button" class="btn btn-danger songBtn" id="songDelete" data-ng-click="ac.deleteImg()">删除</button>
@@ -136,7 +137,7 @@
                     <div class="panel-body">
                         <div class="input-group">
                             <span class="input-group-addon">文件</span>
-                            @Html.TextBoxFor(Model => Model.SName, new { @class = "form-control", placeholder = "文章发布的（文件）名称", autocomplete = "off" })
+                            @Html.TextBoxFor(Model => Model.SName, new Dictionary<string, object>() { { "class", "form-control" }, { "autocomplete", "off" }, { "placeholder", "文章发布的（文件）名称,为空自动生成" }, { "data-toggle", "tooltip" }, { "data-placement", "top" }, { "title", "该文件名已经存在" } })
                         </div>
                         <div class="form-group">
                             <label>JavaScript</label>
@@ -477,6 +478,55 @@
                             break;
                     }
                 },
+                //异步文本框检测对象
+                ajaxCheckExists = function (model, actionUrl) {//'Song.SongFileName'
+                    var fileNameCheck = true,//默认为空的话让它通过，因为服务器可以生成文件名
+                       fileNameOldValue = '',//上一次文件名输入的值
+                       fileNameOldCheckResult = false,//上一次文件名校验结果
+                       $model = $(model).tooltip({ trigger: 'manual' }),//输入框
+                       temp;
+                    $model.blur(function () {//注册blur事件
+                        temp = this.value.trim();
+                        if (temp) {
+                            if (temp !== fileNameOldValue) {//如果跟上一次的值一致，则不再异步加载
+                                fileNameOldValue = temp;
+                                var data = new FormData();
+                                data.append('fileName', this.value.trim());
+                                addSaid.ajax(data, actionUrl, function (data) {
+                                    if (data.code === 0) {//证明该文件已经存在
+                                        $model.tooltip('show');
+                                        fileNameOldCheckResult = fileNameCheck = false;
+                                        validateData(model, false);
+                                    } else {
+                                        fileNameOldCheckResult = fileNameCheck = true;
+                                    }
+                                });//加载失败
+                            } else {
+                                //有上一次的校验结果，采用上一次的校验结果
+                                $model.tooltip(fileNameOldCheckResult ? 'hide' : 'show');
+                                validateData(model, fileNameOldCheckResult);
+                            }
+                        } else {
+                            //没有值的话则默认通过
+                            validateData(model, fileNameCheck = true);
+                        }
+                    }).on('input', function () {
+                        fileNameCheck = this.value.trim() !== fileNameOldValue;
+                        $model.tooltip('hide');
+                    });
+                    if ($model.val().trim())
+                        $model.blur();
+                    return {
+                        check: function () {
+                            return fileNameCheck;
+                        },
+                        val: function (value) {
+                            if (value)
+                                return $model.val(value).blur();
+                            return $model.val();
+                        }
+                    };
+                },
                 // =-> 歌曲上传
                 Song = function (imgMask, img, addButton, del, imgAction, fileAction, imgFilters, musicFilters, songs, models, model) {
                     // = > 上传图片
@@ -502,27 +552,15 @@
                         imgName,//上传或suggestion选中项的图片名称
                         tmpModel,//suggestion选中项的model
                         selectData = false,
+                        //文件名校验相关
+                        fileNameCheck = false,//文件名验证是否通过
+                        fileNameOldValue = '',//上一次文件名输入的值
+                        fileNameOldCheckResult = false,//上一次文件名校验结果
                         searchDOM = model.get('Song.SongName'),//选中项id，如果为false则表示不是选中项的数据
-                        songDOMs = ['Song.SongName', 'Song.SongAlbum', 'Song.SongArtist', 'Song.SongFileName'].map(function (name) {
+                        songDOMs = ['Song.SongName', 'Song.SongAlbum', 'Song.SongArtist'].map(function (name) {
                             //和歌曲相关联的DOM
                             return model.get(name);
                         });
-                    $(songDOMs[3]).tooltip();
-                    songDOMs[3].addEventListener('blur', function () {
-                        if (this.value.trim()) {
-                            var data = new FormData();
-                            data.append('fileName', this.value.trim());
-                            addSaid.ajax(data, Action.existsSongFile, function (data) {
-                                if (data.code === 0) {
-                                    dialog('没问题', '没问题');
-                                } else {
-                                    $(songDOMs[3]).tooltip('show');
-                                }
-                            }, function () {
-
-                            });
-                        }
-                    });
                     //songName的search()suggestion事件绑定之前绑定
                     songDOMs.forEach(function (elem) {
                         elem.addEventListener('input', function () {
@@ -569,6 +607,10 @@
                         reset();
                     });
                     return {
+                        //检测文件名校验是否通过
+                        nameCheck: function () {
+                            return fileNameCheck;
+                        },
                         //检测是否是上传的信息
                         isUpload: function () {
                             return !!selectData;
@@ -584,7 +626,7 @@
                     };
                 }('Song_SongImg', _('songImg'), _('addSongFile'), _('songDelete'), Action.img, Action.music, DataCenter.imgFilters, DataCenter.musicFilters, DataCenter.songs, DataCenter.songsData, model);
                 // => 缩略图
-                SumImg = (function (mask, img, action, del, filters, def) {
+                var SumImg = (function (mask, img, action, del, filters, def) {
                     var value,
                         reset = function () {
                             img.src = '../../Content/Images/test-said-img.jpg';
@@ -610,7 +652,10 @@
                         },
                         reset: reset
                     };
-                })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters);
+                })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters),
+                //文件名异步检测
+                    fileNameSongNameModel = ajaxCheckExists(model.get('Song.SongFileName'), Action.existsSongFile),
+                    fileNameSaidModel = ajaxCheckExists(model.get('SName'), Action.existsSaidName);
 
 
 
@@ -670,6 +715,16 @@
                             dialog('歌曲信息错误', '请上传歌曲图片、歌曲文件或选择正确的歌曲信息');
                             return changeState(1);
                         }
+                        //检测异步信息
+                        if (!fileNameSongNameModel.check()) {
+                            dialog('歌曲文件信息错误', '请填写没有冲突的歌曲文件信息');
+                            return changeState(1);
+                        }
+                        if (!fileNameSaidModel.check()) {
+                            dialog('文章文件名错误', '请填写没有冲突的文章文件名信息');
+                            return changeState(1);
+                        }
+
                         //检测标签
                         if (!TagSelect.check()) {
                             errorLog(false);

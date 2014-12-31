@@ -2324,7 +2324,9 @@
     <Content Include="UED\Home\music.html" />
     <Content Include="UED\Home\Public.html" />
     <Content Include="UED\Home\said.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
