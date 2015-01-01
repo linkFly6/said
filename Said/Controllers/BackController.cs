@@ -53,6 +53,13 @@ namespace Said.Controllers.Back
                 SIsTop = bool.Parse(form["SIsTop"]),
                 SDate = DateTime.Now
             };
+            if (string.IsNullOrWhiteSpace(model.STag))
+                model.STag = null;
+            else
+                model.STag = HTMLCommon.HTMLTrim(model.STag);
+
+            //应该有个tag表，保存tag，（只是）方便统计
+
             if (string.IsNullOrWhiteSpace(form["Classify.ClassifyId"]))//分类
                 return Json(new { code = 1, msg = "分类信息错误" });
             model.Classify = new Classify { ClassifyId = form["Classify.ClassifyId"].Trim() };

@@ -374,9 +374,7 @@
                                 html.push(so.format(templent, value));
                             });
                             content.innerHTML = html.join('');
-                            each.call(content.children, function (elem, i) {
-                                value.push(elem.innerHTML);
-                            });
+                            value = def;
                             html = null;
                         }
                         content.addEventListener('click', function (e) {
@@ -494,11 +492,11 @@
                                 data.append('fileName', this.value.trim());
                                 addSaid.ajax(data, actionUrl, function (data) {
                                     if (data.code === 0) {//证明该文件已经存在
+                                        fileNameOldCheckResult = fileNameCheck = true;
+                                    } else {
                                         $model.tooltip('show');
                                         fileNameOldCheckResult = fileNameCheck = false;
                                         validateData(model, false);
-                                    } else {
-                                        fileNameOldCheckResult = fileNameCheck = true;
                                     }
                                 });//加载失败
                             } else {
