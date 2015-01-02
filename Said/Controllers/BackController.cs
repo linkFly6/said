@@ -23,7 +23,7 @@ namespace Said.Controllers.Back
         {
             ViewBag.Title = "添加一篇Said";
             //初始化歌曲数据
-            //ViewData["Classifys"] = ClassifyApplication.Context.GetAll();
+            ViewData["Classifys"] = ClassifyApplication.Find();
             return View();
         }
         #region Pages
@@ -76,15 +76,16 @@ namespace Said.Controllers.Back
                     SongFileName = form["Song.FileName"]
                 };
             }
+
             else
                 return Json(new { code = 1, msg = "歌曲信息错误" });
-            //验证
+            //验证，需要validateSubmit方法矫正歌曲等数据，如果没有id则生成一个id
             string vdResult = ArticleApplication.ValidateSubmit(model);
             if (vdResult == null)
             {
                 //生成modelID
                 model.SaidId = Guid.NewGuid().ToString();
-                if (model.Song != null)
+                if (model.Song != null)//【【【【【不要在这里生成！
                     model.Song.SongId = Guid.NewGuid().ToString();
                 //没有文件名或文件名不合法，则生成一个新的文件名
                 if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)

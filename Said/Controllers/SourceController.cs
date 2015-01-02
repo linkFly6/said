@@ -82,7 +82,10 @@ namespace Said.Controllers
         /// <returns></returns>
         public JsonResult UploadMusic()
         {
-            return UploadFile(Request.Files["saidFile"], MUSICFILTERARRAY, musicMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Musics/")));
+            return UploadFile(Request.Files["saidFile"],
+                MUSICFILTERARRAY,
+                musicMaxSize,
+                FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Musics/")));
         }
 
         public ActionResult Index()

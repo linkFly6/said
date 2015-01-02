@@ -70,3 +70,5 @@ F:\Github\Said\Said\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 F:\Github\Said\Said\bin\EntityFramework.SqlServer.xml
 F:\Github\Said\Said\bin\Microsoft.AspNet.Identity.Core.xml
 F:\Github\Said\Said\bin\Microsoft.AspNet.Identity.EntityFramework.xml
+F:\Github\Said\Said\bin\zh-Hans\EntityFramework.resources.dll
+F:\Github\Said\Said\bin\zh-Hans\EntityFramework.SqlServer.resources.dll

@@ -36,3 +36,5 @@ F:\Github\Said\Said.Domain\bin\Debug\PagedList.xml
 F:\Github\Said\Said.Domain\obj\Debug\Said.Domain.csprojResolveAssemblyReference.cache
 F:\Github\Said\Said.Domain\obj\Debug\Said.Domain.dll
 F:\Github\Said\Said.Domain\obj\Debug\Said.Domain.pdb
+F:\Github\Said\Said.Domain\bin\Debug\zh-Hans\EntityFramework.resources.dll
+F:\Github\Said\Said.Domain\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
