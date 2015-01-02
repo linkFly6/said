@@ -1,6 +1,9 @@
 ﻿@model Said.Models.Article
 @{
     Layout = "~/Views/Shared/_LayoutBack.cshtml";
+    var ClassifysList = ViewData["ClassifysList"] as IList<Said.Models.Classify>;
+    var SongsList = ViewData["SongsList"] as IList<Said.Models.Song>;
+    
 }
 
 <div class="page-header">
@@ -192,43 +195,25 @@
         },
         DataCenter = {
             songs: {
-                'Flying Without Wings': 'flyingfwwwestlife西城男孩',
-                'Home': 'homewestlife西城男孩',
-                'Yellow': 'Yellowcoldplay酷玩乐队',
-                'You Raise Me Up': 'yourraisemeupyouraisemeupwestlife西城男孩西域男孩'
+                'Yellow': 'yellowcoldplay酷玩乐队',
+                'My Love': 'mylovemlwestlife西城男孩',
             },
             songsData: {
-                'Flying Without Wings': {
-                    id: '1',
-                    name: 'Flying Without Wings',
-                    album: 'Face To Face',
-                    artist: 'Westlife',
-                    fileName: 'fww.mp3',
-                    img: '/Content/Images/UEDImg/demoImg2.jpg'//注意这个路径应该只是个图片名称
-                },
-                'Home': {
-                    id: '2',
-                    name: 'Home',
-                    album: 'Home',
-                    artist: 'Westlife',
-                    fileName: 'home-westlife.mp3',
-                    img: '/Content/Images/testImg-Paramore.Ps.jpg'
-                },
                 'Yellow': {
-                    id: '3',
+                    id: '1',
                     name: 'Yellow',
                     album: 'Yellow',
-                    artist: 'Coldplay 酷玩',
-                    fileName: 'yellow.mp3',
-                    img: '/Content/Images/UEDImg/demoImg3.jpg'
+                    artist: 'Coldplay',
+                    fileName: '302320154702223701.mp3',
+                    img: '098920153702223601.jpg'//注意这个路径应该只是个图片名称
                 },
-                'You Raise Me Up': {
-                    id: '1',
-                    name: 'You Raise Me Up',
-                    album: 'Westlife - The Lovesongs',
-                    artist: 'WestLife',
-                    fileName: 'yrmu.mp3',
-                    img: '/Content/Images/UEDImg/demo-img6.jpg'
+                'My Love': {
+                    id: '2',
+                    name: 'My Love',
+                    album: 'Coust To Coust',
+                    artist: 'Westlife',
+                    fileName: '484720153302224501.mp3',
+                    img: '107320153502225701.png'
                 }
             },
             tags: ['javascript',
@@ -240,8 +225,26 @@
                           'Sql Server',
                           'NodeJS',
                           'Zepto', 'requireJS', 'angularJS', 'Backbone', 'linkFly', 'bootstrap'],
-            types: { 'linkFly': '0', 'C#': '1', 'Blog': '2', '.NET': '3', 'MVC': '4', 'NodeJS': '5', '学习': '6' },
-            classif: ['linkFly', 'C#', 'Blog', '.NET', 'MVC', 'NodeJS', '学习'],
+            types: {
+                '.NET': '40d071ad-040b-4b57-9ea6-a61fb120b4e1',
+                'RequireJS': '4c9fb5e7-cfbe-4341-b0c3-a130327b1cb2',
+                'jQuery': '5e18efcc-c2f6-4d1c-96e6-0055b3ddc05a',
+                'CSS': '666ea42b-0956-4ef3-a2a3-11f2c8d71f63',
+                'ECMAScript 6': '6d77050b-4016-4969-a0fb-6c9d3f072248',
+                'ECMAScript 5': '7577e49f-e9ed-4b30-a2b0-a47c2c2f5b20',
+                'HTML': '87bcbb82-0c5d-4ae6-a72f-9e8946435fde',
+                'JavaScript': 'cf998aa4-068e-4135-94ee-524363c6c6ea'
+            },
+            classif: [
+                '.NET',
+                'RequireJS',
+                'jQuery',
+                'CSS',
+                'ECMAScript 6',
+                'ECMAScript 5',
+                'HTML',
+                'JavaScript'
+            ],
             //MIME参考：http://www.w3school.com.cn/media/media_mimeref.asp
             imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
             musicFilters: ['mp3', 'ogg']
@@ -322,6 +325,12 @@
                             addSaid.DataBase.val(name, value);
                     });
                     //保存标签
+                    if (Song.isUpload()) {
+                        var songValue = Song.val();
+                        if (songValue.id) {//选中了
+                            addSaid.DataBase.val('Song.SSongId', songValue.id);
+                        }
+                    }
                     if (TagSelect.checked()) {
                         addSaid.DataBase.val('STags', TagSelect.val().join(','));
                     }
@@ -338,10 +347,14 @@
                             model[name] = value;
                         }
                     });
+                    //在标签构造函数完成之前把标签默认值的数据准备好
                     if (value = database.val('STags')) {
                         //还原标签默认值
                         tagSelectDefaultValues = value.split(',');
                     };
+                    //歌曲选中的默认值
+                    songSelectValue = database.val("Song.SSongId");
+                    return database;
                 }();
 
 
@@ -477,7 +490,7 @@
                     }
                 },
                 //异步文本框检测对象
-                ajaxCheckExists = function (model, actionUrl) {//'Song.SongFileName'
+                ajaxCheckExists = function (model, actionUrl, isOnceCheck) {//'Song.SongFileName'
                     var fileNameCheck = true,//默认为空的话让它通过，因为服务器可以生成文件名
                        fileNameOldValue = '',//上一次文件名输入的值
                        fileNameOldCheckResult = false,//上一次文件名校验结果
@@ -512,8 +525,9 @@
                         fileNameCheck = this.value.trim() !== fileNameOldValue;
                         $model.tooltip('hide');
                     });
-                    if ($model.val().trim())
-                        $model.blur();
+                    if (isOnceCheck !== false)
+                        if ($model.val().trim())
+                            $model.blur();
                     return {
                         check: function () {
                             return fileNameCheck;
@@ -526,7 +540,8 @@
                     };
                 },
                 // =-> 歌曲上传
-                Song = function (imgMask, img, addButton, del, imgAction, fileAction, imgFilters, musicFilters, songs, models, model) {
+                songSelectValue,
+                Song = function (imgMask, img, addButton, del, imgAction, fileAction, imgFilters, musicFilters, songs, models, model, defId) {
                     // = > 上传图片
                     var imgUpload = addSaid.Upload(imgMask, imgAction, imgFilters, function (data) {
                         if (data.error === 0) {//ok
@@ -549,7 +564,7 @@
                         }, uploadErrorHandle, 6291456),//最大6mb
                         imgName,//上传或suggestion选中项的图片名称
                         tmpModel,//suggestion选中项的model
-                        selectData = false,
+                        selectData = defId || false,//sugg选中的数据
                         //文件名校验相关
                         fileNameCheck = false,//文件名验证是否通过
                         fileNameOldValue = '',//上一次文件名输入的值
@@ -577,7 +592,7 @@
                         songDOMs.forEach(function (elem) {
                             validateData(elem, !!elem.value.trim());
                         });
-                        img.src = imgName = tmpModel.img;//保存选中的图片信息
+                        img.src = Action.imgLocation + (imgName = tmpModel.img);//保存选中的图片信息
                         selectData = tmpModel.id;//获取选中项id
                         lock();//选择了歌曲就锁住
                         addBtnDOM.style.display = 'none';
@@ -601,6 +616,8 @@
                           musicFileName = tmpModel = imgName = false;
                           imgUpload.toggle();
                       };
+                    if (defId)
+                        lock();
                     del.addEventListener('click', function () {
                         reset();
                     });
@@ -618,11 +635,11 @@
                             return !!((imgName && musicFileName) || selectData);
                         },
                         val: function () {
-                            return { img: imgName, name: musicFileName };
+                            return { img: imgName, name: musicFileName, id: selectData };
                         },
                         reset: reset
                     };
-                }('Song_SongImg', _('songImg'), _('addSongFile'), _('songDelete'), Action.img, Action.music, DataCenter.imgFilters, DataCenter.musicFilters, DataCenter.songs, DataCenter.songsData, model);
+                }('Song_SongImg', _('songImg'), _('addSongFile'), _('songDelete'), Action.img, Action.music, DataCenter.imgFilters, DataCenter.musicFilters, DataCenter.songs, DataCenter.songsData, model, songSelectValue);
                 // => 缩略图
                 var SumImg = (function (mask, img, action, del, filters, def) {
                     var value,
@@ -652,10 +669,10 @@
                     };
                 })(_('uploadImg'), _('summaryImg'), Action.img, _('summaryImgDelete'), DataCenter.imgFilters),
                 //文件名异步检测
-                    fileNameSongNameModel = ajaxCheckExists(model.get('Song.SongFileName'), Action.existsSongFile),
+                    fileNameSongNameModel = ajaxCheckExists(model.get('Song.SongFileName'), Action.existsSongFile, !songSelectValue),
                     fileNameSaidModel = ajaxCheckExists(model.get('SName'), Action.existsSaidName);
 
-
+                //【页面逻辑并不是很好，需要大调整，例如歌曲那里，选择歌曲很混乱，要考虑要单独选择一个以前有过的图片但是歌曲是新增的怎么办？增加一个按钮？】
 
                 //发布
 

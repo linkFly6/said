@@ -23,7 +23,8 @@ namespace Said.Controllers.Back
         {
             ViewBag.Title = "添加一篇Said";
             //初始化歌曲数据
-            ViewData["Classifys"] = ClassifyApplication.Find();
+            ViewData["ClassifysList"] = ClassifyApplication.Find();
+            ViewData["SongsList"] = SongApplication.Find();
             return View();
         }
         #region Pages
