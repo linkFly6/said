@@ -16,43 +16,43 @@ namespace Said.Test
             var defaultData = "icon-Web.png";
             var models = new List<Classify> { 
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "2e0dfa2f-dca4-4e1a-abeb-889ce98a8bb0",
                     CIcon = "icon-JS.gif",
                     CName = "JavaScript"
                 },
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "817aa0f0-447e-46d3-805c-8952c0332df8",
                     CIcon = "icon-CSS3.gif",
                     CName = "CSS"
                 }
                 ,
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "f6b5ec17-a053-491c-b08e-0368aa115a82",
                     CIcon = "icon-HTML5.gif",
                     CName = "HTML"
                 },
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "ac11966d-01bf-4554-bd7e-7e0a807ea8fa",
                     CIcon = "icon-jQuery.gif",
                     CName = "jQuery"
                 },
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "271f2924-69ce-4522-8e39-cc8f31059de8",
                     CIcon = "icon-Require.gif",
                     CName = "RequireJS"
                 },
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "6198f526-fa0f-4429-983a-bebc8439e7c8",
                     CIcon = "icon-VS.gif",
                     CName = ".NET"
                 },
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "d2774f82-3f56-4b0a-b3ae-0ad203cdc510",
                     CIcon = defaultData,
                     CName = "ECMAScript 5"
                 },
                 new Classify {
-                    ClassifyId = Guid.NewGuid().ToString(),
+                    ClassifyId = "136116aa-a5f6-4f88-bcc4-00a1b4db0dba",
                     CIcon = "icon-JS.gif",
                     CName = "ECMAScript 6"
                 }
@@ -75,7 +75,7 @@ namespace Said.Test
         {
             var models = new List<Song> { 
                 new Song {
-                    SongId=Guid.NewGuid().ToString(),
+                    SongId="106f168f-10f1-4459-918d-f811bc8a7fa6",
                     SongName="Yellow",
                     SongArtist="Coldplay",
                     SongAlbum="Yellow",
@@ -83,7 +83,7 @@ namespace Said.Test
                     SongImg="098920153702223601.jpg"
                 },
                 new Song {
-                    SongId=Guid.NewGuid().ToString(),
+                    SongId="97279318-f809-488c-b31c-fe642acb322b",
                     SongName="My Love",
                     SongArtist="Westlife",
                     SongAlbum="Coust To Coust",

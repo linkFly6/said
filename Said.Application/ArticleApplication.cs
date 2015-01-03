@@ -1,4 +1,5 @@
-﻿using Said.Models;
+﻿using Said.Common;
+using Said.Models;
 using Said.Service;
 using System;
 using System.Collections;
@@ -35,27 +36,37 @@ namespace Said.Application
 
         #region 逻辑
         /// <summary>
-        /// 验证一篇said是否是有效的said
+        /// 验证一篇said是否是有效的said，同时矫正Said的数据
         /// </summary>
         /// <param name="model">要验证的model</param>
         /// <returns>返回null表示验证成功，否则返回验证失败的字符串，用,号分割</returns>
-        public static string ValidateSubmit(Article model)
+        public static string ValidateAndCorrectSubmit(Article model)
         {
             StringBuilder str = new StringBuilder();
-            //修正model数据
-            if (string.IsNullOrWhiteSpace(model.Song.SongId))//没有歌曲id则验证歌曲图片是否存在
-            {
+            //防止tag有HTML标签，修正
+            if (!string.IsNullOrWhiteSpace(model.STag))
+                model.STag = HTMLCommon.HTMLTrim(model.STag);
 
+            //修正model数据
+            if (string.IsNullOrWhiteSpace(model.SongId))//没有歌曲id则验证歌曲图片是否存在
+            {
+                if (model.Song != null)
+                {
+                    model.Song.SongId = Guid.NewGuid().ToString();//创建一个歌曲ID
+                    //检测歌曲文件名，没有/不合法 则生成一个新的
+                    if (string.IsNullOrWhiteSpace(model.SName) || SongApplication.FindByFileName(model.SName.Trim()) != null)
+                        model.Song.SongFileName = FileCommon.CreateFileNameByTime();
+                }
             }
             else//如果有歌曲id则检索数据库
             {
-                model.Song = SongApplication.Context.GetById(model.Song.SongId);//检索有没有歌曲信息
-                if (model.Song == null)
-                    str.Append("歌曲信息不正确(不可获取)");
+                //model.Song = SongApplication.Context.GetById(model.SongId);//检索有没有歌曲信息
+                if (SongApplication.Context.GetById(model.SongId) == null)
+                    str.Append("歌曲信息不正确(不可获取),");
             }
 
-            if ((model.Classify = ClassifyApplication.Context.GetById(model.Classify.ClassifyId)) == null)
-                str.Append("分类信息不正确");
+            if (ClassifyApplication.Context.GetById(model.ClassifyId) == null)
+                str.Append("分类信息不正确,");
             foreach (var validateResult in model.Validate())
             {
                 //validateResult.MemberNames//这个要搞懂怎么用，或许能让提示信息更全一点
@@ -63,12 +74,31 @@ namespace Said.Application
             }
             if (str.Length > 0)
                 str.Length--;//StringBuilder的length可以用于裁剪字符串？
-            return str.ToString() ?? null;
+            else
+            {
+                //开始矫正数据
+                model.SaidId = Guid.NewGuid().ToString();
+                //没有文件名或文件名不合法，则生成一个新的文件名
+                if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)
+                    model.SName = FileCommon.CreateFileNameByTime();
+
+            }
+
+            return str.Length > 0 ? str.ToString() : null;
         }
         #endregion
 
 
         #region 查询
+        /// <summary>
+        /// 查找
+        /// </summary>
+        /// <returns></returns>
+        public static Article Find(string id)
+        {
+            return Context.GetById(id);
+        }
+
         /// <summary>
         /// 查找Said的文件名
         /// </summary>

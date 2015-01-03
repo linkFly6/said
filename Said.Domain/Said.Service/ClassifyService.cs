@@ -59,6 +59,7 @@ namespace Said.Service
         /// <returns></returns>
         public Classify GetByName(string name)
         {
+            
             return base.Get(n => n.CName.Contains(name));
         }
     }

@@ -137,7 +137,14 @@ define(['jquery', 'so'], function ($, so) {
             //清空数据库的指定命名空间下的数据
             clear: function (nameSpace) {
                 nameSpace = nameSpace || namespace;
-
+                var name, reg = new RegExp('\b' + nameSpace), res = Object.create(null);
+                for (var i = 0, len = localStorage.length; i < len; i++) {
+                    if (reg.test((name = localStorage.key(i)))) {
+                        res[name] = localStorage[name];
+                        localStorage.removeItem(name);
+                    }
+                }
+                return res;
             }
             //, on: function () {
 

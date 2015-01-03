@@ -25,6 +25,12 @@ namespace Said.Controllers.Back
             //初始化歌曲数据
             ViewData["ClassifysList"] = ClassifyApplication.Find();
             ViewData["SongsList"] = SongApplication.Find();
+            /*
+             * 为什么User那个项目可以直接查出来？
+            var article = ArticleApplication.Find("d68026a1-bdb8-44e3-a1df-48e8df5c4c47");
+            var test = article.Classify;
+            var test2 = article.Song;
+             * */
             return View();
         }
         #region Pages
@@ -54,18 +60,17 @@ namespace Said.Controllers.Back
                 SIsTop = bool.Parse(form["SIsTop"]),
                 SDate = DateTime.Now
             };
-            if (string.IsNullOrWhiteSpace(model.STag))
-                model.STag = null;
-            else
-                model.STag = HTMLCommon.HTMLTrim(model.STag);
+
 
             //应该有个tag表，保存tag，（只是）方便统计
 
             if (string.IsNullOrWhiteSpace(form["Classify.ClassifyId"]))//分类
                 return Json(new { code = 1, msg = "分类信息错误" });
-            model.Classify = new Classify { ClassifyId = form["Classify.ClassifyId"].Trim() };
+            //model.Classify = new Classify { ClassifyId = form["Classify.ClassifyId"].Trim() };
+            model.ClassifyId = form["Classify.ClassifyId"].Trim();
             if (!string.IsNullOrWhiteSpace(form["Song.SSongId"]))//有歌曲ID则构建歌曲id
-                model.Song = new Song { SongId = form["Song.SSongId"].Trim() };
+                //model.Song = new Song { SongId = form["Song.SSongId"].Trim() };
+                model.SongId = form["Song.SSongId"].Trim();
             else if (!string.IsNullOrWhiteSpace(form["Song.SongImg"]))//否则创建新的歌曲对象
             {
                 model.Song = new Song
@@ -77,20 +82,16 @@ namespace Said.Controllers.Back
                     SongFileName = form["Song.FileName"]
                 };
             }
-
             else
                 return Json(new { code = 1, msg = "歌曲信息错误" });
             //验证，需要validateSubmit方法矫正歌曲等数据，如果没有id则生成一个id
-            string vdResult = ArticleApplication.ValidateSubmit(model);
+            string vdResult = ArticleApplication.ValidateAndCorrectSubmit(model);
             if (vdResult == null)
             {
-                //生成modelID
-                model.SaidId = Guid.NewGuid().ToString();
-                if (model.Song != null)//【【【【【不要在这里生成！
-                    model.Song.SongId = Guid.NewGuid().ToString();
-                //没有文件名或文件名不合法，则生成一个新的文件名
-                if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)
-                    model.SName = FileCommon.CreateFileNameByTime();
+                //model.ClassifyId = model.Classify.ClassifyId;
+                //model.Classify = null;
+                //model.SongId = model.Song.SongId;
+                //model.Song = null;
                 ArticleApplication.Add(model);
                 return Json(new { code = 0, msg = model.SaidId });
             }

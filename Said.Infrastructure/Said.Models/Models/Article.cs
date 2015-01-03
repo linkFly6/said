@@ -108,19 +108,26 @@ namespace Said.Models
         /// 点击量
         /// </summary>
         public int SClick { get; set; }
-        ///// <summary>
-        ///// 类型ID（如果有的话）
-        ///// </summary>
-        //public string SClassifyId { get; set; }
+        /// <summary>
+        /// 类型ID
+        /// </summary>
+        public string ClassifyId { get; set; }
+
         /// <summary>
         /// 类型对象
         /// </summary>
-        public Classify Classify { get; set; }
+        public virtual Classify Classify { get; set; }
+
+
+        /// <summary>
+        /// 歌曲ID
+        /// </summary>
+        public string SongId { get; set; }
 
         /// <summary>
         /// 歌曲
         /// </summary>
-        public Song Song { get; set; }
+        public virtual Song Song { get; set; }
 
         public override IEnumerable<ValidationResult> Validate()
         {
@@ -134,11 +141,12 @@ namespace Said.Models
                 yield return new ValidationResult("图片不允许为空");
             if (string.IsNullOrWhiteSpace(STag))
                 yield return new ValidationResult("标签不允许为空");
-            if (Classify == null)
+            if (Classify == null && string.IsNullOrEmpty(ClassifyId))
                 yield return new ValidationResult("分类信息不允许为空");
-            if (Song == null)
-            {
+            if (Song == null && string.IsNullOrEmpty(SongId))
                 yield return new ValidationResult("歌曲信息不正确");
+            else if (Song != null)
+            {
                 if (string.IsNullOrWhiteSpace(Song.SongImg))
                     yield return new ValidationResult("歌曲图片不允许为空");
                 //if (string.IsNullOrWhiteSpace(Song.SongArtist))

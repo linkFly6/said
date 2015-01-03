@@ -21,7 +21,6 @@ namespace Said.Domain.Said.Data
         {
             //throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
             //初始化的时候需要添加测试数据到数据库
-
         }
 
 
