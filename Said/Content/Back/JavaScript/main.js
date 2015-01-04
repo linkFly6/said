@@ -21,5 +21,18 @@
         name: 'said',
         location: 'said',
         main: 'said'
-    }]
+    }],
+    paths: {
+        'showdown': 'showdown/showdown',
+        'showdownGithub': 'showdown/extensions/github'
+    },
+    shim: {
+        'showdownGithub': {
+            deps: ['showdown'],//依赖showdown
+            exports: 'showdownGithub'
+        },
+        'showdown': {
+            exports: 'showdown'
+        }
+    }
 });

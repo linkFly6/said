@@ -38,6 +38,7 @@
                 <!-- said-error-->
                 @Html.TextAreaFor(Model => Model.SContext, new Dictionary<string, object>() { { "class", "said-context" }, { "autocomplete", "off" }, { "placeholder", "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！" }, { "required", "" }, { "data-validate", "" }, { "data-check", "said.error" } })
             </div>
+            <button class="btn btn-lg said-priview center-block" id="previewSaid" type="button">预览</button>
         </div>
         <div class="row said-view-container">
             <div class="col-md-6">
@@ -251,7 +252,7 @@
             musicFilters: ['mp3', 'ogg']
         };
 
-        require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid'], function ($, so, search, validate, saidModel, addSaid) {
+        require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid', 'showdown', 'showdownGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {
             $(function () {
                 var _ = function (name) {
                     return document.getElementById(name);
@@ -318,6 +319,39 @@
                 var model = saidModel(window.saidForm),//根据表单构建表单Model，源于so.model
                     submitBtn = _('submit');
 
+                //代码预览，返回当前文章正文的HTML
+                var getContextHTML = function (btn, titleDOM, contextDOM) {
+                    var previewWindow,//预览按钮打开的window
+                        html,//预览的html
+                        isSupport = true,//是否支持弹窗
+                    converter = new showdown.converter({ extensions: ['github'] }),
+                    supportError = function () {
+                        if (!isSupport)
+                            dialog('不支持该项操作', '<p>您的浏览器阻止了弹窗操作。</p><p>因为用户设置或者某些安全策略，浏览器或许会阻止弹窗操作。</p>');
+                        return isSupport;
+                    },
+                    openWindow = function (title, context) {
+                        if (!supportError()) return;
+                        if (!previewWindow || previewWindow.closed)
+                            previewWindow = window.open();
+                        if (!previewWindow) {//没有权限弹窗
+                            isSupport = false;
+                            supportError();
+                            return;
+                        }
+                        //输出页面
+                        previewWindow.document.open('saidPreview');
+                        previewWindow.document.write(123);//document.write只能输出到body下卧槽！！！！！
+                        //addSaid.Preview(title, converter.makeHtml(context))
+                        previewWindow.document.close();
+                    };
+                    btn.addEventListener('click', function () {
+                        openWindow(titleDOM.value, contextDOM.value);
+                    });
+                    return function () {
+                        return converter.makeHtml(contextDOM.value);
+                    };
+                }(_('previewSaid'), model.get('STitle'), model.get('SContext'));
 
                 // => 保存到本地数据库
                 var save = function () {
@@ -794,7 +828,6 @@
                             if (data.code === 0) {
                                 dialog('添加Said成功', '喜大普奔，添加Said成功。');
                                 //addSaid.DataBase.clear();
-                                //【明日任务：纳入pageDown.js】
                                 changeState(1);
                             } else {
                                 dialog('服务器返回异常', data.msg.split(',').map(function (msg) {

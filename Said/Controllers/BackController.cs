@@ -92,6 +92,7 @@ namespace Said.Controllers.Back
                 //model.Classify = null;
                 //model.SongId = model.Song.SongId;
                 //model.Song = null;
+                
                 ArticleApplication.Add(model);
                 return Json(new { code = 0, msg = model.SaidId });
             }

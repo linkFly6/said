@@ -162,6 +162,8 @@
     <Content Include="bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll" />
     <Content Include="bin\zh-Hans\System.Web.WebPages.Razor.resources.dll" />
     <Content Include="bin\zh-Hans\System.Web.WebPages.resources.dll" />
+    <Content Include="Content\Back\JavaScript\highlight\highlight.pack.js" />
+    <Content Include="Content\Back\JavaScript\highlight\styles\vs.css" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.min.js" />
@@ -835,6 +837,12 @@
     <Content Include="Content\Back\JavaScript\requirejs-2.1.15.js" />
     <Content Include="Content\Back\JavaScript\said\addSaid.js" />
     <Content Include="Content\Back\JavaScript\said\FuckAngular.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\github.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\prettify.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\table.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\twitter.js" />
+    <Content Include="Content\Back\JavaScript\showdown\showdown.js" />
+    <Content Include="Content\Back\JavaScript\showdown\showdown.min.js" />
     <Content Include="Content\Back\JavaScript\so\plug\model.js" />
     <Content Include="Content\Back\JavaScript\so\plug\search.js" />
     <Content Include="Content\Back\JavaScript\so\plug\validate.js" />
@@ -2301,6 +2309,7 @@
     <Content Include="UED\Back\Frmework\js\zrender-master\test\testArea.html" />
     <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.js" />
     <Content Include="UED\Back\Frmework\Login.html" />
+    <Content Include="UED\Back\SaidPreview.html" />
     <Content Include="UED\Back\ShowDownTest.html" />
     <Content Include="UED\Back\MarkdownTest.html" />
     <Content Include="UED\Back\Index.html" />

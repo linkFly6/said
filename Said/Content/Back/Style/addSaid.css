@@ -25,6 +25,8 @@
     .songOp-btn button { width: 200px; }
 .said-submit { background-color: transparent; border-color: #563d7c; color: #563d7c; width: 200px; }
     .said-submit:hover, .said-submit:focus { background-color: #563d7c; color: #FFF; }
+.said-priview { background-color: transparent; border-color: #428bca; color: #357ebd; width: 200px; }
+    .said-priview:hover, .said-priview:focus { background-color: #428bca; color: #FFF; }
 .submit-lock { background-color: #9973d4!important; border-color: #9973d4!important; color: #FFF; opacity: 0.7; cursor: no-drop; }
 .submit-container { padding: 20px 0 30px; border-top: 1px dashed #929596; }
 .panel-subTitle { border-top: 1px solid #ddd; border-radius: 0; }
