@@ -1,4 +1,4 @@
-﻿@model Said.Models.Article
+﻿n @model Said.Models.Article
 @{
     Layout = "~/Views/Shared/_LayoutBack.cshtml";
     var ClassifysList = ViewData["ClassifysList"] as IList<Said.Models.Classify>;
@@ -333,17 +333,16 @@
                     openWindow = function (title, context) {
                         if (!supportError()) return;
                         if (!previewWindow || previewWindow.closed)
-                            previewWindow = window.open();
+                            previewWindow = window.open('saidPreview');
                         if (!previewWindow) {//没有权限弹窗
                             isSupport = false;
                             supportError();
                             return;
                         }
                         //输出页面
-                        previewWindow.document.open('saidPreview');
-                        previewWindow.document.write(123);//document.write只能输出到body下卧槽！！！！！
-                        //addSaid.Preview(title, converter.makeHtml(context))
-                        previewWindow.document.close();
+                        //previewWindow.document.write(123);
+                        //document.write只能输出到body，但HTML标签可以输出
+                        previewWindow.document.getElementsByName('html')[0].innerHTML = addSaid.Preview(title, converter.makeHtml(context));
                     };
                     btn.addEventListener('click', function () {
                         openWindow(titleDOM.value, contextDOM.value);

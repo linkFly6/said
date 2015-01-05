@@ -5,7 +5,23 @@
     <title>预览Said - 你听，你静静听</title>
     <link href="/Content/Style/Global.css" rel="stylesheet" />
     <link href="/Content/Style/music.css" rel="stylesheet" />
-    <link href="/Content/Back/JavaScript/highlight/styles/vs.css" rel="stylesheet" />
+    <link href="/Content/Back/JavaScript/syntaxhighlighter/styles/shCoreDefault.css" rel="stylesheet" />
+    <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shCore.js"></script>
+    <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+    <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCSharp.js"></script>
+    <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCss.js"></script>
+    <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushSql.js"></script>
+    <script type="text/javascript">
+        SyntaxHighlighter.defaults["toolbar"] = false;
+        SyntaxHighlighter.defaults["collapse"] = false;
+        SyntaxHighlighter.config.strings = {
+            expandSource: "展开代码",
+            viewSource: "查看代码",
+            alert: "Said\n\n",
+            noBrush: "不支持该语言的着色显示："
+        };
+        SyntaxHighlighter.all();
+    </script>
 </head>
 <body>
     <section id="said-page">
@@ -78,22 +94,23 @@
             </section>
             <article class="music-content">
                 <h1 class="blog-title">文章标题</h1>
-                <section class="blog-content"><h2 id="">这是一个大标题</h2>
-
-<pre><code class="javascript">var test=function(){
-    var demo={ 
+                <section class="blog-content">
+                    <h2 id="">这是一个大标题</h2>
+                    <pre class="brush: js;">
+var test=function(){
+var demo={
      name:'linkFly'
    },
    demo2=['said'];
 };
-</code></pre>
+</pre>
 
-<p>灯光聚焦</p>
+                    <p>灯光聚焦</p>
 
-<p>每个人在遗憾中送来羡慕与祝福</p>
+                    <p>每个人在遗憾中送来羡慕与祝福</p>
 
-<p>仿佛我无从遗憾</p>
-</section>
+                    <p>仿佛我无从遗憾</p>
+                </section>
             </article>
             <section class="blog-more-info">
                 <div class="blog-more-head">
@@ -166,11 +183,7 @@
                 ©2015&nbsp;linkFly&nbsp;-&nbsp;Said:听说&nbsp;&nbsp;京ICP备13014059号
             </div>
         </section>
-        
+
     </footer>
-    <script src="/Content/Back/JavaScript/highlight/highlight.pack.js"></script>
-    <script>
-        hljs.initHighlightingOnLoad();
-    </script>
 </body>
 </html>

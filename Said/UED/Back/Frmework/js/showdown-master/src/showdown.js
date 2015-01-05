@@ -243,7 +243,7 @@ Showdown.converter = function (converter_options) {
                     }
                 });
             } else {
-                throw  "Extension '" + plugin + "' could not be loaded.  It was either not found or is not a valid extension.";
+                throw "Extension '" + plugin + "' could not be loaded.  It was either not found or is not a valid extension.";
             }
         });
     }
@@ -1028,7 +1028,7 @@ Showdown.converter = function (converter_options) {
                 codeblock = codeblock.replace(/^\n+/g, ""); // trim leading newlines
                 codeblock = codeblock.replace(/\n+$/g, ""); // trim trailing whitespace
 
-                codeblock = "<pre><code" + (language ? " class=\"" + language + '"' : "") + ">" + codeblock + "\n</code></pre>";
+                codeblock = "<pre" + (language ? " class=\"brush:" + language + '"' : "") + ">" + codeblock + "\n</code></pre>";
 
                 return hashBlock(codeblock);
             }
