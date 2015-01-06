@@ -11,17 +11,6 @@
     <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCSharp.js"></script>
     <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCss.js"></script>
     <script src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushSql.js"></script>
-    <script type="text/javascript">
-        SyntaxHighlighter.defaults["toolbar"] = false;
-        SyntaxHighlighter.defaults["collapse"] = false;
-        SyntaxHighlighter.config.strings = {
-            expandSource: "展开代码",
-            viewSource: "查看代码",
-            alert: "Said\n\n",
-            noBrush: "不支持该语言的着色显示："
-        };
-        SyntaxHighlighter.all();
-    </script>
 </head>
 <body>
     <section id="said-page">
@@ -93,12 +82,12 @@
                 </dl>
             </section>
             <article class="music-content">
-                <h1 class="blog-title">文章标题</h1>
-                <section class="blog-content">
+                <h1 class="blog-title" id="title"></h1>
+                <section class="blog-content" id="context">
+                    <p>这是一篇测试文章</p>
                     <h2 id="">这是一个大标题</h2>
-                    <pre class="brush: js;">
-var test=function(){
-var demo={
+                    <pre class="brush:javascript">var test=function(){
+    var demo={ 
      name:'linkFly'
    },
    demo2=['said'];
@@ -110,6 +99,98 @@ var demo={
                     <p>每个人在遗憾中送来羡慕与祝福</p>
 
                     <p>仿佛我无从遗憾</p>
+
+                    <p>彻夜</p>
+
+                    <p>这里充满光明</p>
+
+                    <p>这里遍布黑暗</p>
+
+                    <p>我打开窗</p>
+
+                    <p>唯独没有你</p>
+
+                    <blockquote>
+                    </blockquote>
+
+                    <p>这里充满欢歌</p>
+
+                    <p>这里充满浪漫</p>
+
+                    <p>这里充满思考</p>
+
+                    <p>这里充满激情</p>
+
+                    <p>我想还有更多</p>
+
+                    <p>唯独没有你</p>
+
+                    <blockquote>
+                    </blockquote>
+
+                    <p>也许切了一首不达意的歌</p>
+
+                    <p>也许我悄悄经过</p>
+
+                    <p>他们都来过</p>
+
+                    <p>梦已经醒来</p>
+
+                    <p>唯独没有你</p>
+
+                    <blockquote>
+                    </blockquote>
+
+                    <p>我守着一切的可能</p>
+
+                    <p>信一切不可信的</p>
+
+                    <p>试着不去在意那些在意的</p>
+
+                    <p>跨过延绵的河</p>
+
+                    <p>我想，这一切都很好</p>
+
+                    <p>只是</p>
+
+                    <p>唯独没有你</p>
+
+                    <blockquote>
+                    </blockquote>
+
+                    <p>应该是我不够繁忙</p>
+
+                    <p>也许是我受伤太少</p>
+
+                    <p>走过的路稍短</p>
+
+                    <p>错开的道太远</p>
+
+                    <p>这一切充满意义</p>
+
+                    <p>又那么无关紧要</p>
+
+                    <p>在我最需要的时候</p>
+
+                    <p>唯独没有你</p>
+
+                    <blockquote>
+                    </blockquote>
+
+                    <p>月色流光溢彩</p>
+
+                    <p>宁静的旋律委婉泛滥</p>
+
+                    <p>我多想见一个安静的你</p>
+
+                    <p>垂青着生命的意义</p>
+
+                    <p>今晚静谧如初</p>
+
+                    <p>今晚月色胜旧</p>
+
+                    <p>唯独没有你</p>
+
                 </section>
             </article>
             <section class="blog-more-info">
@@ -185,5 +266,19 @@ var demo={
         </section>
 
     </footer>
+    <script type="text/javascript">
+        document.title = "预览Said -" + window.said.title;
+        document.getElementById("title").innerHTML = window.said.title;
+        document.getElementById("context").innerHTML = window.said.context;
+        SyntaxHighlighter.defaults["toolbar"] = false;
+        SyntaxHighlighter.defaults["collapse"] = false;
+        SyntaxHighlighter.config.strings = {
+            expandSource: "展开代码",
+            viewSource: "查看代码",
+            alert: "Said\n\n",
+            noBrush: "不支持该语言的着色显示："
+        };
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿n @model Said.Models.Article
+﻿@model Said.Models.Article
 @{
     Layout = "~/Views/Shared/_LayoutBack.cshtml";
     var ClassifysList = ViewData["ClassifysList"] as IList<Said.Models.Classify>;
@@ -321,31 +321,9 @@
 
                 //代码预览，返回当前文章正文的HTML
                 var getContextHTML = function (btn, titleDOM, contextDOM) {
-                    var previewWindow,//预览按钮打开的window
-                        html,//预览的html
-                        isSupport = true,//是否支持弹窗
-                    converter = new showdown.converter({ extensions: ['github'] }),
-                    supportError = function () {
-                        if (!isSupport)
-                            dialog('不支持该项操作', '<p>您的浏览器阻止了弹窗操作。</p><p>因为用户设置或者某些安全策略，浏览器或许会阻止弹窗操作。</p>');
-                        return isSupport;
-                    },
-                    openWindow = function (title, context) {
-                        if (!supportError()) return;
-                        if (!previewWindow || previewWindow.closed)
-                            previewWindow = window.open('saidPreview');
-                        if (!previewWindow) {//没有权限弹窗
-                            isSupport = false;
-                            supportError();
-                            return;
-                        }
-                        //输出页面
-                        //previewWindow.document.write(123);
-                        //document.write只能输出到body，但HTML标签可以输出
-                        previewWindow.document.getElementsByName('html')[0].innerHTML = addSaid.Preview(title, converter.makeHtml(context));
-                    };
+                    var converter = new showdown.converter({ extensions: ['github'] });//页面markdown转换器=>来自showDown.js
                     btn.addEventListener('click', function () {
-                        openWindow(titleDOM.value, contextDOM.value);
+                        addSaid.Preview(titleDOM.value, converter.makeHtml(contextDOM.value));
                     });
                     return function () {
                         return converter.makeHtml(contextDOM.value);
@@ -826,7 +804,8 @@
                         addSaid.ajax(data, Action.form, function (data, xhr) {
                             if (data.code === 0) {
                                 dialog('添加Said成功', '喜大普奔，添加Said成功。');
-                                //addSaid.DataBase.clear();
+                                //addSaid.DataBase.clear(); TODO
+                                //解决chrome下依赖加载报错的bug... TODO
                                 changeState(1);
                             } else {
                                 dialog('服务器返回异常', data.msg.split(',').map(function (msg) {

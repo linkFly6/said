@@ -1028,7 +1028,7 @@ Showdown.converter = function (converter_options) {
                 codeblock = codeblock.replace(/^\n+/g, ""); // trim leading newlines
                 codeblock = codeblock.replace(/\n+$/g, ""); // trim trailing whitespace
 
-                codeblock = "<pre" + (language ? " class=\"brush:" + language + '"' : "") + ">" + codeblock + "\n</code></pre>";
+                codeblock = "<pre" + (language ? " class=\"brush:" + language + '"' : "") + ">" + codeblock + "\n</pre>";
 
                 return hashBlock(codeblock);
             }
