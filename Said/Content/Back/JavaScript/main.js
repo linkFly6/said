@@ -23,15 +23,16 @@
         main: 'said'
     }],
     paths: {
-        'showdown': 'showdown/showdown',
-        'showdownGithub': 'showdown/extensions/github'
+        'addSaid': ['said/addSaid.js'],
+        'markdown': ['showdown/showdown'],
+        'showdownGithub': ['showdown/extensions/github']
     },
     shim: {
         'showdownGithub': {
-            deps: ['showdown'],//依赖showdown
-            exports: 'showdownGithub'
+            deps: ['markdown'],//依赖showdown
+            exports: 'github'
         },
-        'showdown': {
+        'markdown': {
             exports: 'showdown'
         }
     }

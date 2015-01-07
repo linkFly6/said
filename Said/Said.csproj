@@ -2088,7 +2088,6 @@
     <Content Include="UED\Back\Frmework\js\so\plug\model.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\search.js" />
     <Content Include="UED\Back\Frmework\js\so\plug\validate.js" />
-    <Content Include="UED\Back\Frmework\js\so\so.js" />
     <Content Include="UED\Back\Frmework\js\syntaxhighlighter_3.0.83\index.html" />
     <Content Include="UED\Back\Frmework\js\syntaxhighlighter_3.0.83\scripts\shAutoloader.js" />
     <Content Include="UED\Back\Frmework\js\syntaxhighlighter_3.0.83\scripts\shBrushAppleScript.js" />

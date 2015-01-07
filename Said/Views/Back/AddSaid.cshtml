@@ -251,8 +251,47 @@
             imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
             musicFilters: ['mp3', 'ogg']
         };
-
-        require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'said/addSaid', 'showdown', 'showdownGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {
+        require.config({
+            baseUrl: '/Content/Back/JavaScript',
+            packages: [
+            {
+                name: 'echarts',
+                location: 'echarts-2.1.8/src',
+                main: 'echarts'
+            },
+            {
+                name: 'zrender',
+                //location: 'http://ecomfe.github.io/zrender/src',
+                location: 'zrender-master/src',
+                main: 'zrender'
+            },
+            {
+                name: 'so',
+                location: 'so',
+                main: 'so'
+            },
+            {
+                name: 'said',
+                location: 'said',
+                main: 'said'
+            }],
+            paths: {
+                'addSaid': ['said/addSaid'],
+                'markdown': ['showdown/showdown'],
+                'showdownGithub': ['showdown/extensions/github']
+            },
+            shim: {
+                'showdownGithub': {
+                    deps: ['markdown'],//依赖showdown
+                    exports: 'github'
+                },
+                'markdown': {
+                    exports: 'showdown'
+                }
+            }
+        });
+        require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'addSaid', 'markdown', 'showdownGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {
+            console.log(showdown);
             $(function () {
                 var _ = function (name) {
                     return document.getElementById(name);
@@ -784,9 +823,11 @@
                         var data = new FormData(),//表单值
                             songData = Song.val();//歌曲值
                         model.each(function (name, value) {
-                            data.append(name, value);
+                            if (name !== 'SContext')//文章正文(标题需要么？)特殊处理，.net默认存在request.form安全检测，为了防止xss攻击建议保留这个安全检测
+                                data.append(name, value);
                         });
-
+                        data.append('SContext', encodeURIComponent(model.get('SContext')));//文章源码
+                        data.append('SHTML', encodeURIComponent(getContextHTML()));//文章HTML源码
                         //缩略图
                         data.append('SImg', SumImg.val());
                         //标签
@@ -801,10 +842,12 @@
                             //上传||suggestion选择了图片后，编辑了歌曲
                             data.append('Song.SongImg', songData.img);
                         }
+                        addSaid.DataBase.clear();
+                        return;
                         addSaid.ajax(data, Action.form, function (data, xhr) {
                             if (data.code === 0) {
                                 dialog('添加Said成功', '喜大普奔，添加Said成功。');
-                                //addSaid.DataBase.clear(); TODO
+
                                 //解决chrome下依赖加载报错的bug... TODO
                                 changeState(1);
                             } else {

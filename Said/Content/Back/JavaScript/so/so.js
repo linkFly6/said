@@ -253,6 +253,62 @@
 
         },
     });
+    /*浏览器特性支持模块*/
+    var Support = {
+        localStorage: !!window.localStorage
+    };
+    /*DataBase模块*/
+    var localStorage = window.localStorage,
+        rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,//检测是否是json对象格式
+        DataBase = function (namespace) {
+            //修正命名空间
+            if (!namespace)
+                namespace = '';
+            if (namespace && namespace.charAt(namespace.length - 1) != '.')
+                namespace += '.';
+            var getKey = function (key) {
+                if (!key) return key;
+                return namespace + key;
+            },
+                support = Support.localStorage;
+            return {
+                support: support,
+                val: function (key, value) {
+                    if (arguments.length > 1) {
+                        //set
+                        if (support)
+                            value == null ? localStorage.removeItem(getKey(key)) : localStorage.setItem(getKey(key), value);
+                        return this;
+                    }
+                    //get
+                    value = support ? localStorage.getItem(getKey(key), value) || '' : '';
+                    //来自jQuery的jQuery.data
+                    return value === "true" ? true :
+                            value === "false" ? false :
+                            value === "null" ? null :
+                            +value + "" === value ? +value :
+                            rbrace.test(value) ? so.parseJSON(value) :
+                            value;
+                },
+                clear: function (nameSpace) {
+                    nameSpace = nameSpace || namespace;
+                    var name, reg = new RegExp('\b' + nameSpace), res = Object.create(null);
+                    for (var i = 0, len = localStorage.length; i < len; i++) {
+                        if (reg.test((name = localStorage.key(i)))) {
+                            res[name] = localStorage[name];
+                            localStorage.removeItem(name);
+                        }
+                    }
+                    return res;
+                }
+            };
+        };
+    so.extend({
+        DataBase: DataBase
+    });
+
+
+
     //兼容amd
     if (typeof define === "function" && define.amd) {
         define("so", [], function () {
