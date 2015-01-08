@@ -1,5 +1,10 @@
 ﻿require.config({
     baseUrl: '/Content/Back/JavaScript',
+    paths: {
+        'saidAdd': 'said/addSaid',
+        'markdown': ['showdown/showdown'],
+        'showDownThemeGithub': ['showdown/extensions/github']
+    },
     packages: [
     {
         name: 'echarts',
@@ -22,18 +27,13 @@
         location: 'said',
         main: 'said'
     }],
-    paths: {
-        'addSaid': ['said/addSaid.js'],
-        'markdown': ['showdown/showdown'],
-        'showdownGithub': ['showdown/extensions/github']
-    },
-    shim: {
-        'showdownGithub': {
-            deps: ['markdown'],//依赖showdown
-            exports: 'github'
-        },
-        'markdown': {
-            exports: 'showdown'
-        }
-    }
+    //, shim: {
+    //    'markdown': {
+    //        exports: 'showdown'
+    //    },
+    //    'showdownGithub': {
+    //        deps: ['markdown'],//依赖showdown
+    //        exports: 'github'
+    //    }
+    //}
 });

@@ -251,8 +251,14 @@
             imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
             musicFilters: ['mp3', 'ogg']
         };
+
         require.config({
             baseUrl: '/Content/Back/JavaScript',
+            paths: {
+                'saidAdd': 'said/addSaid',
+                'markdown': ['showdown/showdown'],
+                'showDownThemeGithub': ['showdown/extensions/github']
+            },
             packages: [
             {
                 name: 'echarts',
@@ -274,24 +280,20 @@
                 name: 'said',
                 location: 'said',
                 main: 'said'
-            }],
-            paths: {
-                'addSaid': ['said/addSaid'],
-                'markdown': ['showdown/showdown'],
-                'showdownGithub': ['showdown/extensions/github']
-            },
-            shim: {
-                'showdownGithub': {
-                    deps: ['markdown'],//依赖showdown
-                    exports: 'github'
-                },
+            }]
+            , shim: {
                 'markdown': {
                     exports: 'showdown'
+                },
+                'showDownThemeGithub': {
+                    deps: ['markdown'],//依赖showdown
+                    exports: 'github'
                 }
             }
         });
-        require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'addSaid', 'markdown', 'showdownGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {
-            console.log(showdown);
+
+        require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'saidAdd', 'markdown', 'showDownThemeGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {
+            console.log(arguments);
             $(function () {
                 var _ = function (name) {
                     return document.getElementById(name);
