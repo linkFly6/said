@@ -26,14 +26,7 @@
         name: 'said',
         location: 'said',
         main: 'said'
-    }],
-    //, shim: {
-    //    'markdown': {
-    //        exports: 'showdown'
-    //    },
-    //    'showdownGithub': {
-    //        deps: ['markdown'],//依赖showdown
-    //        exports: 'github'
-    //    }
-    //}
+    }], shim: {
+        'showDownThemeGithub': ['markdown']//依赖showdown
+    }
 });

@@ -251,7 +251,7 @@
             imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
             musicFilters: ['mp3', 'ogg']
         };
-
+        //除非下面的js代码也是从外层定义的，否则require.config必须定义在当前页面内，因为requireJS加载的代码都是异步的
         require.config({
             baseUrl: '/Content/Back/JavaScript',
             paths: {
@@ -280,20 +280,14 @@
                 name: 'said',
                 location: 'said',
                 main: 'said'
-            }]
-            , shim: {
-                'markdown': {
-                    exports: 'showdown'
-                },
-                'showDownThemeGithub': {
-                    deps: ['markdown'],//依赖showdown
-                    exports: 'github'
-                }
+            }], shim: {
+                'showDownThemeGithub': ['markdown']//依赖showdown
             }
         });
 
         require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'saidAdd', 'markdown', 'showDownThemeGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {
-            console.log(arguments);
+            //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
+            showdown = window.Showdown;
             $(function () {
                 var _ = function (name) {
                     return document.getElementById(name);

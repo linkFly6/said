@@ -2386,6 +2386,9 @@
     <Content Include="UED\Back\Frmework\js\zrender-master\test\testArea.html" />
     <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.js" />
     <Content Include="UED\Back\Frmework\Login.html" />
+    <Content Include="UED\Back\requireJSTest\JS\require2-1-11.min.js" />
+    <Content Include="UED\Back\requireJSTest\JS\testJS.js" />
+    <Content Include="UED\Back\requireJSTest\requireJSTest.html" />
     <Content Include="UED\Back\SaidPreview.html" />
     <Content Include="UED\Back\ShowDownTest.html" />
     <Content Include="UED\Back\MarkdownTest.html" />
