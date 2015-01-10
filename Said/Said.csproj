@@ -1097,7 +1097,7 @@
     <Content Include="Content\Back\Style\font-awesome.min.css" />
     <Content Include="Content\Back\Style\grid-table.css" />
     <Content Include="Content\Back\Style\said-said.css" />
-    <Content Include="Content\Back\Style\saidList.css" />
+    <Content Include="Content\Back\Style\index.css" />
     <Content Include="Content\Images\code-bg.jpg" />
     <Content Include="Content\Images\github.png" />
     <Content Include="Content\Images\icon-common.png" />
@@ -5095,6 +5095,9 @@
     <Content Include="UED\Back\Frmework\js\syntaxhighlighter_3.0.83\tests\.rvmrc" />
     <Content Include="UED\Back\Frmework\js\syntaxhighlighter_3.0.83\tests\webrick.rb" />
     <Content Include="UED\Back\Frmework\js\syntaxhighlighter_3.0.83\tests\webrick.sh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Back\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
