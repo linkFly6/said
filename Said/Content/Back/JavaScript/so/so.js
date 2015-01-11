@@ -14,7 +14,8 @@
         factory(global);
     }
 })(typeof window !== 'undefined' ? window : this, function (window, noGlobal) {
-    var toString = Object.prototype.toString,
+    var strundefined = typeof void (0),
+        toString = Object.prototype.toString,
 		each = Array.prototype.forEach,
         slice = Array.prototype.slice,
         splice = Array.prototype.splice,
@@ -315,7 +316,7 @@
             return so;
         });
     }
-    if (typeof noGlobal === undefined) {
+    if (typeof noGlobal === strundefined) {
         window.so = so;
     }
     return so;

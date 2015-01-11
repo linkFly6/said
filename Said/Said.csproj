@@ -828,6 +828,7 @@
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\test\performance\p.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.min.js" />
+    <Content Include="Content\Back\JavaScript\said\globalBack.js" />
     <Content Include="Content\Back\JavaScript\jQuery-2.1.1.js" />
     <Content Include="Content\Back\JavaScript\jQuery-2.1.1.min.js" />
     <Content Include="Content\Back\JavaScript\main.js" />
@@ -1152,9 +1153,7 @@
     <Content Include="UED\Back\Frmework\css\flat-ui.min.css" />
     <Content Include="UED\Back\Frmework\css\font-awesome.css" />
     <Content Include="UED\Back\Frmework\css\font-awesome.min.css" />
-    <Content Include="UED\Back\Frmework\css\grid-table.css" />
-    <Content Include="UED\Back\Frmework\css\saidList.css" />
-    <Content Include="UED\Back\Frmework\css\said-said.css" />
+    <Content Include="UED\Back\Frmework\css\saidCenter.css" />
     <Content Include="UED\Back\Frmework\fonts\fontawesome-webfont.svg" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons\flat-ui-icons-regular.svg" />
@@ -1165,6 +1164,10 @@
     <Content Include="UED\Back\Frmework\fonts\lato\lato-light.svg" />
     <Content Include="UED\Back\Frmework\fonts\lato\lato-regular.svg" />
     <Content Include="UED\Back\Frmework\js\bootgrid.js" />
+    <Content Include="UED\Back\Frmework\js\bootstrap-table\bootstrap-table.css" />
+    <Content Include="UED\Back\Frmework\js\bootstrap-table\bootstrap-table.js" />
+    <Content Include="UED\Back\Frmework\js\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="UED\Back\Frmework\js\bootstrap-table\bootstrap-table.min.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.min.js" />
     <Content Include="UED\Back\Frmework\js\echarts-2.1.8\.gitignore" />
@@ -2438,7 +2441,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="UED\Back\Frmework\css\bootstrap-theme.css.map" />
-    <Content Include="UED\Back\Frmework\css\bootstrap.css.map" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="UED\Back\Frmework\fonts\glyphicons-halflings-regular.woff" />
@@ -3042,9 +3044,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\Style\bootstrap-theme.css.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Back\Style\bootstrap.css.map" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\.editorconfig" />

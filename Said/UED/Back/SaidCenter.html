@@ -10,7 +10,8 @@
     <link href="Frmework/css/bootstrap.min.css" rel="stylesheet">
     <link href="Frmework/css/font-awesome.min.css" rel="stylesheet" />
     <link href="Frmework/css/default.css" rel="stylesheet" />
-    <link href="Frmework/css/saidList.css" rel="stylesheet" />
+    <link href="Frmework/css/saidCenter.css" rel="stylesheet" />
+    <link href="Frmework/js/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -60,7 +61,7 @@
                 <li class="active">
                     <a href="javascript:;">
                         <i class="icon-home"></i>
-                        <span class="title">控制中心</span>
+                        <span class="title">Home</span>
                         <span class="selected"></span>
                     </a>
                 </li>
@@ -121,8 +122,13 @@
         </nav>
         <section class="container-main">
             <div class="page-header">
-                <h2>控制中心&nbsp;&nbsp;<small>Said首台管理首页</small></h2>
+                <h3>添加Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small></h3>
             </div>
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Siad管理</a></li>
+                <li class="active">添加Said</li>
+            </ol>
             <div class="main-context">
                 <div class="row context-chart">
                     <div class="col-md-6">
@@ -132,198 +138,208 @@
                         <h3>用户访问地区</h3>
                     </div>
                 </div>
-                <div>
-                    <table class="bootgrid">
-                        <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>描述</th>
-                                <th>歌曲</th>
-                                <th>浏览</th>
-                                <th>回复</th>
-                                <th>类型</th>
-                                <th>标签</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr class="grid-check">
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                            <tr>
-                                <td>世界很大，风住过这里</td>
-                                <td>梵高的耳朵</td>
-                                <td>The Only Exception</td>
-                                <td>12</td>
-                                <td>1</td>
-                                <td>音乐</td>
-                                <td>Music</td>
-                                <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="8">
-                                    <ul class="pagination">
-                                        <li><a href="javascript:;">«</a></li>
-                                        <li><a href="javascript:;">1</a></li>
-                                        <li><a href="javascript:;">2</a></li>
-                                        <li><a href="javascript:;">3</a></li>
-                                        <li><a href="javascript:;">4</a></li>
-                                        <li><a href="javascript:;">5</a></li>
-                                        <li><a href="javascript:;">»</a></li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                <div class="bs-table bootstrap-table">
+                    <div class="fixed-table-container">
+                        <div class="fixed-table-body">
+                            <table id="btTable" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true">
+                                <thead>
+                                    <tr>
+                                        <th data-sortable="true" data-field="name">名&nbsp;&nbsp;&nbsp;称</th>
+                                        <th data-width="300" data-field="summary">描&nbsp;&nbsp;&nbsp;述</th>
+                                        <th data-field="song">歌&nbsp;&nbsp;&nbsp;曲</th>
+                                        <th data-field="pv">浏&nbsp;&nbsp;&nbsp;览</th>
+                                        <th data-field="reply">回&nbsp;&nbsp;&nbsp;复</th>
+                                        <th data-field="classify">类&nbsp;&nbsp;&nbsp;型</th>
+                                        <th data-field="tag">标&nbsp;&nbsp;&nbsp;签</th>
+                                        <th>操&nbsp;&nbsp;&nbsp;作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><a href="javascript:;">世界很大，风住过这里</a></td>
+                                        <td></td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="8">
+                                            <div class="view">
+                                                <div class="view-img">
+                                                    <img src="/Content/Images/UEDImg/demo-img4.jpg" />
+                                                </div>
+                                                <div class="view-dis">
+                                                    <h3>世界很大，风住过这里</h3>
+                                                    <div class="view-summary">
+                                                        jQuery在1.2后引入jQuery.data（数据缓存系统），主要的作用是让一组自定义的数据可以DOM元素相关联——浅显的说：就是让一个对象和一组数据一对一的关联。
+一组和Element相关的数据如何关联着这个Element一直是web前端的大姨妈，而最初的jQuery事件系统照搬Dean Edwards的addEvent.js：将回调挂载在EventTarget上，这样下来，循环引用是不可忽视的问题。而在web前端中，数据和DOM的关系太过基情和紧张，于是jQuery在1.2中，正式缔造了jQuery.data，就是为了解决这段孽缘：自定义数据和DOM进行关联。
+文中所说的Element主要是指数据挂载所关联的target(目标)，并不局限于Element对象。
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="grid-check">
+                                        <td>锋利的jQuery</td>
+                                        <td>jQuery在1.2后引入jQuery.data（数据缓存系统），主要的作用是让一组自定义的数据可以DOM元素相关联——浅显的说：就是让一个对象和一组数据一对一的关联。
+
+一组和Element相关的数据如何关联着这个Element一直是web前端的大姨妈，而最初的jQuery事件系统照搬Dean Edwards的addEvent.js：将回调挂载在EventTarget上，这样下来，循环引用是不可忽视的问题。而在web前端中，数据和DOM的关系太过基情和紧张，于是jQuery在1.2中，正式缔造了jQuery.data，就是为了解决这段孽缘：自定义数据和DOM进行关联。
+
+文中所说的Element主要是指数据挂载所关联的target(目标)，并不局限于Element对象。</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>界很大，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>很大，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>open，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>hehe，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>dance，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>westlife，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>joe，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>卡百利，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>linkFly，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>LinkFly，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Said，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>TaSaid，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>听所，风住过这里</td>
+                                        <td>梵高的耳朵</td>
+                                        <td>The Only Exception</td>
+                                        <td>12</td>
+                                        <td>1</td>
+                                        <td>音乐</td>
+                                        <td>Music</td>
+                                        <td><a class="btn btn-default btn-sm">修改</a><a class="btn btn-default btn-sm">删除</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -333,5 +349,14 @@
     <script src="Frmework/js/jQuery-2.1.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="Frmework/js/bootstrap.min.js"></script>
+    <script src="Frmework/js/bootstrap-table/bootstrap-table.js"></script>
+    <script>
+        //(function (window, undefined) {
+        //    var $ = window.jQuery;
+        //    $('#btTable').bootstrapTable().on('dbl-click-row.bs.table', function (e, row, $element) {
+
+        //    })
+        //})(window);
+    </script>
 </body>
 </html>
