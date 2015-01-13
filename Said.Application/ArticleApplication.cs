@@ -118,7 +118,7 @@ namespace Said.Application
         public static IPagedList<Article> Find(Models.Data.Page page)
         {
             //TODO要把GetPage方法好好封装一下
-            return Context.GetPage(page, m => m.SName != null, m => m.SDate);
+            return Context.GetPage(page, m => m.STitle != null, m => m.SDate);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Said.Application
         /// <returns>返回封装后的IPagedList对象</returns>
         public static IPagedList<Article> Find(Models.Data.Page page, string keywords)
         {
-            return Context.GetPage(page, m => m.SName.Contains(keywords) || m.SContext.Contains(keywords), m => m.SDate);
+            return Context.GetPage(page, m => m.STitle.Contains(keywords) || m.SContext.Contains(keywords), m => m.SDate);
         }
         #endregion
     }

@@ -19,7 +19,8 @@ namespace Said.Controllers
             return View();
         }
 
-        public ActionResult SaidCenter() {
+        public ActionResult SaidCenter()
+        {
 
             return View();
         }
@@ -39,13 +40,14 @@ namespace Said.Controllers
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
-            var res = ArticleApplication.Find(page, search);
+            var res = ArticleApplication.Find(page, "世界");
             return Json(new
             {
-                hasNextPage = res.HasNextPage,
-                hasPreviousPage = res.HasPreviousPage,
-                data = res.ToList<Article>()
-            });
+                //hasNextPage = res.HasNextPage,
+                //hasPreviousPage = res.HasPreviousPage,
+                total = res.Count,
+                rows = res.ToList<Article>()
+            }, JsonRequestBehavior.AllowGet);
         }
 
     }

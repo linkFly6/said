@@ -1173,6 +1173,7 @@
     <Content Include="UED\Back\Frmework\js\bootstrap-table\bootstrap-table.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap-table\bootstrap-table.min.css" />
     <Content Include="UED\Back\Frmework\js\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="UED\Back\Frmework\js\bootstrap-table\test.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.js" />
     <Content Include="UED\Back\Frmework\js\bootstrap.min.js" />
     <Content Include="UED\Back\Frmework\js\echarts-2.1.8\.gitignore" />

@@ -26,7 +26,10 @@
             }
             return arg;
         });
-        return flag ? str : '';
+        if (flag) {
+            return str;
+        }
+        return '';
     };
 
     var getPropertyFromOther = function (list, from, to, value) {
@@ -135,7 +138,6 @@
         cache: true,
         contentType: 'application/json',
         dataType: 'json',
-        ajaxOptions: {},
         queryParams: function (params) {return params;},
         queryParamsType: 'limit', // undefined
         responseHandler: function (res) {return res;},
@@ -156,7 +158,6 @@
         minimumCountColumns: 1,
         idField: undefined,
         cardView: false,
-        trimOnSearch: true,
         clickToSelect: false,
         singleSelect: false,
         toolbar: undefined,
@@ -164,13 +165,6 @@
         checkboxHeader: true,
         sortable: true,
         maintainSelected: false,
-        searchTimeOut: 500,
-        iconsPrefix: 'glyphicon', // glyphicon of fa (font awesome)
-        icons: {
-            refresh: 'glyphicon-refresh icon-refresh',
-            toggle: 'glyphicon-list-alt icon-list-alt',
-            columns: 'glyphicon-th icon-th'
-        },
 
         rowStyle: function (row, index) {return {};},
 
@@ -197,7 +191,7 @@
 
     BootstrapTable.LOCALES['en-US'] = {
         formatLoadingMessage: function () {
-            return 'Loading, please wait...';
+            return 'Loading, please wait…';
         },
         formatRecordsPerPage: function (pageNumber) {
             return sprintf('%s records per page', pageNumber);
@@ -500,24 +494,16 @@
                 if (aa === undefined || aa === null) {
                     aa = '';
                 }
-                if (bb === undefined || bb === null) {
+                if (aa === undefined || bb === null) {
                     bb = '';
                 }
-                
-                if ($.isNumeric(aa) && $.isNumeric(bb)) {
-                    if (aa < bb) {
-                        return order * -1;
-                    }
-                    return order;
-                }
-                
+
                 if (aa === bb) {
                     return 0;
                 }
-                if (aa.localeCompare(bb) == -1) {
+                if (aa < bb) {
                     return order * -1;
                 }
-                    
                 return order;
             });
         }
@@ -567,21 +553,17 @@
         // showColumns, showToggle, showRefresh
         html = ['<div class="columns columns-' + this.options.toolbarAlign + ' btn-group pull-' + this.options.toolbarAlign + '">'];
 
-        if (typeof this.options.icons === 'string') {
-            this.options.icons = calculateObjectValue(null, this.options.icons);
-        }
-
         if (this.options.showRefresh) {
             html.push(sprintf('<button class="btn btn-default" type="button" name="refresh" title="%s">',
                 this.options.formatRefresh()),
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.refresh),
+                '<i class="glyphicon glyphicon-refresh icon-refresh"></i>',
                 '</button>');
         }
 
         if (this.options.showToggle) {
             html.push(sprintf('<button class="btn btn-default" type="button" name="toggle" title="%s">',
                 this.options.formatToggle()),
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.toggle),
+                '<i class="glyphicon glyphicon glyphicon-list-alt icon-list-alt"></i>',
                 '</button>');
         }
 
@@ -589,7 +571,7 @@
             html.push(sprintf('<div class="keep-open btn-group" title="%s">',
                 this.options.formatColumns()),
                 '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">',
-                sprintf('<i class="%s %s"></i>', this.options.iconsPrefix, this.options.icons.columns),
+                '<i class="glyphicon glyphicon-th icon-th"></i>',
                 ' <span class="caret"></span>',
                 '</button>',
                 '<ul class="dropdown-menu" role="menu">');
@@ -613,8 +595,7 @@
 
         html.push('</div>');
 
-        // Fix #188: this.showToolbar is for extentions
-        if (this.showToolbar || html.length > 2) {
+        if (html.length > 2) {
             this.$toolbar.append(html.join(''));
         }
 
@@ -664,7 +645,7 @@
                 clearTimeout(timeoutId); // doesn't matter if it's 0
                 timeoutId = setTimeout(function () {
                     that.onSearch(event);
-                }, that.options.searchTimeOut);
+                }, 500); // 500ms
             });
         }
     };
@@ -673,7 +654,7 @@
         var text = $.trim($(event.currentTarget).val());
 
         // trim search input
-        if(this.options.trimOnSearch) $(event.currentTarget).val(text);
+        $(event.currentTarget).val(text);
 
         if (text === this.searchText) {
             return;
@@ -788,7 +769,7 @@
         }
 
         $.each(pageList, function (i, page) {
-            if (!that.options.smartDisplay || i === 0 || pageList[i-1] <= that.options.totalRows) {
+            if (!that.options.smartDisplay || that.options.totalRows >= page || i === 0) {
                 var active = page === that.options.pageSize ? ' class="active"' : '';
                 pageNumber.push(sprintf('<li%s><a href="javascript:void(0)">%s</a></li>', active, page));
             }
@@ -852,7 +833,7 @@
             if (this.totalPages <= 1) {
                 this.$pagination.find('div.pagination').hide();
             }
-            if (this.options.pageList.length < 2 || this.options.totalRows <= this.options.pageList[0]) {
+            if (this.options.pageList.length < 2 || this.options.totalRows <= this.options.pageList[1]) {
                 this.$pagination.find('span.page-list').hide();
             }
 
@@ -936,7 +917,9 @@
             this.$body = $('<tbody></tbody>').appendTo(this.$el);
         }
 
-		//Fix #389 Bootstrap-table-flatJSON is not working
+        if (this.options.sidePagination === 'server') {
+            data = this.data;
+        }
 
         if (!this.options.pagination || this.options.sidePagination === 'server') {
             this.pageFrom = 1;
@@ -985,8 +968,7 @@
                     type = '',
                     cellStyle = {},
                     id_ = '',
-                    class_ = that.header.classes[j],
-                    column = that.options.columns[getFieldIndex(that.options.columns, field)];
+                    class_ = that.header.classes[j];
 
                 style = sprintf('style="%s"', csses.concat(that.header.styles[j]).join('; '));
 
@@ -1014,14 +996,14 @@
                     style = sprintf('style="%s"', csses.concat(that.header.styles[j]).join('; '));
                 }
 
-                if (column.checkbox || column.radio) {
+                if (that.options.columns[j].checkbox || that.options.columns[j].radio) {
                     //if card view mode bypass
                     if (that.options.cardView) {
                         return true;
                     }
 
-                    type = column.checkbox ? 'checkbox' : type;
-                    type = column.radio ? 'radio' : type;
+                    type = that.options.columns[j].checkbox ? 'checkbox' : type;
+                    type = that.options.columns[j].radio ? 'radio' : type;
 
                     text = ['<td class="bs-checkbox">',
                         '<input' +
@@ -1031,7 +1013,7 @@
                             sprintf(' value="%s"', item[that.options.idField]) +
                             sprintf(' checked="%s"', value === true ||
                                 (value && value.checked) ? 'checked' : undefined) +
-                            sprintf(' disabled="%s"', !column.checkboxEnabled ||
+                            sprintf(' disabled="%s"', !that.options.columns[j].checkboxEnabled ||
                                 (value && value.disabled) ? 'disabled' : undefined) +
                             ' />',
                         '</td>'].join('');
@@ -1148,7 +1130,7 @@
         this.trigger('post-body');
     };
 
-    BootstrapTable.prototype.initServer = function (silent, query) {
+    BootstrapTable.prototype.initServer = function (silent) {
         var that = this,
             data = {},
             params = {
@@ -1165,18 +1147,14 @@
 
         if (this.options.queryParamsType === 'limit') {
             params = {
+                limit: params.pageSize,
+                offset: params.pageSize * (params.pageNumber - 1),
                 search: params.searchText,
                 sort: params.sortName,
                 order: params.sortOrder
             };
-            if (this.options.pagination) {
-                params.limit = this.options.pageSize;
-                params.offset = this.options.pageSize * (this.options.pageNumber - 1);
-            }
         }
         data = calculateObjectValue(this.options, this.options.queryParams, [params], data);
-
-        $.extend(data, query || {});
 
         // false to stop request
         if (data === false) {
@@ -1187,7 +1165,7 @@
             this.$loading.show();
         }
 
-        $.ajax($.extend({}, calculateObjectValue(null, this.options.ajaxOptions), {
+        $.ajax({
             type: this.options.method,
             url: this.options.url,
             data: data,
@@ -1214,7 +1192,7 @@
                     that.$loading.hide();
                 }
             }
-        }));
+        });
     };
 
     BootstrapTable.prototype.getCaretHtml = function () {
@@ -1503,7 +1481,7 @@
             this.options.url = params.url;
             this.options.pageNumber = 1;
         }
-        this.initServer(params && params.silent, params && params.query);
+        this.initServer(params && params.silent);
     };
 
     BootstrapTable.prototype.showColumn = function (field) {
