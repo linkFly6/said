@@ -13,11 +13,9 @@
 </ol>
 <div class="main-context">
     <div class="row context-chart">
-        <div class="col-md-6">
-            <h3>用户访问图表，支持年月日走势</h3>
-        </div>
-        <div class="col-md-6">
-            <h3>用户访问地区</h3>
+        <div class="context-chart">
+            <div id="userChart">
+            </div>
         </div>
     </div>
     <div class="bs-table">
@@ -44,6 +42,78 @@
 @section FootJs{
     <script src="@Url.Content("~/UED/Back/Frmework/js/bootstrap-table/bootstrap-table.js")"></script>
     <script>
+        require.config({
+            packages: [
+            {
+                name: 'echarts',
+                location: 'echarts-2.1.8/src',
+                main: 'echarts'
+            },
+            {
+                name: 'zrender',
+                //location: 'http://ecomfe.github.io/zrender/src',
+                location: 'zrender-master/src',
+                main: 'zrender'
+            }
+            ]
+        });
+        var option = {
+            title: {
+                text: '2014-11-15',
+                subtext: '昨日/今日访问量'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['昨日', '今日']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['0:00', '1:00', '2:00', '3:00', '4:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '昨日',
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
+                },
+                {
+                    name: '今日',
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    data: [5, 2, 5, 5, 5, 3, 3, 9, 10, 19, 16, 16, 22, 7, 7, 8, 8, 0, 0, 0, 0, 1, 6, 7]
+                }
+            ]
+        };
+        require(['echarts', 'echarts/chart/line'], function (ec) {
+            var myChart = ec.init(document.getElementById('userChart'));
+            myChart.setOption(option);
+        });
+
+
         (function (window, undefined) {
             var $ = window.jQuery;
             $('#btTable').bootstrapTable().on('dbl-click-row.bs.table', function (e, row, $element) {
