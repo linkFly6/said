@@ -19,19 +19,7 @@
         </div>
     </div>
     <div class="bs-table">
-        <table id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true">
-            <thead>
-                <tr>
-                    <th data-sortable="true" data-field="STitle">名&nbsp;&nbsp;&nbsp;称</th>
-                    <th data-width="300" data-field="SSummary">描&nbsp;&nbsp;&nbsp;述</th>
-                    <th data-field="Song.SongName">歌&nbsp;&nbsp;&nbsp;曲</th>
-                    <th data-field="SPV">浏&nbsp;&nbsp;&nbsp;览</th>
-                    @*<th data-field="reply">回&nbsp;&nbsp;&nbsp;复</th>*@
-                    <th data-field="Classify.CName">类&nbsp;&nbsp;&nbsp;型</th>
-                    <th data-field="STag">标&nbsp;&nbsp;&nbsp;签</th>
-                    <th>操&nbsp;&nbsp;&nbsp;作</th>
-                </tr>
-            </thead>
+        <table id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server">
         </table>
     </div>
 </div>
@@ -116,8 +104,82 @@
 
         (function (window, undefined) {
             var $ = window.jQuery;
-            $('#btTable').bootstrapTable().on('dbl-click-row.bs.table', function (e, row, $element) {
+            $('#btTable').bootstrapTable({
+                columns: [
+                 {
+                     field: 'STitle',
+                     title: '名&nbsp;&nbsp;&nbsp;称',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         console.log(row); //row可以访问到数据
+                         return ['<a href="javascript:;">', value, '</a>'].join('');
+                     }
+                 },
+                 {
+                     field: 'SSummary',
+                     title: '描&nbsp;&nbsp;&nbsp;述',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'Song.SongName',
+                     title: '歌&nbsp;&nbsp;&nbsp;曲',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'SPV',
+                     title: '浏&nbsp;&nbsp;&nbsp;览',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'SDate',
+                     title: '发布时间',
+                     sortable: true,
+                     valign: 'middle',
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'Classify.CName',
+                     title: '分&nbsp;&nbsp;&nbsp;类',
+                     sortable: true,
+                     valign: 'middle',
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'STag',
+                     title: '标&nbsp;&nbsp;&nbsp;签',
+                     valign: 'middle',
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'SaidId',
+                     title: '操&nbsp;&nbsp;&nbsp;作',
+                     formatter: function (value, row, index) {
+                         return ['<a class="btn btn-default btn-sm" data-id="', value, '">修改</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
+                     }
+                 }
 
+                ],
+
+            }).on('dbl-click-row.bs.table', function (e, row, $element) {
             })
         })(window);
     </script>

@@ -12,7 +12,7 @@
     // ======================
 
     // it only does '%s', and return '' when arguments are undefined
-    var sprintf = function(str) {
+    var sprintf = function (str) {
         var args = arguments,
             flag = true,
             i = 1;
@@ -112,6 +112,16 @@
         return text;
     };
 
+    var getDataItemFildValue = function (item, field) {
+        var res = item;
+        field = field && String(field).split('.');
+        while (field.length) {
+            if ((res = res[field.shift()]) == null)
+                return '';
+        }
+        return res;
+    }
+
     // BOOTSTRAP TABLE CLASS DEFINITION
     // ======================
 
@@ -138,9 +148,9 @@
         cache: true,
         contentType: 'application/json',
         dataType: 'json',
-        queryParams: function (params) {return params;},
+        queryParams: function (params) { return params; },
         queryParamsType: 'limit', // undefined
-        responseHandler: function (res) {return res;},
+        responseHandler: function (res) { return res; },
         pagination: false,
         sidePagination: 'client', // client or server
         totalRows: 0, // server side need to set
@@ -166,25 +176,25 @@
         sortable: true,
         maintainSelected: false,
 
-        rowStyle: function (row, index) {return {};},
+        rowStyle: function (row, index) { return {}; },
 
-        rowAttributes: function (row, index) {return {};},
+        rowAttributes: function (row, index) { return {}; },
 
-        onAll: function (name, args) {return false;},
-        onClickRow: function (item, $element) {return false;},
-        onDblClickRow: function (item, $element) {return false;},
-        onSort: function (name, order) {return false;},
-        onCheck: function (row) {return false;},
-        onUncheck: function (row) {return false;},
-        onCheckAll: function () {return false;},
-        onUncheckAll: function () {return false;},
-        onLoadSuccess: function (data) {return false;},
-        onLoadError: function (status) {return false;},
-        onColumnSwitch: function (field, checked) {return false;},
-        onPageChange: function (number, size) {return false;},
-        onSearch: function (text) {return false;},
-        onPreBody: function (data) {return false;},
-        onPostBody: function () {return false;}
+        onAll: function (name, args) { return false; },
+        onClickRow: function (item, $element) { return false; },
+        onDblClickRow: function (item, $element) { return false; },
+        onSort: function (name, order) { return false; },
+        onCheck: function (row) { return false; },
+        onUncheck: function (row) { return false; },
+        onCheckAll: function () { return false; },
+        onUncheckAll: function () { return false; },
+        onLoadSuccess: function (data) { return false; },
+        onLoadError: function (status) { return false; },
+        onColumnSwitch: function (field, checked) { return false; },
+        onPageChange: function (number, size) { return false; },
+        onSearch: function (text) { return false; },
+        onPreBody: function (data) { return false; },
+        onPostBody: function () { return false; }
     };
 
     BootstrapTable.LOCALES = [];
@@ -319,7 +329,7 @@
         this.options.columns = $.extend([], columns, this.options.columns);
         $.each(this.options.columns, function (i, column) {
             that.options.columns[i] = $.extend({}, BootstrapTable.COLUMN_DEFAULTS,
-                {field: i}, column); // when field is undefined, use index instead
+                { field: i }, column); // when field is undefined, use index instead
         });
 
         // if options.data is setting, do not process tbody data
@@ -672,7 +682,7 @@
 
         if (this.options.sidePagination !== 'server') {
             var s = this.searchText && this.searchText.toLowerCase();
-            var f = $.isEmptyObject(this.filterColumns) ? null: this.filterColumns;
+            var f = $.isEmptyObject(this.filterColumns) ? null : this.filterColumns;
 
             // Check filter
             this.data = f ? $.grep(this.options.data, function (item, i) {
@@ -802,7 +812,7 @@
         }
         for (i = from; i <= to; i++) {
             html.push('<li class="page-number' + (i === this.options.pageNumber ? ' active disabled' : '') + '">',
-                '<a href="javascript:void(0)">', i ,'</a>',
+                '<a href="javascript:void(0)">', i, '</a>',
                 '</li>');
         }
 
@@ -964,7 +974,7 @@
 
             $.each(this.header.fields, function (j, field) {
                 var text = '',
-                    value = item[field],
+                    value = getDataItemFildValue(item, field),//支持对象的读取，例如"linkFly.github"
                     type = '',
                     cellStyle = {},
                     id_ = '',
@@ -1272,7 +1282,7 @@
                 that.$header_.find('th').eq(i).data($(this).data());
             });
 
-            that.$body.find('tr:first-child:not(.no-records-found) > *').each(function(i) {
+            that.$body.find('tr:first-child:not(.no-records-found) > *').each(function (i) {
                 that.$header_.find('div.fht-cell').eq(i).width($(this).innerWidth());
             });
 
@@ -1493,7 +1503,7 @@
     };
 
     BootstrapTable.prototype.filterBy = function (columns) {
-        this.filterColumns = $.isEmptyObject(columns) ? {}: columns;
+        this.filterColumns = $.isEmptyObject(columns) ? {} : columns;
         this.options.pageNumber = 1;
         this.initSearch();
         this.updatePagination();

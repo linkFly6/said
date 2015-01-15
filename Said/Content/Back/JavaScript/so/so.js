@@ -246,7 +246,21 @@
             });
             tmp = null;
             return Parm;
-        }(window.location.search)
+        }(window.location.search),
+        dataFormat: function (date, format) {//json日期格式转换为正常格式
+            try {
+                //写好这个json格式化，明天的任务
+                var date = new Date(parseInt(date.replace("/Date(", "").replace(")/", ""), 10)),
+                    month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1,
+                    day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
+                    hours = date.getHours(),
+                    minutes = date.getMinutes(),
+                    seconds = date.getSeconds();
+                return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+            } catch (ex) {
+                return "";
+            }
+        }
     });
     //event
     so.extend({
