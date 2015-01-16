@@ -60,6 +60,18 @@
         class2type["[object " + name + "]"] = name.toLowerCase();
     });
 
+
+    /*
+        内部工具函数
+    */
+    //给数字字符串补零，不支持负数
+    function padNumber(num, fill) {
+        //改自：http://blog.csdn.net/aimingoo/article/details/4492592
+        return (Array(
+            fill > num ? (fill - ('' + num).length + 1) || 0 : 0
+            ).join(0) + num);
+    }
+
     so.extend = so.prototype.extend = function () {
         var options, name, src, copy, copyIsArray, clone,
             target = arguments[0] || {},
@@ -247,27 +259,93 @@
             tmp = null;
             return Parm;
         }(window.location.search),
-        dataFormat: function (date, format) {//json日期格式转换为正常格式
-            try {
-                //写好这个json格式化，明天的任务
-                var date = new Date(parseInt(date.replace("/Date(", "").replace(")/", ""), 10)),
-                    month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1,
-                    day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate(),
-                    hours = date.getHours(),
-                    minutes = date.getMinutes(),
-                    seconds = date.getSeconds();
-                return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-            } catch (ex) {
-                return "";
-            }
-        }
     });
     //event
     so.extend({
         on: function () {
 
-        },
+        }
     });
+    /*dat模块*/
+    so.extend({
+        //转换时间
+        parseDate: function (jsonDate) {
+            try {
+                if (so.type(jsonDate) === 'date') return jsonDate;
+                return new Date(parseInt(jsonDate.replace("/Date(", "").replace(")/", ""), 10));
+            } catch (e) {
+                return null;
+            }
+        },
+        //json时间格式化为正常时间
+        dateFormat: function (jsonDate, format) {
+            /// <summary>
+            /// 1: dataFormat(jsonDate,format) - 将json日期格式转换为正常格式，例：/Date(1420638776887)/
+            /// &#10; 1.1 - dateFormat(String) - 将指定json格式的字符串转换为时间，并按照默认格式返回
+            /// &#10; 1.2 - dateFormat(Date) - 将指定的时间转换为默认字符串格式返回
+            /// &#10; 1.3 - dateFormat(String, String) - 转换json时间，并指定格式化字符串
+            /// &#10; 1.4 - dateFormat(Date, String) - 参考如上
+            /// </summary>
+            /// <param name="jsonDate" type="String">
+            /// json日期格式的字符串，或Date时间对象
+            /// </param>
+            /// <param name="format" type="String">
+            /// 格式化字符串，自定义格式化时间字符串请参考MSDN - C# DateTime.ToString(String)：http://msdn.microsoft.com/zh-cn/library/8kb3ddd4.aspx
+            /// &#10; 支持的字符串自定义格式如下：
+            /// &#10; yyyy - 4位数年份，例如：2015
+            /// &#10; MM - 2位数月份，自动补零，例：02
+            /// &#10; M - 1位数月份，例：2
+            /// &#10; dd - 2位数日期，例：08
+            /// &#10; d - 1位数日期，例：8
+            /// &#10; HH - 2位数24小时,例：3
+            /// &#10; H - 1位数24小时,例：03
+            /// &#10; hh - 2位数12小时,例：PM 08/AM 03
+            /// &#10; h - 1位数12小时,例：AM 8/PM 3
+            /// &#10; mm - 2位数分钟数,例：09
+            /// &#10; m - 1位数分钟数,例：9
+            /// &#10; ss - 2位数秒数,例：01
+            /// &#10; s - 1位数秒数,例：1
+            /// &#10; fff - 3位数毫秒,例：009
+            /// &#10; f - 1位数毫秒,例：9
+            /// </param>
+            /// <returns type="String" />
+            if (!format || so.type(format) !== 'string')
+                format = 'yyyy-MM-dd HH:mm:ss';
+            var date = so.parseDate(jsonDate);
+            if (!date) return '';
+            var month = date.getMonth() + 1,
+                day = date.getDate(),
+                hours = date.getHours(),
+                hours12 = hours > 11 ? 'PM' + (hours - 12) : 'AM' + hours,//12小时制1位数
+                hours12double = hours > 11 ? 'PM ' + padNumber(hours - 12, 2) : 'AM ' + padNumber(hours, 2),//12小时制2位数
+                minutes = date.getMinutes(),
+                seconds = date.getSeconds(),
+                milliseconds = date.getMilliseconds();
+            return format
+                .replace('yyyy', date.getFullYear())//4位数年份
+                .replace('MM', padNumber(month, 2))//2位数月份
+                .replace('M', padNumber(month, 2))//1位数月份
+                .replace('dd', padNumber(day, 2))//2位数日期
+                .replace('d', day)//1位数日期
+                .replace('HH', padNumber(hours, 2))//24小时制2位数
+                .replace('H', hours)//24小时制1位数
+                .replace('hh', hours12double)//12小时制2位数
+                .replace('h', hours12)//12小时制1位数
+                .replace('mm', padNumber(minutes, 2))//2位分钟
+                .replace('m', padNumber(minutes, 2))//1位分钟
+                .replace('ss', padNumber(seconds, 2))//2位秒数
+                .replace('s', padNumber(seconds, 2))//1位秒数
+                .replace('fff', padNumber(milliseconds, 3))//3位数毫秒
+                .replace('f', milliseconds)//1位数毫秒
+            //未来是否支持星期（dddd作为星期）？加入第三个参数扩展格式化？可以自定义解析格式？
+        },
+        //时间转本地=>时间转=>2个小时前
+        dateToLocal: function (nowDate, serverDate) {
+
+        }
+    });
+
+
     /*浏览器特性支持模块*/
     var Support = {
         localStorage: !!window.localStorage
