@@ -149,7 +149,8 @@
                      sortable: true,
                      valign: 'middle',
                      formatter: function (value, row, index) {
-                         return value;
+                         //return so.dateToLocal(value);
+                         return so.dateFormat(value);
                      }
                  },
                  {
@@ -181,6 +182,8 @@
 
             }).on('dbl-click-row.bs.table', function (e, row, $element) {
             })
+
+            //解决ecahrt的bug
         })(window);
     </script>
 }

@@ -67,8 +67,9 @@
     //给数字字符串补零，不支持负数
     function padNumber(num, fill) {
         //改自：http://blog.csdn.net/aimingoo/article/details/4492592
+        var len = ('' + num).length;
         return (Array(
-            fill > num ? (fill - ('' + num).length + 1) || 0 : 0
+            fill > len ? fill - len + 1 || 0 : 0
             ).join(0) + num);
     }
 
@@ -334,9 +335,9 @@
                 .replace('hh', hours12double)//12小时制2位数
                 .replace('h', hours12)//12小时制1位数
                 .replace('mm', padNumber(minutes, 2))//2位分钟
-                .replace('m', padNumber(minutes, 2))//1位分钟
+                .replace('m', minutes)//1位分钟
                 .replace('ss', padNumber(seconds, 2))//2位秒数
-                .replace('s', padNumber(seconds, 2))//1位秒数
+                .replace('s', seconds)//1位秒数
                 .replace('fff', padNumber(milliseconds, 3))//3位数毫秒
                 .replace('f', milliseconds)//1位数毫秒
             //未来是否支持星期（dddd作为星期）？加入第三个参数扩展格式化？可以自定义解析格式？
@@ -344,19 +345,19 @@
         //时间转本地=>时间转=>2个小时前
         dateToLocal: function (oldDate, nowDate) {
             oldDate = so.parseDate(oldDate);
-            nowDate = nowDate ? new Date() : so.parseDate(nowDate);
-            var timeSpan = oldDate.getTime() - nowDate.getTime();
-            if (!oldDate || nowDate || timeSpan < 0)
+            nowDate = nowDate ? so.parseDate(nowDate) : new Date();
+            var timeSpan = nowDate.getTime() - oldDate.getTime();
+            if (!oldDate || !nowDate || timeSpan < 0)
                 return '';
-            if (timeSpan / 1000 < 60)//1分钟内
+            if (timeSpan / 60000 < 1)//1分钟内
                 return '刚才';
-            if (timeSpan / 3600000 <= 60)//1个小时内
-                return Math.floor(timeSpan / 3600000) + '分钟前';
-            if (timeSpan / 86400000 <= 24)
-                return Math.floor(timeSpan / 86400000) + '小时前';
-            if (timeSpan / 86400000 * 3 <= 3)
-                return Math.floor(timeSpan / 259200000) + '天前';
-            return so.dateFormat(oldDate, 'yyyy年MM日 HH:mm:ss');//完整的时间
+            if (timeSpan / 60000 < 60)//1m=6000ms
+                return Math.floor(timeSpan / 60000) + '分钟前';
+            if (timeSpan / 3600000 < 24)//1h=3600000ms
+                return Math.floor(timeSpan / 3600000) + '小时前';
+            if (timeSpan / 86400000 <= 3)//1day=86400000ms
+                return Math.floor(timeSpan / 86400000) + '天前';
+            return so.dateFormat(oldDate, 'yyyy年MM月dd日 HH:mm:ss');//完整的时间
         }
     });
 
