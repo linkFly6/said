@@ -271,8 +271,10 @@
         //转换时间
         parseDate: function (jsonDate) {
             try {
-                if (so.type(jsonDate) === 'date') return jsonDate;
-                return new Date(parseInt(jsonDate.replace("/Date(", "").replace(")/", ""), 10));
+                var type = so.type(jsonDate);
+                if (type === 'date') return jsonDate;
+                if (!jsonDate) return null;
+                return new Date(type === 'number' ? jsonDate : parseInt(String(jsonDate).replace("/Date(", "").replace(")/", ""), 10));
             } catch (e) {
                 return null;
             }
@@ -340,8 +342,21 @@
             //未来是否支持星期（dddd作为星期）？加入第三个参数扩展格式化？可以自定义解析格式？
         },
         //时间转本地=>时间转=>2个小时前
-        dateToLocal: function (nowDate, serverDate) {
-
+        dateToLocal: function (oldDate, nowDate) {
+            oldDate = so.parseDate(oldDate);
+            nowDate = nowDate ? new Date() : so.parseDate(nowDate);
+            var timeSpan = oldDate.getTime() - nowDate.getTime();
+            if (!oldDate || nowDate || timeSpan < 0)
+                return '';
+            if (timeSpan / 1000 < 60)//1分钟内
+                return '刚才';
+            if (timeSpan / 3600000 <= 60)//1个小时内
+                return Math.floor(timeSpan / 3600000) + '分钟前';
+            if (timeSpan / 86400000 <= 24)
+                return Math.floor(timeSpan / 86400000) + '小时前';
+            if (timeSpan / 86400000 * 3 <= 3)
+                return Math.floor(timeSpan / 259200000) + '天前';
+            return so.dateFormat(oldDate, 'yyyy年MM日 HH:mm:ss');//完整的时间
         }
     });
 
