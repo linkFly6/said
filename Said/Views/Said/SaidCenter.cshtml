@@ -12,10 +12,8 @@
     <li class="active">添加Said</li>
 </ol>
 <div class="main-context">
-    <div class="row context-chart">
-        <div class="context-chart">
-            <div id="userChart">
-            </div>
+    <div class="context-chart">
+        <div id="userChart">
         </div>
     </div>
     <div class="bs-table">
@@ -30,77 +28,88 @@
 @section FootJs{
     <script src="@Url.Content("~/UED/Back/Frmework/js/bootstrap-table/bootstrap-table.js")"></script>
     <script>
-        require.config({
-            packages: [
-            {
-                name: 'echarts',
-                location: 'echarts-2.1.8/src',
-                main: 'echarts'
-            },
-            {
-                name: 'zrender',
-                //location: 'http://ecomfe.github.io/zrender/src',
-                location: 'zrender-master/src',
-                main: 'zrender'
-            }
-            ]
-        });
-        var option = {
-            title: {
-                text: '2014-11-15',
-                subtext: '昨日/今日访问量'
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: ['昨日', '今日']
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    mark: { show: true },
-                    dataView: { show: true, readOnly: false },
-                    magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-                    restore: { show: true },
-                    saveAsImage: { show: true }
-                }
-            },
-            calculable: true,
-            xAxis: [
+        var Action = {
+            article: '@Url.Action("Said", "Home")',
+            img: '@Url.Action("UploadSaidImg", "Source")',
+            imgLocation: '@Url.Content("~/Source/Said/Images/")',
+            music: '@Url.Action("UploadMusic", "Source")',
+            existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
+            existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
+            form: '@Url.Action("AddSaid", "Back")'
+        };
+        $(function () {
+            require.config({
+                packages: [
                 {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['0:00', '1:00', '2:00', '3:00', '4:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value'
-                }
-            ],
-            series: [
-                {
-                    name: '昨日',
-                    type: 'line',
-                    smooth: true,
-                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                    data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
+                    name: 'echarts',
+                    location: 'echarts-2.1.8/src',
+                    main: 'echarts'
                 },
                 {
-                    name: '今日',
-                    type: 'line',
-                    smooth: true,
-                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                    data: [5, 2, 5, 5, 5, 3, 3, 9, 10, 19, 16, 16, 22, 7, 7, 8, 8, 0, 0, 0, 0, 1, 6, 7]
+                    name: 'zrender',
+                    //location: 'http://ecomfe.github.io/zrender/src',
+                    location: 'zrender-master/src',
+                    main: 'zrender'
                 }
-            ]
-        };
-        require(['echarts', 'echarts/chart/line'], function (ec) {
-            var myChart = ec.init(document.getElementById('userChart'));
-            myChart.setOption(option);
-        });
+                ]
+            });
+            var option = {
+                title: {
+                    text: '2014-11-15',
+                    subtext: '昨日/今日访问量'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['昨日', '今日']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['0:00', '1:00', '2:00', '3:00', '4:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '昨日',
+                        type: 'line',
+                        smooth: true,
+                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                        data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
+                    },
+                    {
+                        name: '今日',
+                        type: 'line',
+                        smooth: true,
+                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                        data: [5, 2, 5, 5, 5, 3, 3, 9, 10, 19, 16, 16, 22, 7, 7, 8, 8, 0, 0, 0, 0, 1, 6, 7]
+                    }
+                ]
+            };
+            require(['echarts', 'echarts/chart/line'], function (ec) {
+                var myChart = ec.init(document.getElementById('userChart'));
+                myChart.setOption(option);
+            });
 
+        });
 
         (function (window, undefined) {
             var $ = window.jQuery;
@@ -113,7 +122,8 @@
                      sortable: true,
                      formatter: function (value, row, index) {
                          console.log(row); //row可以访问到数据
-                         return ['<a href="javascript:;">', value, '</a>'].join('');
+                         //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
+                         return ['<a target="_black" href="@Url.Action("Edit", "Said", new { test = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
                      }
                  },
                  {
@@ -149,7 +159,6 @@
                      sortable: true,
                      valign: 'middle',
                      formatter: function (value, row, index) {
-                         //return so.dateToLocal(value);
                          return so.dateFormat(value);
                      }
                  },
@@ -174,7 +183,7 @@
                      field: 'SaidId',
                      title: '操&nbsp;&nbsp;&nbsp;作',
                      formatter: function (value, row, index) {
-                         return ['<a class="btn btn-default btn-sm" data-id="', value, '">修改</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
+                         return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
                      }
                  }
 

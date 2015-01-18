@@ -7,7 +7,7 @@
 }
 
 <div class="page-header">
-    <h3>添加Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small></h3>
+    <h3>编辑Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small></h3>
 </div>
 <ol class="breadcrumb">
     <li><a href="#">Home</a></li>
@@ -180,11 +180,6 @@
     <script src="@Url.Content("")"></script>
 }*@
 @section FootJs{
-    @*var Action = {
-            song:@Url.Content("~/Source/Said/Song")
-            img:@Url.Content("~/Source/Said/Img"),
-            form:@Url.Action("AddSaid", "Back")
-        };*@
     <script type="text/javascript">
         var Action = {
             song: '/Source/SaidSong',
@@ -193,7 +188,7 @@
             music: '@Url.Action("UploadMusic", "Source")',
             existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
             existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
-            form: '@Url.Action("AddSaid", "Back")'
+            form: '@Url.Action("AddSaid", "Said")'
         },
         DataCenter = {
             songs: {
@@ -822,7 +817,7 @@
                             if (name !== 'SContext')//文章正文(标题需要么？)特殊处理，.net默认存在request.form安全检测，为了防止xss攻击建议保留这个安全检测
                                 data.append(name, value);
                         });
-                        data.append('SContext', encodeURIComponent(model.get('SContext')));//文章源码
+                        data.append('SContext', encodeURIComponent(model.get('SContext').value));//文章源码
                         data.append('SHTML', encodeURIComponent(getContextHTML()));//文章HTML源码
                         //缩略图
                         data.append('SImg', SumImg.val());

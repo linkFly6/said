@@ -70,11 +70,15 @@
                         <span class="selected"></span>
                     </a>
                 </li>
-                <li>
-                    <a href="@Url.Action("SaidCenter", "Back")">
+                <li class="complex">
+                    <a href="javascript:;">
                         <i class="icon-edit"></i>
                         <span class="title">Said管理</span>
                     </a>
+                    <ul class="sub-menu">
+                        <li><a href="@Url.Action("SaidCenter", "Said")">Said管理</a></li>
+                        <li><a href="@Url.Action("AddSaid", "Said")">添加Said</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a href="javascript:;">
@@ -91,7 +95,7 @@
                 <li>
                     <a href="javascript:;">
                         <i class="icon-tags"></i>
-                        <span class="title">标签管理</span>
+                        <span class="title">标签/分类</span>
                     </a>
                 </li>
                 <li>

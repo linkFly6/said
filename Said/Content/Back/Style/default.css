@@ -52,7 +52,7 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 .open .sub-menu { display: inherit; }
 
 /*body*/
-.container-main { padding: 15px 15px 50px 15px; }
+.container-main { padding: 15px; }
 .main-context { overflow: hidden; }
 .context-chart { min-height: 300px; background-color: #FAFAFA; }
 

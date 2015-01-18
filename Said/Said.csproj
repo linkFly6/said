@@ -2959,9 +2959,6 @@
     <Content Include="Views\Shared\_LayoutBack.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Back\AddSaid.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Content\Back\Fonts\glyphicons\flat-ui-icons-regular.eot" />
   </ItemGroup>
   <ItemGroup>
@@ -5106,6 +5103,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Said\SaidCenter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Said\AddSaid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Said\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
