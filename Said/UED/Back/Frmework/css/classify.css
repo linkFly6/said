@@ -1,0 +1,3 @@
+﻿.fixed-table-toolbar { border: 1px solid #ccc; border-radius: 5px 5px 0 0; padding: 20px 10px 10px; overflow: hidden; }
+    .fixed-table-toolbar:before { content: "分类："; display: block; position: absolute; left: 1px; position: relative; top: -10px; letter-spacing: 1px; color: #959595; }
+.fixed-table-container { border-radius: 0 0 4px 4px; border-top: none; }

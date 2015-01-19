@@ -190,6 +190,12 @@
             existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
             form: '@Url.Action("AddSaid", "Said")'
         },
+        SaidModel = {
+            songImg: "@Model.Song.SongImg",
+            songName: "@Model.Song.SongFileName",
+            img: "@Model.SImg",
+            tags: "@Model.STag"
+        },
         DataCenter = {
             songs: {
                 'Yellow': 'yellowcoldplay酷玩乐队',
@@ -281,8 +287,7 @@
         });
 
         require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'saidAdd', 'markdown', 'showDownThemeGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {
-            //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
-            showdown = window.Showdown;
+            sshowdown = window.Showdown;
             $(function () {
                 var _ = function (name) {
                     return document.getElementById(name);
@@ -360,7 +365,7 @@
                     };
                 }(_('previewSaid'), model.get('STitle'), model.get('SContext'));
 
-                // => 保存到本地数据库
+                // => 保存到本地数据库 - 本地数据库需要新的命名空间，所以空间得拿出来
                 var save = function () {
                     model.each(function (name, value) {
                         if (value)
@@ -380,32 +385,32 @@
                     if (temp = ClassifyValue.val()) {
                         addSaid.DataBase.val('Classify.ClassifyId', temp);
                     }
-                },
-                readDataBase = function () {//从本地数据库读取数据
-                    var database = addSaid.DataBase;
-                    var specialStr = ['SImg', 'Song.SongImg', 'Song.SongId'].join(),//图片文件无法还原
-                        value;;
-                    model.each(function (name) {
-                        //if (specialSet(name, value)) return;
-                        if (~specialStr.indexOf(name)) return;
-                        value = database.val(name);
-                        if (value != null) {
-                            model[name] = value;
-                        }
-                    });
-                    //在标签构造函数完成之前把标签默认值的数据准备好
-                    if (value = database.val('STags')) {
-                        //还原标签默认值
-                        tagSelectDefaultValues = value.split(',');
-                    };
-                    //如果有歌曲选中的默认值
-                    if (database.val("Song.SSongId"))
-                        songSelectValue = { id: database.val("Song.SSongId"), img: database.val("Song.SongImg") };
-                    if (temp = database.val('Classify.ClassifyId')) {
-                        classifyDefaultData = temp;
-                    }
-                    return database;
-                }();
+                };
+                //readDataBase = function () {//从本地数据库读取数据
+                //    var database = addSaid.DataBase;
+                //    var specialStr = ['SImg', 'Song.SongImg', 'Song.SongId'].join(),//图片文件无法还原
+                //        value;;
+                //    model.each(function (name) {
+                //        //if (specialSet(name, value)) return;
+                //        if (~specialStr.indexOf(name)) return;
+                //        value = database.val(name);
+                //        if (value != null) {
+                //            model[name] = value;
+                //        }
+                //    });
+                //    //在标签构造函数完成之前把标签默认值的数据准备好
+                //    if (value = database.val('STags')) {
+                //        //还原标签默认值
+                //        tagSelectDefaultValues = value.split(',');
+                //    };
+                //    //如果有歌曲选中的默认值
+                //    if (database.val("Song.SSongId"))
+                //        songSelectValue = { id: database.val("Song.SSongId"), img: database.val("Song.SongImg") };
+                //    if (temp = database.val('Classify.ClassifyId')) {
+                //        classifyDefaultData = temp;
+                //    }
+                //    return database;
+                //}();
 
 
 

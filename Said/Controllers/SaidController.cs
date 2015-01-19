@@ -47,7 +47,7 @@ namespace Said.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            return View();
+            return View(ArticleApplication.Find(id));
         }
         #endregion
 

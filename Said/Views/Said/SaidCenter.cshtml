@@ -123,7 +123,7 @@
                      formatter: function (value, row, index) {
                          console.log(row); //row可以访问到数据
                          //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
-                         return ['<a target="_black" href="@Url.Action("Edit", "Said", new { test = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
+                         return ['<a target="_black" href="@Url.Action("Edit", "Said", new { id = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
                      }
                  },
                  {
