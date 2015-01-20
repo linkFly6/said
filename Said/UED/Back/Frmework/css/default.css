@@ -56,10 +56,12 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 
 /*table*/
 .bs-table { }
-.editItem, .deleteItem { font-size: 16px; }
-    .editItem:hover, .deleteItem:hover { text-decoration: none; }
-.editItem { margin-right: 25px; }
-/*.deleteItem { }*/
+.data-edit, .data-delete, .data-save, .data-cancel, .data-state { font-size: 16px; margin: 0 8px; }
+    .data-edit:hover, .data-delete:hover { text-decoration: none; }
+    .data-save:before { /*content: "\f0c7";*/ content: "\f00c"; }
+    .data-cancel:before { content: "\f011"; }
+
+/*.data-delete { }*/
 .table-tool { margin: 0; padding-left: 0; }
 
 

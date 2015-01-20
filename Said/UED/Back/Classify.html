@@ -143,7 +143,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="bs-table">
-                            <form class="navbar-form navbar-left table-tool" role="search" id="tagsToolbar">
+                            <form class="navbar-form navbar-right table-tool" role="search" id="tagsToolbar">
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="添加一个新的标签">
                                 </div>
@@ -189,7 +189,7 @@
                     align: 'center',
                     valign: 'bottom',
                     formatter: function (value/*,row,index*/) {
-                        return ['<a class="btn btn-info icon-edit editItem" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash deleteItem" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
+                        return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
                     }
                 }],
                 data: [
@@ -250,7 +250,7 @@
 
                 });
 
-            $('#tagsTable').bootstrapTable({
+            var $tagTable = $('#tagsTable').bootstrapTable({
                 columns: [
                 {
                     field: 'TTagName',
@@ -263,7 +263,8 @@
                     title: '操作',
                     align: 'center',
                     formatter: function (value/*,row,index*/) {
-                        return ['<a class="btn btn-info icon-edit editItem" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash deleteItem" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
+                        //return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
+                        return ['<a class="btn btn-info icon-edit data-save" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-cancel" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
                     }
                 }],
                 data: [
@@ -298,7 +299,17 @@
                 ]
 
             }).on('dbl-click-row.bs.table', function (e, row, $element) {
-
+                console.group();
+                console.log(e);
+                console.log(row);
+                console.log($element.children());
+                console.groupEnd();
+            }).bootstrapTable('updateRow', {
+                index: 2,
+                row: {
+                    TTagName: '这是更新的啊啊',
+                    TTagId: 'ac11966d-01bf-4554-bd7e-7e0a807ea8fa'
+                }
             });
         })(window);
     </script>
