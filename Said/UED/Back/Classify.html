@@ -132,13 +132,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="bs-table">
-                            <form class="navbar-form navbar-left table-tool" role="search" id="classToolbar">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="添加一个新的分类">
-                                </div>
-                                <button type="submit" class="btn btn-info">确定添加</button>
-                            </form>
-                            <table id="classifyTable" data-toolbar="#classToolbar" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
+                            <table id="classifyTable" data-toolbar="" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -153,6 +147,22 @@
                         </div>
                     </div>
                 </div>
+                <form class="row" role="search" id="classToolbar">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="添加一个新的分类">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Icon文件名称">
+                        </div>
+                        <button type="submit" class="btn btn-info">确定添加</button>
+                    </div>
+                    <div class="col-md-6">
+                        <a class="thumbnail" href="javascript:;">
+                            <img alt="100%x180" data-src="holder.js/100%x180" style="height: 180px; width: 100%; display: block;" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE3MSAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjxkZWZzLz48cmVjdCB3aWR0aD0iMTcxIiBoZWlnaHQ9IjE4MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjU5IiB5PSI5MCIgc3R5bGU9ImZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0O2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjE3MXgxODA8L3RleHQ+PC9nPjwvc3ZnPg==" data-holder-rendered="true">
+                        </a>
+                    </div>
+                </form>
             </div>
         </section>
     </section>
@@ -178,7 +188,7 @@
                 },
                 {
                     field: 'CIcon',
-                    title: 'Icon',
+                    title: 'Icon文件名',
                     align: 'left',
                     valign: 'bottom',
                     sortable: true
@@ -263,8 +273,8 @@
                     title: '操作',
                     align: 'center',
                     formatter: function (value/*,row,index*/) {
-                        //return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
-                        return ['<a class="btn btn-info icon-edit data-save" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-cancel" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
+                        return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
+                        //return ['<a class="btn btn-warning icon-edit data-save" href="javascript:;" data-id="', value, '" title="保存"></a><a class="btn btn-info icon-trash data-cancel" href="javascript:;" data="', value, '" title="取消"></a>'].join('');
                     }
                 }],
                 data: [
@@ -298,11 +308,20 @@
                     }
                 ]
 
-            }).on('dbl-click-row.bs.table', function (e, row, $element) {
+            }).on('dbl-click-row.bs.table', function (e, data, $element) {
+                var $items = $element.children();
+                //不要使用innerHTML，从一个模板中载入一直使用（好像又不能重复使用啊啊啊啊...）
+                $items[0].innerHTML = ['<div class="form-group "><input class="form-control" placeholder="请输入标签" value=', data.TTagName, ' /></div>'].join('');
+                $items[1].innerHTML = ['<a class="btn btn-warning icon-edit data-save" href="javascript:;" data-id="', data.TTagId, '" title="保存"></a><a class="btn btn-info icon-trash data-cancel" href="javascript:;" data="', data.TTagId, '" title="取消"></a>'].join('');
+                //注册各自的事件（不能为空之类、小tip提示之类的）
+                //添加数据的话，则手动操作DOM？？？创建一个
+                /*
+                    1、不要把编辑注册到db-click中，应该注册到那个编辑按钮上
+                    2、如果要手动操作DOM的话，则要考虑card、列显示、隐藏之类的问题！
+                    3、还要考虑上传图片的问题！上传图片得疯狂的封装下了...
+                */
                 console.group();
-                console.log(e);
-                console.log(row);
-                console.log($element.children());
+                console.log(data);
                 console.groupEnd();
             }).bootstrapTable('updateRow', {
                 index: 2,
