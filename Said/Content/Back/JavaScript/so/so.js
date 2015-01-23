@@ -24,8 +24,8 @@
         so = function (selector) {
             if (!(this instanceof so))
                 return new so(selector);
-            if (type(selector) === 'string') selector = document.getElementById(selector);
-            if (selector && (selector.nodeType === 1 || selector.nodeType === 9))
+            selector = so.find(selector);
+            if (selector)
                 push.call(this, selector);
         },
         type = function (obj) {
@@ -164,6 +164,11 @@
         isPlainObject: isPlainObject,
         isEmptyObject: isEmptyObject,
         isArrayLike: isArrayLike,
+        find: function (selector) {
+            if (type(selector) === 'string') selector = document.getElementById(selector);
+            if (selector && (selector.nodeType === 1 || selector.nodeType === 9))
+                return selector;
+        },
         isXML: function (doc) {
             return doc && doc.createElement && doc.createElement('P').nodeName !== doc.createElement('p').nodeName;
         },
@@ -263,8 +268,14 @@
     });
     //event
     so.extend({
-        on: function () {
-
+        on: function (elem, event, fn) {
+            if (!isFunction(fn)) return elem;
+            isArrayLike(elem) ?
+                each.call(elem, function (item, i) {
+                    item.addEventListener(event, function (e) {
+                        return fn.call(item, e, i);
+                    });
+                }) : elem.addEventListener(event, fn);
         }
     });
     /*dat模块*/
