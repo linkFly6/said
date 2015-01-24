@@ -1,0 +1,17 @@
+﻿.fixed-table-toolbar { border: 1px solid #ccc; border-radius: 5px 5px 0 0; padding: 35px 10px 10px; }
+    .fixed-table-toolbar:after { clear: both; float: none; display: block; content: ''; }
+.fixed-table-container { border-radius: 0 0 4px 4px; border-top: none; }
+.navbar-left:before, .navbar-right:before { content: "分类："; display: block; position: absolute!important; left: 11px; position: relative; top: 9px; letter-spacing: 1px; color: #959595; }
+.navbar-right:before { content: '标签：'; top: -37px; left: 1px; }
+/*iconInput*/
+.iconInput { position: relative; }
+    .iconInput .input-icon { height: 20px; padding: 0; vertical-align: top; border: none; box-shadow: none; width: 80%; }
+.upload-box { display: inline; }
+    .upload-box input { vertical-align: top; position: absolute; left: 10px; top: 0; height: 100%; width: 24px; border: 1px solid red; opacity: 0; cursor: pointer; }
+    .upload-box img { vertical-align: top; height: 20px; width: 20px; transition: all 0.4s ease-in-out 0s; }
+.icon-upload img:hover { transform: rotate(360deg) scale(1.2); transition: all 0.4s ease-in-out 0s; }
+.upload-box .hidden-upload { width: 90%; }
+/*submit*/
+.content-center { text-align: center; }
+.add-btn, .wide-btn { width: 100px; }
+.add-btn { margin: 0 auto; display: block; }

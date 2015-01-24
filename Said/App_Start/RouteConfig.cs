@@ -16,7 +16,14 @@ namespace Said
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "Said.Controllers" }
+            );
+            routes.MapRoute(
+                name: "Back",
+                url: "Back/{controller}/{action}/{id}",
+               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+               namespaces: new string[] { "Said.Areas.Back.Controllers" }
             );
         }
     }

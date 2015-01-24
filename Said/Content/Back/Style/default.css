@@ -56,6 +56,21 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 .main-context { overflow: hidden; }
 .context-chart { min-height: 300px; background-color: #FAFAFA; }
 
+.said-submit { background-color: transparent; color: #563d7c; border-radius: 6px; font-size: 18px; line-height: 1.33; padding: 10px 16px; user-select: none; background-image: none; border: 1px solid #563d7c; border-radius: 4px; cursor: pointer; display: inline-block; font-size: 14px; font-weight: 400; line-height: 1.42857; margin-bottom: 0; padding: 6px 12px; text-align: center; vertical-align: middle; white-space: nowrap; }
+    .said-submit:hover, .said-submit:focus { background-color: #563d7c; color: #FFF; }
+
+/*table*/
+.bs-table { position: relative; }
+/*.bs-table .form-group { margin: 0; }*/
+.data-edit, .data-delete, .data-save, .data-cancel, .data-state { font-size: 16px; margin: 0 8px; }
+    .data-edit:hover, .data-delete:hover { text-decoration: none; }
+    .data-save:before { /*content: "\f0c7";*/ content: "\f00c"; }
+    .data-cancel:before { content: "\f011"; }
+
+/*.data-delete { }*/
+.table-tool { margin: 0; padding-left: 0; }
+
+
 /*bootgrid  end*/
 @media (max-width: 767px) {
     body { padding-top: 80px; }

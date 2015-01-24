@@ -6,4 +6,3 @@ F:\Github\Said\Said.Infrastructure\bin\Debug\EntityFramework.xml
 F:\Github\Said\Said.Infrastructure\bin\Debug\zh-Hans\EntityFramework.resources.dll
 F:\Github\Said\Said.Infrastructure\obj\Debug\Said.Infrastructure.dll
 F:\Github\Said\Said.Infrastructure\obj\Debug\Said.Infrastructure.pdb
-F:\Github\Said\Said.Infrastructure\obj\Debug\Said.Infrastructure.csprojResolveAssemblyReference.cache
