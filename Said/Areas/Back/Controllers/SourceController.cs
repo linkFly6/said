@@ -68,6 +68,10 @@ namespace Said.Areas.Back.Controllers
         }
 
 
+        /// <summary>
+        /// 上传Said图片
+        /// </summary>
+        /// <returns></returns>
         public JsonResult UploadSaidImg()
         {
             //分析上传的文件信息，返回解析得到的结果
@@ -86,11 +90,19 @@ namespace Said.Areas.Back.Controllers
                 FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Musics/")));
         }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
 
+        /// <summary>
+        /// 上传类别Icon
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult UploadClassifyIcons()
+        {
+            return UploadFile(
+                Request.Files["saidFile"],
+                IMGFILTERARRAY,
+                imgMaxSize,
+                FileCommon.ExistsCreate(Server.MapPath("~/Source/Sys/Images/")));
+        }
 
         #region 通用方法
         private JsonResult UploadResult(int errorCode, string msg, string name = null)
@@ -98,6 +110,12 @@ namespace Said.Areas.Back.Controllers
             return Json(new { error = errorCode, msg = msg, name = name });
         }
         #endregion
+
+
+        public ActionResult Index()
+        {
+            return View();
+        }
 
     }
 }

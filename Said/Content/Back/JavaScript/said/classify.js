@@ -14,80 +14,84 @@
      */
     var globalConfig = {
         filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],//默认上传图片,
-        url: '/',//上传路径，默认本页
-        imgUrl: '/Source/Sys/',
-        imgValue: '',//默认默认值
+        url: '/Back/Source/UploadClassifyIcons/',//上传路径，默认本页
+        imgUrl: '/Source/Sys/Images/',//图片默认读取路径
+        img: '',//默认默认值
         value: ''//默认值
     },
-        UploadTest = function (config) {
-            config = $.extend(globalConfig, config);
-            //已经初始化过了
-            if (this.data('uploadText.inited')) {
-                if (config.imgValue) {
-                    this.data('uploadText.img', config.imgValue);
-                    img = this.data('uploadText.img');
-                    fileInput = this.data('uploadText.fileInput');
-                    img.src = img.src = config.imgUrl + config.imgValue;
-                    fileInput.removeClass('hidden-upload');
-                    this.val(config.value || '');
-                    img.show(0);
+    UploadTest = function ($input, options) {
+        //组件化
+        var config = $.extend(globalConfig, options),
+            _self = this,
+            $uploadChildrens = $input.prev().children(),
+            $fileInput,//inputFile输入框
+            $img;//img对象
+        if (!$uploadChildrens.length) return;
+        $fileInput = $uploadChildrens.eq(0);
+        $img = $uploadChildrens.eq(1);
+        if (!$fileInput.length || !$img.length) return;
+        _self.$input = $input;
+        _self.$fileInput = $fileInput;
+        _self.$img = $img;
+        _self.config = config;
+        $input.on('keydown.uploadText', function (e) {
+            if (e.keyCode === 8) {//backspace
+                if (!this.value.trim().length && _self.img) {
+                    _self.val(true);
+                    $fileInput.focus();
                 }
-                return this;
             }
-            var input = this,//文本输入框
-                uploadBox = this.prev(),
-                fileInput,//inputFile输入框
-                img;//img对象
-            if (!uploadBox.length) return this;
-            fileInput = $(uploadBox[0].firstElementChild);
-            img = $(uploadBox[0].lastElementChild);
-            if (!fileInput.length || !img.length) return this;
-            var resetData = function () {
-                img.hide(0);
-                fileInput.addClass('hidden-upload');
-                input.removeData('uploadText.img');
-                config.imgValue = false;
+        });
+        so.upload($fileInput[0], {
+            filters: config.filters,
+            url: config.url,
+            callback: function (data, file) {
+                if (data.error === 0) {
+                    _self.val($input.val(), data.name);
+                    $input.focus();
+                } else
+                    config.fail && config.fail.call($input, data, file);
+            },
+            fail: function (data, file) {
+                config.fail && config.fail.call($input, data, file);
             }
-            if (!config.imgValue) {
-                config.imgValue = false;
-                resetData();
-            } else {
-                fileInput.removeClass('hidden-upload');
-                img.show(0);
-                input.val(config.value || '');
-            }
-            input.data('uploadText.elemObject', {
-                fileInput: fileInput,
-                img: img
-            });
-            this.on('input.uploadText', function (e) {
-                if (e.keyCode === 8) {//backspace
-                    if (!this.value.trim().length && config.imgValue !== false)
-                        resetData();
-                }
-            });
-            so.upload(fileInput, {
-                filters: config.filters,
-                url: config.url,
-                callback: function (info, data) {
-                    if (info.error === 0) {
-                        config.imgValue = data.name;
-                        fileInput.removeClass('hidden-upload');
-                        img.src = config.imgUrl + config.imgValue;
-                        img.show(0);
-                        input.data('uploadText.img', config.imgValue);
-                    } else
-                        config.fail && config.fail.call(input, info, data);
-                },
-                fail: function (info, data) {
-                    resetData();
-                    config.fail && config.fail.call(input, info, data);
-                }
-            });
+        });
+    };
 
-            return this.data('uploadText.inited', true);
+    UploadTest.prototype.val = function (value, imgValue) {
+        if (!imgValue && value !== true) {//一个参数
+            imgValue = value;
+            value = '';
         }
-    $.fn.extend({
-        uploadText: UploadTest
-    });
+        if (imgValue != null) {//=>val(value,imgValue);
+            this.$img.attr('src', this.config.imgUrl + imgValue).show(0);
+            if (value) {
+                this.$input.val(value);
+                this.value = value;
+            }
+            this.$fileInput.removeClass('hidden-upload');
+            this.img = imgValue;
+        } else if (value === true) {//val(true)=>重置上传样式
+            this.$img.hide(0);
+            this.$input.val('');
+            this.$fileInput.addClass('hidden-upload');
+            this.img = this.value = '';
+        } else {//没有参数，获取值
+            return { value: this.value, img: this.img };
+        }
+    };
+    /*
+        $('#test').uploadTest(options) => options部署value||img的时候则自动赋值
+        $('#test').uploadTest()
+    */
+    $.fn.uploadText = function (options) {
+        var data = this.data('uploadText.model'),
+            optionType = typeof options === 'object';
+        if (!data)
+            this.data('uploadText.model', data = new UploadTest(this, options))
+        if (options && (options.value || options.img))
+            data.val(options.value, options.img);
+        return options ? this : data.val();
+
+    }
 });

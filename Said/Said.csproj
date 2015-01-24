@@ -317,6 +317,7 @@
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\util\smartSteps.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.min.js" />
+    <Content Include="Content\Back\JavaScript\said\classify.js" />
     <Content Include="Content\Back\JavaScript\said\globalBack.js" />
     <Content Include="Content\Back\JavaScript\jQuery-2.1.1.js" />
     <Content Include="Content\Back\JavaScript\jQuery-2.1.1.min.js" />
@@ -1933,7 +1934,6 @@
     <Folder Include="Areas\Back\Models\" />
     <Folder Include="Content\Back\Images\" />
     <Folder Include="Content\Back\Resource\" />
-    <Folder Include="Controllers\Said\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="Source\" />

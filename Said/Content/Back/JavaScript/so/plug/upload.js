@@ -27,7 +27,7 @@
          * @param { string | Array } [config.filters = "*"] - 配置文件名过滤项，字符串仅允许为*（默认值，表示不过滤），为数组表示过滤除了这些后缀名之外的元素
          * @param { string } [config.url = "/"] - 文件上传的url，默认为"/"，表示上传到当前页面
          * @param { int } [config.size = 1048576] - 以byte为单位，表示上传文件大小允许的最大值，为负数表示不限制
-         * @param { Function } config.callback - 上传成功的后执行的函数，参数[信息描述对象,服务器返回的参数],this指向elem
+         * @param { Function } config.callback - 上传成功的后执行的函数，参数[服务器返回的参数,上传文件对象],this指向elem
          * @param { Function= } config.fail - 上传失败后执行的函数，参数[信息描述对象，上传文件对象]，this指向elem
          * @param { Function= } config.progress - 上传中执行的函数，参数[上传进度，事件对象],this指向elem
          * @returns { Element } 返回查询得到的DOM（没有查询到返回null）
@@ -87,10 +87,10 @@
                         if (xhr.status === 200) {
                             try {
                                 var data = JSON.parse(xhr.responseText);
-                                callback && callback.call(elem, data, 0);
+                                callback && callback.call(elem, data, file);
                             } catch (e) {
                                 //这是什么Error
-                                fail && fail.call(elem, { code: 3, msg: '服务器返回的并不是可解析的结果' }, data);
+                                fail && fail.call(elem, { code: 3, msg: '服务器返回的并不是可解析的结果' }, file);
                             }
                             //上传完成
                         } else {

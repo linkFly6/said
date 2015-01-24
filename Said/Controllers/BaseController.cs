@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Said.Controllers.Base
+namespace Said.Controllers
 {
     public class BaseController : Controller
     {
