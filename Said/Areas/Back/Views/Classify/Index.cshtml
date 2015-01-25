@@ -13,62 +13,47 @@
     <div class="row">
         <div class="col-md-6">
             <div class="bs-table">
-                <span class="navbar-left"></span>
-                <table id="classifyTable" data-toolbar="" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
+                <div class="navbar-form navbar-left table-tool" id="classToolbar">
+                    <div class="data-form">
+                        <div class="form-control iconInput">
+                            <input type="text" class="input-icon" placeholder="添加一个新的分类" maxlength="20" />
+                        </div>
+                        <button type="submit" class="btn btn-info">添加</button>
+                    </div>
+                    <div class="data-form" style="display: none">
+                        <div class="form-control iconInput">
+                            @*<div class="upload-box">
+                        <input type="file" class="hidden-upload" tabindex="-1" />
+                        <img alt="100%x180" data-src="holder.js/100%x180" src="data:image/png;base64,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" data-holder-rendered="true" />
+                    </div>*@
+                            <input class="input-icon" placeholder="编辑分类" maxlength="20" />
+                        </div>
+                        <button type="submit" id="classify-btn-up" class="btn btn-warning" title="点击将会修改该分类">修改</button>
+                        <button class="btn btn-info" id="classify-btn-cancel">取消</button>
+                    </div>
+                </div>
+                <table id="classifyTable" data-toolbar="#classToolbar" class="table table-hover table-striped main-table" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
             </div>
         </div>
         <div class="col-md-6">
             <div class="bs-table">
-                <form class="navbar-form navbar-right table-tool" role="search" id="tagsToolbar">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="添加一个新的标签" />
+                <div class="navbar-form navbar-right table-tool" role="search" id="tagsToolbar">
+                    <div class="data-form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="添加一个新的标签" />
+                        </div>
+                        <button type="submit" class="btn btn-info">添加</button>
                     </div>
-                    <button type="submit" class="btn btn-info ">添加</button>
-                </form>
-                <table id="tagsTable" class="table table-hover table-striped" data-toolbar="#tagsToolbar" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
-            </div>
-        </div>
-    </div>
-    <div class="row" id="addClassify" style="display: none;">
-        <div class="col-md-6">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="添加一个新的分类" />
-            </div>
-            <div class="form-group">
-                <div class="form-control iconInput">
-                    <div class="upload-box">
-                        <input type="file" tabindex="-1" />
-                        <img alt="100%x180" data-src="holder.js/100%x180" src="data:image/png;base64,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" data-holder-rendered="true" />
+                    <div class="data-form" style="display: none;">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="添加一个新的标签" />
+                        </div>
+                        <button type="submit" class="btn btn-warning" title="点击将会修改该标签">修改</button>
+                        <button type="submit" class="btn btn-info">取消</button>
                     </div>
-                    <input class="input-icon" placeholder="Icon文件名称" maxlength="20" />
                 </div>
+                <table id="tagsTable" class="table table-hover table-striped main-table" data-toolbar="#tagsToolbar" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
             </div>
-            <button type="submit" class="btn btn-info add-btn">添加</button>
-        </div>
-        <div class="col-md-6">
-        </div>
-    </div>
-    <div class="row" id="editClassify">
-        <div class="col-md-6">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="编辑分类" />
-            </div>
-            <div class="form-group">
-                <div class="form-control iconInput">
-                    <div class="upload-box">
-                        <input type="file" class="hidden-upload" tabindex="-1" />
-                        <img alt="100%x180" data-src="holder.js/100%x180" src="data:image/png;base64,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" data-holder-rendered="true" />
-                    </div>
-                    <input class="input-icon" placeholder="Icon文件名称" maxlength="20" id="uploadIcon" />
-                </div>
-            </div>
-            <div class="content-center">
-                <button type="submit" class="btn btn-warning wide-btn">修改</button>
-                <button class="btn btn-success wide-btn">还原</button>
-                <button class="btn btn-info wide-btn">取消</button>
-            </div>
-        </div>
-        <div class="col-md-6">
         </div>
     </div>
 </div>
@@ -98,9 +83,124 @@
                 'bsTable-cn': ['bsTable']
             }
         });
-        require(['so', 'jquery', 'classify', 'upload', 'bsTable-cn'], function (so, $, classify, upload, bsTable) {
-
+        require(['so', 'jquery', 'classify', 'upload', 'bsTable-cn'], function (so, $, Extend) {
             $(function () {
+                'use strict';
+                var $window = $(window),
+                    SaidTable = function ($bsTable, editEventCallback, deleteEventCallback, addCallback, editCallback) {
+                        var $forms = $bsTable.find('.data-form'),//[新增表单、编辑表单]
+                            toggleForm = function (index) {
+                                $forms.eq(index ^ 1).hide(0).end().eq(index).show(0);
+                            },
+                            $addInput = $forms.eq(0).find('input'),//添加分类的输入框[iconText]
+                            $editInput = $forms.eq(1).find('input'),//编辑分类的输入框[iconText]
+                            $table = $bsTable.find('.main-table'),
+                            globalEdit = {
+                                //id: '',
+                                //name,
+                                //img: '',
+                                //index:''
+                            };
+                        //监听页面编辑事件
+                        $table.on('click', '.data-edit', function (e) {
+                            $.each(this.dataset, function (name, value) {
+                                globalEdit[name] = value;
+                            });
+                            editEventCallback.call(this, $editInput, globalEdit);
+                            toggleForm(1);
+                        }).on('click', '.data-delete', function (e) {
+                            globalEdit = {};
+                            deleteEventCallback.call(this, this.dataset);
+                        });
+                        $forms.eq(0).find('button').click(function () {
+                            //新增按钮
+                            addCallback.call($addInput[0], $addInput, globalEdit);
+                        }).end().end().eq(1).find('button')
+                            .eq(0).click(function () {
+                                //编辑按钮
+                                editCallback.call($editInput[0], $editInput, globalEdit);
+                            }).end().eq(1).click(function () {//取消
+                                //取消按钮
+                                toggleForm(0);
+                                globalEdit = {};
+                            });
+                        return {
+                            $forms: $forms,
+                            $table: $table,
+                            $add: $addInput,
+                            $edit: $editInput,
+                            toggle: toggleForm
+                        };
+                    };
+                var $bsTables = $('.bs-table');
+
+                (function ($bsTable) {
+                    //分类编辑逻辑
+                    var classifyData = SaidTable($bsTable, function ($editInput, data) {
+                        setEditInputData(data);
+                    },
+                    function (data) {
+                        classifyData.toggle(0);
+                    },
+                    function ($addInput, data) {
+                        alert('新增');
+                    }, function ($editInput, data) {
+                        alert('编辑');
+                    }),
+                    setEditInputData = function (data) {//设置编辑框的数据
+                        if (data.id) {
+                            classifyData.$edit.uploadText({
+                                value: data.name,
+                                img: data.icon
+                            });
+                        }
+                    },
+                    checkData = function ($elem) {
+                        var data = $elem.uploadText();
+                    };
+                    classifyData.$add.uploadText({
+                        fail: function (error) {
+                            classifyData.$add.popover({
+                                placement: 'bottom',
+                                content: error.msg,
+                                title: '上传异常',
+                                trigger: 'focus'
+                            }).popover('show');
+                            $window.one('click', function () {
+                                classifyData.$add.popover('destroy');
+                            });
+                        }
+                    });
+                    classifyData.$edit.uploadText({
+                        fail: function (error) {
+                            classifyData.$edit.popover({
+                                placement: 'bottom',
+                                content: error.msg,
+                                title: '上传异常',
+                                trigger: 'manual'
+                            }).popover('show');
+                            $window.one('click', function () {
+                                classifyData.$edit.popover('destroy');
+                            });
+                        }
+                    });
+
+                })($bsTables.eq(0));
+
+                (function ($bsTable) {
+                    //标签
+                    var tagData = SaidTable($bsTable, function ($editInput, data) {
+                        $editInput.val(data.name);
+                    }, function (data) {
+                        tagData.toggle(0);
+                    }, function ($addInput, data) {
+                        alert('新增标签');
+                    }, function ($editInput, data) {
+                        alert('编辑标签');
+                    });
+
+                })($bsTables.eq(1));
+
                 $('#classifyTable').bootstrapTable({
                     columns: [
                     {
@@ -122,8 +222,8 @@
                         title: '操作',
                         align: 'center',
                         valign: 'bottom',
-                        formatter: function (value/*,row,index*/) {
-                            return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
+                        formatter: function (value, row, index) {
+                            return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '"  data-index="', index, '" data-icon="', row.CIcon, '" data-name="', row.CName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
                         }
                     }],
                     data: [
@@ -186,8 +286,9 @@
                         field: 'TTagId',
                         title: '操作',
                         align: 'center',
-                        formatter: function (value/*,row,index*/) {
-                            return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
+                        formatter: function (value, row, index) {
+
+                            return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" data-index="', index, '" data-name="', row.TTagName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
                             //return ['<a class="btn btn-warning icon-edit data-save" href="javascript:;" data-id="', value, '" title="保存"></a><a class="btn btn-info icon-trash data-cancel" href="javascript:;" data="', value, '" title="取消"></a>'].join('');
                         }
                     }],
@@ -222,21 +323,6 @@
                         }
                     ]
 
-                }).on('dbl-click-row.bs.table', function (e, data, $element) {
-                    var $items = $element.children();
-                    //不要使用innerHTML，从一个模板中载入一直使用（好像又不能重复使用啊啊啊啊...）
-                    $items[0].innerHTML = ['<div class="form-group "><input class="form-control" placeholder="请输入标签" value=', data.TTagName, ' /></div>'].join('');
-                    $items[1].innerHTML = ['<a class="btn btn-warning icon-edit data-save" href="javascript:;" data-id="', data.TTagId, '" title="保存"></a><a class="btn btn-info icon-trash data-cancel" href="javascript:;" data="', data.TTagId, '" title="取消"></a>'].join('');
-                    //注册各自的事件（不能为空之类、小tip提示之类的）
-                    //添加数据的话，则手动操作DOM？？？创建一个
-                    /*
-                        1、不要把编辑注册到db-click中，应该注册到那个编辑按钮上
-                        2、如果要手动操作DOM的话，则要考虑card、列显示、隐藏之类的问题！
-                        3、还要考虑上传图片的问题！上传图片得疯狂的封装下了...
-                    */
-                    console.group();
-                    console.log(data);
-                    console.groupEnd();
                 }).bootstrapTable('updateRow', {
                     index: 2,
                     row: {
@@ -246,20 +332,6 @@
                 });
             });
 
-            //其他逻辑
-            var $uploadInput = $('#uploadIcon').uploadText({
-                fail: function (error) {
-                    $uploadInput.popover({
-                        placement: 'top',
-                        content: error.msg,
-                        title: '上传异常',
-                        trigger: 'focus'
-                    }).popover('show');
-                    $window.one('click', function () {
-                        $uploadInput.popover('destroy');
-                    });
-                }
-            }), $window = $(window);
         });
     </script>
 }

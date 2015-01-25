@@ -26,15 +26,28 @@ namespace Said.Areas.Back.Controllers
         {
             return Json(new { code = 0 });
         }
+
+        /// <summary>
+        /// 通用返回结果到客户端方法，表示成功，并发送指定的数据
+        /// </summary>
+        /// <param name="data">发送的数据</param>
+        /// <returns></returns>
+        protected JsonResult ResponseResult(object data)
+        {
+            return Json(new { code = 0, data = data });
+        }
+
         /// <summary>
         /// 通用返回结果到客户端方法，指定错误代码
         /// </summary>
         /// <param name="code">错误代码（0表示没有错误，其他数字表示错误）</param>
+        /// <param name="data">(如果有的话)发送的数据</param>
         /// <returns></returns>
-        protected JsonResult ResponseResult(int code)
+        protected JsonResult ResponseResult(int code, object data = null)
         {
-            return Json(new { code = code });
+            return Json(new { code = code, data = data });
         }
+
         /// <summary>
         /// 通用返回结果到客户端方法，指定错误代码、错误信息
         /// </summary>

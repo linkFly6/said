@@ -69,6 +69,7 @@
     <Compile Include="Said.Models\Models\Classify.cs" />
     <Compile Include="Said.Models\Models\Article.cs" />
     <Compile Include="Said.Models\Models\Song.cs" />
+    <Compile Include="Said.Models\Models\Tag.cs" />
     <Compile Include="Said.Models\Models\UML\SaidModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

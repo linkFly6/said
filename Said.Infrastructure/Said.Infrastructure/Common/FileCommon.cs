@@ -33,6 +33,20 @@ namespace Said.Common
             return path;
         }
         /// <summary>
+        /// 检测一个文件/文件夹路径，当路径以"/"结尾则检测文件夹
+        /// </summary>
+        /// <param name="path">要检测的路径，当路径以"/"结尾则检测文件夹，否则检测文件</param>
+        /// <returns>文件/文件夹是否存在</returns>
+        public static bool Exists(string path)
+        {
+            return string.IsNullOrEmpty(path) ?
+                false :
+                path.EndsWith("/") ?
+                Directory.Exists(path) :
+                File.Exists(path);
+        }
+
+        /// <summary>
         /// 获取文件真实的类型
         /// </summary>
         /// <param name="path">要获取文件类型的文件路径</param>

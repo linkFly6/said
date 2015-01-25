@@ -28,6 +28,17 @@ namespace Said.Application
         }
 
         /// <summary>
+        /// 编辑
+        /// </summary>
+        /// <param name="model">实体</param>
+        /// <returns></returns>
+        public static int Edit(Classify model)
+        {
+            Context.Update(model);
+            return Context.Submit();
+        }
+
+        /// <summary>
         /// 根据长ID查找一个分类
         /// </summary>
         /// <param name="id"></param>
