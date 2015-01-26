@@ -1918,6 +1918,10 @@
     <Content Include="UED\Home\music.html" />
     <Content Include="UED\Home\Public.html" />
     <Content Include="UED\Home\said.html" />
+    <Content Include="UED\Temp\index.html" />
+    <Content Include="UED\Temp\Style\bg.jpg" />
+    <Content Include="UED\Temp\Style\default.css" />
+    <Content Include="UED\Temp\Style\focus_bg.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
