@@ -94,7 +94,7 @@
             this.$fileInput.addClass('hidden-upload');
             this.img = this.value = '';
         } else {//没有参数，获取值
-            return { value: this.value, img: this.img };
+            return { value: this.$input.val(), img: this.img };
         }
     };
 

@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Said后台 - 分类/标签管理";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+    IList<Said.Models.Classify> Classifs = ViewData["Classify"] as List<Said.Models.Classify>;
 }
 <div class="page-header">
     <h2>标签/分类&nbsp;&nbsp;<small>&gt;标签/分类管理</small></h2>
@@ -65,6 +66,29 @@
     @*<script src="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table.js")"></script>*@
     @*<script src="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table-zh-CN.js")"></script>*@
     <script type="text/javascript">
+        var PageDatas = {
+            classify: [],
+            tags: []
+        },
+            Action = {
+                urlAddClassify: '@Url.Action("AddClassify", "Classify")',
+                urlEditClassify: '@Url.Action("EditClassify", "Classify")',
+                urlAddTag: '@Url.Action("AddTag", "Classify")',
+                urlEditTag: '@Url.Action("EditTag", "Classify")',
+                sourceClassify: '@Url.Content("~/Source/Sys/Images/")',
+                sourceTag: '@Url.Content("~/Source/Sys/Images/")'
+            };
+
+        @if (Classifs != null)
+        {
+            foreach (var item in Classifs)
+            {
+
+                Write(new HtmlString(string.Format("PageDatas.classify.push({{ CName: '{0}',CIcon: '{1}',ClassifyId: '{2}'}});", item.CName, item.CIcon, item.ClassifyId)));
+                //Write(string.Format("大家好{0}", "linkFly"));
+            }
+        }
+
         require.config({
             baseUrl: '/Content/Back/JavaScript',
             paths: {
@@ -140,12 +164,43 @@
                         setEditInputData(data);
                     },
                     function (data) {
+                        //删除分类事件
                         classifyData.toggle(0);
                     },
-                    function ($addInput, data) {
-                        alert('新增');
-                    }, function ($editInput, data) {
-                        alert('编辑');
+                    function ($addInput) {
+                        var data = $addInput.uploadText();
+                        //TODO
+                        if (!data.value || !data.value.trim()) $addInput.focus();
+                        //ajax添加
+                        $.ajax(Action.urlAddClassify, {
+                            type: 'post',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ name: data.value, imgName: data.img }),
+                        }).done(function (server) {
+                            if (server.code === 0) {
+                                $classifyTable.bootstrapTable('append', [{
+                                    CName: data.value,
+                                    CIcon: data.img,
+                                    ClassifyId: server.data
+                                }]);
+                            } else {
+                                console.group('服务器错误');
+                                console.log(server.code);
+                                console.log(arguments);
+                                console.groupEnd();
+                            }
+                        }).fail(function () {
+                            console.group('ajax错误');
+                            console.log(arguments);
+                            console.groupEnd();
+                        });
+
+                    }, function ($editInput) {
+                        var data = $editInput.uploadText();
+                        console.log(data);
+                        if (!data.value || !data.value.trim()) $editInput.focus();
+
                     }),
                     setEditInputData = function (data) {//设置编辑框的数据
                         if (data.id) {
@@ -201,7 +256,7 @@
 
                 })($bsTables.eq(1));
 
-                $('#classifyTable').bootstrapTable({
+                var $classifyTable = $('#classifyTable').bootstrapTable({
                     columns: [
                     {
                         field: 'CName',
@@ -212,10 +267,13 @@
                     },
                     {
                         field: 'CIcon',
-                        title: 'Icon文件名',
+                        title: 'Icon',
                         align: 'left',
                         valign: 'bottom',
-                        sortable: true
+                        formatter: function (value) {
+                            return ['<img src="', Action.sourceClassify + value, '" alt="" class="blog-other-icon"/>'].join('');
+                        }
+
                     },
                     {
                         field: 'ClassifyId',
@@ -226,53 +284,8 @@
                             return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '"  data-index="', index, '" data-icon="', row.CIcon, '" data-name="', row.CName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
                         }
                     }],
-                    data: [
-                        {
-                            CName: 'ECMAScript 6',
-                            CIcon: 'icon-JS.gif',
-                            ClassifyId: '136116aa-a5f6-4f88-bcc4-00a1b4db0dba'
-                        },
-                        {
-                            CName: 'RequireJS',
-                            CIcon: 'icon-Require.gif',
-                            ClassifyId: '271f2924-69ce-4522-8e39-cc8f31059de8'
-                        },
-                        {
-                            CName: 'JavaScript',
-                            CIcon: 'icon-JS.gif',
-                            ClassifyId: '2e0dfa2f-dca4-4e1a-abeb-889ce98a8bb0'
-                        },
-                        {
-                            CName: '.NET',
-                            CIcon: 'icon-VS.gif',
-                            ClassifyId: '6198f526-fa0f-4429-983a-bebc8439e7c8'
-                        },
-                        {
-                            CName: 'CSS',
-                            CIcon: 'icon-CSS3.gif',
-                            ClassifyId: '817aa0f0-447e-46d3-805c-8952c0332df8'
-                        },
-                        {
-                            CName: 'jQuery',
-                            CIcon: 'icon-jQuery.gif',
-                            ClassifyId: 'ac11966d-01bf-4554-bd7e-7e0a807ea8fa'
-                        },
-                        {
-                            CName: 'ECMAScript 5',
-                            CIcon: 'icon-Web.png',
-                            ClassifyId: 'd2774f82-3f56-4b0a-b3ae-0ad203cdc510'
-                        }
-                    ]
-
-                }).bootstrapTable(
-                'append', [{
-                    CName: '这是测试Bootstrap append()',
-                    CIcon: 'icon-JS.gif',
-                    ClassifyId: '136116aa-a5f6-4f88-bcc4-00a1b4db0dba'
-                }]//这个api也是醉了
-        ).on('dbl-click-row.bs.table', function (e, row, $element) {
-
-        });
+                    data: PageDatas.classify
+                }).on('dbl-click-row.bs.table', function (e, row, $element) { });
 
                 var $tagTable = $('#tagsTable').bootstrapTable({
                     columns: [

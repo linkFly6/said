@@ -15,3 +15,5 @@
 .content-center { text-align: center; }
 .add-btn, .wide-btn { width: 100px; }
 .add-btn { margin: 0 auto; display: block; }
+.blog-other-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 10px; transition: all 0.4s ease-in-out 0s; }
+    .blog-other-icon:hover { transform: rotate(360deg) scale(1.2); }

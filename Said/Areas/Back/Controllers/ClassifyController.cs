@@ -16,6 +16,7 @@ namespace Said.Areas.Back.Controllers
 
         public ActionResult Index()
         {
+            ViewData["Classify"] = ClassifyApplication.Find();
             return View();
         }
 
@@ -28,9 +29,10 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult AddClassify(string name, string imgName)
         {
-            if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(imgName))
+
+            if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(Server.MapPath("~/Source/Sys/Images/") + imgName))
                 return ResponseResult(2, "上传的Icon不正确");
-            if (!string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
                 return ResponseResult(1, "分类名称不正确");
             Classify model = new Classify
             {
@@ -50,6 +52,7 @@ namespace Said.Areas.Back.Controllers
 
         public JsonResult EditClassify()
         {
+
             return null;
         }
 
