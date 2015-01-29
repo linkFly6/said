@@ -333,6 +333,7 @@
     <Content Include="Content\Back\JavaScript\showdown\showdown.js" />
     <Content Include="Content\Back\JavaScript\showdown\showdown.min.js" />
     <Content Include="Content\Back\JavaScript\so\plug\model.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\popup.js" />
     <Content Include="Content\Back\JavaScript\so\plug\search.js" />
     <Content Include="Content\Back\JavaScript\so\plug\upload.js" />
     <Content Include="Content\Back\JavaScript\so\plug\validate.js" />
@@ -1937,6 +1938,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
     <Folder Include="Content\Back\Images\" />
+    <Folder Include="Content\Back\JavaScript\so\plug\css\" />
     <Folder Include="Content\Back\Resource\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />

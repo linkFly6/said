@@ -30,7 +30,7 @@ namespace Said.Areas.Back.Controllers
         public JsonResult AddClassify(string name, string imgName)
         {
 
-            if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(Server.MapPath("~/Source/Sys/Images/") + imgName))
+            if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(Server.MapPath("~/Source/Sys/Images/Icons/") + imgName))
                 return ResponseResult(2, "上传的Icon不正确");
             if (string.IsNullOrWhiteSpace(name))
                 return ResponseResult(1, "分类名称不正确");
@@ -47,7 +47,7 @@ namespace Said.Areas.Back.Controllers
             };
             return ClassifyApplication.Add(model) > 0 ?
                 ResponseResult(model.ClassifyId) :
-                ResponseResult(3, "服务器异常");
+                ResponseResult(3, "服务器删除异常");
         }
 
         public JsonResult EditClassify()
@@ -56,9 +56,13 @@ namespace Said.Areas.Back.Controllers
             return null;
         }
 
-        public JsonResult DeleteClassify()
+        public JsonResult DeleteClassify(string id)
         {
-            return null;
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(1, "要删除的数据标志不正确");
+            return ClassifyApplication.Delete(id) > 0 ?
+                ResponseResult() :
+                ResponseResult(2, "服务器删除异常");
         }
 
         //下面为Tag逻辑

@@ -39,6 +39,28 @@ namespace Said.Application
         }
 
         /// <summary>
+        /// 根据对象删除
+        /// </summary>
+        /// <param name="model">实体对象</param>
+        /// <returns>返回受影响的行数</returns>
+        public static int Delete(Classify model)
+        {
+            Context.Delete(model);
+            return Context.Submit();
+        }
+
+        /// <summary>
+        /// 根据ID删除
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns>返回受影响的行数</returns>
+        public static int Delete(string id)
+        {
+            Context.Delete(m => m.ClassifyId == id);
+            return Context.Submit();
+        }
+
+        /// <summary>
         /// 根据长ID查找一个分类
         /// </summary>
         /// <param name="id"></param>

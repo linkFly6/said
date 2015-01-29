@@ -265,6 +265,24 @@
             tmp = null;
             return Parm;
         }(window.location.search),
+        getWindow: function (node) {
+            var doc = node.ownerDocument || node;
+            return doc.defaultView || doc.parentWindow;
+        },
+        offset: function (elem) {
+            //来自司徒正妹的方法~~~
+            var doc = elem.ownerDocument, pos = { left: 0, top: 0 };
+            if (!doc)
+                return elem;
+            var box = elem.getBoundingClientRect(), win = getWindow(elem),
+                root = doc.documentElement,
+                clientTop = root.clientTop || 0,
+                clientLeft = root.clientLeft || 0,
+                scrollTop = win.pageXOffset || root.scrollTop,
+                scrollLeft = win.pageXOffset || root.scrollLeft;
+            pos.top = box.top + scrollTop - clientTop;
+            pos.left = box.left + scrollLeft - clientLeft;
+        }
     });
     //event
     so.extend({

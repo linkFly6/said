@@ -15,7 +15,7 @@
     var globalConfig = {
         filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],//默认上传图片,
         url: '/Back/Source/UploadClassifyIcons/',//上传路径，默认本页
-        imgUrl: '/Source/Sys/Images/',//图片默认读取路径
+        imgUrl: '/Source/Sys/Images/Icons/',//图片默认读取路径
         img: '',//默认默认值
         value: ''//默认值
     },
@@ -65,6 +65,8 @@
             callback: function (data, file) {
                 if (data.error === 0) {
                     _self.val($input.val(), data.name);
+                    if (config.callback)
+                        config.callback.call($input, data, file);
                     $input.focus();
                 } else
                     config.fail && config.fail.call($input, data, file);

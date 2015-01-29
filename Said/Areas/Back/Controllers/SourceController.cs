@@ -101,7 +101,7 @@ namespace Said.Areas.Back.Controllers
                 Request.Files["saidFile"],
                 IMGFILTERARRAY,
                 imgMaxSize,
-                FileCommon.ExistsCreate(Server.MapPath("~/Source/Sys/Images/")));
+                FileCommon.ExistsCreate(Server.MapPath("~/Source/Sys/Images/Icons/")));
         }
 
         #region 通用方法

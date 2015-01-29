@@ -11,9 +11,15 @@
     .upload-box img { vertical-align: top; height: 20px; width: 20px; transition: all 0.4s ease-in-out 0s; }
 .icon-upload img:hover { transform: rotate(360deg) scale(1.2); transition: all 0.4s ease-in-out 0s; }
 .upload-box .hidden-upload { width: 90%; }
+
 /*submit*/
 .content-center { text-align: center; }
 .add-btn, .wide-btn { width: 100px; }
 .add-btn { margin: 0 auto; display: block; }
-.blog-other-icon { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 10px; transition: all 0.4s ease-in-out 0s; }
-    .blog-other-icon:hover { transform: rotate(360deg) scale(1.2); }
+/*row*/
+.td-img img { width: 20px; height: 20px; display: inline-block; vertical-align: middle; margin-right: 10px; transition: all 0.4s ease-in-out 0s; }
+.td-img:hover img { transform: rotate(360deg) scale(1.2); }
+
+
+
+/*popup.js*/
