@@ -11,6 +11,8 @@ namespace Said.Common
 {
     public class FileCommon
     {
+
+        #region 检测一个文件夹路径，如果该路径不存在则创建该文件夹路径
         /// <summary>
         /// 检测一个文件夹路径，如果该路径不存在则创建该文件夹路径
         /// </summary>
@@ -32,6 +34,9 @@ namespace Said.Common
             }
             return path;
         }
+        #endregion
+
+        #region 检测一个文件/文件夹路径，当路径以"/"结尾则检测文件夹
         /// <summary>
         /// 检测一个文件/文件夹路径，当路径以"/"结尾则检测文件夹
         /// </summary>
@@ -41,10 +46,84 @@ namespace Said.Common
         {
             return string.IsNullOrEmpty(path) ?
                 false :
-                path.EndsWith("/") ?
+                path.EndsWith("/") || path.EndsWith("\\") ?
                 Directory.Exists(path) :
                 File.Exists(path);
         }
+        #endregion
+
+
+        #region 获取指定目录及子目录中所有文件列表
+        /// <summary>
+        /// 获取指定目录及子目录中所有文件列表
+        /// </summary>
+        /// <param name="directoryPath">指定目录的绝对路径</param>
+        /// <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
+        /// 范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>
+        /// <param name="isSearchChild">是否搜索子目录</param>
+        public static string[] GetFileNames(string directoryPath, string searchPattern, bool isSearchChild)
+        {
+            //如果目录不存在，则抛出异常
+            if (!Exists(directoryPath))
+                return null;
+            try
+            {
+                if (isSearchChild)
+                {
+                    return Directory.GetFiles(directoryPath, searchPattern, SearchOption.AllDirectories);
+                }
+                else
+                {
+                    return Directory.GetFiles(directoryPath, searchPattern, SearchOption.TopDirectoryOnly);
+                }
+            }
+            catch (IOException ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 获取指定目录及子目录中所有文件列表
+        /// </summary>
+        /// <param name="directoryPath">指定目录的绝对路径</param>
+        /// <param name="searchPattern">模式字符串，"*"代表0或N个字符，"?"代表1个字符。
+        /// 范例："Log*.xml"表示搜索所有以Log开头的Xml文件。</param>
+        /// <param name="isSearchChild">是否搜索子目录</param>
+        public static string[] GetFileNames(string directoryPath, bool isSearchChild = false)
+        {
+            //如果目录不存在，则抛出异常
+            if (!Exists(directoryPath))
+                return null;
+            try
+            {
+                if (isSearchChild)
+                {
+                    return Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories);
+                }
+                else
+                {
+                    return Directory.GetFiles(directoryPath, "*", SearchOption.TopDirectoryOnly);
+                }
+            }
+            catch (IOException ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+
+        #region 获取一个路径的文件名
+        /// <summary>
+        /// 获取一个路径的文件名
+        /// </summary>
+        /// <param name="path">路径</param>
+        /// <returns>返回文件名</returns>
+        public static string getFileName(string path)
+        {
+            return Path.GetFileName(path);
+        } 
+        #endregion
 
         /// <summary>
         /// 获取文件真实的类型

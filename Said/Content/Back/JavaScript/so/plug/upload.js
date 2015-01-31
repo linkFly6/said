@@ -33,10 +33,10 @@
          * @returns { Element } 返回查询得到的DOM（没有查询到返回null）
          */
         Upload = function (elem, config) {
-            config = so.extend(globalConfig, config);
+            var config = so.extend({}, globalConfig, config);
             elem = so.find(elem);
             if (!elem || elem.tagName !== 'INPUT' || elem.type !== 'file' || !so.isFunction(config.callback)) return elem;
-            if (config.filters.length)
+            if (!config.filters.length)
                 config.filters = '*';
             var lock = false,
                 isMultiple = elem.multiple ? true : false,//是否多选
@@ -60,7 +60,7 @@
                     if (ext !== -1)
                         ext = name.substring(ext + 1).toLowerCase();
                     //尝试后缀名验证，如果后缀名验证则尝试使用文件MIME验证
-                    if (ext === -1 || (filters.indexOf(ext) === -1 && type !== '' && filters.indexOf(type) === -1)) {
+                    if (ext === -1 || (config.filters.indexOf(ext) === -1 && type !== '' && config.filters.indexOf(type) === -1)) {
                         fail && fail.call(elem, { code: 2, msg: '上传的文件不是可以接受的文件类型' }, file);
                         return lock = false;
                     }

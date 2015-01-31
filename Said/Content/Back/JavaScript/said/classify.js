@@ -85,8 +85,8 @@
         if (imgValue != null) {//=>val(value,imgValue);
             this.$img.attr('src', this.config.imgUrl + imgValue).show(0);
             if (value) {
-                this.$input.val(value);
                 this.value = value;
+                this.$input.val(value).focus()[0].setSelectionRange(0, 1000);
             }
             this.$fileInput.removeClass('hidden-upload');
             this.img = imgValue;
@@ -124,5 +124,51 @@
         }
         return arguments.length ? this : data.val();
 
+    };
+
+
+
+    $.fn.toolTable = function () {
+        var $bsTable = this,
+            $forms = $bsTable.find('.data-form'),//[新增表单、编辑表单]
+            toggleForm = function (index) {
+                $forms.eq(index ^ 1).hide(0).end().eq(index).show(0);
+            },
+            $addInput = $forms.eq(0).find('input'),//添加分类的输入框[iconText]
+            $editInput = $forms.eq(1).find('input'),//编辑分类的输入框[iconText]
+            $table = $bsTable.find('.main-table'),
+            globalEdit = {
+                //id: '',
+                //name,
+                //img: '',
+                //index:''
+            };
+        //监听页面编辑事件
+        $table.on('click', '.data-edit', function (e) {
+            $.each(this.dataset, function (name, value) {
+                globalEdit[name] = value;
+            });
+            $bsTable.trigger('edit', [$editInput, globalEdit]);
+            toggleForm(1);
+        }).on('click', '.data-delete', function (e) {
+            globalEdit = {};
+            $bsTable.trigger('delete', [this, this.dataset]);
+        });
+        $bsTable.on('toggle', function (e, index) {
+            toggleForm(index);
+        });
+        $forms.eq(0).find('button').eq(0).click(function () {
+            //新增按钮
+            $bsTable.trigger('add', [$addInput, $addInput, globalEdit]);
+        });
+        $forms.eq(1).find('button')
+            .eq(0).click(function () {
+                //编辑按钮
+                $bsTable.trigger('save', [$editInput, $editInput, globalEdit]);
+            }).end().eq(1).click(function () {//取消
+                toggleForm(0);
+                globalEdit = {};
+            });
+        return this;
     }
 });

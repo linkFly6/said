@@ -17,6 +17,11 @@ namespace Said.Areas.Back.Controllers
         public ActionResult Index()
         {
             ViewData["Classify"] = ClassifyApplication.Find();
+            string[] iconsFilePath = FileCommon.GetFileNames(Server.MapPath("~/Source/Sys/Images/Icons/"));
+            if (iconsFilePath != null)
+                for (int i = 0; i < iconsFilePath.Length; i++)
+                    iconsFilePath[i] = FileCommon.getFileName(iconsFilePath[i]);
+            ViewData["iconFiles"] = iconsFilePath;
             return View();
         }
 
