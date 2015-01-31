@@ -4,16 +4,16 @@
     IList<Said.Models.Classify> Classifs = ViewData["Classify"] as List<Said.Models.Classify>;
     var list = ViewData["iconFiles"] as string[];
 }
-<div class="showmsg-container">
+@*<div class="showmsg-container">
     <div class="showmsg-mask"></div>
     <div class="showmsg-content">
-        @*<div class="showmsg-close"></div>*@
+        <div class="showmsg-close"></div>
         <img class="showmsg-state" src="~/Content/Back/Images/showMsg/ok.png" />
-        @*<img class="showmsg-state" src="~/Content/Back/Images/showMsg/error.png" />*@
-        @*<img class="showmsg-state" src="~/Content/Back/Images/showMsg/warning.png" />*@
+        <img class="showmsg-state" src="~/Content/Back/Images/showMsg/error.png" />
+        <img class="showmsg-state" src="~/Content/Back/Images/showMsg/warning.png" />
         <div class="showmsg-context">这是内容</div>
     </div>
-</div>
+</div>*@
 
 <div class="select-icons" id="selectIcons" style="display: none;">
     @{
@@ -84,6 +84,7 @@
 @section FootJs{
     @*<script src="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table.js")"></script>*@
     @*<script src="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table-zh-CN.js")"></script>*@
+    <script src="~/Content/Back/JavaScript/so/plug/showMsg.js"></script>
     <script type="text/javascript">
         var PageDatas = {
             classify: [],
@@ -131,6 +132,8 @@
         require(['so', 'jquery', 'upload', 'classify', 'popup', 'bsTable-cn'], function (so, $, Extend) {
             $(function () {
                 'use strict';
+                //window.showMsg('我有很长的内容哟我有很长的内容哟我有很长的内容哟我有很长的内容哟我有很长的内容哟我有长的内容哟我有很长的内容哟我有长的内容哟我有很长的内容哟我有长的内容哟我有很长的内容哟我有', showMsg.ERROR, true);
+                //window.showMsg('好好做', showMsg.ERROR);
                 var $window = $(window),
                     $bsTables = $('.bs-table');
                 (function ($bsTable) {
@@ -173,7 +176,6 @@
                             img: data.icon,
                             index: data.index
                         });
-
                     }).on('delete', function (e, $elem, data) {//操作=>删除
                         $.ajax(Action.urlDelClassify, {
                             type: 'post',
