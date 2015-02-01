@@ -23,11 +23,12 @@ namespace Said.Areas.Back.Controllers
             if (iconsFilePath != null)
                 for (int i = 0; i < iconsFilePath.Length; i++)
                     iconsFilePath[i] = FileCommon.getFileName(iconsFilePath[i]);
+            ViewData["Tags"] = TagApplication.Find();
             ViewData["iconFiles"] = iconsFilePath;
             return View();
         }
 
-        #region Services
+        #region Classify Services
         /// <summary>
         /// 添加分类
         /// </summary>
@@ -40,6 +41,9 @@ namespace Said.Areas.Back.Controllers
                 return ResponseResult(2, "上传的Icon不正确");
             if (string.IsNullOrWhiteSpace(name))
                 return ResponseResult(1, "分类名称不正确");
+            name = name.Trim();
+            if (ClassifyApplication.FindByName(name) != null)
+                return ResponseResult(4, "该分类已经存在！");
             Classify model = new Classify
             {
                 CCount = 0,
@@ -71,6 +75,9 @@ namespace Said.Areas.Back.Controllers
                 return ResponseResult(2, "上传的Icon不正确");
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(3, "分类信息不正确");
+            name = name.Trim();
+            if (ClassifyApplication.FindByName(name) != null)
+                return ResponseResult(6, "该分类已经存在");
             Classify model = ClassifyApplication.Find(id);
             if (model == null)
                 return ResponseResult(4, "没有找到该分类信息");
@@ -80,7 +87,7 @@ namespace Said.Areas.Back.Controllers
             model.CName = name.Trim();
             return ClassifyApplication.Update(model) > 0 ?
                 ResponseResult() :
-                ResponseResult(5, "服务器删除异常");
+                ResponseResult(5, "服务器编辑异常");
         }
 
         public JsonResult DeleteClassify(string id)
@@ -91,22 +98,71 @@ namespace Said.Areas.Back.Controllers
                 ResponseResult() :
                 ResponseResult(2, "服务器删除异常");
         }
-
-        //下面为Tag逻辑
-
-        public JsonResult AddTag()
-        {
-            return null;
-        }
-        public JsonResult EditTag()
-        {
-            return null;
-        }
-        public JsonResult DeleteTag()
-        {
-            return null;
-        }
         #endregion
 
+        #region Tag Services
+        //下面为Tag逻辑
+
+        /// <summary>
+        /// 添加tag
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public JsonResult AddTag(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return ResponseResult(1, "标签不允许为空");
+            if (TagApplication.FindByName(name) != null)
+                return ResponseResult(2, "标签已存在");
+            var model = new Tag
+            {
+                Count = 0,
+                TagId = Guid.NewGuid().ToString(),
+                Date = DateTime.Now,
+                TagName = name.Trim(),
+                IsDel = 0
+            };
+            return TagApplication.Add(model) > 0 ?
+                ResponseResult(model.TagId) :
+                ResponseResult(3, "服务器异常");
+        }
+
+        /// <summary>
+        /// 编辑tag
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public JsonResult EditTag(string id, string name)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(1, "要修改的标签标志不正确");
+            if (string.IsNullOrWhiteSpace(name))
+                return ResponseResult(2, "标签名不允许为空");
+            name = name.Trim();
+            var model = TagApplication.Find(id.Trim());
+            var existsTag = TagApplication.FindByName(name);
+            if (model == null)
+                return ResponseResult(3, "没有找到要修改的标签信息");
+            if (existsTag != null)
+                return ResponseResult(4, "标签已存在");
+            model.TagName = name;
+            model.Count = 0;
+            return TagApplication.Update(model) > 0 ?
+                ResponseResult() :
+                ResponseResult(5, "服务器异常");
+        }
+        public JsonResult DeleteTag(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(1, "要删除的标签标志不正确");
+            var model = TagApplication.Find(id);
+            if (model == null)
+                return ResponseResult(2, "没有找到要删除的标签信息");
+            return TagApplication.Delete(id) > 0 ?
+                ResponseResult() :
+                ResponseResult(3, "服务器异常");
+        }
+        #endregion
     }
 }

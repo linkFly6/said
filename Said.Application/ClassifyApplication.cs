@@ -59,6 +59,26 @@ namespace Said.Application
             Context.Delete(m => m.ClassifyId == id);
             return Context.Submit();
         }
+        /// <summary>
+        /// 获取一个指定名称的分类对象
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Classify FindByName(string name)
+        {
+            return Context.Get(m => m.CName == name);
+        }
+
+        /// <summary>
+        /// 获取一组同名的分类对象
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static IEnumerable<Classify> FindListByName(string name)
+        {
+            return Context.GetMany(m => m.CName == name);
+        }
+
 
         /// <summary>
         /// 根据长ID查找一个分类

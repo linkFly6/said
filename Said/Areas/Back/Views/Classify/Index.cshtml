@@ -1,7 +1,9 @@
-﻿@{
+﻿@using Said.Models
+@{
     ViewBag.Title = "Said后台 - 分类/标签管理";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
-    IList<Said.Models.Classify> Classifs = ViewData["Classify"] as List<Said.Models.Classify>;
+    IList<Classify> Classifs = ViewData["Classify"] as IList<Classify>;
+    IList<Tag> tags = ViewData["Tags"] as IList<Tag>;
     var list = ViewData["iconFiles"] as string[];
 }
 @*<div class="showmsg-container"></div>
@@ -60,13 +62,13 @@
                 <div class="navbar-form navbar-right table-tool" role="search" id="tagsToolbar">
                     <div class="data-form">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="添加一个新的标签" />
+                            <input type="text" class="form-control" placeholder="添加一个新的标签" maxlength="20" />
                         </div>
                         <button class="btn btn-info btn-add">添加</button>
                     </div>
                     <div class="data-form" style="display: none;">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="添加一个新的标签" />
+                            <input type="text" class="form-control" placeholder="编辑标签" maxlength="20" />
                         </div>
                         <button class="btn btn-warning btn-edit" title="点击将会修改该标签">修改</button>
                         <button class="btn btn-info btn-cancel">取消</button>
@@ -110,6 +112,13 @@
                 //Write(string.Format("大家好{0}", "linkFly"));
             }
         }
+        @if (tags != null)
+        {
+            foreach (var item in tags)
+            {
+                Write(new HtmlString(string.Format("PageDatas.tags.push({{ TTagName: '{0}',TTagId: '{1}'}});", item.TagName, item.TagId)));
+            }
+        }
 
         require.config({
             baseUrl: '/Content/Back/JavaScript',
@@ -138,6 +147,7 @@
                     $bsTables = $('.bs-table');
                 (function ($bsTable) {
                     //分类逻辑 TODO 如果新上传了图片，是不是也要在图片选择框里追加上？？？
+                    //添加分类要检测分类是否存在【【【【【】】】】】】
                     var $addInput = $('#addClassifyInput'),
                         $editInput = $('#editClassifyInput'),
                         isEdit = false,
@@ -169,20 +179,20 @@
                                 }]);
                                 showMsg('添加分类成功', showMsg.OK);
                             } else {
-                                showMsg('服务器返回异常' + result.msg, showMsg.ERROR, true);
+                                showMsg('服务器返回异常' + server.msg, showMsg.ERROR, true);
                             }
                         }).fail(function () {
                             showMsg('网络连接异常', showMsg.ERROR);
                         });
-                    }).on('edit', function (e, elem, data) {//操作=>编辑
+                    }).on('edit', function (e, $editInput, data) {//操作=>编辑
                         $editInput.uploadText({
                             value: data.name,
                             img: data.icon
                         });
                         globalData = data;
-                        $editInput[0].dataset.index = data.index;
-                        $editInput[0].dataset.id = data.id;
-                    }).on('delete', function (e, elem, data) {//操作=>删除
+                        //$editInput[0].dataset.index = data.index;
+                        //$editInput[0].dataset.id = data.id;
+                    }).on('delete', function (e, $editInput, data) {//操作=>删除
                         $.ajax(Action.urlDelClassify, {
                             type: 'post',
                             dataType: 'json',
@@ -223,7 +233,7 @@
                         }).done(function (result) {
                             if (result.code === 0) {
                                 $classifyTable.bootstrapTable('updateRow', {
-                                    index: 2,
+                                    index: globalData.index,
                                     row: {
                                         ClassifyId: globalData.id,
                                         CName: data.value,
@@ -274,90 +284,144 @@
                             showMsg('上传Icon异常：' + error.msg, showMsg.ERROR, true);
                         }
                     });
+                    var $classifyTable = $('#classifyTable').bootstrapTable({
+                        columns: [
+                            { field: 'ClassifyId', title: 'ID', visible: false, },
+                            { field: 'CName', title: '名称', align: 'left', valign: 'bottom', sortable: true },
+                            {
+                                field: 'CIcon', title: 'Icon', align: 'left', valign: 'bottom', 'class': 'td-img', formatter: function (value) {
+                                    return ['<img src="', Action.sourceClassify + value, '" alt="" class="blog-other-icon"/>'].join('');
+                                }
+                            },
+                            {
+                                field: 'ClassifyId', title: '操作', align: 'center', valign: 'bottom', formatter: function (value, row, index) {
+                                    return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '"  data-index="', index, '" data-icon="', row.CIcon, '" data-name="', row.CName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data-id="', value, '" title="删除"></a>'].join('');
+                                }
+                            }],
+                        data: PageDatas.classify
+                    });
+
 
                 })($bsTables.eq(0));
 
                 (function ($bsTable) {
-                    ////标签
-                    //var tagData = SaidTable($bsTable, function ($editInput, data) {
-                    //    $editInput.val(data.name);
-                    //}, function (data) {
-                    //    tagData.toggle(0);
-                    //}, function ($addInput, data) {
-                    //    alert('新增标签');
-                    //}, function ($editInput, data) {
-                    //    alert('编辑标签');
-                    //});
-
-                })($bsTables.eq(1));
-
-                var $classifyTable = $('#classifyTable').bootstrapTable({
-                    columns: [
-                        { field: 'ClassifyId', title: 'ID', visible: false, },
-                        { field: 'CName', title: '名称', align: 'left', valign: 'bottom', sortable: true },
-                        {
-                            field: 'CIcon', title: 'Icon', align: 'left', valign: 'bottom', 'class': 'td-img', formatter: function (value) {
-                                return ['<img src="', Action.sourceClassify + value, '" alt="" class="blog-other-icon"/>'].join('');
+                    //标签操作
+                    var isEdit = false,
+                        globalData;
+                    $bsTable.toolTable()
+                        .on('toggle', function (e, index) {
+                            isEdit = !!index;
+                            if (!isEdit)
+                                globalData = null;
+                        })
+                        .on('add', function (e, $addInput) {//=>新增
+                            var name = $addInput.val().trim();
+                            if (!name) {
+                                showMsg('请输入标签名称', showMsg.WARNING);
+                                return $addInput.focus();
                             }
+                            //ajax添加
+                            $.ajax(Action.urlAddTag, {
+                                type: 'post',
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ name: name })
+                            }).done(function (server) {
+                                if (server.code === 0) {
+                                    //分类添加成功
+                                    $addInput.val('');
+                                    $tagTable.bootstrapTable('append', [{
+                                        TTagName: name,
+                                        TTagId: server.data
+                                    }]);
+                                    showMsg('添加标签成功', showMsg.OK);
+                                } else {
+                                    showMsg('服务器返回异常 - ' + server.msg, showMsg.ERROR, true);
+                                }
+                            }).fail(function () {
+                                showMsg('网络连接异常', showMsg.ERROR);
+                            });
+                        }).
+                        on('edit', function (e, $editInput, data) {//=>编辑
+                            globalData = data;
+                            $editInput.val(data.name).focus()[0].setSelectionRange(0, 100);
+                        })
+                        .on('delete', function (e, elem, data) {//=>删除
+                            $.ajax(Action.urlDelTag, {
+                                type: 'post',
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ id: data.id })
+                            }).done(function (result) {
+                                if (result.code === 0) {
+                                    $tagTable.bootstrapTable('remove', {
+                                        field: 'TTagId',
+                                        values: [data.id]
+                                    });
+                                    showMsg('删除标签成功', showMsg.OK);
+                                } else {
+                                    showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                                }
+                            }).fail(function () {
+                                showMsg('网络连接异常', showMsg.ERROR);
+                            });
+                        })
+                        .on('save', function (e, $editInput) {//编辑=>保存
+                            var name = $editInput.val().trim();
+                            if (!name) {
+                                showMsg('请输入标签名称', showMsg.WARNING);
+                                return $editInput.focus();
+                            };
+                            if (!globalData)
+                                return showMsg('找不要编辑的标签信息，请重新尝试编辑', showMsg.WARNING);
+                            if (name === globalData.name) {//没有改动直接编辑成功
+                                $bsTable.trigger('changeForm', 0);
+                                return showMsg('编辑成功', showMsg.OK);
+                            };
+                            $.ajax(Action.urlEditTag, {
+                                type: 'post',
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ name: name, id: globalData.id })
+                            }).done(function (result) {
+                                if (result.code === 0) {
+                                    $tagTable.bootstrapTable('updateRow', {
+                                        index: globalData.index,
+                                        row: {
+                                            TTagId: globalData.id,
+                                            TTagName: name
+                                        }
+                                    });
+                                    $bsTable.trigger('changeForm', 0);
+                                    showMsg('编辑分类成功', showMsg.OK);
+                                } else {
+                                    showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                                }
+                            }).fail(function () {
+                                showMsg('网络连接异常', showMsg.ERROR, true);
+                            });
+                        });
+
+                    var $tagTable = $('#tagsTable').bootstrapTable({
+                        columns: [
+                        {
+                            field: 'TTagName',
+                            title: '名称',
+                            align: 'left',
+                            sortable: true
                         },
                         {
-                            field: 'ClassifyId', title: '操作', align: 'center', valign: 'bottom', formatter: function (value, row, index) {
-                                return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '"  data-index="', index, '" data-icon="', row.CIcon, '" data-name="', row.CName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data-id="', value, '" title="删除"></a>'].join('');
+                            field: 'TTagId',
+                            title: '操作',
+                            align: 'center',
+                            formatter: function (value, row, index) {
+                                return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" data-index="', index, '" data-name="', row.TTagName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data-id="', value, '" title="删除"></a>'].join('');
+                                //return ['<a class="btn btn-warning icon-edit data-save" href="javascript:;" data-id="', value, '" title="保存"></a><a class="btn btn-info icon-trash data-cancel" href="javascript:;" data="', value, '" title="取消"></a>'].join('');
                             }
                         }],
-                    data: PageDatas.classify
-                }).on('dbl-click-row.bs.table', function (e, row, $element) { });
-
-                var $tagTable = $('#tagsTable').bootstrapTable({
-                    columns: [
-                    {
-                        field: 'TTagName',
-                        title: '名称',
-                        align: 'left',
-                        sortable: true
-                    },
-                    {
-                        field: 'TTagId',
-                        title: '操作',
-                        align: 'center',
-                        formatter: function (value, row, index) {
-
-                            return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '" data-index="', index, '" data-name="', row.TTagName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data="', value, '" title="删除"></a>'].join('');
-                            //return ['<a class="btn btn-warning icon-edit data-save" href="javascript:;" data-id="', value, '" title="保存"></a><a class="btn btn-info icon-trash data-cancel" href="javascript:;" data="', value, '" title="取消"></a>'].join('');
-                        }
-                    }],
-                    data: [
-                        {
-                            TTagName: 'ECMAScript 6',
-                            TTagId: '136116aa-a5f6-4f88-bcc4-00a1b4db0dba'
-                        },
-                        {
-                            TTagName: 'RequireJS',
-                            TTagId: '271f2924-69ce-4522-8e39-cc8f31059de8'
-                        },
-                        {
-                            TTagName: 'JavaScript',
-                            TTagId: '2e0dfa2f-dca4-4e1a-abeb-889ce98a8bb0'
-                        },
-                        {
-                            TTagName: '.NET',
-                            TTagId: '6198f526-fa0f-4429-983a-bebc8439e7c8'
-                        },
-                        {
-                            TTagName: 'CSS',
-                            TTagId: '817aa0f0-447e-46d3-805c-8952c0332df8'
-                        },
-                        {
-                            TTagName: 'jQuery',
-                            TTagId: 'ac11966d-01bf-4554-bd7e-7e0a807ea8fa'
-                        },
-                        {
-                            TTagName: 'ECMAScript 5',
-                            TTagId: 'd2774f82-3f56-4b0a-b3ae-0ad203cdc510'
-                        }
-                    ]
-
-                });
+                        data: PageDatas.tags
+                    });
+                })($bsTables.eq(1));
             });
 
         });

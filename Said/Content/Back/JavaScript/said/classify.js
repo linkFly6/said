@@ -130,7 +130,7 @@
     };
 
 
-
+    //about page
     $.fn.toolTable = function () {
         var $bsTable = this,
             $forms = $bsTable.find('.data-form'),//[新增表单、编辑表单]
@@ -144,9 +144,9 @@
         //监听页面编辑事件
         $table.on('click', '.data-edit', function (e) {
             toggleForm(1);
-            $bsTable.trigger('edit', [this, this.dataset]);
+            $bsTable.trigger('edit', [$editInput, this.dataset]);
         }).on('click', '.data-delete', function (e) {
-            $bsTable.trigger('delete', [this, this.dataset]);
+            $bsTable.trigger('delete', [$editInput, this.dataset]);
         });
         $forms.eq(0).find('.btn-add').click(function () {
             //新增按钮

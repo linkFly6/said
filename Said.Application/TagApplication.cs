@@ -26,6 +26,19 @@ namespace Said.Application
             Context.Add(model);
             return Context.Submit();
         }
+        /// <summary>
+        /// 异步修改tag信息
+        /// </summary>
+        /// <param name="model">要修改的tag对象</param>
+        /// <returns></returns>
+        public static Task<int> UpdateTagAwait(Tag model)
+        {
+            return Task.Run(() =>
+            {
+                Context.Update(model);
+                return Context.Submit();
+            });
+        }
 
         /// <summary>
         /// 编辑
@@ -59,6 +72,28 @@ namespace Said.Application
             Context.Delete(m => m.TagId == id);
             return Context.Submit();
         }
+
+
+        /// <summary>
+        /// 根据名称查找Tag
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Tag FindByName(string name)
+        {
+            return Context.Get(m => m.TagName == name);
+        }
+
+        /// <summary>
+        /// 根据名称查找一组tag
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static IEnumerable<Tag> FindListByName(string name)
+        {
+            return Context.GetMany(m => m.TagName == name);
+        }
+
 
         /// <summary>
         /// 根据长ID查找一个分类
