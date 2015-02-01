@@ -32,9 +32,17 @@
             this.$elem.trigger(event + '.popup', data);
         },
         _pos: function (placement) {
-            var position = this.$elem.offset(),
-                height = this.$elem.height(),
-                arrowLeft = this.$elem.width() / 2;//arrow的宽度是20px
+            var $target, $temp;
+            this.$elem.each(function () {
+                if (!($temp = $(this)).is(':hidden')) {
+                    $target = $(this);
+                    return false;
+                }
+            });
+            !$target && ($target = $(this.$elem));
+            var position = $target.offset(),
+                height = $target.height(),
+                arrowLeft = $target.width() / 2;//arrow的宽度是20px
             this.$context.css({ left: position.left, top: position.top + height + 22 });
             this.$arrow.css('left', arrowLeft);
         },
@@ -89,14 +97,14 @@
             this._pos();
             this._trigger('show');
             return this.config.cache ?
-                this.$content.show() :
-                this.append().show();
+                this.$content.fadeIn(100) :
+                this.append().fadeIn(100);
         },
         hide: function () {
             this._trigger('hide');
             return this.config.cache ?
-                this.$content.hide() :
-                this.remove().hide();
+                this.$content.fadeOut(100) :
+                this.remove().fadeOut(100);
         },
         destroy: function () {
             if (this.$content) {
@@ -106,11 +114,12 @@
         }
     });
     $.fn.popup = function (options) {
-        var data = this.data('so.popup'),
-            optionType = typeof options;
+        var $this = this,
+            data = $this.data('so.popup'),
+        optionType = typeof options;
         if (!data) {
-            this.data('so.popup', data = new Popup(this, options));
-            this.on('click.popup', function () {
+            $this.data('so.popup', data = new Popup($this, options));
+            $this.on('click.popup', function () {
                 data.show();
             });
         }

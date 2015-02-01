@@ -13,11 +13,13 @@ namespace Said.Areas.Back.Controllers
     {
         //
         // GET: /Back/Classify/
+        private readonly string ICONPATH = "~/Source/Sys/Images/Icons/";
+
 
         public ActionResult Index()
         {
             ViewData["Classify"] = ClassifyApplication.Find();
-            string[] iconsFilePath = FileCommon.GetFileNames(Server.MapPath("~/Source/Sys/Images/Icons/"));
+            string[] iconsFilePath = FileCommon.GetFileNames(Server.MapPath(ICONPATH));
             if (iconsFilePath != null)
                 for (int i = 0; i < iconsFilePath.Length; i++)
                     iconsFilePath[i] = FileCommon.getFileName(iconsFilePath[i]);
@@ -34,8 +36,7 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult AddClassify(string name, string imgName)
         {
-
-            if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(Server.MapPath("~/Source/Sys/Images/Icons/") + imgName))
+            if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(Server.MapPath(ICONPATH) + imgName))
                 return ResponseResult(2, "上传的Icon不正确");
             if (string.IsNullOrWhiteSpace(name))
                 return ResponseResult(1, "分类名称不正确");
@@ -55,10 +56,31 @@ namespace Said.Areas.Back.Controllers
                 ResponseResult(3, "服务器删除异常");
         }
 
-        public JsonResult EditClassify()
+        /// <summary>
+        /// 编辑分类
+        /// </summary>
+        /// <param name="name">分类名</param>
+        /// <param name="imgName">分类Icon</param>
+        /// <param name="id">分类Icon</param>
+        /// <returns></returns>
+        public JsonResult EditClassify(string name, string imgName, string id)
         {
-
-            return null;
+            if (string.IsNullOrWhiteSpace(name))
+                return ResponseResult(1, "分类名称不正确");
+            if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(Server.MapPath(ICONPATH) + imgName))
+                return ResponseResult(2, "上传的Icon不正确");
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(3, "分类信息不正确");
+            Classify model = ClassifyApplication.Find(id);
+            if (model == null)
+                return ResponseResult(4, "没有找到该分类信息");
+            if (model.CIcon == imgName.Trim() && model.CName == name.Trim())//没有改动直接编辑成功
+                ResponseResult();
+            model.CIcon = imgName.Trim();
+            model.CName = name.Trim();
+            return ClassifyApplication.Update(model) > 0 ?
+                ResponseResult() :
+                ResponseResult(5, "服务器删除异常");
         }
 
         public JsonResult DeleteClassify(string id)

@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
-    public static class ClassifyApplication
+    public static class TagApplication
     {
-        private static IClassifyService service;
-        public static IClassifyService Context
+        private static ITagService service;
+        public static ITagService Context
         {
-            get { return service ?? (service = new ClassifyService(new Domain.Said.Data.DatabaseFactory())); }
+            get { return service ?? (service = new TagService(new Domain.Said.Data.DatabaseFactory())); }
         }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="song">实体</param>
         /// <returns></returns>
-        public static int Add(Classify model)
+        public static int Add(Tag model)
         {
             Context.Add(model);
             return Context.Submit();
@@ -32,7 +32,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="model">实体</param>
         /// <returns></returns>
-        public static int Update(Classify model)
+        public static int Update(Tag model)
         {
             Context.Update(model);
             return Context.Submit();
@@ -43,7 +43,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="model">实体对象</param>
         /// <returns>返回受影响的行数</returns>
-        public static int Delete(Classify model)
+        public static int Delete(Tag model)
         {
             Context.Delete(model);
             return Context.Submit();
@@ -56,7 +56,7 @@ namespace Said.Application
         /// <returns>返回受影响的行数</returns>
         public static int Delete(string id)
         {
-            Context.Delete(m => m.ClassifyId == id);
+            Context.Delete(m => m.TagId == id);
             return Context.Submit();
         }
 
@@ -65,7 +65,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Classify Find(long id)
+        public static Tag Find(long id)
         {
             return Context.GetById(id);
         }
@@ -74,7 +74,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Classify Find(string id)
+        public static Tag Find(string id)
         {
             return Context.GetById(id);
         }
@@ -82,7 +82,7 @@ namespace Said.Application
         /// 无条件查询全部
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Classify> Find()
+        public static IEnumerable<Tag> Find()
         {
             return Context.GetAll();
         }

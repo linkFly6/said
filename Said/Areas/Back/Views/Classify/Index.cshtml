@@ -4,16 +4,16 @@
     IList<Said.Models.Classify> Classifs = ViewData["Classify"] as List<Said.Models.Classify>;
     var list = ViewData["iconFiles"] as string[];
 }
-@*<div class="showmsg-container">
-    <div class="showmsg-mask"></div>
-    <div class="showmsg-content">
-        <div class="showmsg-close"></div>
-        <img class="showmsg-state" src="~/Content/Back/Images/showMsg/ok.png" />
-        <img class="showmsg-state" src="~/Content/Back/Images/showMsg/error.png" />
-        <img class="showmsg-state" src="~/Content/Back/Images/showMsg/warning.png" />
-        <div class="showmsg-context">这是内容</div>
-    </div>
+@*<div class="showmsg-container"></div>
+<div class="showmsg-mask"></div>
+<div class="showmsg-content">
+    <div class="showmsg-close"></div>
+    <img class="showmsg-state" src="~/Content/Back/Images/showMsg/ok.png" />
+    <img class="showmsg-state" src="~/Content/Back/Images/showMsg/error.png" />
+    <img class="showmsg-state" src="~/Content/Back/Images/showMsg/warning.png" />
+    <div class="showmsg-context">这是内容</div>
 </div>*@
+
 
 <div class="select-icons" id="selectIcons" style="display: none;">
     @{
@@ -40,15 +40,16 @@
                         <div class="form-control iconInput">
                             <input type="text" class="input-icon" placeholder="添加一个新的分类" maxlength="20" id="addClassifyInput" />
                         </div>
-                        <button class="btn btn-info">添加</button>
+                        <button class="btn btn-info btn-add">添加</button>
                         <button class="btn btn-success" id="loadIcons">从图库中选择</button>
                     </div>
                     <div class="data-form" style="display: none">
                         <div class="form-control iconInput">
                             <input class="input-icon" placeholder="编辑分类" maxlength="20" id="editClassifyInput" />
                         </div>
-                        <button id="classify-btn-up" class="btn btn-warning" title="点击将会修改该分类">修改</button>
-                        <button class="btn btn-info" id="classify-btn-cancel">取消</button>
+                        <button id="classify-btn-up" class="btn btn-warning btn-edit" title="点击将会修改该分类">修改</button>
+                        <button id="loadEditIcons" class="btn btn-success" title="点击将会修改该分类">从图库中选择</button>
+                        <button class="btn btn-info btn-cancel">取消</button>
                     </div>
                 </div>
                 <table id="classifyTable" data-toolbar="#classToolbar" class="table table-hover table-striped main-table" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
@@ -61,14 +62,14 @@
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="添加一个新的标签" />
                         </div>
-                        <button class="btn btn-info">添加</button>
+                        <button class="btn btn-info btn-add">添加</button>
                     </div>
                     <div class="data-form" style="display: none;">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="添加一个新的标签" />
                         </div>
-                        <button class="btn btn-warning" title="点击将会修改该标签">修改</button>
-                        <button class="btn btn-info">取消</button>
+                        <button class="btn btn-warning btn-edit" title="点击将会修改该标签">修改</button>
+                        <button class="btn btn-info btn-cancel">取消</button>
                     </div>
                 </div>
                 <table id="tagsTable" class="table table-hover table-striped main-table" data-toolbar="#tagsToolbar" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
@@ -78,7 +79,6 @@
 </div>
 @section Css{
     <link href="@Url.Content("~/Content/Back/Style/classify.css")" rel="stylesheet" />
-    <link href="~/Content/Back/JavaScript/so/plug/css/showMsg.css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table.min.css")" rel="stylesheet" />
 }
 @section FootJs{
@@ -97,7 +97,8 @@
                 urlAddTag: '@Url.Action("AddTag", "Classify")',
                 urlEditTag: '@Url.Action("EditTag", "Classify")',
                 urlDelTag: '@Url.Action("DeleteTag", "Classify")',
-                sourceClassify: '@Url.Content("~/Source/Sys/Images//Icons/")'
+                sourceClassify: '@Url.Content("~/Source/Sys/Images//Icons/")',
+                defaultIcon: 'default.png'
             };
 
         @if (Classifs != null)
@@ -118,7 +119,8 @@
                 'bsTable': ['../Plug/bootstrap-table/bootstrap-table'],
                 'upload': ['so/plug/upload'],
                 'popup': ['so/plug/popup'],
-                'bsTable-cn': ['../Plug/bootstrap-table/bootstrap-table-zh-CN']
+                'showmsg': ['so/plug/showMsg'],
+                'bsTable-cn': ['../Plug/bootstrap-table/bootstrap-table-zh-CN'],
             },
             packages: [
             {
@@ -129,21 +131,27 @@
                 'bsTable-cn': ['bsTable']
             }
         });
-        require(['so', 'jquery', 'upload', 'classify', 'popup', 'bsTable-cn'], function (so, $, Extend) {
+        require(['so', 'jquery', 'upload', 'classify', 'popup', 'bsTable-cn', 'showmsg'], function (so, $, Extend) {
             $(function () {
                 'use strict';
-                //window.showMsg('我有很长的内容哟我有很长的内容哟我有很长的内容哟我有很长的内容哟我有很长的内容哟我有长的内容哟我有很长的内容哟我有长的内容哟我有很长的内容哟我有长的内容哟我有很长的内容哟我有', showMsg.ERROR, true);
-                //window.showMsg('好好做', showMsg.ERROR);
                 var $window = $(window),
                     $bsTables = $('.bs-table');
                 (function ($bsTable) {
-                    //分类逻辑
+                    //分类逻辑 TODO 如果新上传了图片，是不是也要在图片选择框里追加上？？？
                     var $addInput = $('#addClassifyInput'),
-                        $editInput = $('#editClassifyInput');
-                    $bsTable.toolTable().on('add', function (e, $addInput) {//新增
+                        $editInput = $('#editClassifyInput'),
+                        isEdit = false,
+                        globalData;
+                    $bsTable.toolTable().on('toggle', function (e, index) {
+                        isEdit = !!index;
+                        if (!isEdit)
+                            globalData = null;
+                    }).on('add', function (e, $addInput) {//新增
                         var data = $addInput.uploadText();
-                        //TODO
-                        if (!data.value || !data.value.trim()) return $addInput.focus();
+                        if (!data.value || !data.value.trim()) {
+                            showMsg('请输入分类名称', showMsg.WARNING);
+                            return $addInput.focus();
+                        }
                         //ajax添加
                         $.ajax(Action.urlAddClassify, {
                             type: 'post',
@@ -159,24 +167,22 @@
                                     CIcon: data.img,
                                     ClassifyId: server.data
                                 }]);
+                                showMsg('添加分类成功', showMsg.OK);
                             } else {
-                                console.group('服务器错误');
-                                console.log(server.code);
-                                console.log(arguments);
-                                console.groupEnd();
+                                showMsg('服务器返回异常' + result.msg, showMsg.ERROR, true);
                             }
                         }).fail(function () {
-                            console.group('ajax错误');
-                            console.log(arguments);
-                            console.groupEnd();
+                            showMsg('网络连接异常', showMsg.ERROR);
                         });
-                    }).on('edit', function (e, $elem, data) {//操作=>编辑
+                    }).on('edit', function (e, elem, data) {//操作=>编辑
                         $editInput.uploadText({
                             value: data.name,
-                            img: data.icon,
-                            index: data.index
+                            img: data.icon
                         });
-                    }).on('delete', function (e, $elem, data) {//操作=>删除
+                        globalData = data;
+                        $editInput[0].dataset.index = data.index;
+                        $editInput[0].dataset.id = data.id;
+                    }).on('delete', function (e, elem, data) {//操作=>删除
                         $.ajax(Action.urlDelClassify, {
                             type: 'post',
                             dataType: 'json',
@@ -188,86 +194,84 @@
                                     field: 'ClassifyId',
                                     values: [data.id]
                                 });
+                                showMsg('删除分类成功', showMsg.OK);
                             } else {
-                                console.log(arguments);
-                                alert('服务器异常');
+                                showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
                             }
                         }).fail(function () {
-                            alert('Ajax异常');
-                            console.log(arguments);
+                            showMsg('网络连接异常', showMsg.ERROR);
                         });
-                        classifyData.toggle(0);
                     }).on('save', function () {//编辑=>保存
                         var data = $editInput.uploadText();
-                        console.log(data);
-                        if (!data.value || !data.value.trim()) $editInput.focus();
+                        //console.dir(data);
+                        //console.dir(globalData);
+                        if (!data.value || !data.value.trim()) {
+                            showMsg('请输入分类名称', showMsg.WARNING);
+                            return $editInput.focus();
+                        };
+                        if (!globalData)
+                            return showMsg('找不要编辑的分类信息，请重新尝试编辑', showMsg.WARNING);
+                        if (data.value.trim() === globalData.name && data.img.trim() === globalData.icon) {//没有改动直接编辑成功
+                            $bsTable.trigger('changeForm', 0);
+                            return showMsg('编辑成功', showMsg.OK);
+                        };
+                        $.ajax(Action.urlEditClassify, {
+                            type: 'post',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ name: data.value.trim(), imgName: data.img.trim(), id: globalData.id })
+                        }).done(function (result) {
+                            if (result.code === 0) {
+                                $classifyTable.bootstrapTable('updateRow', {
+                                    index: 2,
+                                    row: {
+                                        ClassifyId: globalData.id,
+                                        CName: data.value,
+                                        CIcon: data.img
+                                    }
+                                });
+                                $bsTable.trigger('changeForm', 0);
+                                showMsg('编辑分类成功', showMsg.OK);
+                            } else {
+                                showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                            }
+                        }).fail(function () {
+                            showMsg('网络连接异常', showMsg.ERROR, true);
+                        });
                     });
 
                     $addInput.uploadText({
-                        callback: function () {
-                            //默认选中
-                            //var _self = this.val(this.uploadText().img)[0];
-                            ////高浏览器的选中
-                            //_self.setSelectionRange(0, /*this.uploadText().img.length*/100);//设个固定值也可以
-                            //console.log(console.dir(_self));
-                        },
+                        defImg: Action.defaultIcon,
                         fail: function (error) {
-                            $addInput.popover({
-                                placement: 'bottom',
-                                content: error.msg,
-                                title: '上传异常',
-                                trigger: 'focus'
-                            }).popover('show');
-                            $window.one('click', function () {
-                                $addInput.popover('destroy');
-                            });
-                        }
-                    }).on('keydown', function (e) {
-                        switch (e.keyCode) {
-                            case 13:
-                                //不同的模式，触发不同的方法
-                                classifyData.fnAdd();
-                                break;
+                            showMsg('上传Icon异常：' + error.msg, showMsg.ERROR, true);
                         }
                     });
                     /*
                         TODO
                         1、为了保证加载，可以选择分类图，不能一直加载，删除数据的时候要检测分类图是否被引用
                         2、默认图的处理，Icon是允许没有的，但是有默认图
-                        3、这个上传路径注意可以从站点全局路径对象中配置
+                        3、这个上传路径注意可以从站点全局路径对象中配置 TODO
+                        4、删除图片要有弹窗警告提示
                     */
-                    var $selectIconsBtn = $('#loadIcons').popup({
+                    var $selectIconsBtn = $('#loadIcons,#loadEditIcons').popup({
                         title: '<i class="icon-picture"></i>从图库中选择Icon',
                         context: $('#selectIcons'),
                         width: 450
                     });
                     //刚开始是隐藏的，当popup加载完成再设定为显示，否则页面因为js加载的问题会闪动一下
                     $('#selectIcons').show().on('click', 'a', function () {
-                        var name = this.dataset.name;
-                        $addInput.uploadText({
+                        var name = this.dataset.name,
+                            $target = isEdit ? $editInput : $addInput;
+                        $target.uploadText({
                             value: name,
                             img: name
                         });
                         $selectIconsBtn.popup('hide');
                     });
                     $editInput.uploadText({
+                        defImg: Action.defaultIcon,
                         fail: function (error) {
-                            classifyData.$edit.popover({
-                                placement: 'bottom',
-                                content: error.msg,
-                                title: '上传异常',
-                                trigger: 'manual'
-                            }).popover('show');
-                            $window.one('click', function () {
-                                classifyData.$edit.popover('destroy');
-                            });
-                        }
-                    }).on('keydown', function (e) {
-                        switch (e.keyCode) {
-                            case 13:
-                                //不同的模式，触发不同的方法
-                                $bsTable.trigger('save');
-                                break;
+                            showMsg('上传Icon异常：' + error.msg, showMsg.ERROR, true);
                         }
                     });
 
@@ -353,12 +357,6 @@
                         }
                     ]
 
-                }).bootstrapTable('updateRow', {
-                    index: 2,
-                    row: {
-                        TTagName: '这是更新的啊啊',
-                        TTagId: 'ac11966d-01bf-4554-bd7e-7e0a807ea8fa'
-                    }
                 });
             });
 

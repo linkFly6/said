@@ -2,8 +2,8 @@
     // Client-side export
     if (typeof window === 'undefined' || !window.so) return;
     var so = window.so,
-        templent = '<div class="showmsg-container">${0}\
-                <div class="showmsg-content ${1}">${2}<div class="showmsg-context">${3}</div></div></div>',
+        templentContainer = '<div class="showmsg-container">${0}</div>',
+        templent = '${0}<div class="showmsg-content ${1}">${2}<div class="showmsg-context">${3}</div></div>',
         globalConfig = {
             cache: true,//是否缓存这次结果
             title: null,
@@ -67,15 +67,17 @@
             time = true;
             state = null;
         }
-        var formatStrs = [time === true ? '<div class="showmsg-mask"></div>' : ''],
+        var isLockModel = time === true,
+            formatStrs = [isLockModel ? '<div class="showmsg-mask"></div>' : ''],
             stateName = state != null && stateNames[state] || '',
-            elem;
+            elem, html;
         stateName ?
             formatStrs.push('showmsg-state-' + stateName, '<img class="showmsg-state" src="/Content/Back/Images/showMsg/' + stateName + '.png" />') :
             formatStrs.push('', '');
         formatStrs.push(text);
-        elem = this.elem = parseHTML(so.format(templent, formatStrs[0], formatStrs[1], formatStrs[2], formatStrs[3]));
-        if (time === true) {
+        html = so.format(templent, formatStrs[0], formatStrs[1], formatStrs[2], formatStrs[3]);
+        elem = this.elem = parseHTML(isLockModel ? so.format(templentContainer, html) : html);
+        if (isLockModel) {
             elem.firstElementChild.addEventListener('click', function () {
                 setGlobalShowMsg(null);
             });

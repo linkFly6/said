@@ -171,6 +171,9 @@
     <Content Include="bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll" />
     <Content Include="bin\zh-Hans\System.Web.WebPages.Razor.resources.dll" />
     <Content Include="bin\zh-Hans\System.Web.WebPages.resources.dll" />
+    <Content Include="Content\Back\Images\showMsg\warning.png" />
+    <Content Include="Content\Back\Images\showMsg\error.png" />
+    <Content Include="Content\Back\Images\showMsg\ok.png" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.min.js" />
@@ -333,9 +336,11 @@
     <Content Include="Content\Back\JavaScript\showdown\showdown.js" />
     <Content Include="Content\Back\JavaScript\showdown\showdown.min.js" />
     <Content Include="Content\Back\JavaScript\so\plug\css\popup.css" />
+    <Content Include="Content\Back\JavaScript\so\plug\css\showMsg.css" />
     <Content Include="Content\Back\JavaScript\so\plug\model.js" />
     <Content Include="Content\Back\JavaScript\so\plug\popup.js" />
     <Content Include="Content\Back\JavaScript\so\plug\search.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\showMsg.js" />
     <Content Include="Content\Back\JavaScript\so\plug\upload.js" />
     <Content Include="Content\Back\JavaScript\so\plug\validate.js" />
     <Content Include="Content\Back\JavaScript\so\so.js" />
@@ -1924,7 +1929,6 @@
     <Content Include="UED\Temp\Style\bg.jpg" />
     <Content Include="UED\Temp\Style\default.css" />
     <Content Include="UED\Temp\Style\focus_bg.png" />
-    <Content Include="UED\Temp\test.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1939,7 +1943,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
-    <Folder Include="Content\Back\Images\" />
     <Folder Include="Content\Back\Resource\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />

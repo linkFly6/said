@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Said.Infrastructure.Said.Models.Models
+namespace Said.Models
 {
-    public class Tag
+    public class Tag : BaseModel
     {
         /// <summary>
         /// TagID
@@ -28,5 +28,10 @@ namespace Said.Infrastructure.Said.Models.Models
         /// 引用个数
         /// </summary>
         public int Count { get; set; }
+
+        public override IEnumerable<ValidationResult> Validate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

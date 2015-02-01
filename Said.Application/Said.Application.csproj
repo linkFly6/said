@@ -49,6 +49,7 @@
     <Compile Include="ClassifyApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SongApplication.cs" />
+    <Compile Include="TagApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Said.Domain\Said.Domain.csproj">

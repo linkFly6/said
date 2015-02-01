@@ -38,6 +38,7 @@ namespace Said.Domain.Said.Data
         public DbSet<Classify> Classify { get; set; }
         public DbSet<Article> Article { get; set; }
         public DbSet<Song> Song { get; set; }
+        public DbSet<Tag> Tag { get; set; }
         #endregion
     }
 }

@@ -66,7 +66,7 @@ namespace Said.Application
                     str.Append("歌曲信息不正确(不可获取),");
             }
 
-            if (ClassifyApplication.Context.GetById(model.ClassifyId) == null)
+            if (TagApplication.Context.GetById(model.ClassifyId) == null)
                 str.Append("分类信息不正确,");
             foreach (var validateResult in model.Validate())
             {
