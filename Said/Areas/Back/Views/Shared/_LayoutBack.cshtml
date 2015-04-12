@@ -2,9 +2,10 @@
 
 <html lang="zh-cn">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content/Back/Style/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/Back/Style/bootstrap.css")" rel="stylesheet">
     <!--<link href="Frmework/css/flat-ui.min.css" rel="stylesheet" />-->
     <link href="@Url.Content("~/Content/Back/Style/font-awesome.min.css")" rel="stylesheet" />
     <!--<link href="Frmework/css/saidList.css" rel="stylesheet" />-->
@@ -80,11 +81,15 @@
                         <li><a href="@Url.Action("AddSaid", "Said")">添加Said</a></li>
                     </ul>
                 </li>
-                <li>
+                <li class="complex">
                     <a href="javascript:;">
                         <i class="icon-laptop"></i>
                         <span class="title">文章管理</span>
                     </a>
+                    <ul class="sub-menu">
+                        <li><a href="@Url.Action("BlogCenter", "Blog")">Said管理</a></li>
+                        <li><a href="@Url.Action("AddBlog", "Blog")">添加Said</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a href="javascript:;">
@@ -93,7 +98,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:;">
+                    <a href="@Url.Action("Index", "Classify")">
                         <i class="icon-tags"></i>
                         <span class="title">标签/分类</span>
                     </a>
@@ -135,6 +140,8 @@
     </footer>
     <script src="@Url.Content("~/Content/Back/JavaScript/jQuery-2.1.1.min.js")"></script>
     <script src="~/Content/Back/JavaScript/so/so.js"></script>
+    <script src="~/Content/Back/JavaScript/underscore.js"></script>
+    <script src="~/Content/Back/JavaScript/backbone.js"></script>
     <script src="@Url.Content("~/Content/Back/JavaScript/said/globalBack.js")"></script>
     <script src="@Url.Content("~/Content/Back/JavaScript/bootstrap.min.js")"></script>
     @{

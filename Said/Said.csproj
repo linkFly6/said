@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Areas\Back\BackAreaRegistration.cs" />
     <Compile Include="Areas\Back\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Back\Controllers\BlogController.cs" />
     <Compile Include="Areas\Back\Controllers\ClassifyController.cs" />
     <Compile Include="Areas\Back\Controllers\HomeController.cs" />
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
@@ -174,6 +175,9 @@
     <Content Include="Content\Back\Images\showMsg\warning.png" />
     <Content Include="Content\Back\Images\showMsg\error.png" />
     <Content Include="Content\Back\Images\showMsg\ok.png" />
+    <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.js" />
+    <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.min.js" />
+    <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.min.js" />
@@ -320,6 +324,8 @@
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\util\smartSteps.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.min.js" />
+    <Content Include="Content\Back\JavaScript\knockout\knockout.debug.js" />
+    <Content Include="Content\Back\JavaScript\knockout\knockout.js" />
     <Content Include="Content\Back\JavaScript\said\classify.js" />
     <Content Include="Content\Back\JavaScript\said\globalBack.js" />
     <Content Include="Content\Back\JavaScript\jQuery-2.1.1.js" />
@@ -352,6 +358,7 @@
     <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shCore.js" />
     <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shLegacy.js" />
     <Content Include="Content\Back\JavaScript\syntaxhighlighter\styles\shCoreDefault.css" />
+    <Content Include="Content\Back\JavaScript\underscore.js" />
     <Content Include="Content\Back\JavaScript\zrender-master\.gitignore" />
     <Content Include="Content\Back\JavaScript\zrender-master\benchmark\area.html" />
     <Content Include="Content\Back\JavaScript\zrender-master\benchmark\js\area.js" />
@@ -648,6 +655,7 @@
     <Content Include="Content\Style\music.css" />
     <Content Include="Content\Style\said.css" />
     <Content Include="Global.asax" />
+    <Content Include="UED\Back\AddBlog.html" />
     <Content Include="UED\Back\Classify.html" />
     <Content Include="UED\Back\Frmework\css\addSaid.css" />
     <Content Include="UED\Back\AddSaidNG.html" />
@@ -3479,6 +3487,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Back\Views\Classify\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Blog\AddBlog.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

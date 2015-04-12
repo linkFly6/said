@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>添加Blog UED页面</title>
+
+    <!-- Bootstrap -->
+    <link href="../../Content/Back/Style/bootstrap.css" rel="stylesheet" />
+    <!--<link href="Frmework/css/flat-ui.min.css" rel="stylesheet" />-->
+    <link href="Frmework/css/font-awesome.min.css" rel="stylesheet" />
+    <!--<link href="Frmework/css/saidList.css" rel="stylesheet" />-->
+    <link href="../../Content/Back/Style/default.css" rel="stylesheet" />
+    <link href="../../Content/Back/Style/addSaid.css" rel="stylesheet" />
+    <script src="Frmework/js/require2-1-11.js"></script>
+</head>
+<body>
+    <header class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button data-target="#example-navbar-collapse" data-toggle="collapse" class="navbar-toggle">
+                        <span class="sr-only">切换的导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Said</a>
+                </div>
+                <ul class="nav pull-right">
+                    <li class="dropdown pull-left">
+                        <a href="javascript:;" class="dropdown-toggle">
+                            <i class="icon-envelope"></i>
+                            <span class="badge">1</span>
+                        </a>
+                    </li>
+                    <li class="dropdown  pull-left">
+                        <a href="javascript:;" class="dropdown-toggle">Said首页</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <section class="page-container">
+        <nav class="page-sidebar nav-collapse collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="page-sidebar-menu">
+                <!--<li>
+                    <form class="sidebar-search">
+                        <div class="input-box">
+                            <a class="remove" href="javascript:;"></a>
+                            <input type="text" placeholder="Search...">
+                            <input type="button" value=" " class="submit">
+                        </div>
+                    </form>
+                </li>-->
+                <li class="active">
+                    <a href="javascript:;">
+                        <i class="icon-home"></i>
+                        <span class="title">控制中心</span>
+                        <span class="selected"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-edit"></i>
+                        <span class="title">Said管理</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-laptop"></i>
+                        <span class="title">文章管理</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-credit-card"></i>
+                        <span class="title">实验室</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-tags"></i>
+                        <span class="title">标签管理</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-cogs"></i>
+                        <span class="title">消息中心</span>
+                    </a>
+                </li>
+                <li class="complex">
+                    <a href="javascript:;">
+                        <i class="icon-bar-chart"></i>
+                        <span class="title">统计中心</span>
+                        <span class="arrow icon-angle-down"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="javascript:;">访问概况</a></li>
+                        <li><a href="javascript:;">访客地区</a></li>
+                        <li><a href="javascript:;">时段分析</a></li>
+                        <li><a href="javascript:;">回复统计</a></li>
+                    </ul>
+                </li>
+                <li class="complex open">
+                    <a href="javascript:;">
+                        <i class="icon-sitemap"></i>
+                        <span class="title">配置中心</span>
+                        <span class="arrow icon-angle-up"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li><a href="javascript:;">页面配置</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <section class="container-main">
+            <div class="page-header">
+                <h2>添加Blog&nbsp;&nbsp;<small>&gt;添加一篇Blog</small></h2>
+            </div>
+            <ol class="breadcrumb">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Siad管理</a></li>
+                <li class="active">添加Said</li>
+            </ol>
+            <div class="main-context">
+                <form name="saidForm" method="post" novalidate spellcheck="false">
+                    <div class="said-article">
+                        <div class="said-title-con">
+                            <input name="sTitle" class="said-title" autocomplete="off" placeholder="文章标题" required />
+                        </div>
+                        <div class="said-context-content">
+                            <textarea name="sContext" class="said-context" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
+                        </div>
+                        <button class="btn btn-lg said-priview center-block" id="previewSaid" type="button">预览</button>
+                    </div>
+                    <div class="row said-view-container">
+                        <div class="col-md-6">
+                            <div class="panel panel-default relative-container">
+                                <div class="panel-heading">附加信息</div>
+                                <div class="panel-body">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">标签</span>
+                                        <div class="queryInputBar tagInputBar form-control" data-queryselect="">
+                                            <div class="tag-selected">
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                                <label><span>JavaScript</span><a href="javascript:;">×</a></label>
+                                            </div>
+                                            <input type="text" class="tag-input" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" required />
+                                            <!--<div class="querySelect" data-ng-show="saidForm.sTag.$valid">
+                                                <a class="select-item" href="javascript:;" data-ng-repeat="item in article.tags | search:saidForm.sTag" data-name="{{item}}" data-index="{{$index}}">{{item}}</a>
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">分类</span>
+                                        <input type="text" name="classify" class="form-control" placeholder="分类名称" autocomplete="off" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default relative-container">
+                                <div class="said-mask">
+                                    <span>上传缩略图</span>
+                                    <div class="progress">
+                                        <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
+                                            <span class="sr-only"></span>
+                                        </div>
+                                    </div>
+                                    <input type="file" name="saidSummayImgFile" class="hidden-file" />
+                                    <input type="hidden" name="saidSummayImg" />
+                                </div>
+                                <div class="panel-heading">描述</div>
+                                <div class="panel-body">
+                                    <div class="col-md-4">
+                                        <div class="music-img">
+                                            <div class="thumbnail">
+                                                <img src="../../Content/Images/test-said-img.jpg" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <textarea class="said-dis" name="sSummary" placeholder="简介[支持HTML]" required></textarea>
+                                        <div class="songOp-btn song-up-content">
+                                            <button id="summaryImgDelete" class="btn btn-danger songBtn" type="button">删除</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading ">可选信息</div>
+                                <div class="panel-body">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">文件</span>
+                                        <input type="text" name="sName" class="form-control" placeholder="文章发布的（文件）名称">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>JavaScript</label>
+                                        <textarea rows="3" class="form-control" name="sJS" placeholder="自定义JavaScript"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CSS</label>
+                                        <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS"></textarea>
+                                    </div>
+                                    <div class="checkbox said-checkbox">
+                                        <label>
+                                            <input type="checkbox" name="sReprint" />是否转载</label><label>
+                                                <input type="checkbox" name="sReprint" />是否置顶</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-container">
+                        <div class="error-check">
+                            发布前会进行错误检测
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%">
+                                <span class="sr-only">20% Complete</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-lg said-submit center-block" id="submit" type="submit">发布</button>
+                        <!--data-ng-class="{'submit-lock':!saidForm.$valid}"-->
+                    </div>
+                </form>
+            </div>
+        </section>
+    </section>
+    <footer>
+    </footer>
+    <script src="Frmework/js/jQuery-2.1.1.min.js"></script>
+    <script src="Frmework/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: '/Content/Back/JavaScript',
+            paths: {
+                'avalon': 'avalon/avalon.mobile'
+            },
+            shim: {
+                avalon: { exports: "avalon" }
+            }
+        });
+        var defaultValue = {
+            tags: ['split']
+        };
+        require(['jquery', 'avalon'/*, 'underscore'*/], function ($, avalon, _) {
+            avalon.ready(function () {
+                avalon.define({
+
+                });
+            });
+        });
+    </script>
+</body>
+</html>

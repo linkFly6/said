@@ -2,18 +2,16 @@
 <html lang="zh-cn">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>添加Said UED页面</title>
 
     <!-- Bootstrap -->
-
-    <link href="Frmework/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../Content/Back/Style/bootstrap.css" rel="stylesheet" />
     <!--<link href="Frmework/css/flat-ui.min.css" rel="stylesheet" />-->
     <link href="Frmework/css/font-awesome.min.css" rel="stylesheet" />
     <!--<link href="Frmework/css/saidList.css" rel="stylesheet" />-->
-    <link href="Frmework/css/default.css" rel="stylesheet" />
-    <link href="Frmework/css/addSaid.css" rel="stylesheet" />
+    <link href="../../Content/Back/Style/default.css" rel="stylesheet" />
+    <link href="../../Content/Back/Style/addSaid.css" rel="stylesheet" />
     <script src="Frmework/js/require2-1-11.js" data-main="Frmework/js/main"></script>
 </head>
 <body>
@@ -212,7 +210,9 @@
                                     </div>
                                     <div class="col-md-8">
                                         <textarea class="said-dis" data-ng-model="article.sSummary" data-ng-class="{ 'said-error':saidForm.sSummary.$invalid&&(saidForm.sSummary.$dirty||article.dirty) }" name="sSummary" placeholder="简介[支持HTML]" required></textarea>
-                                        <button type="button" class="btn btn-danger deleteSong" id="summaryImgDelete" data-ng-click="ac.deleteSaidImg()">删除</button>
+                                        <div class="songOp-btn song-up-content">
+                                            <button id="summaryImgDelete" class="btn btn-danger songBtn" type="button">删除</button>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -260,7 +260,7 @@
                                         <label>CSS</label>
                                         <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS" data-ng-model="article.sCSS"></textarea>
                                     </div>
-                                    <div class="checkbox">
+                                    <div class="checkbox said-checkbox">
                                         <label>
                                             <input type="checkbox" data-ng-mode="article.sReprint" name="sReprint" />是否转载</label><label>
                                                 <input type="checkbox" data-ng-mode="article.sReprint" name="sReprint" />是否置顶</label>

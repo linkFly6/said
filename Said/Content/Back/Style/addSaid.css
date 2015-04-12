@@ -23,7 +23,7 @@
 .songOp-btn { width: 200px; float: right; }
     .songOp-btn:last-child { margin-right: 20px; }
     .songOp-btn button { width: 200px; }
-.said-submit { background-color: transparent; border-color: #563d7c; color: #563d7c; width: 200px; }
+.said-submit { background-color: transparent; border-color: #563d7c; color: #563d7c; width: 200px; display: block; }
     .said-submit:hover, .said-submit:focus { background-color: #563d7c; color: #FFF; }
 .said-priview { background-color: transparent; border-color: #428bca; color: #357ebd; width: 200px; }
     .said-priview:hover, .said-priview:focus { background-color: #428bca; color: #FFF; }
