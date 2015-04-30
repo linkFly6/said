@@ -177,6 +177,7 @@
     <Content Include="Content\Back\Images\showMsg\ok.png" />
     <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.js" />
     <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.min.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plus\autoComplete.js" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
@@ -1933,10 +1934,27 @@
     <Content Include="UED\Home\music.html" />
     <Content Include="UED\Home\Public.html" />
     <Content Include="UED\Home\said.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.suggest.css" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.suggest.ex.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.suggest.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.suggest.js" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.css" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.doc.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.ex1.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.ex2.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.ex3.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.ex4.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.ex5.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.ex6.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.ex_adapter.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.html" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.js" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.test.html" />
     <Content Include="UED\Temp\index.html" />
     <Content Include="UED\Temp\Style\bg.jpg" />
     <Content Include="UED\Temp\Style\default.css" />
     <Content Include="UED\Temp\Style\focus_bg.png" />
+    <Content Include="UED\Temp\Test.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -3490,6 +3508,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Back\Views\Blog\AddBlog.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.suggest.scss" />
+    <Content Include="UED\Temp\avalon.oniui-master\textbox\avalon.textbox.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

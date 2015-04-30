@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        .has-error { background-color: red; }
+    </style>
+    <script src="../../Content/Back/JavaScript/avalon/avalon.mobile.js"></script>
+</head>
+<body ms-controller="demo">
+    <div class="input-group" ms-class="has-error:!classify.length">
+        <input type="text" name="classify" class="form-control" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="test" />
+    </div>
+    <script>
+        var widget = avalon.ui.test = function (elem, data, viewModels) {
+            //elem表示着上面HTML的input
+            var vm = avalon.define(data.testId, function (vm) {
+                vm.$init = function () {
+
+
+                    //**让avalon再扫描一遍DOM，同时绑定上过去所有的Model**
+                    avalon.scan(document.body, [vm].concat(viewModels));
+
+                    //但是调用：avalon.scan()是不会扫描到的...
+                }
+            });
+            return vm;//一旦return，#12的代码失效
+        }
+
+        var vmBlog = avalon.define({
+            $id: 'demo',
+            classify: 'aaa'
+        });
+        avalon.scan();
+    </script>
+</body>
+</html>

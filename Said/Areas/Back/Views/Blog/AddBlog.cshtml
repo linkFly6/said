@@ -11,16 +11,17 @@
     <li class="active">添加Said</li>
 </ol>
 <div class="main-context">
-    <form name="saidForm" method="post" data-ng-controller="formController" novalidate spellcheck="false">
+    <form name="saidForm" method="post" ms-controller="blog" novalidate spellcheck="false">
         <div class="said-article">
             <div class="said-title-con">
-                <input name="sTitle" data-ng-model="article.sTitle" class="said-title" data-ng-class="{'said-error':saidForm.sTitle.$invalid&&(saidForm.sTitle.$dirty||article.dirty) }" autocomplete="off" placeholder="文章标题" required />
+                <input name="bTitle" ms-duplex="bTitle" class="said-title" ms-class="said-error:!bTitle.length" autocomplete="off" placeholder="文章标题" required />
             </div>
             <div class="said-context-content">
-                <textarea name="sContext" class="said-context" data-ng-model="article.sContext" data-ng-class="{'said-error':saidForm.sContext.$invalid&&(saidForm.sContext.$dirty||article.dirty)  }" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
+                <textarea name="bContext" class="said-context" ms-duplex="bContext" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
             </div>
             <button class="btn btn-lg said-priview center-block" id="previewSaid" type="button">预览</button>
         </div>
+        @*ms-controller="defaultsDatas"*@
         <div class="row said-view-container">
             <div class="col-md-6">
                 <div class="panel panel-default relative-container">
@@ -28,7 +29,7 @@
                     <div class="panel-body">
                         <div class="input-group">
                             <span class="input-group-addon">标签</span>
-                            <div class="queryInputBar tagInputBar form-control" data-queryselect="">
+                            <div class="queryInputBar tagInputBar form-control">
                                 <div class="tag-selected">
                                     <label><span>JavaScript</span><a href="javascript:;">×</a></label>
                                     <label><span>JavaScript</span><a href="javascript:;">×</a></label>
@@ -40,14 +41,11 @@
                                     <label><span>JavaScript</span><a href="javascript:;">×</a></label>
                                 </div>
                                 <input type="text" class="tag-input" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" required />
-                                <!--<div class="querySelect" data-ng-show="saidForm.sTag.$valid">
-                                                <a class="select-item" href="javascript:;" data-ng-repeat="item in article.tags | search:saidForm.sTag" data-name="{{item}}" data-index="{{$index}}">{{item}}</a>
-                                            </div>-->
                             </div>
                         </div>
-                        <div class="input-group" data-ng-class="{'has-error':saidForm.classify.$invalid&&(saidForm.classify.$dirty||article.dirty)}">
-                            <span class="input-group-addon">分类</span>
-                            <input type="text" name="classify" class="form-control" data-ng-model="article.Classify" placeholder="分类名称" autocomplete="off" required />
+                        <div class="input-group" ms-class="has-error:!classify.length">
+                            <span class="input-group-addon">{{classify}}</span>
+                            <input type="text" name="classify" class="form-control" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="autoComplete" />
                         </div>
                     </div>
                 </div>
@@ -87,20 +85,20 @@
                     <div class="panel-body">
                         <div class="input-group">
                             <span class="input-group-addon">文件</span>
-                            <input type="text" name="sName" class="form-control" data-ng-model="article.sName" placeholder="文章发布的（文件）名称">
+                            <input type="text" name="sName" class="form-control" ms-duplex="bName" placeholder="文章发布的（文件）名称">
                         </div>
                         <div class="form-group">
                             <label>JavaScript</label>
-                            <textarea rows="3" class="form-control" name="sJS" placeholder="自定义JavaScript" data-ng-model="article.sJS"></textarea>
+                            <textarea rows="3" class="form-control" name="sJS" placeholder="自定义JavaScript" ms-duplex="bJS"></textarea>
                         </div>
                         <div class="form-group">
                             <label>CSS</label>
-                            <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS" data-ng-model="article.sCSS"></textarea>
+                            <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS" ms-duplex="bCSS"></textarea>
                         </div>
                         <div class="checkbox said-checkbox">
                             <label>
-                                <input type="checkbox" data-ng-mode="article.sReprint" name="sReprint" />是否转载</label><label>
-                                    <input type="checkbox" data-ng-mode="article.sReprint" name="sReprint" />是否置顶</label>
+                                <input type="checkbox" ms-duplex-checked="bReprint" name="sReprint" />是否转载</label><label>
+                                    <input type="checkbox" ms-duplex-checked="bIsTop" name="bIsTop" />是否置顶</label>
                         </div>
                     </div>
                 </div>
@@ -120,12 +118,95 @@
         </div>
     </form>
 </div>
+
 @section Css{
     <link href="@Url.Content("~/Content/Back/Style/addSaid.css")" rel="stylesheet" />
 }
-@*@section HeadJs{
-    <script src="@Url.Content("")"></script>
-}*@
+@section HeadJs{
+    <script type="text/template" id="autoCompleteTemplate">
+      <div class="queryInputBar" ms-widget="autoComplete,$,$acOption">
+        @*<input type="text" name="classify" class="form-control" ms-duplex="classify" placeholder="分类名称" autocomplete="off" />*@
+        <div class="querySelect" style="ms-css-display:filter.length">
+            <a class="select-item" href="javascript:;" ms-repeat-item="filter" data-index="{{$index}}">{{item}}</a>
+        </div>
+      </div>
+    </script>
+    @*<script src="@Url.Content("~/Content/Back/JavaScript/avalon/plus/autoComplete.js")"></script>*@
+
+}
 @section FootJs{
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        require.config({
+            baseUrl: '/Content/Back/JavaScript',
+            paths: {
+                'avalon': 'avalon/avalon.mobile.min',
+                'autoComplete': 'avalon/plus/autoComplete',
+            },
+            packages: [
+            {
+                name: 'so',
+                location: 'so',
+                main: 'so'
+            },
+            {
+                name: 'said',
+                location: 'said',
+                main: 'said'
+            }],
+            shim: {
+                avalon: { exports: "avalon" }
+            }
+        });
+        var defaultValue = {
+            tags: ['split'],
+            classifyList: ['HTML', 'CSS', 'linkFly', 'C#', 'Bootstrap', 'JavaScript', 'XML']
+        };
+        require(['jquery', 'so', 'so/plug/search', 'avalon', 'autoComplete'], function ($, so, Search, avalon) {
+
+            $(function () {
+                var vmBlog = avalon.define({
+                    $id: 'blog',
+                    bTitle: '',
+                    bTag: '',
+                    bSummary: '',
+                    bReprint: '',
+                    bScript: '',
+                    bIsTop: '',
+                    bHTML: '',
+                    bCSS: '',
+                    bContext: '',
+                    bImg: '',
+                    classify: 'linkFly',
+                    autoComplete: {
+                        datas: defaultValue.classifyList
+                    },
+                    $skipArray: ['bTag', 'bImg'],
+                    preview: function () {
+
+                    },
+                    check: function () {
+
+                    },
+                    save: function () {
+
+                    }
+                });
+                //avalon.define({
+                //    $id: 'defaultsDatas',
+                //    tags: defaultValue.tags,
+                //    classify: '',
+                //    autoComplete: {
+                //        datas: defaultValue.classifyList
+                //    }
+                //});
+
+                //var vmBlog = avalon.define('blog', function (vm) {
+                //    vm.BTitle = '';
+                //});
+                console.dir(avalon.vmodels);
+                avalon.scan();
+
+            });
+        });
+    </script>
 }

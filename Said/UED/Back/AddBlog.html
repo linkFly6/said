@@ -125,10 +125,10 @@
                 <li class="active">添加Said</li>
             </ol>
             <div class="main-context">
-                <form name="saidForm" method="post" novalidate spellcheck="false">
+                <form name="saidForm" method="post" novalidate spellcheck="false" ms-controller="blog">
                     <div class="said-article">
                         <div class="said-title-con">
-                            <input name="sTitle" class="said-title" autocomplete="off" placeholder="文章标题" required />
+                            <input name="sTitle" class="said-title" autocomplete="off" placeholder="文章标题" ms-duplex="BTitle" />
                         </div>
                         <div class="said-context-content">
                             <textarea name="sContext" class="said-context" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
@@ -254,9 +254,28 @@
         };
         require(['jquery', 'avalon'/*, 'underscore'*/], function ($, avalon, _) {
             avalon.ready(function () {
-                avalon.define({
+                var vmBlog = avalon.define({
+                    $id: 'blog',
+                    BTitle: '',
+                    BTag: '',
+                    BSummary: '',
+                    BReprint: '',
+                    BScript: '',
+                    BIsTop: '',
+                    BHTML: '',
+                    BCSS: '',
+                    BContext: '',
+                    Classify: ''
+                });
+                //var vmBlog = avalon.define('blog', function (vm) {
+                //    vm.BTitle = '';
+                //});
+                vmBlog.$watch('BTitle', function () {
 
                 });
+
+                //类似ng.$apply();
+                avalon.scan();
             });
         });
     </script>

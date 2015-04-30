@@ -13,6 +13,7 @@
         };
     $(function () {
         bindNavigation($('#example-navbar-collapse'), 'complex', 'open');
-
     });
+    //window.$window = $(window);
+    //window.$document = $(document);
 })(window);

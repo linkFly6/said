@@ -66,6 +66,7 @@
     <Compile Include="Said.Models\BaseModel.cs" />
     <Compile Include="Said.Infrastructure\Common\ModelCommon.cs" />
     <Compile Include="Said.Models\Data\Page.cs" />
+    <Compile Include="Said.Models\Models\Blog.cs" />
     <Compile Include="Said.Models\Models\Classify.cs" />
     <Compile Include="Said.Models\Models\Article.cs" />
     <Compile Include="Said.Models\Models\Song.cs" />
