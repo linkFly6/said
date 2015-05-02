@@ -1,38 +1,65 @@
-﻿<!DOCTYPE html>
+﻿<!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style type="text/css">
-        .has-error { background-color: red; }
-    </style>
-    <script src="../../Content/Back/JavaScript/avalon/avalon.mobile.js"></script>
+    <meta charset='utf-8'/>
+    <title>输入域的自动补全</title>
+    <script src="../../Content/Back/JavaScript/avalon/avalon.mobile.min.js"></script>
 </head>
-<body ms-controller="demo">
-    <div class="input-group" ms-class="has-error:!classify.length">
-        <input type="text" name="classify" class="form-control" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="test" />
+<body>
+<div class="demo-show" ms-controller="demo4">
+        <form>
+            <table style="width:100%; border:1px solid #000;">
+                <tbody>
+                    <tr>
+                        <td class="pad30">
+                            <input ms-widget="textbox" ms-duplex="x" type="textbox" data-textbox-suggest="test" data-textbox-limit="5" />
+                            <p>输入框的值是： {{x}}</p>
+                        </td>
+ 
+                        <td class="pad30">
+                            <input ms-widget="textbox" type="textbox" ms-duplex="p" data-textbox-suggest="test1"/>
+                            <p>输入框的值是： {{p}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
+ 
     <script>
-        var widget = avalon.ui.test = function (elem, data, viewModels) {
-            //elem表示着上面HTML的input
-            var vm = avalon.define(data.testId, function (vm) {
-                vm.$init = function () {
+        require(["../../../../UED/Temp/avalon.oniui-master/textbox/avalon.textbox"], function () {
+            avalon.define("demo4", function (vm) {
+                // 注意不可通过suggest重写suggest值，要不然就不能加载suggest插件
+                vm.x = "";
+                vm.p = "";
+            })
+            // 根据提示类型的不同提供提示信息，也就是信息的过滤方式完全由用户自己决定
+            avalon.scan();
+
+            avalon.ui["suggest"].strategies["test"] = function (value, done) {
+                // 添加策略
+                // done(array ) {callback}
+                setTimeout(function () {
+                    done(value ? [
+                        value + "1",
+                        value + "2",
+                        value + "3 这个建议项有点点长哦哦哦哦哦哦哦",
+                        value + "4",
+                        value + "5",
+                        value + "6",
+                        value + "7"
+                    ] : [])
+                }, 100)
+            }
 
 
-                    //**让avalon再扫描一遍DOM，同时绑定上过去所有的Model**
-                    avalon.scan(document.body, [vm].concat(viewModels));
-
-                    //但是调用：avalon.scan()是不会扫描到的...
-                }
-            });
-            return vm;//一旦return，#12的代码失效
-        }
-
-        var vmBlog = avalon.define({
-            $id: 'demo',
-            classify: 'aaa'
-        });
-        avalon.scan();
+            avalon.ui["suggest"].strategies['test1'] = function (value, done) {
+                setTimeout(function () {
+                    var arr = value ? ["xueer", "shirly"] : []
+                    done(arr)
+                }, 100)
+            }
+        })
     </script>
 </body>
 </html>

@@ -43,7 +43,7 @@
                 elem.msRetain = elem.parentNode.msRetain = true;
                 elem.parentNode.insertBefore($containerDOM[0], elem);
                 $containerDOM[0].insertBefore(elem, $containerDOM[0].firstElementChild)
-                avalon.scan($containerDOM[0], viewModel);
+                //avalon.scan($containerDOM[0], viewModel);
                 $elem.on('keydown', function (e) {
                     switch (e.keyCode) {
                         case 40: {//down
@@ -105,8 +105,9 @@
             };
 
         });
-        return viewModel;/*不能return，否则工作异常*/
+        return viewModel;
     };
-
     return widget;
 });
+
+
