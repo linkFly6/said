@@ -178,6 +178,7 @@
     <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.js" />
     <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.min.js" />
     <Content Include="Content\Back\JavaScript\avalon\plus\autoComplete.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plus\groupInput.js" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
@@ -1384,6 +1385,7 @@
     <Content Include="UED\beat-Imgs\s-light3.png" />
     <Content Include="UED\Home\blog.html" />
     <Content Include="UED\Home\blogList.html" />
+    <Content Include="UED\Home\Index.html" />
     <Content Include="UED\Home\music.html" />
     <Content Include="UED\Home\Public.html" />
     <Content Include="UED\Home\said.html" />

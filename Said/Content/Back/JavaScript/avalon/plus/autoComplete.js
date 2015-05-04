@@ -20,6 +20,7 @@
                 vm.activeIndex = -1;
             };
             vm.filter = [];
+            
             vm.display = 'none';
             vm.activeIndex = -1;
             vm.query = function (value) {
