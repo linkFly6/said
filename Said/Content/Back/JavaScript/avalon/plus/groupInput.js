@@ -1,61 +1,73 @@
-﻿define(['jquery', 'avalon', 'autoComplete'], function ($, avalon) {
-    var template = '<div class="OPTION_CONTAINER_CLASS">\
+﻿define(['jquery', 'avalon'], function ($, avalon) {
+    var globalTemplate = '<div class="OPTION_CONTAINER_CLASS" ZINDEX>\
                         <div class="OPTION_SELECTED" ms-visible="values.length">\
                             <label ms-repeat-item="values"><span>{{item}}</span><a class="OPTION_VALUESITEM" href="javascript:;" ms-click="removeClick($index)">×</a></label>\
                         </div>\
                         <div class="OPTION_QUERYSELECT" ms-visible="filters.length">\
-                            <a class="OPTION_ITEM" href="javascript:;" ms-repeat-item="filter" ms-class="active:$index==activeIndex"  ms-click="itemClick($index)">{{item}}</a>\
-                        </div></div>',
-        defaults = {};
-    var widget = avalon.ui.autoComplete = function (elem, data, vms) {
-        var datas = data.autoCompleteOptions.datas,
+                            <a class="OPTION_ITEM" href="javascript:;" ms-repeat-item="filters" ms-class="active:$index==activeIndex"  ms-click="itemClick($index)">{{item}}</a>\
+                        </div></div>';
+    var widget = avalon.ui.groupInput = function (elem, data, vms) {
+        var options = data.groupInputOptions,
+            datas = data.groupInputOptions.datas,
             trim = String.prototype.trim,
-            options = data.autoCompleteOptions,
-            $containerDOM = $(template),
+            template = globalTemplate,
+            $containerDOM,
             viewModel, $elem = $(elem),
             stop = function (e) {
                 e.preventDefault();
             },
             len;
-        viewModel = avalon.define(data.autoCompleteId, function (vm) {
+        console.log(options.zIndex, elem);
+        if (options.zIndex > 0)
+            template = template.replace('ZINDEX', 'style="z-index:' + options.zIndex + '"');
+        $containerDOM = $(template.replace('OPTION_CONTAINER_CLASS', options.classContaier || '')
+                                    .replace('OPTION_SELECTED', options.classSelected || '')
+                                    .replace('OPTION_VALUESITEM', options.classValuesItem || '')
+                                    .replace('OPTION_QUERYSELECT', options.classQuerySelect || '')
+                                    .replace('OPTION_ITEM', options.classSelectItem || ''));
+        viewModel = avalon.define(data.groupInputId, function (vm) {
             /*tag逻辑*/
-            if (vm.multiple) {
-                vm.values = Array.isArray(options.values) ? options.values : [];
+            vm.values = [];
+            if (options.multiple) {
+                if (Array.isArray(options.values))
+                    vm.values = options.values;
                 vm.removeClick = function (index) {
                     vm.values.splice(index, 1);
                 };
-
             }
-
-            var test = false;
-            test ? (test = 1, test = 2, test = 3)/*多行合并为一行*/ : (test = 0);
-
-
             /*下拉框逻辑*/
-            var reset = function () {
-                vm.filters.splice(0, vm.filters.length);
+            var reset = function (isClear) {
+                if (isClear === true) {
+                    vm.filters.splice(0, vm.filters.length);
+                    len = 0;
+                }
                 vm.activeIndex = -1;
             };
             if (datas && datas.length) {
-                vm.filter = [];
+                vm.filters = [];
                 vm.display = 'none';
                 vm.activeIndex = -1;
                 vm.query = function (value) {
                     value = value.toLowerCase();
-                    this.filter = value == '' ? [] :
+                    this.filters = value == '' ? [] :
                         value.trim() === '' ?
                         datas :
                         datas.filter(function (item) {
                             return ~item.toLowerCase().indexOf(value);
                         });
+                    len = this.filters.length;
                     reset();
                 };
                 vm.vals = function (index) {
-                    $elem.val(vm.filter[index]);
+                    if (options.multiple) {
+                        vm.values.push(vm.filters[index]);
+                        $elem.val('');
+                    } else
+                        $elem.val(vm.filters[index]);
                 };
                 vm.itemClick = function (index) {
                     vm.vals(index);
-                    reset();
+                    reset(true);
                 };
             }
             vm.$init = function () {
@@ -80,21 +92,21 @@
                             vm.activeIndex--;
                         } break;
                         case 27: {//esc
-                            reset();
+                            reset(true);
                         } break;
                         case 13: {//enter
                             stop(e);//防止表单提交
                             e.stopPropagation();
                             if (!~vm.activeIndex) return false;
                             vm.vals(vm.activeIndex);
-                            reset();
+                            reset(true);
                         } break;
-                            //default:
-                            //    reset();
-                            //    break;
+                        default:
+                            reset();
+                            break;
                     }
                 })
-                    .on('input', vm.multiple ?
+                    .on('input', options.multiple ?
                     function () {
                         vm.query(this.value);
                     } : function () {
@@ -105,7 +117,7 @@
                 //    reset();
                 //});
 
-                if (vm.values && vm.values.length) {
+                if (options.multiple) {
                     $elem.on('keydown', function (e) {
                         switch (e.keyCode) {
                             case 9://tab

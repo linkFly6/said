@@ -27,25 +27,13 @@
                 <div class="panel panel-default relative-container">
                     <div class="panel-heading">附加信息</div>
                     <div class="panel-body">
-                        <div class="input-group">
+                        <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            <div class="queryInputBar tagInputBar form-control">
-                                <div class="tag-selected">
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                    <label><span>JavaScript</span><a href="javascript:;">×</a></label>
-                                </div>
-                                <input type="text" class="tag-input" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" required />
-                            </div>
+                            <input type="text" class="tag-input" ms-duplex="bTag" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" ms-widget="groupInput" required />
                         </div>
-                        <div class="input-group" ms-class="has-error:!classify.length">
+                        <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
-                            <input type="text" name="classify" class="form-control" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="autoComplete" />
+                            <input type="text" name="classify" class="form-control" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="groupInput" />
                         </div>
                     </div>
                 </div>
@@ -140,7 +128,7 @@
             baseUrl: '/Content/Back/JavaScript',
             paths: {
                 'avalon': 'avalon/avalon.mobile.min',
-                'autoComplete': 'avalon/plus/autoComplete',
+                'groupInput': 'avalon/plus/groupInput',
             },
             packages: [
             {
@@ -161,7 +149,7 @@
             tags: ['split'],
             classifyList: ['HTML', 'CSS', 'linkFly', 'C#', 'Bootstrap', 'JavaScript', 'XML']
         };
-        require(['jquery', 'so', 'so/plug/search', 'avalon', 'autoComplete'], function ($, so, Search, avalon) {
+        require(['jquery', 'so', 'so/plug/search', 'avalon', 'groupInput'], function ($, so, Search, avalon) {
 
             $(function () {
                 var vmBlog = avalon.define({
@@ -177,9 +165,6 @@
                     bContext: '',
                     bImg: '',
                     classify: 'linkFly',
-                    autoComplete: {
-                        datas: defaultValue.classifyList
-                    },
                     $skipArray: ['bTag', 'bImg'],
                     preview: function () {
 
@@ -191,19 +176,27 @@
 
                     }
                 });
-                //avalon.define({
-                //    $id: 'defaultsDatas',
-                //    tags: defaultValue.tags,
-                //    classify: '',
-                //    autoComplete: {
-                //        datas: defaultValue.classifyList
-                //    }
-                //});
+                avalon.define({
+                    $id: 'tagController',
+                    tags: defaultValue.tags,
+                    groupInput: {
+                        datas: defaultValue.classifyList,
+                        multiple: true,
+                        custom: true,
+                        zIndex: 9999
+                    }
+                });
+                avalon.define({
+                    $id: 'classifyController',
+                    groupInput: {
+                        datas: defaultValue.classifyList,
+                        classContaier: 'queryInputBar'
+                    }
+                });
 
                 //var vmBlog = avalon.define('blog', function (vm) {
                 //    vm.BTitle = '';
                 //});
-                console.dir(avalon.vmodels);
                 avalon.scan();
 
             });
