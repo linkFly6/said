@@ -45,21 +45,22 @@
 .song-Upload { position: absolute; height: 100%; width: 100%; cursor: pointer; padding: 0; opacity: 0; }
 
 /*tag-input*/
-.tagInputBar { padding: 6px 12px 1px; height: auto; z-index: 3!important; }
-.tag-input { border: none; box-shadow: none!important; padding: 0 0 5px; }
+.tagInputBar { padding: 6px 12px 1px; height: auto; }
+.tag-input { border: none; box-shadow: none!important; line-height: 1.42857; }
 .tag-selected { display: inline; }
-    .tag-selected label { border: 1px solid #cad8f3; background: #dee7f8; border-radius: 6px; padding: 0 0.5em 0.1em; margin-right: 5px; }
+    .tag-selected label { border: 1px solid #cad8f3; background: #dee7f8; border-radius: 6px; padding: 0 0.5em 0.1em; margin: 2px 5px 2px; }
         .tag-selected label:hover { border-color: #6d95e0; background-color: #bbcef1; }
     .tag-selected span, .tag-selected a { font-weight: normal!important; }
     .tag-selected a { width: 10px; height: 10px; font-size: 16px; color: #777; text-decoration: none; padding-left: 6px; }
 
 /*query*/
+.tagInputBar .tag-body { padding: 6px 12px; }
 .queryInputBar { position: relative; }
+    .queryInputBar.form-control { padding: 0; }
     .queryInputBar .form-control { border-radius: 0; }
-.querySelect { position: absolute; top: 34px; left: 0; z-index: 4; width: 100%; background-color: #FFF; border: 1px solid #b5b5b5; border-top: none; }
+.querySelect { position: absolute; left: 0; top: 34px; z-index: 4; width: 100%; background-color: #FFF; border: 1px solid #b5b5b5; border-top: none; }
     .querySelect .select-item { display: block; padding: 0 9px; line-height: 27px; color: #555; text-decoration: none; }
         .querySelect .select-item:hover, .querySelect .active { background-color: #f3f3f3; }
-.tag-selected { }
 
 @keyframes maskError {
     0% { color: #ededed; }

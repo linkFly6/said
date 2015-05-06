@@ -183,23 +183,24 @@
                         datas: defaultValue.classifyList,
                         multiple: true,
                         custom: true,
-                        zIndex: 9999
-                    }
-                });
-                avalon.define({
-                    $id: 'classifyController',
-                    groupInput: {
-                        datas: defaultValue.classifyList,
-                        classContaier: 'queryInputBar'
-                    }
-                });
-
-                //var vmBlog = avalon.define('blog', function (vm) {
-                //    vm.BTitle = '';
-                //});
-                avalon.scan();
-
+                        zIndex: 4,
+                        values:new Array(20).join('bootstrap.').split('.')
+            }
             });
+        avalon.define({
+            $id: 'classifyController',
+            groupInput: {
+                datas: defaultValue.classifyList,
+                classContaier: 'queryInputBar'
+            }
+        });
+
+        //var vmBlog = avalon.define('blog', function (vm) {
+        //    vm.BTitle = '';
+        //});
+        avalon.scan();
+
+        });
         });
     </script>
 }

@@ -1,44 +1,51 @@
 ﻿define(['jquery', 'avalon'], function ($, avalon) {
-    var globalTemplate = '<div class="OPTION_CONTAINER_CLASS" ZINDEX>\
+    var globalTemplate = '<div class="OPTION_CONTAINER_CLASS" style="position:relative;ZINDEX" ><div class="OPTION_BODY">\
                         <div class="OPTION_SELECTED" ms-visible="values.length">\
                             <label ms-repeat-item="values"><span>{{item}}</span><a class="OPTION_VALUESITEM" href="javascript:;" ms-click="removeClick($index)">×</a></label>\
-                        </div>\
-                        <div class="OPTION_QUERYSELECT" ms-visible="filters.length">\
+                        </div></div>\
+                        <div class="OPTION_QUERYSELECT" style="position:absolute;" ms-visible="filters.length">\
                             <a class="OPTION_ITEM" href="javascript:;" ms-repeat-item="filters" ms-class="active:$index==activeIndex"  ms-click="itemClick($index)">{{item}}</a>\
                         </div></div>';
+    //TODO 把最后一个div[OPTION_QUERYSELECT]给移到大div外面，然后加一个隔板就可以了
     var widget = avalon.ui.groupInput = function (elem, data, vms) {
         var options = data.groupInputOptions,
             datas = data.groupInputOptions.datas,
             trim = String.prototype.trim,
-            template = globalTemplate,
             $containerDOM,
             viewModel, $elem = $(elem),
             stop = function (e) {
                 e.preventDefault();
             },
             len;
-        console.log(options.zIndex, elem);
-        if (options.zIndex > 0)
-            template = template.replace('ZINDEX', 'style="z-index:' + options.zIndex + '"');
-        $containerDOM = $(template.replace('OPTION_CONTAINER_CLASS', options.classContaier || '')
+        //TODO 注意修正样式的正确性
+        $containerDOM = $(globalTemplate.replace('OPTION_CONTAINER_CLASS', options.classContaier || '')
+                                    .replace('ZINDEX', options.zIndex > 0 ? 'z-index:' + options.zIndex + '' : '')
                                     .replace('OPTION_SELECTED', options.classSelected || '')
                                     .replace('OPTION_VALUESITEM', options.classValuesItem || '')
+                                    .replace('OPTION_BODY', options.classbody || '')
                                     .replace('OPTION_QUERYSELECT', options.classQuerySelect || '')
                                     .replace('OPTION_ITEM', options.classSelectItem || ''));
         viewModel = avalon.define(data.groupInputId, function (vm) {
+            var isMultiple = options.multiple,
+                domQueryBody = $containerDOM[0].lastElementChild,//如果是多选模式，则可能需要计算位置信息
+                positionTop;
             /*tag逻辑*/
             vm.values = [];
-            if (options.multiple) {
+            if (isMultiple) {
                 if (Array.isArray(options.values))
-                    vm.values = options.values;
+                    vm.values = options.values.filter(function (item) {
+                        return String(item).length > 0;
+                    });
                 vm.removeClick = function (index) {
                     vm.values.splice(index, 1);
                 };
+                positionTop = $elem.offset().top;
             }
             /*下拉框逻辑*/
             var reset = function (isClear) {
                 if (isClear === true) {
                     vm.filters.splice(0, vm.filters.length);
+                    elem.focus();
                     len = 0;
                 }
                 vm.activeIndex = -1;
@@ -54,12 +61,15 @@
                         datas :
                         datas.filter(function (item) {
                             return ~item.toLowerCase().indexOf(value);
-                        });
-                    len = this.filters.length;
+                        }).splice(0, 10);
+                    if (len = this.filters.length) {
+                        if (isMultiple)
+                            domQueryBody.style.top = $containerDOM.height() + 1 + 'px';
+                    }
                     reset();
                 };
                 vm.vals = function (index) {
-                    if (options.multiple) {
+                    if (isMultiple) {
                         vm.values.push(vm.filters[index]);
                         $elem.val('');
                     } else
@@ -73,7 +83,7 @@
             vm.$init = function () {
                 elem.msRetain = true;
                 elem.parentNode.insertBefore($containerDOM[0], elem);
-                $containerDOM[0].insertBefore(elem, $containerDOM[0].lastElementChild);
+                $containerDOM[0].firstElementChild.appendChild(elem);
                 elem.msRetain = false;
                 $elem.on('keydown', function (e) {
                     switch (e.keyCode) {
@@ -106,7 +116,7 @@
                             break;
                     }
                 })
-                    .on('input', options.multiple ?
+                    .on('input', isMultiple ?
                     function () {
                         vm.query(this.value);
                     } : function () {
@@ -117,7 +127,7 @@
                 //    reset();
                 //});
 
-                if (options.multiple) {
+                if (isMultiple) {
                     $elem.on('keydown', function (e) {
                         switch (e.keyCode) {
                             case 9://tab
@@ -167,6 +177,7 @@
             return tmp;
         },
         classContaier: 'queryInputBar tagInputBar form-control',
+        classbody: 'tag-body',
         classSelected: 'tag-selected',
         classValuesItem: 'tag-selectItem',
         classQuerySelect: 'querySelect',
