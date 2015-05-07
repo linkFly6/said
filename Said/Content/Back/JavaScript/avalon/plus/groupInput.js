@@ -1,11 +1,11 @@
 ﻿define(['jquery', 'avalon'], function ($, avalon) {
-    var globalTemplate = '<div class="OPTION_CONTAINER_CLASS" style="position:relative;ZINDEX" ><div class="OPTION_BODY">\
+    var globalTemplate = '<div class="OPTION_CONTAINER_CLASS" style="position:relative;ZINDEX"><div class="OPTION_BODY" >\
                         <div class="OPTION_SELECTED" ms-visible="values.length">\
                             <label ms-repeat-item="values"><span>{{item}}</span><a class="OPTION_VALUESITEM" href="javascript:;" ms-click="removeClick($index)">×</a></label>\
                         </div></div>\
-                        <div class="OPTION_QUERYSELECT" style="position:absolute;" ms-visible="filters.length">\
+                        <div style="position:relative;"><div class="OPTION_QUERYSELECT" style="position:absolute;top:1px;" ms-visible="filters.length">\
                             <a class="OPTION_ITEM" href="javascript:;" ms-repeat-item="filters" ms-class="active:$index==activeIndex"  ms-click="itemClick($index)">{{item}}</a>\
-                        </div></div>';
+                        </div></div></div>';
     //TODO 把最后一个div[OPTION_QUERYSELECT]给移到大div外面，然后加一个隔板就可以了
     var widget = avalon.ui.groupInput = function (elem, data, vms) {
         var options = data.groupInputOptions,
@@ -17,8 +17,8 @@
                 e.preventDefault();
             },
             len;
-        //TODO 注意修正样式的正确性
         $containerDOM = $(globalTemplate.replace('OPTION_CONTAINER_CLASS', options.classContaier || '')
+                                    .replace('OPTION_BODY', options.classbody)
                                     .replace('ZINDEX', options.zIndex > 0 ? 'z-index:' + options.zIndex + '' : '')
                                     .replace('OPTION_SELECTED', options.classSelected || '')
                                     .replace('OPTION_VALUESITEM', options.classValuesItem || '')
@@ -26,33 +26,43 @@
                                     .replace('OPTION_QUERYSELECT', options.classQuerySelect || '')
                                     .replace('OPTION_ITEM', options.classSelectItem || ''));
         viewModel = avalon.define(data.groupInputId, function (vm) {
-            var isMultiple = options.multiple,
-                domQueryBody = $containerDOM[0].lastElementChild,//如果是多选模式，则可能需要计算位置信息
-                positionTop;
+            var isMultiple = options.multiple, acceptCustom = options.custom;
             /*tag逻辑*/
             vm.values = [];
             if (isMultiple) {
                 if (Array.isArray(options.values))
+                    //TODO 要过滤外面给进来的不正确的数组（例如重复值）
                     vm.values = options.values.filter(function (item) {
                         return String(item).length > 0;
                     });
                 vm.removeClick = function (index) {
                     vm.values.splice(index, 1);
                 };
-                positionTop = $elem.offset().top;
             }
             /*下拉框逻辑*/
             var reset = function (isClear) {
                 if (isClear === true) {
                     vm.filters.splice(0, vm.filters.length);
-                    elem.focus();
                     len = 0;
                 }
                 vm.activeIndex = -1;
+            },
+                checkCustomInput = function () {
+                    if (!acceptCustom && elem.value.trim().length && !~datas.indexOf(elem.value.trim()))
+                        elem.value = '';
+                };
+            vm.filters = [];
+            vm.vals = function (index) {
+                if (isMultiple) {
+                    vm.values.push(vm.filters[index]);
+                    options.val.call(elem, vm.values);
+                    $elem.val('');
+                } else {
+                    $elem.val(vm.filters[index]);
+                    options.val.call(elem, vm.filters[index]);
+                }
             };
             if (datas && datas.length) {
-                vm.filters = [];
-                vm.display = 'none';
                 vm.activeIndex = -1;
                 vm.query = function (value) {
                     value = value.toLowerCase();
@@ -60,29 +70,20 @@
                         value.trim() === '' ?
                         datas :
                         datas.filter(function (item) {
-                            return ~item.toLowerCase().indexOf(value);
+                            return ~item.toLowerCase().indexOf(value) && !~vm.values.indexOf(item);
                         }).splice(0, 10);
-                    if (len = this.filters.length) {
-                        if (isMultiple)
-                            domQueryBody.style.top = $containerDOM.height() + 1 + 'px';
-                    }
+                    len = this.filters.length;
                     reset();
-                };
-                vm.vals = function (index) {
-                    if (isMultiple) {
-                        vm.values.push(vm.filters[index]);
-                        $elem.val('');
-                    } else
-                        $elem.val(vm.filters[index]);
                 };
                 vm.itemClick = function (index) {
                     vm.vals(index);
                     reset(true);
+                    elem.focus();
                 };
             }
             vm.$init = function () {
                 elem.msRetain = true;
-                elem.parentNode.insertBefore($containerDOM[0], elem);
+                $elem.before($containerDOM);
                 $containerDOM[0].firstElementChild.appendChild(elem);
                 elem.msRetain = false;
                 $elem.on('keydown', function (e) {
@@ -103,6 +104,7 @@
                         } break;
                         case 27: {//esc
                             reset(true);
+                            checkCustomInput();
                         } break;
                         case 13: {//enter
                             stop(e);//防止表单提交
@@ -116,10 +118,7 @@
                             break;
                     }
                 })
-                    .on('input', isMultiple ?
-                    function () {
-                        vm.query(this.value);
-                    } : function () {
+                    .on('input', function () {
                         vm.query(this.value);
                     })
 
@@ -138,7 +137,6 @@
                                     if (trim.call(elem.value) === '' || !options.custom) return;
                                     vm.values.push(trim.call(elem.value));
                                     elem.value = '';
-                                    //TODO 这里得通知到外面其实是有值的
                                 } break;
                             case 8: {//backSpace
                                 if (vm.values.length && elem.value === '')
@@ -151,8 +149,10 @@
 
                 //这里好纠结啊，为elem注册blur，firefox下blur触发在content.click之前，所以要给document下注册事件，法克...
                 window.document.addEventListener('click', function (e) {
-                    if (e.target !== $containerDOM[0] && e.target.parentNode !== $containerDOM[0])
-                        reset();
+                    if (!$containerDOM[0].contains(e.target)) {
+                        reset(true);
+                        checkCustomInput();
+                    }
                 });
 
 
@@ -164,8 +164,8 @@
                 avalon.scan($containerDOM[0], [viewModel].concat(vms));
             };
             vm.$remove = function () {
-                $elem.remove();
-                $elem = null;
+                $containerDOM.remove();
+                $containerDOM = null;
             };
 
         });
@@ -176,14 +176,17 @@
             //可有可无，用户自己配置模板
             return tmp;
         },
-        classContaier: 'queryInputBar tagInputBar form-control',
-        classbody: 'tag-body',
+        classContaier: 'queryInputBar form-control',
+        classbody: 'input-body',
         classSelected: 'tag-selected',
         classValuesItem: 'tag-selectItem',
         classQuerySelect: 'querySelect',
         classSelectItem: 'select-item',
+        val: function (values) {
+            return values;
+        },
         multiple: false,
-        custom: false,
+        custom: true,
         values: [],
         datas: [],
         zIndex: -1

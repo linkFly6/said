@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "AddBlog";
+    ViewBag.Title = "Said后台管理系统 - 添加Blog";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
 }
 <div class="page-header">
@@ -29,11 +29,11 @@
                     <div class="panel-body">
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            <input type="text" class="tag-input" ms-duplex="bTag" name="sTag" placeholder='标签，支持[、,空格]分隔' autocomplete="off" id="stag" ms-widget="groupInput" required />
+                            <input type="text" class="tag-input" ms-duplex="bTag" name="sTag" placeholder='标签，支持[tab]分隔' autocomplete="off" id="stag" ms-widget="groupInput" required />
                         </div>
                         <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
-                            <input type="text" name="classify" class="form-control" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="groupInput" />
+                            <input type="text" name="classify" class="classify-input" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="groupInput" />
                         </div>
                     </div>
                 </div>
@@ -182,25 +182,26 @@
                     groupInput: {
                         datas: defaultValue.classifyList,
                         multiple: true,
-                        custom: true,
+                        zIndex: 5,
+                        values: new Array(20).join('bootstrap.').split('.')
+                    }
+                });
+                avalon.define({
+                    $id: 'classifyController',
+                    groupInput: {
+                        datas: defaultValue.classifyList,
                         zIndex: 4,
-                        values:new Array(20).join('bootstrap.').split('.')
-            }
+                        custom: false
+                        //classContaier: 'queryInputBar'
+                    }
+                });
+
+                //var vmBlog = avalon.define('blog', function (vm) {
+                //    vm.BTitle = '';
+                //});
+                avalon.scan();
+
             });
-        avalon.define({
-            $id: 'classifyController',
-            groupInput: {
-                datas: defaultValue.classifyList,
-                classContaier: 'queryInputBar'
-            }
-        });
-
-        //var vmBlog = avalon.define('blog', function (vm) {
-        //    vm.BTitle = '';
-        //});
-        avalon.scan();
-
-        });
         });
     </script>
 }
