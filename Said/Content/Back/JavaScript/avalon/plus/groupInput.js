@@ -6,7 +6,6 @@
                         <div style="position:relative;"><div class="OPTION_QUERYSELECT" style="position:absolute;top:1px;" ms-visible="filters.length">\
                             <a class="OPTION_ITEM" href="javascript:;" ms-repeat-item="filters" ms-class="active:$index==activeIndex"  ms-click="itemClick($index)">{{item}}</a>\
                         </div></div></div>';
-    //TODO 把最后一个div[OPTION_QUERYSELECT]给移到大div外面，然后加一个隔板就可以了
     var widget = avalon.ui.groupInput = function (elem, data, vms) {
         var options = data.groupInputOptions,
             datas = data.groupInputOptions.datas,
