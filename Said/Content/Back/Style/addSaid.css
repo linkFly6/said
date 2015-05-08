@@ -32,14 +32,19 @@
 .panel-subTitle { border-top: 1px solid #ddd; border-radius: 0; }
 .error-check { text-align: center; padding: 5px 0 20px; }
     .error-check .error { color: red; }
-/*mask*/
-.said-mask { opacity: 0.8; content: ''; display: block; position: absolute; width: 100%; height: 100%; z-index: 3; cursor: pointer; background: #222 linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)); transition: opacity ease-in-out 0.2s; border: 1px solid black; }
-    .said-mask span { position: absolute; text-align: center; color: #ededed; font-size: 36px; display: block; width: 100%; top: 44.5%; }
-    .said-mask:hover { opacity: 0.6; }
-    .said-mask .progress { position: absolute; bottom: 0; left: 0; width: 100%; margin: 0; border-radius: 0; background-color: transparent; }
-.said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
+
 .said-error { border-color: #a94442!important; }
 .said-checkbox label { padding-right: 15px; }
+/*mask*/
+.so-upload-mask { opacity: 0.8; content: ''; display: block; position: absolute; width: 100%; height: 100%; z-index: 3; cursor: pointer; background: #222 linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)); transition: opacity ease-in-out 0.2s; border: 1px solid black; }
+    .so-upload-mask.uploading { cursor: default; }
+    .so-upload-mask span { position: absolute; text-align: center; color: #ededed; font-size: 36px; display: block; width: 100%; top: 44.5%; }
+    .so-upload-mask:hover { opacity: 0.6; }
+    .so-upload-mask .so-upload-progress { position: absolute; bottom: 0; left: 0; margin: 0; border-radius: 0; background-color: transparent; background-color: #5bc0de; height: 100%; }
+.said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
+
+
+
 /*song-img*/
 .song-up-content { position: relative; }
 .song-Upload { position: absolute; height: 100%; width: 100%; cursor: pointer; padding: 0; opacity: 0; }

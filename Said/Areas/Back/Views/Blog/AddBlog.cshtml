@@ -38,16 +38,7 @@
                     </div>
                 </div>
                 <div class="panel panel-default relative-container">
-                    <div class="said-mask">
-                        <span>上传缩略图</span>
-                        <div class="progress">
-                            <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
-                                <span class="sr-only"></span>
-                            </div>
-                        </div>
-                        <input type="file" name="saidSummayImgFile" data-ng-model="article.saidSummayImg" class="hidden-file" />
-                        <input type="hidden" name="saidSummayImg" data-ng-model="article.saidSummayImg" />
-                    </div>
+                    <div ms-controller="uploadController" ms-widget="upload"></div>
                     <div class="panel-heading">描述</div>
                     <div class="panel-body">
                         <div class="col-md-4">
@@ -129,6 +120,7 @@
             paths: {
                 'avalon': 'avalon/avalon.mobile.min',
                 'groupInput': 'avalon/plus/groupInput',
+                'upload': 'avalon/plus/upload',
             },
             packages: [
             {
@@ -145,11 +137,21 @@
                 avalon: { exports: "avalon" }
             }
         });
-        var defaultValue = {
+
+        var Action = {
+            song: '/Source/SaidSong',
+            imagesSourceCenter: '@Url.Action("UploadSaidImg", "Source")',
+            imgLocation: '@Url.Content("~/Source/Said/Images/")',
+            music: '@Url.Action("UploadMusic", "Source")',
+            existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
+            existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
+            form: '@Url.Action("AddSaid", "Said")'
+        },
+        defaultValue = {
             tags: ['split'],
             classifyList: ['HTML', 'CSS', 'linkFly', 'C#', 'Bootstrap', 'JavaScript', 'XML']
         };
-        require(['jquery', 'so', 'so/plug/search', 'avalon', 'groupInput'], function ($, so, Search, avalon) {
+        require(['jquery', 'so', 'so/plug/search', 'avalon', 'groupInput', 'upload'], function ($, so, Search, avalon) {
 
             $(function () {
                 var vmBlog = avalon.define({
@@ -195,6 +197,21 @@
                         //classContaier: 'queryInputBar'
                     }
                 });
+
+                avalon.define({
+                    $id: 'uploadController',
+                    upload: {
+                        classFile: 'hidden-file',
+                        url: Action.imagesSourceCenter,
+                        done: function (data) {
+                            console.log('成功', data);
+                        },
+                        fail: function (data) {
+                            console.log('失败', data);
+                        }
+                    }
+                });
+
 
 
 

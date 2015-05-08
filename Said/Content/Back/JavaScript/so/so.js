@@ -14,6 +14,9 @@
         factory(global);
     }
 })(typeof window !== 'undefined' ? window : this, function (window, noGlobal) {
+
+    //so的核心是提供工具，核心应该是提供静态方法，而对象方法只是馈赠
+
     var strundefined = typeof void (0),
         toString = Object.prototype.toString,
 		each = Array.prototype.forEach,
