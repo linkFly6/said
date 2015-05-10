@@ -39,6 +39,7 @@
             //document.documentElement.scrollTop;//ie
         },
         setPos = function (elem) {
+            //位置获取还是有问题啊...
             var width = elem.clientWidth + 6,//border=>3px
                 height = elem.clientHeight + 6 + 200,//+200是为了美观，偏上一丢丢...
                 innerHeight = window.innerHeight,//视口高度
@@ -106,6 +107,8 @@
     window.showMsg = ShowMsg;
     //兼容amd
     if (typeof define === "function" && define.amd) {
-        define("showMsg", ['so'], function () { });
+        define("showMsg", ['so'], function () {
+            return ShowMsg;
+        });
     }
 })(window);

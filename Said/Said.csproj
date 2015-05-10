@@ -179,6 +179,7 @@
     <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.min.js" />
     <Content Include="Content\Back\JavaScript\avalon\plus\autoComplete.js" />
     <Content Include="Content\Back\JavaScript\avalon\plus\groupInput.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plus\upload.js" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />

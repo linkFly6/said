@@ -75,16 +75,28 @@ namespace Said.Areas.Back.Controllers
         public JsonResult UploadSaidImg()
         {
             //分析上传的文件信息，返回解析得到的结果
-            return UploadFile(Request.Files["saidFile"], IMGFILTERARRAY, imgMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Images/")));
-
+            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, imgMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Images/")));
         }
+
+
+        /// <summary>
+        /// 上传Said图片
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult UploadBlogImg()
+        {
+            //分析上传的文件信息，返回解析得到的结果
+            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, imgMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Blog/Images/")));
+        }
+
+
         /// <summary>
         /// 上传歌曲
         /// </summary>
         /// <returns></returns>
         public JsonResult UploadMusic()
         {
-            return UploadFile(Request.Files["saidFile"],
+            return UploadFile(Request.Files["uploadFile"],
                 MUSICFILTERARRAY,
                 musicMaxSize,
                 FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Musics/")));
@@ -98,16 +110,16 @@ namespace Said.Areas.Back.Controllers
         public JsonResult UploadClassifyIcons()
         {
             return UploadFile(
-                Request.Files["saidFile"],
+                Request.Files["uploadFile"],
                 IMGFILTERARRAY,
                 imgMaxSize,
                 FileCommon.ExistsCreate(Server.MapPath("~/Source/Sys/Images/Icons/")));
         }
 
         #region 通用方法
-        private JsonResult UploadResult(int errorCode, string msg, string name = null)
+        private JsonResult UploadResult(int code, string msg, string name = null)
         {
-            return Json(new { error = errorCode, msg = msg, name = name });
+            return Json(new { code = code, msg = msg, name = name });
         }
         #endregion
 

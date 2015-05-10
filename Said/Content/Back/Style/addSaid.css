@@ -38,9 +38,9 @@
 /*mask*/
 .so-upload-mask { opacity: 0.8; content: ''; display: block; position: absolute; width: 100%; height: 100%; z-index: 3; cursor: pointer; background: #222 linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)); transition: opacity ease-in-out 0.2s; border: 1px solid black; }
     .so-upload-mask.uploading { cursor: default; }
-    .so-upload-mask span { position: absolute; text-align: center; color: #ededed; font-size: 36px; display: block; width: 100%; top: 44.5%; }
+    .so-upload-mask span { position: absolute; text-align: center; color: #ededed; font-size: 36px; display: block; width: 100%; top: 44.5%; z-index: 2; }
     .so-upload-mask:hover { opacity: 0.6; }
-    .so-upload-mask .so-upload-progress { position: absolute; bottom: 0; left: 0; margin: 0; border-radius: 0; background-color: transparent; background-color: #5bc0de; height: 100%; }
+    .so-upload-mask .so-upload-progress { position: absolute; bottom: 0; left: 0; margin: 0; border-radius: 0; background-color: transparent; background-color: #5bc0de; height: 100%; transition: width ease-in-out 0.2s; z-index: 0; }
 .said-maskError span { color: red; animation: maskError 2s linear 2s 2 infinite; }
 
 
