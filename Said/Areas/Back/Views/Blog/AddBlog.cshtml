@@ -25,10 +25,10 @@
     <form name="blogForm" method="post" ms-controller="blog" novalidate spellcheck="false">
         <div class="said-article">
             <div class="said-title-con">
-                <input name="bTitle" ms-duplex="bTitle" class="said-title" ms-class="said-error:!bTitle.length" autocomplete="off" placeholder="文章标题" ms-change="saveTolocalStorage($event,this)" required />
+                <input name="bTitle" ms-duplex="bTitle" class="said-title" ms-class="said-error:!bTitle.length" ms-change="saveTolocalStorage('bTitle',bTitle)" autocomplete="off" placeholder="文章标题" required />
             </div>
             <div class="said-context-content">
-                <textarea name="bContext" class="said-context" ms-duplex="bContext" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
+                <textarea name="bContext" class="said-context" ms-duplex="bContext" ms-change="saveTolocalStorage('bContext',bContext)" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
             </div>
             <button class="btn btn-lg said-priview center-block" ms-click="preview(bContext)" type="button">预览</button>
         </div>
@@ -40,7 +40,8 @@
                     <div class="panel-body">
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            <input type="text" class="tag-input" ms-duplex="bTag" name="sTag" placeholder='标签，支持[tab]分隔' autocomplete="off" id="stag" ms-widget="groupInput" required />
+                            <!--ms-duplex="bTag"-->
+                            <input type="text" class="tag-input" ms-change="saveTolocalStorage('bTag',bTag)" name="sTag" placeholder='标签，支持[tab]分隔' autocomplete="off" id="stag" ms-widget="groupInput" required />
                         </div>
                         <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
@@ -55,14 +56,14 @@
                         <div class="col-md-4">
                             <div class="music-img">
                                 <div class="thumbnail">
-                                    <img src="../../Content/Images/test-said-img.jpg" />
+                                    <img ms-attr-src="bImg ? sourcePath+bImg :'../../Content/Images/test-said-img.jpg'" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <textarea class="said-dis" data-ng-model="article.sSummary" data-ng-class="{ 'said-error':saidForm.sSummary.$invalid&&(saidForm.sSummary.$dirty||article.dirty) }" name="sSummary" placeholder="简介[支持HTML]" required></textarea>
+                            <textarea class="said-dis" ms-duplex="bSummary" ms-class="said-error:bImg&&!bSummary.length" name="bSummary" placeholder="简介[支持HTML]" ms-change="saveTolocalStorage('bSummary',bSummary)" required></textarea>
                             <div class="songOp-btn song-up-content">
-                                <button ms-click="showUpload('uploadImages')" class="btn btn-danger songBtn" type="button">删除</button>
+                                <button ms-click="removeImg('uploadImages')" class="btn btn-danger songBtn" type="button">删除</button>
                             </div>
                         </div>
 
@@ -73,38 +74,29 @@
                 <div class="panel panel-default">
                     <div class="panel-heading ">可选信息</div>
                     <div class="panel-body">
-                        <div class="input-group">
+                        <div class="input-group" ms-class="has-error:checkFile">
                             <span class="input-group-addon">文件</span>
-                            <input type="text" name="sName" class="form-control" ms-duplex="bName" ms-change="asyncCheckExists(this,bName)" placeholder="文章发布的（文件）名称">
+                            <input type="text" name="sName" class="form-control" ms-duplex="bName" ms-input="checkFileName(this,bName)" ms-change="saveTolocalStorage('bName',bName)" data-toggle="tooltip" data-placement="top" title="该文件名已经存在" data-animation="false" placeholder="文章发布的（文件）名称">
                         </div>
                         <div class="form-group">
                             <label>JavaScript</label>
-                            <textarea rows="3" class="form-control" name="sJS" placeholder="自定义JavaScript" ms-duplex="bJS"></textarea>
+                            <textarea rows="3" class="form-control" name="sJS" placeholder="自定义JavaScript" ms-change="saveTolocalStorage('sJS',sJS)" ms-duplex="bJS"></textarea>
                         </div>
                         <div class="form-group">
                             <label>CSS</label>
-                            <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS" ms-duplex="bCSS"></textarea>
+                            <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS" ms-change="saveTolocalStorage('bCSS',bCSS)" ms-duplex="bCSS"></textarea>
                         </div>
                         <div class="checkbox said-checkbox">
                             <label>
-                                <input type="checkbox" ms-duplex-checked="bReprint" name="sReprint" />是否转载</label><label>
-                                    <input type="checkbox" ms-duplex-checked="bIsTop" name="bIsTop" />是否置顶</label>
+                                <input type="checkbox" ms-duplex-checked="bReprint" ms-change="saveTolocalStorage('bReprint',bReprint)" name="sReprint" />是否转载</label><label>
+                                    <input type="checkbox" ms-duplex-checked="bIsTop" ms-change="saveTolocalStorage('bIsTop',bIsTop)" name="bIsTop" />是否置顶</label>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="submit-container">
-            <div class="error-check">
-                发布前会进行错误检测
-            </div>
-            <div class="progress">
-                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 22%">
-                    <span class="sr-only">20% Complete</span>
-                </div>
-            </div>
-            <button class="btn btn-lg said-submit center-block" id="submit" type="submit" data-ng-click="article.submitForm(saidForm)">发布</button>
-            <!--data-ng-class="{'submit-lock':!saidForm.$valid}"-->
+            <button class="btn btn-lg said-submit center-block" ms-class="submit-lock:submitState" type="button" ms-click="save()">发布</button>
         </div>
     </form>
 </div>
@@ -315,15 +307,16 @@
         var Action = {
             song: '/Source/SaidSong',
             imagesSourceCenter: '@Url.Action("UploadBlogImg", "Source")',
-            imgLocation: '@Url.Content("~/Source/Said/Images/")',
+            imgLocation: '@Url.Content("~/Source/Blog/Images/")',
             music: '@Url.Action("UploadMusic", "Source")',
             existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
             existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
-            form: '@Url.Action("AddSaid", "Said")'
+            form: '@Url.Action("AddBlog", "Blog")'
         },
         defaultValue = {
             tags: ['split'],
-            classifyList: ['HTML', 'CSS', 'linkFly', 'C#', 'Bootstrap', 'JavaScript', 'XML']
+            classifyList: ['HTML', 'CSS', 'linkFly', 'C#', 'Bootstrap', 'JavaScript', 'XML'],
+            files: ['Said', 'Blog', 'markdown', 'test', 'linkfly'].map(function (item) { return item.toLowerCase() })
         };
         require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'markdown', 'showDownThemeGithub', 'groupInput', 'upload'], function ($, so, Search, avalon, showMsg, showdown) {
             $(function () {
@@ -381,27 +374,46 @@
                             }
                             return model.modal('show');
                         };
-                    }($('#blog-modal'));
+                    }($('#blog-modal')),
+                    database = new so.DataBase('back.addBlog'),
+                    checkEmptyValue = function (key, title, summary) {
+                        if (!vmBlog[key]) {
+                            dialog(title, summary);
+                            return false;
+                        }
+                        return true;
+                    },
+                    errorHash = {
+                        'bTitle': ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],
+                        'bContext': ['(｡☉౪ ⊙｡)  文章正文不正确', '大哥你连正文都木有发表了文章谁看啊...赶紧检查一下  '],
+                        'bImg': [' (≖ ‿ ≖)✧ 文章插图不正确', 'Said规定所有的文章必须要有灵犀又生动的插图哟...赶紧挑张图片让文章更加的精彩'],
+                        'bSummary': [' (￣▽￣)~* 文章描述不正确', '文章描述是一定要有的，没有文章描述诱惑，别人也许就不会读文章了'],
+                        'classify': [' (｡・`ω´･) 文章分类不正确', '是的，为了以后让你的文章特别特别特别方便的管理/检索，一定要有文章的分类']
+                    },
+                    encode = function (value) {
+                        return encodeURIComponent(value);
+                    };
 
 
                 var vmBlog = avalon.define({
                     $id: 'blog',
-                    bTitle: '',
-                    bTag: '',
-                    bSummary: '',
-                    bReprint: '',
-                    bScript: '',
-                    bIsTop: '',
-                    bHTML: '',
-                    bCSS: '',
-                    bContext: '',
-                    bImg: '',
-                    bName: '',
-                    classify: 'linkFly',
-                    $skipArray: ['bTag', 'bImg'],
+                    bTitle: database.val('bTitle'),
+                    bTag: database.val('bTag'),
+                    bSummary: database.val('bSummary'),
+                    bReprint: database.val('bReprint'),
+                    bScript: database.val('bScript'),
+                    bIsTop: database.val('bIsTop'),
+                    bCSS: database.val('bCSS'),
+                    bContext: database.val('bContext'),
+                    bImg: database.val('bImg'),
+                    bName: database.val('bName'),
+                    classify: database.val('classify'),
+                    checkFile: false,
+                    submitState: false,
+                    $skipArray: ['bTag'],
                     //保存到本地数据库
                     saveTolocalStorage: function (name, value) {
-                        
+                        database.val(name, value);
                     },
                     //预览
                     preview: function (markdownCode) {
@@ -411,16 +423,49 @@
                         }
                         preview('预览 - Blog', converter.makeHtml(markdownCode));
                     },
-                    //异步检测文件是否存在，应该不需要异步的吧..... - -
-                    asyncCheckExists: function (elem, name) {
-                        console.log(arguments);
-                    },
-
+                    checkFileName: function () {
+                        //考虑性能，DOM缓存
+                        var $cache;
+                        return function (elem, value) {
+                            !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
+                            vmBlog.checkFile = !!(value && ~defaultValue.files.indexOf(value.toLowerCase()));
+                            $cache.tooltip(vmBlog.checkFile ? 'show' : 'hide');
+                        }
+                    }(),
                     check: function () {
-
+                        vmBlog.submitState = true;
+                        var temp;
+                        return ['bTitle', 'bContext', 'classify', 'bImg', 'bSummary'].every(function (key) {
+                            temp = errorHash[key];
+                            return checkEmptyValue(key, temp[0], temp[1]);
+                        });
                     },
                     save: function () {
+                        //锁定按钮状态
+                        if (vmBlog.submitState) return;
+                        if (!(vmBlog.submitState = vmBlog.check())) return;
+                        said.ajax(Action.form, {
+                            'bTitle': encode(vmBlog.bTitle),
+                            'bTag': encode(vmBlog.bTag),
+                            'bSummary': encode(vmBlog.bSummary),
+                            'bHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
+                            'bReprint': encode(vmBlog.bReprint),
+                            'bScript': encode(vmBlog.bScript),
+                            'bIsTop': encode(vmBlog.bIsTop),
+                            'bCSS': encode(vmBlog.bCSS),
+                            'bContext': encode(vmBlog.bContext),
+                            'bImg': encode(vmBlog.bImg),
+                            'bName': encode(vmBlog.bName),
+                            'classify': encode(vmBlog.classify)
+                        }).done(function (data) {
+                            console.log('ok', arguments);
+                            vmBlog.submitState = false;
+                        }).fail(function (data) {
+                            console.log(data);
 
+                        }).always(function () {
+                            vmBlog.submitState = false;
+                        });
                     }
                 });
 
@@ -436,7 +481,12 @@
                         datas: defaultValue.classifyList,
                         multiple: true,
                         zIndex: 5,
-                        values: new Array(4).join('bootstrap.').split('.')
+                        callback: function (values) {
+                            //console.log(values);
+                            vmBlog.bTag = values;
+                            database.val('bTag', values);
+                        },
+                        values: vmBlog.bTag
                     }
                 });
                 //classify
@@ -445,27 +495,34 @@
                     groupInput: {
                         datas: defaultValue.classifyList,
                         zIndex: 4,
-                        custom: false
+                        custom: false,
+                        callback: function (value) {
+                            database.val('classify', value);
+                        }
                         //classContaier: 'queryInputBar'
                     }
                 });
 
                 //upload
-                avalon.define({
+                var vmUpload = avalon.define({
                     $id: 'uploadController',
-                    showUpload: function (id) {
+                    sourcePath: Action.imgLocation,
+                    removeImg: function (id) {
                         avalon.vmodels[id].visible = true;
+                        vmBlog.bImg = '';
+                        database.remove('bImg');
                     },
                     upload: {
                         classFile: 'hidden-file',
-                        name: 'testFile',
+                        //name: 'testFile',
                         url: Action.imagesSourceCenter,
+                        visible: !vmBlog.bImg,
                         done: function (vm, data) {
-                            if (!data.code) {
+                            if (data.code) {
                                 showMsg('服务器异常：' + data.msg, showMsg.ERROR, true);
-                                //return true;
+                                return true;
                             }
-                            vmBlog.bImg = data.name;
+                            database.val('bImg', vmBlog.bImg = data.name);
                         },
                         fail: function (vm, data) {
                             showMsg('上传异常：' + data.msg, showMsg.ERROR, true);

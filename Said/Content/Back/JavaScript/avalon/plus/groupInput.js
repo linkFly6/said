@@ -1,6 +1,6 @@
 ﻿define(['jquery', 'avalon'], function ($, avalon) {
     var globalTemplate = '<div class="OPTION_CONTAINER_CLASS" style="position:relative;ZINDEX"><div class="OPTION_BODY" >\
-                        <div class="OPTION_SELECTED" ms-visible="values.length">\
+                        <div class="OPTION_SELECTED" ms-visible="isMultiple&&values.length">\
                             <label ms-repeat-item="values"><span>{{item}}</span><a class="OPTION_VALUESITEM" href="javascript:;" ms-click="removeClick($index)">×</a></label>\
                         </div></div>\
                         <div style="position:relative;"><div class="OPTION_QUERYSELECT" style="position:absolute;top:1px;" ms-visible="filters.length">\
@@ -9,6 +9,7 @@
     var widget = avalon.ui.groupInput = function (elem, data, vms) {
         var options = data.groupInputOptions,
             datas = data.groupInputOptions.datas,
+            callback = options.callback,
             trim = String.prototype.trim,
             $containerDOM,
             viewModel, $elem = $(elem),
@@ -28,6 +29,7 @@
             var isMultiple = options.multiple, acceptCustom = options.custom;
             /*tag逻辑*/
             vm.values = [];
+            vm.isMultiple = isMultiple;
             if (isMultiple) {
                 if (Array.isArray(options.values))
                     //TODO 要过滤外面给进来的不正确的数组（例如重复值）
@@ -52,23 +54,28 @@
                 };
             vm.filters = [];
             vm.vals = function (index) {
-                if (isMultiple) {
-                    vm.values.push(vm.filters[index]);
-                    options.val.call(elem, vm.values);
-                    $elem.val('');
-                } else {
-                    $elem.val(vm.filters[index]);
-                    options.val.call(elem, vm.filters[index]);
-                }
+                var value = typeof index === 'number' ?
+                    vm.filters[index] :
+                    acceptCustom ? index : '';
+                //TODO 去重处理？
+                value && vm.values.push(value);
+                elem.value = isMultiple || !value ? '' : value;
             };
+            //通知回调函数
+            if ($.isFunction(callback) && vm.values.$watch)
+                vm.values.$watch('length', function () {
+                    callback.call(elem, isMultiple ? vm.values : vm.values[0]);
+                });
+
             if (datas && datas.length) {
                 vm.activeIndex = -1;
                 vm.query = function (value) {
                     value = value.toLowerCase();
                     this.filters = value == '' ? [] :
-                        value.trim() === '' ?
-                        datas :
-                        datas.filter(function (item) {
+                        datas.filter(value.trim() === '' ?
+                        function (item) {
+                            return !~vm.values.indexOf(item);
+                        } : function (item) {
                             return ~item.toLowerCase().indexOf(value) && !~vm.values.indexOf(item);
                         }).splice(0, 10);
                     len = this.filters.length;
@@ -133,9 +140,7 @@
                                 //case 190://.
                                 {
                                     e.preventDefault();
-                                    if (trim.call(elem.value) === '' || !options.custom) return;
-                                    vm.values.push(trim.call(elem.value));
-                                    elem.value = '';
+                                    vm.vals(trim.call(elem.value));
                                 } break;
                             case 8: {//backSpace
                                 if (vm.values.length && elem.value === '')
@@ -181,9 +186,9 @@
         classValuesItem: 'tag-selectItem',
         classQuerySelect: 'querySelect',
         classSelectItem: 'select-item',
-        val: function (values) {
-            return values;
-        },
+        //callbck: function (values) {
+        //    return values;
+        //},
         multiple: false,
         custom: true,
         values: [],

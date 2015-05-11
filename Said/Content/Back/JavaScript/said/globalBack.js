@@ -14,6 +14,24 @@
     $(function () {
         bindNavigation($('#example-navbar-collapse'), 'complex', 'open');
     });
+
+
+    /*************************************************************************************
+                                和业务相关的通用逻辑
+    **************************************************************************************/
+
+    said.ajax = function (url, data) {
+        //jQuery.ajax的浅warpper
+        return $.ajax({
+            url: url,
+            type: "post",
+            //contentType: "application/json; charset=utf-8",
+            contentType: "application/json",
+            dataType: "text",
+            data: data //注意对内容进行编码
+        });
+    };
+    window.said = said;
     //window.$window = $(window);
     //window.$document = $(document);
 })(window);

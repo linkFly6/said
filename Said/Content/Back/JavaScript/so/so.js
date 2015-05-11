@@ -285,6 +285,13 @@
                 scrollLeft = win.pageXOffset || root.scrollLeft;
             pos.top = box.top + scrollTop - clientTop;
             pos.left = box.left + scrollLeft - clientLeft;
+        },
+        parseJSON: function (data) {
+            try {
+                return JSON.parse(data + "");
+            } catch (e) {
+                return null;
+            }
         }
     });
     //event
@@ -299,7 +306,7 @@
                 }) : elem.addEventListener(event, fn);
         }
     });
-    /*dat模块*/
+    /*date模块*/
     so.extend({
         //转换时间
         parseDate: function (jsonDate) {
@@ -398,13 +405,22 @@
     var Support = {
         localStorage: !!window.localStorage
     };
+
     /*DataBase模块*/
     var localStorage = window.localStorage,
         rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,//检测是否是json对象格式
+        getLocalStorageItem = function (value) {
+            //来自jQuery的jQuery.data
+            return value === "true" ? true :
+                    value === "false" ? false :
+                    value === "null" ? null :
+                    +value + "" === value ? +value :
+                    rbrace.test(value) ? so.parseJSON(value) :
+                    value;
+        },
         DataBase = function (namespace) {
             //修正命名空间
-            if (!namespace)
-                namespace = '';
+            namespace = namespace || '';
             if (namespace && namespace.charAt(namespace.length - 1) != '.')
                 namespace += '.';
             var getKey = function (key) {
@@ -415,21 +431,27 @@
             return {
                 support: support,
                 val: function (key, value) {
+                    //TODO 后续的val要强大的足够支持json
+                    var valueType;
                     if (arguments.length > 1) {
                         //set
+                        valueType = so.type(value);
                         if (support)
-                            value == null ? localStorage.removeItem(getKey(key)) : localStorage.setItem(getKey(key), value);
+                            localStorage.setItem(getKey(key), valueType === 'array' || valueType === 'object' ? JSON.stringify(value) : value);
                         return this;
                     }
                     //get
-                    value = support ? localStorage.getItem(getKey(key), value) || '' : '';
-                    //来自jQuery的jQuery.data
-                    return value === "true" ? true :
-                            value === "false" ? false :
-                            value === "null" ? null :
-                            +value + "" === value ? +value :
-                            rbrace.test(value) ? so.parseJSON(value) :
-                            value;
+                    return getLocalStorageItem(support ? localStorage.getItem(getKey(key), value) || '' : '');
+                },
+                remove: function (key) {
+                    //TODO 后续的remove要支持多个参数key：['name1','name2']和多个参数remove('name1','name2')
+                    if (support && key) {
+                        key = getKey(key);
+                        var res = getLocalStorageItem(key);
+                        localStorage.removeItem(key);
+                        return res;
+                    }
+                    return '';
                 },
                 clear: function (nameSpace) {
                     nameSpace = nameSpace || namespace;
@@ -444,6 +466,7 @@
                 }
             };
         };
+    DataBase.clear = window.localStorage.clear;
     so.extend({
         DataBase: DataBase
     });

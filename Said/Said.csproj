@@ -1431,6 +1431,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
+    <Folder Include="Content\Back\JavaScript\said\plug\" />
     <Folder Include="Content\Back\Resource\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
