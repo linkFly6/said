@@ -22,14 +22,15 @@
 
     said.ajax = function (url, data) {
         //jQuery.ajax的浅warpper
-        return $.ajax({
-            url: url,
-            type: "post",
-            //contentType: "application/json; charset=utf-8",
-            contentType: "application/json",
-            dataType: "text",
-            data: data //注意对内容进行编码
-        });
+        return $.ajax(typeof url === 'object' ?
+            url : {
+                url: url,
+                type: "post",
+                //contentType: "application/json; charset=utf-8",
+                //contentType: "application/json", //jQuery默认头是提交表单的："application/x-www-form-urlencoded; charset=UTF-8"
+                dataType: "text",
+                data: data //注意对内容进行编码
+            });
     };
     window.said = said;
     //window.$window = $(window);

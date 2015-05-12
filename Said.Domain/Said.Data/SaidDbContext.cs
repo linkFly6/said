@@ -35,6 +35,7 @@ namespace Said.Domain.Said.Data
         #endregion
 
         #region 实体
+        public DbSet<Blog> Blog { get; set; }
         public DbSet<Classify> Classify { get; set; }
         public DbSet<Article> Article { get; set; }
         public DbSet<Song> Song { get; set; }

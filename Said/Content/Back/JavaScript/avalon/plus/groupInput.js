@@ -123,8 +123,9 @@
                             reset();
                             break;
                     }
-                })
-                    .on('input', function () {
+                });
+                if (data && data.length)
+                    $elem.on('input', function () {
                         vm.query(this.value);
                     })
 

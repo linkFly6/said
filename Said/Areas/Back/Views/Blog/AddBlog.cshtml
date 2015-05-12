@@ -1,6 +1,8 @@
-﻿@{
-    ViewBag.Title = "Said后台管理系统 - 添加Blog";
+﻿@model Said.Models.Blog
+@{
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+    var ClassifysList = ViewData["ClassifysList"] as IList<Said.Models.Classify>;
+    var TagList = ViewData["TagList"] as IList<Said.Models.Tag>;
 }
 <div class="page-header">
     <h2>添加文章&nbsp;&nbsp;<small>&gt;添加一篇文章</small></h2>
@@ -22,17 +24,36 @@
             </div>
         </div>
     </div>
-    <form name="blogForm" method="post" ms-controller="blog" novalidate spellcheck="false">
+    @using (Html.BeginForm("AddBlog", "Blog", FormMethod.Post, new Dictionary<string, object>(){
+    { "spellcheck", "spellcheck" },
+    { "name", "saidForm" },
+    { "novalidate", "novalidate" },
+    { "ms-controller", "blog" },
+    { "OnSubmit", "return false;" }}))
+    {
         <div class="said-article">
             <div class="said-title-con">
-                <input name="bTitle" ms-duplex="bTitle" class="said-title" ms-class="said-error:!bTitle.length" ms-change="saveTolocalStorage('bTitle',bTitle)" autocomplete="off" placeholder="文章标题" required />
+                @Html.TextBoxFor(m => m.BTitle, new Dictionary<string, object>() { 
+                            { "ms-duplex", "bTitle" },
+                            { "class", "said-title" },
+                            { "ms-class", "said-error:!bTitle.length" },
+                            { "ms-change", "saveTolocalStorage('bTitle',bTitle)" },
+                            { "autocomplete", "off" },
+                            { "placeholder", "文章标题" },
+                            { "required", "required" }
+            })
             </div>
             <div class="said-context-content">
-                <textarea name="bContext" class="said-context" ms-duplex="bContext" ms-change="saveTolocalStorage('bContext',bContext)" required>这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！</textarea>
+                @Html.TextAreaFor(m => m.BContext, new Dictionary<string, object>() { 
+                            { "class", "said-context" },
+                            { "ms-duplex", "bContext" },
+                            { "ms-change", "saveTolocalStorage('bContext',bContext)" },
+                            { "required", "required" }
+                })
             </div>
             <button class="btn btn-lg said-priview center-block" ms-click="preview(bContext)" type="button">预览</button>
         </div>
-        @*ms-controller="defaultsDatas"*@
+@*ms-controller="defaultsDatas"*@
         <div class="row said-view-container">
             <div class="col-md-6">
                 <div class="panel panel-default relative-container">
@@ -40,12 +61,23 @@
                     <div class="panel-body">
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            <!--ms-duplex="bTag"-->
-                            <input type="text" class="tag-input" ms-change="saveTolocalStorage('bTag',bTag)" name="sTag" placeholder='标签，支持[tab]分隔' autocomplete="off" id="stag" ms-widget="groupInput" required />
+                            @Html.TextBoxFor(m => m.BTag, new Dictionary<string, object>() { 
+                            { "class", "tag-input" },
+                            { "ms-change", "saveTolocalStorage('bTag',bTag)" },
+                            { "ms-widget", "groupInput" },
+                            { "placeholder", "标签，支持[tab]分隔" },
+                            { "autocomplete", "off" }
+            })
                         </div>
                         <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
-                            <input type="text" name="classify" class="classify-input" ms-duplex="classify" placeholder="分类名称" autocomplete="off" ms-widget="groupInput" />
+                            @Html.TextBoxFor(m => m.Classify.CName, new Dictionary<string, object>() { 
+                            { "class", "classify-input" },
+                            { "ms-duplex", "classify" },
+                            { "placeholder", "分类名称" },
+                            { "autocomplete", "off" },
+                            { "ms-widget", "groupInput" }
+            })
                         </div>
                     </div>
                 </div>
@@ -61,7 +93,13 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <textarea class="said-dis" ms-duplex="bSummary" ms-class="said-error:bImg&&!bSummary.length" name="bSummary" placeholder="简介[支持HTML]" ms-change="saveTolocalStorage('bSummary',bSummary)" required></textarea>
+                            @Html.TextAreaFor(m => m.BSummary, new Dictionary<string, object>() { 
+                            { "class", "said-dis" },
+                            { "ms-duplex", "bSummary" },
+                            { "ms-class", "said-error:bImg&&!bSummary.length" },
+                            { "placeholder", "简介[支持HTML]" },
+                            { "ms-change", "saveTolocalStorage('bSummary',bSummary)" },
+                            { "required", "required" }})
                             <div class="songOp-btn song-up-content">
                                 <button ms-click="removeImg('uploadImages')" class="btn btn-danger songBtn" type="button">删除</button>
                             </div>
@@ -76,20 +114,47 @@
                     <div class="panel-body">
                         <div class="input-group" ms-class="has-error:checkFile">
                             <span class="input-group-addon">文件</span>
-                            <input type="text" name="sName" class="form-control" ms-duplex="bName" ms-input="checkFileName(this,bName)" ms-change="saveTolocalStorage('bName',bName)" data-toggle="tooltip" data-placement="top" title="该文件名已经存在" data-animation="false" placeholder="文章发布的（文件）名称">
+                            @Html.TextBoxFor(m => m.BName, new Dictionary<string, object>() { 
+                                { "class", "form-control" },
+                                { "ms-duplex", "bName" },
+                                { "ms-input", "checkFileName(this,bName)" },
+                                { "ms-change", "saveTolocalStorage('bName',bName)" },
+                                { "data-toggle", "tooltip" },
+                                { "data-placement", "top" },
+                                { "data-title", "该文件名已经存在" },
+                                { "data-animation", "false" },
+                                { "placeholder", "文章发布的（文件）名称" }
+                            })
                         </div>
                         <div class="form-group">
                             <label>JavaScript</label>
-                            <textarea rows="3" class="form-control" name="sJS" placeholder="自定义JavaScript" ms-change="saveTolocalStorage('sJS',sJS)" ms-duplex="bJS"></textarea>
+                            @Html.TextAreaFor(m => m.BJS, new Dictionary<string, object>() { 
+                                { "class", "form-control" },
+                                { "placeholder", "自定义JavaScript" },
+                                { "ms-change", "saveTolocalStorage('sJS',sJS)" },
+                                { "ms-duplex", "bJS" }
+                            })
                         </div>
                         <div class="form-group">
                             <label>CSS</label>
-                            <textarea rows="3" class="form-control" name="sCSS" placeholder="自定义CSS" ms-change="saveTolocalStorage('bCSS',bCSS)" ms-duplex="bCSS"></textarea>
+                            @Html.TextAreaFor(m => m.BCSS, new Dictionary<string, object>() { 
+                                { "class", "form-control" },
+                                { "placeholder", "自定义CSS" },
+                                { "ms-change", "saveTolocalStorage('bCSS',bCSS)" },
+                                { "ms-duplex", "bCSS" }
+                            })
                         </div>
                         <div class="checkbox said-checkbox">
                             <label>
-                                <input type="checkbox" ms-duplex-checked="bReprint" ms-change="saveTolocalStorage('bReprint',bReprint)" name="sReprint" />是否转载</label><label>
-                                    <input type="checkbox" ms-duplex-checked="bIsTop" ms-change="saveTolocalStorage('bIsTop',bIsTop)" name="bIsTop" />是否置顶</label>
+                                @Html.CheckBoxFor(m => m.BReprint, new Dictionary<string, object>() { 
+                                { "ms-duplex-checked", "bReprint" },
+                                { "ms-change", "saveTolocalStorage('bReprint',bReprint)" }
+                            })是否转载</label>
+                            <label>
+                                @Html.CheckBoxFor(m => m.BIsTop, new Dictionary<string, object>() { 
+                                { "ms-duplex-checked", "bIsTop" },
+                                { "ms-change", "saveTolocalStorage('bIsTop',bIsTop)" }
+                            })是否置顶</label>
                         </div>
                     </div>
                 </div>
@@ -98,7 +163,7 @@
         <div class="submit-container">
             <button class="btn btn-lg said-submit center-block" ms-class="submit-lock:submitState" type="button" ms-click="save()">发布</button>
         </div>
-    </form>
+    }
 </div>
 
 @section Css{
@@ -313,11 +378,20 @@
             existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
             form: '@Url.Action("AddBlog", "Blog")'
         },
-        defaultValue = {
+        DataCenter = {
             tags: ['split'],
-            classifyList: ['HTML', 'CSS', 'linkFly', 'C#', 'Bootstrap', 'JavaScript', 'XML'],
+            //classifyList: ['HTML', 'CSS', 'linkFly', 'C#', 'Bootstrap', 'JavaScript', 'XML'],
             files: ['Said', 'Blog', 'markdown', 'test', 'linkfly'].map(function (item) { return item.toLowerCase() })
         };
+
+        @if (ClassifysList != null)
+        {
+            foreach (var item in ClassifysList)
+            {
+                Write(new HtmlString(string.Format("DataCenter.classifyList.push('{0}');", item.CName)));
+            }
+        }
+
         require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'markdown', 'showDownThemeGithub', 'groupInput', 'upload'], function ($, so, Search, avalon, showMsg, showdown) {
             $(function () {
                 var previewTemplent = document.getElementById('tplOpen').innerHTML.replace(/replaceScript/g, 'script'),
@@ -428,7 +502,7 @@
                         var $cache;
                         return function (elem, value) {
                             !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
-                            vmBlog.checkFile = !!(value && ~defaultValue.files.indexOf(value.toLowerCase()));
+                            vmBlog.checkFile = !!(value && ~DataCenter.files.indexOf(value.toLowerCase()));
                             $cache.tooltip(vmBlog.checkFile ? 'show' : 'hide');
                         }
                     }(),
@@ -446,7 +520,7 @@
                         if (!(vmBlog.submitState = vmBlog.check())) return;
                         said.ajax(Action.form, {
                             'bTitle': encode(vmBlog.bTitle),
-                            'bTag': encode(vmBlog.bTag),
+                            'bTag': encode(vmBlog.bTag.join(',')),
                             'bSummary': encode(vmBlog.bSummary),
                             'bHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
                             'bReprint': encode(vmBlog.bReprint),
@@ -462,7 +536,7 @@
                             vmBlog.submitState = false;
                         }).fail(function (data) {
                             console.log(data);
-
+                            showMsg(['服务器异常，异常代码：', data.status, '（', data.statusText, '）'].join(''), showMsg.ERROR, true);
                         }).always(function () {
                             vmBlog.submitState = false;
                         });
@@ -476,9 +550,9 @@
                 //tag
                 avalon.define({
                     $id: 'tagController',
-                    tags: defaultValue.tags,
+                    tags: DataCenter.tags,
                     groupInput: {
-                        datas: defaultValue.classifyList,
+                        datas: DataCenter.classifyList,
                         multiple: true,
                         zIndex: 5,
                         callback: function (values) {
@@ -493,7 +567,7 @@
                 avalon.define({
                     $id: 'classifyController',
                     groupInput: {
-                        datas: defaultValue.classifyList,
+                        datas: DataCenter.classifyList,
                         zIndex: 4,
                         custom: false,
                         callback: function (value) {

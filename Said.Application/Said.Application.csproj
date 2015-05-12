@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ArticleApplication.cs" />
     <Compile Include="BaseApplication.cs" />
+    <Compile Include="BlogApplication.cs" />
     <Compile Include="ClassifyApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SongApplication.cs" />

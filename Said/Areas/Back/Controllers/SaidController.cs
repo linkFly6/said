@@ -35,8 +35,9 @@ namespace Said.Areas.Back.Controllers
             //初始化歌曲数据
             ViewData["ClassifysList"] = ClassifyApplication.Find();
             ViewData["SongsList"] = SongApplication.Find();
+            ViewData["TagList"] = TagApplication.Find();
             /*
-             * 为什么User那个项目可以直接查出来？
+             * TODO 为什么User那个项目可以直接查出来？
             var article = ArticleApplication.Find("d68026a1-bdb8-44e3-a1df-48e8df5c4c47");
             var test = article.Classify;
             var test2 = article.Song;
