@@ -49,6 +49,7 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
     .sub-menu li { margin-top: 1px !important; }
         .sub-menu li a { display: block; font-size: 14px; font-weight: 300; padding-bottom: 5px; padding-left: 44px !important; padding-right: 0; padding-top: 5px; text-decoration: none; color: #bdbdbd; }
             .sub-menu li.active a, .sub-menu li a:hover { background: none repeat scroll 0 0 #575757 !important; color: #ffffff !important; }
+    .sub-menu .title { padding-left: 8px; }
 .open .sub-menu { display: inherit; }
 
 /*body*/

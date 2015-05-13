@@ -70,7 +70,7 @@ namespace Said.Areas.Back.Controllers
                 STag = form["STag"],
                 SReprint = bool.Parse(form["SReprint"]),
                 SName = form["SName"],
-                SJS = form["SJS"],
+                SJS = form["SScript"],
                 SCSS = form["SCSS"],
                 SIsTop = bool.Parse(form["SIsTop"]),
                 SDate = DateTime.Now
@@ -133,7 +133,7 @@ namespace Said.Areas.Back.Controllers
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
-            var res = ArticleApplication.Find(page, "世界");
+            var res = ArticleApplication.Find(page, "你好");
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,

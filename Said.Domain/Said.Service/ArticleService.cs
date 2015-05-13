@@ -52,21 +52,21 @@ namespace Said.Service
                                             || a.SContext.Contains(keywords)
                                                 || a.STag.Contains(keywords),
                                 a => a.SDate);
-            //(from a in base.Context.Article
-            //       join c in Context.Classify on a.SClassifyId equals c.ClassifyId
-            //       where a.STitle.Contains(keywords) || a.SSummary.Contains(keywords) || a.SContext.Contains(keywords) || a.STag.Contains(keywords)
-            //       orderby a.SDate descending
-            //       select new Article
-            //       {
-            //           STitle = a.STitle,
-            //           STag = a.STag,
-            //           SSummary = a.SSummary,
-            //           SSummaryTrim = a.SSummary,
-            //           SPV = a.SPV,
-            //           SName = a.SName,
-            //           SComment = a.SComment,
-            //           SClassifyId = c.ClassifyId
-            //       });
+            //return from a in base.Context.Article
+            //                    join c in Context.Classify on a.ClassifyId equals c.ClassifyId
+            //                    where a.STitle.Contains(keywords) || a.SSummary.Contains(keywords) || a.SContext.Contains(keywords) || a.STag.Contains(keywords)
+            //                    orderby a.SDate descending
+            //                    select new Article
+            //                    {
+            //                        STitle = a.STitle,
+            //                        STag = a.STag,
+            //                        SSummary = a.SSummary,
+            //                        SSummaryTrim = a.SSummary,
+            //                        SPV = a.SPV,
+            //                        SName = a.SName,
+            //                        SComment = a.SComment,
+            //                        ClassifyId = c.ClassifyId
+            //                    };
         }
 
     }

@@ -1435,7 +1435,7 @@
     <Folder Include="Content\Back\Resource\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Source\" />
+    <Folder Include="Source\Sys\Images\Icons\" />
     <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
@@ -2677,6 +2677,12 @@
     <Content Include="UED\Temp\avalon.oniui-master\chameleon\compass\_tools.scss" />
     <Content Include="UED\Temp\avalon.oniui-master\chameleon\oniui-common.scss" />
     <Content Include="UED\Temp\avalon.oniui-master\chameleon\oniui-theme.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Blog\BlogCenter.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Blog\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

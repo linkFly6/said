@@ -77,8 +77,12 @@
                         <span class="title">Said管理</span>
                     </a>
                     <ul class="sub-menu">
-                        <li><a href="@Url.Action("SaidCenter", "Said")">Said管理</a></li>
-                        <li><a href="@Url.Action("AddSaid", "Said")">添加Said</a></li>
+                        <li><a href="@Url.Action("SaidCenter", "Said")">
+                            <i class=" icon-reorder"></i><span class="title">Said管理</span>
+                        </a></li>
+                        <li><a href="@Url.Action("AddSaid", "Said")">
+                            <i class="icon-edit"></i><span class="title">添加Said</span>
+                        </a></li>
                     </ul>
                 </li>
                 <li class="complex">
@@ -87,8 +91,12 @@
                         <span class="title">文章管理</span>
                     </a>
                     <ul class="sub-menu">
-                        <li><a href="@Url.Action("BlogCenter", "Blog")">Said管理</a></li>
-                        <li><a href="@Url.Action("AddBlog", "Blog")">添加Said</a></li>
+                        <li><a href="@Url.Action("BlogCenter", "Blog")">
+                            <i class="icon-coffee"></i><span class="title">Blog管理</span>
+                        </a></li>
+                        <li><a href="@Url.Action("AddBlog", "Blog")">
+                            <i class=" icon-pencil"></i><span class="title">添加Blog</span>
+                        </a></li>
                     </ul>
                 </li>
                 <li>
@@ -109,6 +117,12 @@
                         <span class="title">消息中心</span>
                     </a>
                 </li>
+                <li>
+                    <a href="javascript:;">
+                        <i class="icon-folder-open-alt"></i>
+                        <span class="title">资源管理</span>
+                    </a>
+                </li>
                 <li class="complex">
                     <a href="javascript:;">
                         <i class="icon-bar-chart"></i>
@@ -127,7 +141,18 @@
                         <span class="title">配置中心</span>
                     </a>
                     <ul class="sub-menu">
-                        <li><a href="javascript:;">页面配置</a></li>
+                        <li><a href="javascript:;">
+                            <i class="icon-cog"></i>
+                            <span class="title">页面配置</span></a>
+                        </li>
+                        <li title="配置上传大小、可上传文件、上传路径等"><a href="javascript:;">
+                            <i class="icon-folder-close-alt"></i>
+                            <span class="title">资源配置</span></a>
+                        </li>
+                        <li title="监控整个站点的健康状态"><a href="javascript:;">
+                            <i class="icon-retweet"></i>
+                            <span class="title">活动监控</span></a>
+                        </li>
                     </ul>
                 </li>
             </ul>

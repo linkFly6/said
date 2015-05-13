@@ -49,8 +49,9 @@
                 vm.activeIndex = -1;
             },
                 checkCustomInput = function () {
-                    if (!acceptCustom && elem.value.trim().length && !~datas.indexOf(elem.value.trim()))
+                    if (!acceptCustom && elem.value.trim().length && !~datas.indexOf(elem.value.trim())) {
                         elem.value = '';
+                    }
                 };
             vm.filters = [];
             vm.vals = function (index) {
@@ -66,7 +67,6 @@
                 vm.values.$watch('length', function () {
                     callback.call(elem, isMultiple ? vm.values : vm.values[0]);
                 });
-
             if (datas && datas.length) {
                 vm.activeIndex = -1;
                 vm.query = function (value) {
@@ -124,7 +124,7 @@
                             break;
                     }
                 });
-                if (data && data.length)
+                if (datas && datas.length)
                     $elem.on('input', function () {
                         vm.query(this.value);
                     })
@@ -153,6 +153,7 @@
                 }
 
                 //这里好纠结啊，为elem注册blur，firefox下blur触发在content.click之前，所以要给document下注册事件，法克...
+
                 window.document.addEventListener('click', function (e) {
                     if (!$containerDOM[0].contains(e.target)) {
                         reset(true);

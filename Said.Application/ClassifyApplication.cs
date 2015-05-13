@@ -79,6 +79,7 @@ namespace Said.Application
             return Context.GetMany(m => m.CName == name);
         }
 
+        
 
         /// <summary>
         /// 根据长ID查找一个分类

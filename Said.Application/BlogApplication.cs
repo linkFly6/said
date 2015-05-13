@@ -36,7 +36,7 @@ namespace Said.Application
 
         #region 逻辑
         /// <summary>
-        /// 验证一篇said是否是有效的said，同时矫正Said的数据
+        /// 验证一篇blog是否是有效的blog，同时矫正blog的数据
         /// </summary>
         /// <param name="model">要验证的model</param>
         /// <returns>返回null表示验证成功，否则返回验证失败的字符串，用,号分割</returns>
@@ -46,14 +46,13 @@ namespace Said.Application
             //防止tag有HTML标签，修正
             if (!string.IsNullOrWhiteSpace(model.BTag))
                 model.BTag = HTMLCommon.HTMLTrim(model.BTag);
-
-            if (ClassifyApplication.Context.GetById(model.ClassifyId) == null)
-                str.Append("分类信息不正确,");
             foreach (var validateResult in model.Validate())
             {
                 //validateResult.MemberNames//这个要搞懂怎么用，或许能让提示信息更全一点
                 str.Append(validateResult.ErrorMessage + ",");
             }
+            if (ClassifyApplication.Context.GetById(model.ClassifyId) == null)
+                str.Append("分类信息不正确,");
             if (str.Length > 0)
                 str.Length--;//StringBuilder的length可以用于裁剪字符串？
             else
@@ -61,7 +60,7 @@ namespace Said.Application
                 //开始矫正数据
                 model.BlogId = Guid.NewGuid().ToString();
                 //没有文件名或文件名不合法，则生成一个新的文件名
-                if (string.IsNullOrWhiteSpace(model.BName) || ArticleApplication.FindByFileName(model.BName.Trim()) != null)
+                if (string.IsNullOrWhiteSpace(model.BName) || BlogApplication.FindByFileName(model.BName.Trim()) != null)
                     model.BName = FileCommon.CreateFileNameByTime();
             }
             return str.Length > 0 ? str.ToString() : null;
@@ -78,7 +77,6 @@ namespace Said.Application
         {
             return Context.GetById(id);
         }
-
         /// <summary>
         /// 查找Said的文件名
         /// </summary>
@@ -110,6 +108,22 @@ namespace Said.Application
         {
             return Context.GetPage(page, m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords), m => m.BDate);
         }
+
+        public static IPagedList<Blog> FindToList(Models.Data.Page page, string keywords)
+        {
+            return Context.FindToList(page, keywords);
+        }
+
+
+        /// <summary>
+        /// 查找全部Blog的文件名（仅可访问属性：BName）
+        /// </summary>
+        /// <returns>返回的数据仅仅可以访问属性：BName</returns>
+        public static IEnumerable<Blog> GetAllBlogFileName()
+        {
+            return Context.GetAllBlogFileName();
+        }
+
         #endregion
     }
 }

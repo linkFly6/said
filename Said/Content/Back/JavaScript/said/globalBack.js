@@ -28,7 +28,7 @@
                 type: "post",
                 //contentType: "application/json; charset=utf-8",
                 //contentType: "application/json", //jQuery默认头是提交表单的："application/x-www-form-urlencoded; charset=UTF-8"
-                dataType: "text",
+                dataType: "json",
                 data: data //注意对内容进行编码
             });
     };

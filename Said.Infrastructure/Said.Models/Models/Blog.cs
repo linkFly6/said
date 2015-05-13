@@ -17,6 +17,7 @@ namespace Said.Models
         /// </summary>
         [Key]
         public string BlogId { get; set; }
+
         /// <summary>
         /// XML
         /// </summary>
@@ -82,10 +83,7 @@ namespace Said.Models
         /// 文章发表时间
         /// </summary>
         public DateTime BDate { get; set; }
-        /// <summary>
-        /// JS（如果有的话）
-        /// </summary>
-        public string BJS { get; set; }
+
         /// <summary>
         /// CSS（如果有的话）
         /// </summary>
@@ -125,8 +123,8 @@ namespace Said.Models
                 yield return new ValidationResult("描述不允许为空");
             if (string.IsNullOrWhiteSpace(BImg))
                 yield return new ValidationResult("图片不允许为空");
-            if (string.IsNullOrWhiteSpace(BTag))
-                yield return new ValidationResult("标签不允许为空");
+            //if (string.IsNullOrWhiteSpace(BTag))
+            //    yield return new ValidationResult("标签不允许为空");
             if (Classify == null && string.IsNullOrEmpty(ClassifyId))
                 yield return new ValidationResult("分类信息不允许为空");
         }

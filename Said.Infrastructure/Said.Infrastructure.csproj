@@ -62,6 +62,7 @@
     <Compile Include="Said.Infrastructure\Common\Image\ImageDown.cs" />
     <Compile Include="Said.Infrastructure\Common\Image\ImageUpload.cs" />
     <Compile Include="Said.Infrastructure\Common\Net\NetHelper.cs" />
+    <Compile Include="Said.Infrastructure\Common\Url\UrlCommon.cs" />
     <Compile Include="Said.Infrastructure\Common\YZM\YZMHelper.cs" />
     <Compile Include="Said.Models\BaseModel.cs" />
     <Compile Include="Said.Infrastructure\Common\ModelCommon.cs" />

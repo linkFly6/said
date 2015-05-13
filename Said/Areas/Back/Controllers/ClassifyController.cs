@@ -13,7 +13,7 @@ namespace Said.Areas.Back.Controllers
     {
         //
         // GET: /Back/Classify/
-        private readonly string ICONPATH = "~/Source/Sys/Images/Icons/";
+        private readonly string ICONPATH = "/Content/Images/icons/";
 
 
         public ActionResult Index()
@@ -24,6 +24,7 @@ namespace Said.Areas.Back.Controllers
                 for (int i = 0; i < iconsFilePath.Length; i++)
                     iconsFilePath[i] = FileCommon.getFileName(iconsFilePath[i]);
             ViewData["Tags"] = TagApplication.Find();
+            ViewBag.SourceURL = ICONPATH;
             ViewData["iconFiles"] = iconsFilePath;
             return View();
         }

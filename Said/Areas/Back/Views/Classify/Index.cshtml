@@ -19,10 +19,13 @@
 
 <div class="select-icons" id="selectIcons" style="display: none;">
     @{
-        foreach (var item in list)
+        if (list != null)
         {
+            foreach (var item in list)
+            {
         <a href="javascript:;" class="icons-btn" data-name="@item">
-            <img src="~/Source/Sys/Images/Icons/@item" /></a>        
+            <img src="@(ViewBag.SourceURL + item)" /></a>        
+            }
         }
     }
 </div>
@@ -99,7 +102,7 @@
                 urlAddTag: '@Url.Action("AddTag", "Classify")',
                 urlEditTag: '@Url.Action("EditTag", "Classify")',
                 urlDelTag: '@Url.Action("DeleteTag", "Classify")',
-                sourceClassify: '@Url.Content("~/Source/Sys/Images//Icons/")',
+                sourceClassify: '@ViewBag.SourceURL',
                 defaultIcon: 'default.png'
             };
 
