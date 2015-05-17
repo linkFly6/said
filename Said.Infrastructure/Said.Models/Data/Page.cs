@@ -26,7 +26,7 @@ namespace Said.Models.Data
             this.PageSize = pageSize;
         }
         /// <summary>
-        /// 得到下一页的数据
+        /// 要略过的数据
         /// </summary>
         public int Skip { get { return (PageNumber - 1) * PageSize; } }
 

@@ -250,40 +250,6 @@ namespace Said.IServices
             return new StaticPagedList<T>(results, page.PageNumber, page.PageSize, total);
         }
 
-
-        /// <summary>
-        /// 分页查询
-        /// </summary>
-        /// <typeparam name="TOrder">实体</typeparam>
-        /// <param name="page">分页对象</param>
-        /// <param name="where">分页表达式</param>
-        /// <param name="order">排序表达式</param>
-        /// <returns></returns>
-        public virtual IPagedList<T> GetPage<TOrder>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order)
-        {
-            var results = dbset.OrderBy(order).Where(where).GetPage(page).ToList();
-            var total = dbset.Count(where);
-            return new StaticPagedList<T>(results, page.PageNumber, page.PageSize, total);
-        }
-
-
-        /// <summary>
-        /// 分页查询（仅得到一部分结果）
-        /// </summary>
-        /// <typeparam name="TOrder">实体</typeparam>
-        /// <param name="page">分页对象</param>
-        /// <param name="where">分页表达式</param>
-        /// <param name="order">排序表达式</param>
-        /// <returns></returns>
-        public virtual IPagedList<T> GetPage<TResult>(Func<TResult> selector, Page page, Expression<Func<T, bool>> where)
-        {
-            var results = dbset.Select(selector);
-            var total = dbset.Count(where);
-            return new StaticPagedList<T>(results, page.PageNumber, page.PageSize, total);
-
-        }
-
-
         #endregion
 
         /// <summary>

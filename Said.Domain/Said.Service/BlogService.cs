@@ -1,4 +1,5 @@
-﻿using Said.Domain.Said.Data;
+﻿using PagedList;
+using Said.Domain.Said.Data;
 using Said.IServices;
 using Said.Models;
 using Said.Models.Data;
@@ -35,7 +36,7 @@ namespace Said.Service
         /// 获取所有文章列表（仅获取关键属性）
         /// </summary>
         /// <returns></returns>
-        IEnumerable<Blog> FindToList(Page page, string keywords);
+        IPagedList<Blog> FindToList(Page page, string keywords);
 
 
     }
@@ -77,6 +78,7 @@ namespace Said.Service
         {
             var query = (from m in base.Context.Blog
                          select new { BName = m.BName });
+
             return query.ToList().Select(m => new Blog
             {
                 BName = m.BName
@@ -101,9 +103,11 @@ namespace Said.Service
         /// <param name="page">分页对象</param>
         /// <param name="keywords">要查询的关键字</param>
         /// <returns></returns>
-        public IEnumerable<Blog> FindToList(Page page, string keywords)
+        public IPagedList<Blog> FindToList(Page page, string keywords)
         {
             var query = (from m in base.Context.Blog
+                         where m.BTitle.Contains(keywords) || m.BContext.Contains(keywords)
+                         orderby m.BDate descending
                          select new
                          {
                              BTitle = m.BTitle,
@@ -114,8 +118,12 @@ namespace Said.Service
                              BPV = m.BPV,
                              BComment = m.BComment
                          });
-            
-            return query.ToList().Select(m => new Blog
+            //查下这个API，试试
+            Context.Blog.Select(m => new
+            {
+
+            });
+            var results = query.GetPage(page).ToList().Select(m => new Blog
             {
                 BTitle = m.BTitle,
                 BSummary = m.BSummary,
@@ -125,6 +133,9 @@ namespace Said.Service
                 BPV = m.BPV,
                 BComment = m.BComment
             });
+            var total = Context.Blog.Count(m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords));
+
+            return new StaticPagedList<Blog>(results, page.PageNumber, page.PageSize, total);
         }
     }
 }

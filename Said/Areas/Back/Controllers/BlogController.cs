@@ -121,7 +121,7 @@ namespace Said.Areas.Back.Controllers
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
-            var res = BlogApplication.Find(page);
+            var res = BlogApplication.FindToList(page, "这是一篇测试文章");
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,
