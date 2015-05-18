@@ -250,7 +250,26 @@ namespace Said.IServices
             return new StaticPagedList<T>(results, page.PageNumber, page.PageSize, total);
         }
 
-        #endregion
+
+        /// <summary>
+        /// 分页查询，允许查询模型的一部分数据
+        /// </summary>
+        /// <typeparam name="TOrder">排序对象</typeparam>
+        /// <typeparam name="TResult">linq to Sql要提取模型的一部分数据，所以需要提供一个匿名类作为linq to sql的过度</typeparam>
+        /// <param name="page">分页对象</param>
+        /// <param name="where">条件过滤</param>
+        /// <param name="order">排序</param>
+        /// <param name="selector">linq to Sql的匿名对象表达式</param>
+        /// <param name="selectorToEntity">sql to Entity（匿名对象转实体）的表达式</param>
+        /// <returns></returns>
+        public virtual IPagedList<T> GetPage<TOrder, TResult>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order, Expression<Func<T, TResult>> selector, Func<TResult, T> selectorToEntity)
+        {
+            var results = dbset.OrderBy(order).Where(where).Select(selector).GetPage(page).ToList().Select(selectorToEntity);
+            var total = dbset.Count(where);
+            return new StaticPagedList<T>(results, page.PageNumber, page.PageSize, total);
+        }
+
+
 
         /// <summary>
         /// 根据id检索数据是否存在
@@ -281,6 +300,9 @@ namespace Said.IServices
         {
             return dbset.Count(where) > 0;
         }
+
+        #endregion
+
         #endregion
 
 
@@ -292,8 +314,6 @@ namespace Said.IServices
         {
             return this.Context.Commit();
         }
-
-
 
     }
 }

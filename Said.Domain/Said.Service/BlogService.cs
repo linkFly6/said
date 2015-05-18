@@ -105,6 +105,8 @@ namespace Said.Service
         /// <returns></returns>
         public IPagedList<Blog> FindToList(Page page, string keywords)
         {
+            /**
+            //如果getPage没有封装，则需要自己进行查询并分页
             var query = (from m in base.Context.Blog
                          where m.BTitle.Contains(keywords) || m.BContext.Contains(keywords)
                          orderby m.BDate descending
@@ -118,11 +120,6 @@ namespace Said.Service
                              BPV = m.BPV,
                              BComment = m.BComment
                          });
-            //查下这个API，试试
-            Context.Blog.Select(m => new
-            {
-
-            });
             var results = query.GetPage(page).ToList().Select(m => new Blog
             {
                 BTitle = m.BTitle,
@@ -134,8 +131,36 @@ namespace Said.Service
                 BComment = m.BComment
             });
             var total = Context.Blog.Count(m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords));
-
             return new StaticPagedList<Blog>(results, page.PageNumber, page.PageSize, total);
+
+            **/
+
+            return base.GetPage(page,
+                                    m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords),
+                                    m => m.BDate,
+                                    m => new
+                                    {
+                                        BlogId = m.BlogId,
+                                        BTitle = m.BTitle,
+                                        BSummary = m.BSummary,
+                                        BTag = m.BTag,
+                                        CName = m.Classify.CName,
+                                        BDate = m.BDate,
+                                        BPV = m.BPV,
+                                        BComment = m.BComment
+                                    }, m => new Blog
+                                    {
+                                        BlogId = m.BlogId,
+                                        BTitle = m.BTitle,
+                                        BSummary = m.BSummary,
+                                        BTag = m.BTag,
+                                        Classify = new Classify { CName = m.CName },
+                                        BDate = m.BDate,
+                                        BPV = m.BPV,
+                                        BComment = m.BComment
+                                    });
+
+
         }
     }
 }
