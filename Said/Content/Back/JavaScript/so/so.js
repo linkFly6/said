@@ -18,6 +18,7 @@
     //so的核心是提供工具，核心应该是提供静态方法，而对象方法只是馈赠
 
     var strundefined = typeof void (0),
+        rword = ' ',
         toString = Object.prototype.toString,
 		each = Array.prototype.forEach,
         slice = Array.prototype.slice,
@@ -59,7 +60,7 @@
         !(length % 1) && //整数
         (length - 1) in obj); //可以被索引
     }
-    'Boolean Number String Function Array Date RegExp Object Error'.split(' ').forEach(function (name) {
+    'Boolean Number String Function Array Date RegExp Object Error'.split(rword).forEach(function (name) {
         class2type["[object " + name + "]"] = name.toLowerCase();
     });
 
@@ -201,6 +202,19 @@
             });
             return res;
         },
+        merge: function (first, second) {
+            var len = +second.length,
+                j = 0,
+                i = first.length;
+
+            for (; j < len; j++) {
+                first[i++] = second[j];
+            }
+
+            first.length = i;
+
+            return first;
+        },
         toArray: function () {
             var res = [];
             each.call(arguments, function (arg) {
@@ -230,7 +244,8 @@
             /// Array:使用数组格式化，模板中使用${Index}占位：${0},${1}
             /// </param>
             /// <returns type="String" />
-            var array = Array.prototype.slice.call(arguments, 1);
+            if (typeof str !== 'string' || typeof object !== 'object') return '';
+            var array = slice.call(arguments, 1);
             //可以被\符转义
             return str.replace(/\\?\${([^{}]+)\}/gm, function (match, key) {
                 //匹配转义符"\"
@@ -294,6 +309,49 @@
             }
         }
     });
+
+    /*parseHTML*/
+    var rtagName = /<([\w:]+)/,
+        rxhtml = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/ig,
+        rscriptType = /^$|\/(?:java|ecma)script/i,//检测是否匹配script标签的type
+        tagHooks = new function () {// jshint ignore:line
+            so.extend(this, {
+                option: document.createElement("select"),
+                thead: document.createElement("table"),
+                td: document.createElement("tr"),
+                area: document.createElement("map"),
+                tr: document.createElement("tbody"),
+                col: document.createElement("colgroup"),
+                legend: document.createElement("fieldset"),
+                _default: document.createElement("div"),
+                "g": document.createElementNS("http://www.w3.org/2000/svg", "svg")
+            })
+            this.optgroup = this.option;
+            this.tbody = this.tfoot = this.colgroup = this.caption = this.thead;
+            this.th = this.td;
+        };
+
+    String("circle defs ellipse image line path polygon polyline rect symbol text use").replace(rword, function (tag) {
+        tagHooks[tag] = tagHooks.g //处理SVG
+    })
+    so.parseHTML = function (html) {
+        if (typeof html !== 'string') return [];
+        html = html.replace(rxhtml, "<$1></$2>").trim();
+        var tag = (rtagName.exec(html) || ["", ""])[1].toLowerCase(),
+                //取得其标签名
+                wrapper = tagHooks[tag] || tagHooks._default,
+                fragment = document.createDocumentFragment(),
+                firstChild, scripts;
+        wrapper.innerHTML = html;
+        //innerHTML script标签处理
+        scripts = wrapper.getElementsByTagName("script");
+        scripts.length && each.call(scripts, function (elem) {
+            if (rscriptType.test(elem.type || ""))
+                elem.parendNode.removeChild(elem);
+        });
+        return so.merge([], wrapper.childNodes);
+    };
+
     //event
     so.extend({
         on: function (elem, event, fn) {
@@ -304,8 +362,13 @@
                         return fn.call(item, e, i);
                     });
                 }) : elem.addEventListener(event, fn);
+        },
+        once: function () {
+
         }
     });
+
+
     /*date模块*/
     so.extend({
         //转换时间

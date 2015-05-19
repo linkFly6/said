@@ -346,10 +346,12 @@
     <Content Include="Content\Back\JavaScript\showdown\showdown.min.js" />
     <Content Include="Content\Back\JavaScript\so\plug\css\popup.css" />
     <Content Include="Content\Back\JavaScript\so\plug\css\showMsg.css" />
+    <Content Include="Content\Back\JavaScript\so\plug\dialog.js" />
     <Content Include="Content\Back\JavaScript\so\plug\model.js" />
     <Content Include="Content\Back\JavaScript\so\plug\popup.js" />
     <Content Include="Content\Back\JavaScript\so\plug\search.js" />
     <Content Include="Content\Back\JavaScript\so\plug\showMsg.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\template\Dialog.html" />
     <Content Include="Content\Back\JavaScript\so\plug\upload.js" />
     <Content Include="Content\Back\JavaScript\so\plug\validate.js" />
     <Content Include="Content\Back\JavaScript\so\so.js" />

@@ -107,6 +107,7 @@ namespace Said.Service
         {
             /**
             //如果getPage没有封装，则需要自己进行查询并分页
+            //dudu在这篇文章解释了EF设计查询部分字段必须要两次select：http://www.cnblogs.com/dudu/archive/2011/03/31/entity_framework_select_new.html
             var query = (from m in base.Context.Blog
                          where m.BTitle.Contains(keywords) || m.BContext.Contains(keywords)
                          orderby m.BDate descending
