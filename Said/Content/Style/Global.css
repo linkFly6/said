@@ -1,6 +1,7 @@
 ﻿html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video { margin: 0; padding: 0; border: 0; list-style: none; font: 14px/24px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; }
 textarea { resize: vertical; font: 14px/24px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif; outline: none; margin: 0; resize: vertical; }
-body { margin: 0; padding: 0; background: #FFF; color: #444; }
+body { margin: 0; padding: 0; background: #FFF; color: #444; position: relative; z-index: 1; }
+body, input, textarea, select, button { font-feature-settings: "liga", "kern"; text-rendering: optimizelegibility; }
 *, *:before, *:after { box-sizing: border-box; }
     /**::selection, *::-moz-selection, *::-wibkit-selection { background: none repeat scroll 0 0 #ea4c89; color: rgba(255, 255, 255, 0.85);background:#0099cc;}*/
     *::-moz-selection { background: none repeat scroll 0 0 #ea4c89; color: rgba(255, 255, 255, 0.85); }
@@ -33,8 +34,8 @@ input { border: 1px solid #929596; font-family: "Microsoft YaHei"; padding: 2px 
 .hidden-file { display: block; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
 /*layout*/
-#said-page { position: relative; z-index: 3; background-color: #FFF; /*background: url(/Content/Images/said-backgournd.jpg) fixed #FAFAFA center top; background-size: cover; transition: all 0.5s linear 0s;*/ background: url(../../UED/beat-Imgs/bg_texture.jpg) repeat; }
-#content, #header, #footer-content { width: 980px; margin: 0 auto; }
+#said-page { position: relative; z-index: 3; background-color: #FFF; /*background: url(/Content/Images/said-backgournd.jpg) fixed #FAFAFA center top; background-size: cover; transition: all 0.5s linear 0s;*/ }
+#header, #footer-content { width: 980px; margin: 0 auto; }
 #header { padding: 18px 0 20px 0; /*border-bottom: 1px solid #CCC; height: 48px; */ }
     #header:after { content: ''; display: block; float: none; clear: both; }
 #content { padding: 40px 0; margin-bottom: 371px; }

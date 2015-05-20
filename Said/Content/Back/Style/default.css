@@ -82,6 +82,38 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 .showmsg-content .showmsg-state-error { border-color: #ef8381; animation: state-error 0.5s ease-in-out; }
 .showmsg-content .showmsg-state-warning { border-color: #4fc3f7; animation: state-warning 0.5s ease-in-out; }
 
+/*plug-dialog*/
+.__dialog, .__dialog .dialog-mask { width: 100%; height: 100%; top: 0; left: 0; }
+.__dialog { position: fixed; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; pointer-events: none; }
+    .__dialog .dialog-mask { position: absolute; z-index: 1; background: rgba(55, 58, 71, 0.9); opacity: 0; -webkit-transition: opacity 0.3s; transition: opacity 0.3s; -webkit-backface-visibility: hidden; }
+    .__dialog.dialog-open .dialog-mask { opacity: 1; pointer-events: auto; }
+    .__dialog .dialog-content { width: 50%; max-width: 560px; min-width: 290px; background: #fff; padding: 4em; text-align: center; position: relative; z-index: 5; opacity: 0; box-shadow: none; top: -10%; }
+    .__dialog.dialog-open .dialog-content { pointer-events: auto; opacity: 1; }
+    .__dialog.dialog-open .dialog-mask { -webkit-transition-duration: 0.8s; transition-duration: 0.8s; }
+    .__dialog .dialog-content { padding: 0px; background: transparent; box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6); }
+    .__dialog .dialog-morph-shape { position: absolute; width: calc(100% + 4px); height: calc(100% + 3px); top: -2px; left: -3px; z-index: -1; }
+        .__dialog .dialog-morph-shape svg rect { stroke: #fff; stroke-width: 2px; stroke-dasharray: 1680; }
+    .__dialog.dialog-open .dialog-morph-shape svg rect { -webkit-animation: dialog-anim-dash 0.6s forwards; animation: dialog-anim-dash 0.6s forwards; }
+    .__dialog .dialog-inner { opacity: 0; background: #fff; }
+    .__dialog.dialog-open .dialog-inner { opacity: 1; -webkit-transition: opacity 0.85s 0.35s; transition: opacity 0.85s 0.35s; }
+    .__dialog.dialog-open .dialog-text { padding: 2em; min-height: 50px; }
+    .__dialog .dialog-btns a { line-height: 1.42857; text-decoration: none; display: inline-block; width: 50%; padding: 10px 0; }
+        .__dialog .dialog-btns a:active { box-shadow: inset 0 3px 5px rgba(0,0,0,.125); }
+    .__dialog .dialog-btn-ok { background: #5bc0de; color: #fff; }
+        .__dialog .dialog-btn-ok:hover { background-color: #31b0d5; }
+    .__dialog .dialog-btn-cancel { background: #b6bece; color: #fff; }
+        .__dialog .dialog-btn-cancel:hover { background: #a3abba; }
+
+@keyframes dialog-anim-dash {
+    0% { stroke-dashoffset: 1680; }
+    100% { stroke-dashoffset: 0; }
+}
+
+@-webkit-keyframes dialog-anim-dash {
+    0% { stroke-dashoffset: 1680; }
+    100% { stroke-dashoffset: 0; }
+}
+
 @keyframes state-ok {
     0% { border-color: #7ad6e1; }
     15% { border-color: #25e7ff; }

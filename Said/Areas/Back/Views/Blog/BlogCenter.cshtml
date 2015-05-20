@@ -34,19 +34,15 @@
         };
         $(function () {
             require.config({
-                packages: [
-                {
-                    name: 'echarts',
-                    location: 'echarts-2.1.8/src',
-                    main: 'echarts'
+                baseUrl: '/Content/Back/JavaScript',
+                paths: {
+                    'dialog': 'so/plug/dialog',
                 },
-                {
-                    name: 'zrender',
-                    //location: 'http://ecomfe.github.io/zrender/src',
-                    location: 'zrender-master/src',
-                    main: 'zrender'
-                }
-                ]
+                packages: [
+                    { name: 'so', location: 'so', main: 'so' },
+                    { name: 'said', location: 'said', main: 'said' },
+                    { name: 'echarts', location: 'echarts-2.1.8/src', main: 'echarts' },
+                    { name: 'zrender', location: 'zrender-master/src', main: 'zrender' }]
             });
             var option = {
                 title: {
@@ -108,75 +104,85 @@
 
         (function (window, undefined) {
             var $ = window.jQuery;
-            $('#btTable').bootstrapTable({
-                columns: [
-                 {
-                     field: 'BTitle',
-                     title: '名&nbsp;&nbsp;&nbsp;称',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return ['<a target="_black" href="', Action.blog, row.BlogId, '">', value, '</a>'].join('');
-                     }
-                 },
-                 {
-                     field: 'BSummary',
-                     title: '描&nbsp;&nbsp;&nbsp;述',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'BPV',
-                     title: '浏&nbsp;&nbsp;&nbsp;览',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'BDate',
-                     title: '发布时间',
-                     sortable: true,
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return so.dateFormat(value);
-                     }
-                 },
-                 {
-                     field: 'Classify.CName',
-                     title: '分&nbsp;&nbsp;&nbsp;类',
-                     sortable: true,
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'BTag',
-                     title: '标&nbsp;&nbsp;&nbsp;签',
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'BlogId',
-                     title: '操&nbsp;&nbsp;&nbsp;作',
-                     formatter: function (value, row, index) {
-                         ///Back/Said/Edit/b5166390-4dfb-4469-9994-0b5709f803c1
-                         return ['<a class="btn btn-default btn-sm" target="_blank" href="', Action.editBlog, value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data-id="', value, '">删除</a>'].join('');
-                     }
-                 }
+            require(['dialog'], function (Dialog) {
+                var dialogDelete = Dialog();
+                $('#btTable').bootstrapTable({
+                    columns: [
+                     {
+                         field: 'BTitle',
+                         title: '名&nbsp;&nbsp;&nbsp;称',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return ['<a target="_black" href="', Action.blog, row.BlogId, '">', value, '</a>'].join('');
+                         }
+                     },
+                     {
+                         field: 'BSummary',
+                         title: '描&nbsp;&nbsp;&nbsp;述',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BPV',
+                         title: '浏&nbsp;&nbsp;&nbsp;览',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BDate',
+                         title: '发布时间',
+                         sortable: true,
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return so.dateFormat(value);
+                         }
+                     },
+                     {
+                         field: 'Classify.CName',
+                         title: '分&nbsp;&nbsp;&nbsp;类',
+                         sortable: true,
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BTag',
+                         title: '标&nbsp;&nbsp;&nbsp;签',
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BlogId',
+                         title: '操&nbsp;&nbsp;&nbsp;作',
+                         formatter: function (value, row, index) {
+                             ///Back/Said/Edit/b5166390-4dfb-4469-9994-0b5709f803c1
+                             return ['<a class="btn btn-default btn-sm" target="_blank" href="', Action.editBlog, value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm blog-delete" data-id="', value, '" data-title="', row.BTitle, '">删除</a>'].join('');
+                         }
+                     }]
+                }).on('dbl-click-row.bs.table', function (e, row, $element) {
 
-                ],
+                }).on('click', '.blog-delete', function (e) {
+                    var blogId = this.dataset.id;
+                    dialogDelete.text('您确定要删除文章《' + this.dataset.title + "》吗？").on(function () {
+                        console.log('您点击了删除');
+                    }).show();
+                });
 
-            }).on('dbl-click-row.bs.table', function (e, row, $element) {
 
-            })
+
+
+            });
+
 
             //解决ecahrt的bug
         })(window);
