@@ -17,13 +17,14 @@
 .arrow-right { right: 25px; background-position: 0 -72px; }
     .arrow-right:hover { background-position: 0 -216px; }
 /*ring*/
-.said-banner-footer { display: inline-block; padding-top: 70px; }
+.said-banner-footer { display: inline-block; padding-top: 70px; cursor: default; }
 .said-banner-ring { display: inline-block; width: 13px; height: 13px; text-indent: -9999px; border-radius: 50%; margin-left: 8px; background-color: #CCC; opacity: 0.8; box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3); transition: background-color 0.3s ease-in-out 0s; cursor: pointer; }
     .said-banner-ring:first-child { margin-left: 0; }
-    .said-banner-ring.active { background-color: #028cd3; opacity: 1; box-shadow: 0 0px 2px rgba(255, 255, 255, 0.3); cursor: default; }
+    .said-banner-ring.active, .said-banner-ring:hover { background-color: #028cd3; opacity: 1; box-shadow: 0 0px 2px rgba(255, 255, 255, 0.3); }
+    .said-banner-ring.active { cursor: default; }
 
-.said-content { min-width: 1000px; max-width: 1600px; margin: 0 auto; }
-    .said-content a { color: #08c; cursor: pointer; }
+
+.said-content a { color: #08c; cursor: pointer; }
 .said-module { padding: 80px 0 0; }
     .said-module:first-child { padding: 25px 0; }
 .module-title { text-align: center; padding: 10px; }
@@ -67,6 +68,6 @@ a.module-item-title, .said-main-title { font-size: 25px; line-height: 2; color: 
     .music-img img { display: block; }
     .music-img, .music-img img { height: 100px; width: 100px; border-radius: 50%; }
 .music-info { padding: 20px 0 20px 130px; line-height: 2; overflow: hidden; }
-.music-ring { position: absolute; width: 30%; height: 30%; top: 35%; left: 35%; background-color: #FFF; border-radius: 50%; }
+.music-ring { position: absolute; width: 25%; height: 25%; top: 38%; left: 38%; background-color: #FFF; border-radius: 50%; }
 .music-artist { font-size: 18px; color: #999; padding-right: 130px; }
 .said-date { position: absolute; color: #999; bottom: 20px; right: 0; }
