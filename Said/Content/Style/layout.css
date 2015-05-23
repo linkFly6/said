@@ -8,6 +8,18 @@
         .said-tpics-content ul li { list-style: outside; }
 .said-topics-title, .said-tpics-content { text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6); }
 
+/*big-banner img*/
+/*header*/
+.said-background { width: 100%; height: 700px; background-size: 2110px 800px; background-position: center bottom; overflow: hidden; position: relative; text-align: center; }
+.said-banner-bar { width: 960px; margin: 0 auto; padding-top: 180px; text-align: center; }
+.said-banner-item { background: url("/Content/Images/index_focus_bg.png") repeat-y scroll 180px 0 rgba(0, 0, 0, 0); padding: 20px 0; height: 380px; }
+.banner-title, .banner-content { text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6); }
+.banner-title { font-size: 35px; line-height: 80px; }
+.banner-content p { font-size: 18px; line-height: 35px; }
+.said-banner-white .banner-title, .said-banner-white .banner-content { text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6); }
+.said-banner-white { color: #fff; }
+
+
 /*page*/
 .said-blog-page { text-align: center; padding-top: 15px; }
 .page-index { background-color: #dfdfdf; color: #666; border-radius: 3px; padding: 5px 10px; margin-left: 5px; transition: none!important; }

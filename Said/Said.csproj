@@ -594,20 +594,23 @@
     <Content Include="Content\Images\github.png" />
     <Content Include="Content\Images\icon-common.png" />
     <Content Include="Content\Images\icon-player.png" />
+    <Content Include="Content\Images\icons\default.png" />
     <Content Include="Content\Images\icons\icon-CSS3.gif" />
     <Content Include="Content\Images\icons\icon-HTML5.gif" />
     <Content Include="Content\Images\icons\icon-jQuery.gif" />
     <Content Include="Content\Images\icons\icon-JS.gif" />
     <Content Include="Content\Images\icons\icon-Require.gif" />
     <Content Include="Content\Images\icons\icon-VS.gif" />
-    <Content Include="Content\Images\icons\icon-Web.png" />
-    <Content Include="Content\Images\ico_sliding_910.png" />
+    <Content Include="Content\Images\ico_sliding.png" />
     <Content Include="Content\Images\index_focus_bg.png" />
     <Content Include="Content\Images\nav-close.png" />
     <Content Include="Content\Images\nav-icon_search.png" />
     <Content Include="Content\Images\night-sky.jpg" />
     <Content Include="Content\Images\not-blog.gif" />
     <Content Include="Content\Images\o_bg-clouds.png" />
+    <Content Include="Content\Images\said-public.png" />
+    <Content Include="Content\Images\said-logo.png" />
+    <Content Include="Content\Images\said-logo2.png" />
     <Content Include="Content\Images\sidebar-bg.jpg" />
     <Content Include="Content\Images\test-said-img.jpg" />
     <Content Include="Content\Images\testImg-Paramore.Ps.jpg" />
@@ -636,10 +639,12 @@
     <Content Include="Content\Images\UEDImg\demoImg3.jpg" />
     <Content Include="Content\Images\UEDImg\HanaleiTaro_ZH-CN9644686871_1366x768.jpg" />
     <Content Include="Content\Images\UEDImg\SutjezkaNP_ZH-CN10008358917_1366x768.jpg" />
+    <Content Include="Content\Images\UEDImg\test.png" />
     <Content Include="Content\Images\UEDImg\TuscanyItaly1.jpg" />
     <Content Include="Content\Images\UEDImg\TuscanyItaly.jpg" />
     <Content Include="Content\Images\UEDImg\20150521092620.jpg" />
     <Content Include="Content\Images\UEDImg\20140730222859.jpg" />
+    <Content Include="Content\Images\UEDImg\X.js.png" />
     <Content Include="Content\Images\work_tool_001.png" />
     <Content Include="Content\JavaScript\jquery-1.11.1.js" />
     <Content Include="Content\JavaScript\jquery-2.1.1.js" />
@@ -1677,9 +1682,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Back\Style\bootstrap-theme.css.map" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\README.md" />

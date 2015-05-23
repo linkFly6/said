@@ -1,15 +1,6 @@
 ﻿/*public*/
 .banner-arrow, .module-mask, .said-banner-footer, .music-artist { transition: opacity 0.3s ease-in-out 0s; opacity: 0; }
 .said-background:hover .said-banner-footer, .said-background:hover .banner-arrow, .said-item:hover .music-artist { opacity: 1; }
-/*header*/
-.said-background { width: 100%; height: 700px; background-size: 2110px 800px; background-position: center bottom; overflow: hidden; position: relative; text-align: center; }
-.said-banner-bar { width: 960px; margin: 0 auto; padding-top: 180px; text-align: center; }
-.said-banner-item { background: url("/Content/Images/index_focus_bg.png") repeat-y scroll 180px 0 rgba(0, 0, 0, 0); padding: 20px 0; height: 380px; }
-.banner-title, .banner-content { text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6); }
-.banner-title { font-size: 35px; line-height: 80px; }
-.banner-content p { font-size: 18px; line-height: 35px; }
-.said-banner-white .banner-title, .said-banner-white .banner-content { text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6); }
-.said-banner-white { color: #fff; }
 /*arrow*/
 .banner-arrow { background: url(/Content/Images/ico_sliding.png) no-repeat; position: absolute; z-index: 4; display: block; width: 72px; height: 72px; top: 47%; }
 .arrow-left { left: 25px; }

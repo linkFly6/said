@@ -15,9 +15,7 @@
     <section id="said-page">
         <header id="header">
             <div id="nav-logo">
-                <a class="logo" title="听说" href="/">
-                    <img src="../../Content/Images/Said.png" alt="said logo" />
-                </a>
+                <a class="logo" title="听说" href="/"></a>
             </div>
             <nav id="nav">
                 <ul id="nav-flip">
@@ -40,21 +38,27 @@
                 <span id="nav-hover" style="left: 70px;"></span>
             </nav>
         </header>
-        <div class="said-bg-img">
-            <div class="said-bg-topics">
-                <h3 class="said-topics-title">Write the code,change the world</h3>
-                <div class="said-tpics-content">
-                    <ul>
-                        <li>console.log('Hello,Wrold!');</li>
-                        <!--<li>编程是两队人马在竞争：软件工程师努力设计出最大最好的连白痴都会使用的程序；而宇宙在拼命制造最大最好的白痴。到目前为止，宇宙是胜利者。</li>-->
-                        <li>任何可以使用JavaScript来编写的应用，最终都会由JavaScript编写。</li>
-                        <!--<li>昨天代码还是好好的！</li>-->
-                        <li>有些东西是new不出来的。</li>
-                        <li>(46840404742).toString(36).replace(/\u0066/,function(){ return arguments[0].toUpperCase(); });</li>
-                    </ul>
-                </div>
+        <div class="said-background" style="background-image: url(/Content/Images/UEDImg/MacWinLinux2.png)">
+            <!--code-bg.jpg-->
+            <div class="said-banner-bar">
+                <ul class="said-banner">
+                    <li class="said-banner-item said-banner-white">
+                        <h3 class="banner-title">Write the code,change the world</h3>
+                        <div class="banner-content">
+                            <p>console.log('Hello,Wrold!');</p>
+                            <p>任何可以使用JavaScript来编写的应用，最终都会由JavaScript编写。</p>
+                            <p>(46840404742).toString(36).replace(/\u0066/,function(){ return arguments[0].toUpperCase(); });</p>
+                        </div>
+                    </li>
+                    <li class="said-banner-item said-banner-white" style="display: none;">
+                        <h3 class="banner-title">Write the code,change the world</h3>
+                        <div class="banner-content">
+                            <p>字字斟酌，句句精妙</p>
+                            <p>每一处代码都恰到好处</p>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <img src="/Content/Images/code-bg.jpg" alt="" />
         </div>
         <section id="content">
             <div class="said-content">
@@ -113,7 +117,7 @@
                             </article>
                         </section>
                     </div>
-                </div>
+        </div>
                 <div class="said-blog-other">
                     <div class="blog-other-content">
                         <div class="blog-other-title">分类</div>
@@ -142,47 +146,99 @@
                             <section class="project-item">
                                 <div class="project-content">
                                     <div class="project-logo">
-                                        <div class="project-img">
-                                            <img src="/Content/Images/UEDImg/test.png" alt="github" />
-                                        </div>
+                                        <a class="project-img" href="javascript:;" target="_blank" title="点击查看X.js的更多信息">
+                                            <img src="/Content/Images/UEDImg/X.js.png" alt="github" />
+                                        </a>
                                     </div>
                                     <dl class="project-info">
-                                        <dt><a href="javascript:;" target="_blank" class="project-name" title="X.js">X.js</a></dt>
-                                        <dd class="project-text">移动端操作XML的精美类库</dd>
-                                        <dd class="project-summary">简单又精致的难以想象</dd>
+                                        <dt><a href="javascript:;" target="_blank" class="project-name said-ellipsis" title="X.js">X.js</a></dt>
+                                        <dd class="project-text said-ellipsis">简单又精致的难以想象</dd>
+                                        <dd class="project-summary">
+                                            <p>移动端操作XML的精美类库</p>
+                                            <p>性能、体积、优雅度</p>
+                                            <p>一个都不能少</p>
+                                        </dd>
 
                                     </dl>
                                 </div>
                                 <div class="project-other">
                                     <div class="project-support terminal">
-                                        <span class="support-item mobile" title="支持移动端"></span>
+                                        <span class="support-item mobile" title="支持移动端浏览器"></span>
                                         <span class="support-item wp" title="支持windows phone"></span>
-                                        <span class="support-item" title="支持桌面端"></span>
                                     </div>
                                     <div class="project-support support">
-                                        <span class="support-item firefox" title="兼容Firefox"></span>
-                                        <span class="support-item chrome" title="兼容Chrome"></span>
-                                        <span class="support-item ie" title="兼容Internet Explorer"></span>
-                                        <span class="support-item safari" title="兼容Safari"></span>
-                                        <span class="support-item opera" title="兼容Opera"></span>
+                                        <span class="support-item firefox" title="兼容Firefox的Gecko内核"></span>
+                                        <span class="support-item chrome" title="兼容Chrome的Blink内核"></span>
+                                        <span class="support-item ie" title="兼容Internet Explorer的Trident内核,和Edge的Edge内核"></span>
                                     </div>
                                 </div>
 
                             </section>
-                            <a href="javascript:;" title="Said" target="_blank" class="project-item">
-                                <div class="project-img">
-                                    <img src="/Content/Images/github.png" alt="github" />
+                            <section class="project-item">
+                                <div class="project-content">
+                                    <div class="project-logo">
+                                        <a class="project-img" href="javascript:;" target="_blank" title="点击查看Said-听说的更多信息">
+                                            <img src="/Content/Images/said-logo.png" alt="github" />
+                                        </a>
+                                    </div>
+                                    <dl class="project-info">
+                                        <dt><a href="javascript:;" target="_blank" class="project-name said-ellipsis" title="X.js">Said - 听说</a></dt>
+                                        <dd class="project-text said-ellipsis">以我所学，做以极致</dd>
+                                        <dd class="project-summary">
+                                            <p>我泡上一首歌</p>
+                                            <p>和你闲聊一些事情，一些见解</p>
+                                            <p>我听闻的，现在，将是你的听闻</p>
+                                            <p>Said并不神秘，她开源她的一切</p>
+                                            <p>我铸成了她，而你...</p>
+                                            <p>可以让她更完美</p>
+                                        </dd>
+
+                                    </dl>
                                 </div>
-                                <span class="project-name">Said - 听说</span>
-                                <span class="project-summary">简单的操作XML的类库</span>
-                            </a>
-                            <a href="javascript:;" title="更多的开源项目啊啊啊啊啊啊啊哈哈哈" target="_blank" class="project-item">
-                                <div class="project-img">
-                                    <img src="/Content/Images/github.png" alt="github" />
+                                <div class="project-other">
+                                    <div class="project-support terminal">
+                                        <span class="support-item mobile" title="支持移动端浏览器"></span>
+                                        <span class="support-item wp" title="支持Windows Phone下的浏览器"></span>
+                                        <span class="support-item" title="支持桌面端浏览器"></span>
+                                    </div>
+                                    <div class="project-support support">
+                                        <span class="support-item firefox" title="兼容Firefox的Gecko内核"></span>
+                                        <span class="support-item chrome" title="兼容Chrome的Blink内核"></span>
+                                        <span class="support-item ie" title="兼容Internet Explorer的Trident内核,和Edge的Edge内核"></span>
+                                        <span class="support-item safari" title="兼容Safari的Webkit内核"></span>
+                                        <span class="support-item opera" title="兼容Opera的Blink内核"></span>
+                                    </div>
                                 </div>
-                                <span class="project-name">测试标题好长好长好长好长好长好长啊</span>
-                                <span class="project-summary">测试简介好长好长好长好长好长好长啊啊啊啊</span>
-                            </a>
+
+                            </section>
+                            <section class="project-item">
+                                <div class="project-content">
+                                    <div class="project-logo">
+                                        <a class="project-img" href="javascript:;" target="_blank" title="点击查看Defer.js的更多信息">
+                                            <img src="/Content/Images/UEDImg/test.png" alt="github" />
+                                        </a>
+                                    </div>
+                                    <dl class="project-info">
+                                        <dt><a href="javascript:;" target="_blank" class="project-name said-ellipsis" title="X.js">Defer.js</a></dt>
+                                        <dd class="project-text said-ellipsis">复杂的事情，简单的解决</dd>
+                                        <dd class="project-summary">
+                                            <p>为jsonp的异步而生</p>
+                                            <p>性能、体积、优雅度</p>
+                                            <p>一个都不能少</p>
+                                        </dd>
+
+                                    </dl>
+                                </div>
+                                <div class="project-other">
+                                    <div class="project-support terminal">
+                                        <span class="support-item mobile" title="支持移动端浏览器"></span>
+                                    </div>
+                                    <div class="project-support support">
+                                        <span class="support-item chrome" title="兼容Chrome的Blink内核"></span>
+                                    </div>
+                                </div>
+
+                            </section>
                         </div>
                     </div>
                     <div class="blog-other-content">
@@ -192,21 +248,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="said-blog-notfound" style="display: none;">
-                    <div class="blog-notfound-Title">
-                        <img src="/Content/Images/not-blog.gif" /><span>没有在该分类/标签下找到相关数据...</span>
-                    </div>
-                    <div class="blog-notfound-more">
-                        <h4>随机推荐一些其他文章：</h4>
-                        <ul>
-                            <li><a href="javascript:;">ES6 promise的思考</a></li>
-                            <li><a href="javascript:;">jQuery源码解读：jQuery.Event</a></li>
-                            <li><a href="javascript:;">我的开源项目 - X.js</a></li>
-                        </ul>
-                    </div>
-                </div>
+        <div class="said-blog-notfound" style="display: none;">
+            <div class="blog-notfound-Title">
+                <img src="/Content/Images/not-blog.gif" /><span>没有在该分类/标签下找到相关数据...</span>
             </div>
-        </section>
+            <div class="blog-notfound-more">
+                <h4>随机推荐一些其他文章：</h4>
+                <ul>
+                    <li><a href="javascript:;">ES6 promise的思考</a></li>
+                    <li><a href="javascript:;">jQuery源码解读：jQuery.Event</a></li>
+                    <li><a href="javascript:;">我的开源项目 - X.js</a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+    </section>
     </section>
 
     <footer id="footer">

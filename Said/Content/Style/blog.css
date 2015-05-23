@@ -4,7 +4,7 @@
 .said-blog-title { font-size: 18px; line-height: 22px; padding: 21px 0 10px 10px; border-bottom: 1px solid #e6e6e6; }
     .said-blog-title span { border-left: 3px solid #75b4f4; padding-right: 10px; vertical-align: middle; font-size: 13px; }
 .said-blog-content, .said-blog-item { padding: 10px 10px 35px; }
-.said-blog:nth-child(even) { background: linear-gradient(to bottom, #f4f4f4 0%, #ffffff 50%) no-repeat 0 0 100% 50%; }
+.said-blog:nth-child(even) { background-image: -webkit-linear-gradient(top, #f4f4f4 0%, #ffffff 50%); background-image: linear-gradient(to bottom, #f4f4f4 0%, #ffffff 50%); background-size: 100% 50%; background-repeat: repeat-x; }
 .blog-title { position: relative; }
     .blog-title a { display: block; padding-left: 42px; font: 1.6em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana; line-height: 2em; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #444; }
         .blog-title a:hover { color: #028cd3; }
@@ -48,19 +48,18 @@
 .project-item, .blog-tag { display: block; padding: 10px 15px; background-color: #FFF; border-top: 1px solid #e0e0e0; }
 
 
-.project-content { display: table; width: 100%; }
+/*【【【【【【【【【【【【【【【【【【【【【【【【【【 Blog的左右两栏是不是可以做成视差滚动 】】】】】】】】】】】】】】】】】】】】】】】】】】】】】】*/
+.project-content { display: table; width: 100%; table-layout: fixed; }
 .project-info, .project-logo { display: table-cell; vertical-align: middle; }
 .project-logo { width: 128px; }
-.project-img, .project-img img { width: 74px; height: 74px; display: block; margin: 0 auto; }
+.project-img, .project-img img { width: 64px; height: 64px; display: block; margin: 0 auto; }
 .project-name { color: #4183c4; font-size: 22px; line-height: 45px; display: block; }
 .project-text { color: #aaa; }
-.project-summary { display: block; color: #666; }
-.project-name, .project-summary { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .project-info dt, .project-info dd { text-align: center; }
-.project-other { overflow: hidden; }
-.project-support { float: left; padding: 10px 0; }
+.project-other { overflow: hidden; padding: 15px 0 5px; }
+.project-support { float: left; padding: 10px 0; text-align: center; }
     .project-support.terminal { width: 128px; }
-    .project-support.support { text-align: center; width: 210px; }
+    .project-support.support { width: 210px; }
 .support-item { background: url(/Content/Images/said-public.png) no-repeat -50px -142px; cursor: help; padding: 12px 19px; }
     .support-item.wp { background-position: -4px -142px; }
     .support-item.mobile { background-position: -94px -142px; }
