@@ -1,65 +1,44 @@
-ï»¿<!DOCTYPE HTML>
+<!DOCTYPE>
 <html>
 <head>
-    <meta charset='utf-8'/>
-    <title>è¾“å…¥åŸŸçš„è‡ªåŠ¨è¡¥å…¨</title>
-    <script src="../../Content/Back/JavaScript/avalon/avalon.mobile.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+    <title>×óÓÒ²¼¾Ö£¨ÓÒ²à¶¨¿í£¬×ó²à×ÔÊÊÓ¦¿í£©</title>
+    <style type="text/css">
+        * { margin: 0; padding: 0; }
+        #container { margin: 0 auto; max-width: 1600px; min-width: 1000px; }
+
+        #left { float: left; width: 220px; background-color: green; }
+
+        #content { background-color: orange; margin-left: 220px; /*==µÈÓÚ×ó±ßÀ¸¿í¶È==*/ }
+    </style>
 </head>
+
 <body>
-<div class="demo-show" ms-controller="demo4">
-        <form>
-            <table style="width:100%; border:1px solid #000;">
-                <tbody>
-                    <tr>
-                        <td class="pad30">
-                            <input ms-widget="textbox" ms-duplex="x" type="textbox" data-textbox-suggest="test" data-textbox-limit="5" />
-                            <p>è¾“å…¥æ¡†çš„å€¼æ˜¯ï¼š {{x}}</p>
-                        </td>
- 
-                        <td class="pad30">
-                            <input ms-widget="textbox" type="textbox" ms-duplex="p" data-textbox-suggest="test1"/>
-                            <p>è¾“å…¥æ¡†çš„å€¼æ˜¯ï¼š {{p}}</p>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
+    <div id="container">
+        <div id="left">Left sidebar</div>
+        <div id="content">
+            <div>
+                <section class="blog-content">
+                    <h2 title="Õâ¸öÉÁ¶¯µÄbug²»ÄÜÖ±ÊÓ°¡£¬a±êÇ©µÄÕâ¸öÔÚchromeÏÂµÄÉÁ¶¯£¬Ê¹ÓÃÁËtransitionµÄÉÁ¶¯£¬»¹Ã»ÓĞ½â¾ö°¡" class="blog-title"><a href="javascript:;">Õâ¸öÉÁ¶¯µÄbug²»ÄÜÖ±ÊÓ°¡£¬a±êÇ©µÄÕâ¸öÔÚchromeÏÂµÄÉÁ¶¯£¬Ê¹ÓÃÁËtransitionµÄÉÁ¶¯£¬»¹Ã»ÓĞ½â¾ö°¡</a></h2>
+                    <div class="blog-summary">
+                        <p>Í»È»ÏëÒª×ßÒ»¶ÎÄ°ÉúµÄÂ·£¬ÈÃ×Ô¼ºÎŞÎ½Ò»µã¡£</p>
+                        <p>ÍâÃæÍ»È»ÏÂÆğÁËÓê£¬Å¼¶ûÈÃÍí¾ÅµãµÄÌì¿Õ°×ÁËÒ»Ë²¡£¾ÍºÃÏñÌì¹«¶®µÄ×÷ÃÀ£¬Åã³Ä×ÅÄãµÄĞÄÇé£¬¼ÓÒ»±­µ÷ÁÏ¡£</p>
+                        <p>Í»È»ºÜ°²¾²£¬¾ÍºÃÏñÊÀ½ç¿ÕÁËÒ»µãµã£¬µÆÒÑ¾­¹ØÉÏ£¬Ò¹ÒÑ¾­³ÁÖØ¡£</p>
+                        <p>²»ÓÉ×ÔÖ÷µÄÑ§»áÁÆÉË£¬´ÓÒ»¸öÎ´Öªµã¿ªÊ¼£¬²»ÓÉ×ÔÖ÷µÄ£¬Ò²ĞíÊÇ´ÓÒ»¸öÉÁµç£¬¾ÍÈçÁé¸ĞÒ»°ã°Ñ¿Ø²»×¡µÄ¡£ÕâÊÇÍõÕßµÄ·¨Ôò£¿»¹ÊÇÈõÕßµÄ±¯Çé£¿</p>
+                        <p>Í»È»Ïëµ¥ÇúÑ­»·Ò»Ê×¸è£¬ÈÃĞÄÌø²»»áÈ¥Ñ¡Ôñ³ÁÃÆ¡£</p>
+                    </div>
+                    <footer class="blog-footer">
+                        <span title="ä¯ÀÀ" class="blog-info fa fa-eye"><i>15</i></span>
+                        <span title="·ÖÀà" class="blog-info link fa fa-th-large"><a href="javascript:;">ECMAScript 5</a></span>
+                        <span title="±êÇ©" class="blog-info link fa fa-tags">
+                            <a href="javascript:;">Ëæ±Ê</a><a href="javascript:;">javascript</a>
+                        </span>
+                        <time title="·¢²¼Ê±¼ä">2013-12-10&nbsp;&nbsp;ĞÇÆÚÒ»</time>
+                    </footer>
+                </section>
+            </div>
+        </div>
     </div>
- 
-    <script>
-        require(["../../../../UED/Temp/avalon.oniui-master/textbox/avalon.textbox"], function () {
-            avalon.define("demo4", function (vm) {
-                // æ³¨æ„ä¸å¯é€šè¿‡suggesté‡å†™suggestå€¼ï¼Œè¦ä¸ç„¶å°±ä¸èƒ½åŠ è½½suggestæ’ä»¶
-                vm.x = "";
-                vm.p = "";
-            })
-            // æ ¹æ®æç¤ºç±»å‹çš„ä¸åŒæä¾›æç¤ºä¿¡æ¯ï¼Œä¹Ÿå°±æ˜¯ä¿¡æ¯çš„è¿‡æ»¤æ–¹å¼å®Œå…¨ç”±ç”¨æˆ·è‡ªå·±å†³å®š
-            avalon.scan();
-
-            avalon.ui["suggest"].strategies["test"] = function (value, done) {
-                // æ·»åŠ ç­–ç•¥
-                // done(array ) {callback}
-                setTimeout(function () {
-                    done(value ? [
-                        value + "1",
-                        value + "2",
-                        value + "3 è¿™ä¸ªå»ºè®®é¡¹æœ‰ç‚¹ç‚¹é•¿å“¦å“¦å“¦å“¦å“¦å“¦å“¦",
-                        value + "4",
-                        value + "5",
-                        value + "6",
-                        value + "7"
-                    ] : [])
-                }, 100)
-            }
-
-
-            avalon.ui["suggest"].strategies['test1'] = function (value, done) {
-                setTimeout(function () {
-                    var arr = value ? ["xueer", "shirly"] : []
-                    done(arr)
-                }, 100)
-            }
-        })
-    </script>
 </body>
 </html>
+

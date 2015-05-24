@@ -61,64 +61,9 @@
             </div>
         </div>
         <section id="content">
-            <div class="said-content">
-                <div class="said-blog-list">
-                    <h3 class="said-blog-title"><span></span>JavaScript随笔</h3>
-                    <div class="said-blog-content">
-                        <!--forEach-->
-                        <section class="said-blog">
-                            <article class="said-blog-item afterClear">
-                                <div class="blog-img-content">
-                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
-                                </div>
-                                <section class="blog-content">
-                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
-                                    <div class="blog-summary">
-                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
-                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
-                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
-                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
-                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
-                                    </div>
-                                    <footer class="blog-footer">
-                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
-                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
-                                        <span class="blog-info link fa fa-tags" title="标签">
-                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
-                                        </span>
-                                        <time title="发布时间">2013-12-10</time>
-                                    </footer>
-                                </section>
-                            </article>
-                        </section>
-                        <section class="said-blog">
-                            <article class="said-blog-item afterClear">
-                                <div class="blog-img-content">
-                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
-                                </div>
-                                <section class="blog-content">
-                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
-                                    <div class="blog-summary">
-                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
-                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
-                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
-                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
-                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
-                                    </div>
-                                    <footer class="blog-footer">
-                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
-                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
-                                        <span class="blog-info link fa fa-tags" title="标签">
-                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
-                                        </span>
-                                        <time title="发布时间">2013-12-10</time>
-                                    </footer>
-                                </section>
-                            </article>
-                        </section>
-                    </div>
-        </div>
-                <div class="said-blog-other">
+            <div class="said-content afterClear">
+                <!--【【【【【【【【【【【【【【【【【【【【【【【【【【当said-blog-other的高度超过said-blog-list，就切换成absolute，并开始视差滚动】】】】】】】】】】】】】】】】】】】】】-->
+                <div class="said-blog-other" id="said-other">
                     <div class="blog-other-content">
                         <div class="blog-other-title">分类</div>
                         <ul class="blog-other-list">
@@ -248,23 +193,532 @@
                         </div>
                     </div>
                 </div>
-        <div class="said-blog-notfound" style="display: none;">
-            <div class="blog-notfound-Title">
-                <img src="/Content/Images/not-blog.gif" /><span>没有在该分类/标签下找到相关数据...</span>
-            </div>
-            <div class="blog-notfound-more">
-                <h4>随机推荐一些其他文章：</h4>
-                <ul>
-                    <li><a href="javascript:;">ES6 promise的思考</a></li>
-                    <li><a href="javascript:;">jQuery源码解读：jQuery.Event</a></li>
-                    <li><a href="javascript:;">我的开源项目 - X.js</a></li>
-                </ul>
-            </div>
-        </div>
-        </div>
-    </section>
-    </section>
+                <div class="said-blog-list" id="said-blog-list">
+                    <h3 class="said-blog-title"><span></span>JavaScript随笔</h3>
+                    <div class="said-blog-content">
+                        <!--forEach 20一个分页-->
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <!--测试-->
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/20140730222859.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期一</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
+                        <section class="said-blog">
+                            <article class="said-blog-item">
+                                <div class="blog-img-content">
+                                    <a class="blog-img" href="/" style="background-image: url(/Content/Images/UEDImg/5623.jpg);"></a>
+                                </div>
+                                <section class="blog-content">
+                                    <h2 class="blog-title" title="这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊"><a href="javascript:;">这个闪动的bug不能直视啊，a标签的这个在chrome下的闪动，使用了transition的闪动，还没有解决啊</a></h2>
+                                    <div class="blog-summary">
+                                        <p>突然想要走一段陌生的路，让自己无谓一点。</p>
+                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。</p>
+                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。</p>
+                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？</p>
+                                        <p>突然想单曲循环一首歌，让心跳不会去选择沉闷。</p>
+                                    </div>
+                                    <footer class="blog-footer">
+                                        <span class="blog-info fa fa-eye" title="浏览"><i>15</i></span>
+                                        <span class="blog-info link fa fa-th-large" title="分类"><a href="javascript:;">ECMAScript 5</a></span>
+                                        <span class="blog-info link fa fa-tags" title="标签">
+                                            <a href="javascript:;">随笔</a><a href="javascript:;">javascript</a>
+                                        </span>
+                                        <time title="发布时间">2013-12-10&nbsp;&nbsp;星期二</time>
+                                    </footer>
+                                </section>
+                            </article>
+                        </section>
 
+                        <!--测试-->
+                    </div>
+                </div>
+                <div class="said-blog-notfound" style="display: none;">
+                    <div class="blog-notfound-Title">
+                        <img src="/Content/Images/not-blog.gif" /><span>没有在该分类/标签下找到相关数据...</span>
+                    </div>
+                    <div class="blog-notfound-more">
+                        <h4>随机推荐一些其他文章：</h4>
+                        <ul>
+                            <li><a href="javascript:;">ES6 promise的思考</a></li>
+                            <li><a href="javascript:;">jQuery源码解读：jQuery.Event</a></li>
+                            <li><a href="javascript:;">我的开源项目 - X.js</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    <script src="../../Content/JavaScript/jquery-2.1.1.js"></script>
     <footer id="footer">
         <section id="footer-content">
             <dl>
@@ -297,8 +751,71 @@
         </section>
 
     </footer>
-    <script>
 
+    <script>
+        $(function () {
+            /*
+                函数节流（函数去抖）
+            */
+            var dateNow = Date.now || function () {
+                return new Date().getTime();
+            }
+
+            var throttle = function (func, wait, options) {
+                var context, args, result;
+                var timeout = null;
+                var previous = 0;
+                if (!options) options = {};
+                var later = function () {
+                    previous = options.leading === false ? 0 : dateNow();
+                    timeout = null;
+                    result = func.apply(context, args);
+                    if (!timeout) context = args = null;
+                };
+                return function () {
+                    var now = dateNow();
+                    if (!previous && options.leading === false) previous = now;
+                    var remaining = wait - (now - previous);
+                    context = this;
+                    args = arguments;
+                    if (remaining <= 0 || remaining > wait) {
+                        if (timeout) {
+                            clearTimeout(timeout);
+                            timeout = null;
+                        }
+                        previous = now;
+                        result = func.apply(context, args);
+                        if (!timeout) context = args = null;
+                    } else if (!timeout && options.trailing !== false) {
+                        timeout = setTimeout(later, remaining);
+                    }
+                    return result;
+                };
+            };
+
+            var $saidBlog = $('#said-blog-list'),
+                $saidOther = $('#said-other'),
+                $window = $(window),
+                windowHeight = $window.height(),
+                saidBlogHeight = $saidBlog.height(),
+                shiChaBlogHeight = saidBlogHeight - windowHeight,
+                saidOtherHeight = $saidOther.height(),
+                shichaHeight = saidBlogHeight - saidOtherHeight,
+                temp;
+            if (shichaHeight > 0 && saidOtherHeight - windowHeight > 0) {
+                $saidOther.css('position', 'absolute');
+                $window.on('scroll', throttle(function () {
+                    temp = $window.scrollTop() - $saidBlog.offset().top;
+                    if (temp > shiChaBlogHeight) {
+                        $saidOther.css({ 'bottom': 0, 'top': 'auto' });
+                    } else if (temp > 0) {
+                        $saidOther.css('top', shichaHeight * (temp / shiChaBlogHeight));
+                    } else if (temp <= 0)
+                        $saidOther.css('top', 0);
+                }, 1, { leading: true }));
+            }
+
+        });
     </script>
 </body>
 </html>
