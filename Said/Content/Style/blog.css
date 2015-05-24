@@ -1,5 +1,5 @@
 ﻿.said-content { position: relative; }
-    .said-content a { color: #028cd3; }
+    /*.said-content a { color: #028cd3; }*/
 .said-blog-list, .said-blog-notfound { padding-right: 400px; }
 .said-blog-list { position: relative; padding-right: 0; margin-right: 400px; }
 .said-blog-title { font-size: 18px; line-height: 22px; padding: 21px 0 10px 10px; border-bottom: 1px solid #e6e6e6; }
@@ -30,14 +30,16 @@
     .blog-notfound-more h4 { font-size: 16px; }
     .blog-notfound-more li a { line-height: 30px; font-size: 16px; }
         .blog-notfound-more li a:hover { text-decoration: underline; }
+
 /*right other*/
-/*【【【【【【【【【【【【【【【【【【【【【【【【【【当said-blog-other的高度超过said-blog-list，就切换成absolute，并开始视差滚动】】】】】】】】】】】】】】】】】】】】】*/
-/*.said-blog-other { position: absolute; top: 0; right: 0; padding: 10px; }*/
 .said-blog-other { float: right; top: 0; right: 0; padding: 10px; }
-.blog-other-content { width: 370px; border: 1px solid #e0e0e0; margin-bottom: 30px; }
+.blog-other-content { width: 370px; margin-bottom: 30px; }
     .blog-other-content a { color: #555; }
         .blog-other-content a:hover { color: #028cd3; }
-.blog-other-title { background-color: #f9f9f9; height: 45px; line-height: 45px; padding-left: 47px; font-size: 16px; }
+    /*如果右侧项目栏第一需要边框，把first-child去掉即可*/
+    .blog-other-content:first-child { border: 1px solid #e0e0e0; }
+        .blog-other-content:first-child .blog-other-title { border: none; background-color: #f9f9f9; }
+.blog-other-title { height: 45px; line-height: 45px; padding-left: 47px; font-size: 18px; }
 .blog-other-list li { border-top: 1px solid #f3f3f3; transition: border-color 0.4s ease-in-out 0s; border-left: 2px solid #FFF; }
     .blog-other-list li:first-child { border-top: 1px solid #e0e0e0; }
     .blog-other-list li:hover { transition: border-color 0.4s ease-in-out 0s; border-left-color: #3ea7cb; }
@@ -52,7 +54,6 @@
 .project-item, .blog-tag { display: block; padding: 10px 15px; background-color: #FFF; border-top: 1px solid #e0e0e0; }
 
 
-/*【【【【【【【【【【【【【【【【【【【【【【【【【【 Blog的左右两栏是不是可以做成视差滚动 】】】】】】】】】】】】】】】】】】】】】】】】】】】】】】*/
 .project-content { display: table; width: 100%; table-layout: fixed; }
 .project-info, .project-logo { display: table-cell; vertical-align: middle; }
 .project-logo { width: 128px; }
