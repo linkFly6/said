@@ -267,9 +267,6 @@
                 <div class="blog-more-comment">
                     <div class="blog-comment-content">
                         <div class="blog-comment-bar">
-                            <div class="comment-portrait">
-                                <img alt="github" src="/Content/Images/github.png" />
-                            </div>
                             <form action="/" class="comment-form">
                                 <ul class="blog-comment-info" style="">
                                     <li>
@@ -279,7 +276,7 @@
                                     <li>
                                         <input type="url" placeholder="您的站点" /></li>
                                     <li>
-                                        <input type="checkbox" id="comment-cookie" /><label for="comment-cookie">下次自动填写</label></li>
+                                        <input type="checkbox" id="comment-cookie" checked="checked" /><label for="comment-cookie">下次自动填写</label></li>
                                 </ul>
                                 <div class="comment-bar">
                                     <textarea name="comment" class="cmt-context" id="comment-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
@@ -293,8 +290,7 @@
                                                 <li class="loading-dot">5</li>
                                             </ul>
                                         </div>
-                                        <span></span>
-                                        <input type="submit" class="submitLock ct-submit" id="comment-submit" value="提交评论" />
+                                        <input type="button" class="btn btn-info ct-submit" id="comment-submit" value="提交评论" />
                                     </div>
                                 </div>
                             </form>
@@ -302,16 +298,14 @@
                         <div class="blog-comment-context">
                             <ul class="comment-list">
                                 <li class="comment-item">
-                                    <div class="comment-portrait">
-                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
-                                            <img alt="github" src="/Content/Images/github.png" />
-                                        </a>
-                                    </div>
                                     <div class="ctitem-content">
                                         <div class="ct-top said-ellipsis">
                                             <a href="javascript:;" class="ct-name" target="_blank" title="查看ta的站点">linkFly</a>
                                         </div>
-                                        <p class="ct-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                        <div class="ct-context">
+                                            <p>重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                        </div>
+
                                         <div class="ct-footer">
                                             <span class="ct-num">#1</span>
                                             <time class="ct-time">2小时前</time>
@@ -320,9 +314,6 @@
                                     </div>
                                 </li>
                                 <li class="comment-item">
-                                    <div class="comment-portrait">
-                                        <img alt="github" src="/Content/Images/testImg-Paramore.Ps.jpg" />
-                                    </div>
                                     <div class="ctitem-content">
                                         <div class="ct-top said-ellipsis">
                                             <a href="javascript:;" class="ct-name" style="display: none;">linkFly</a>
@@ -336,11 +327,6 @@
                                     </div>
                                 </li>
                                 <li class="comment-item">
-                                    <div class="comment-portrait">
-                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
-                                            <img alt="github" src="/Content/Images/UEDImg/demoImg.jpg" />
-                                        </a>
-                                    </div>
                                     <div class="ctitem-content">
                                         <div class="ct-top said-ellipsis">
                                             <a href="javascript:;" class="ct-name" style="display: none;" target="_blank" title="查看ta的站点">linkFly</a>
@@ -358,11 +344,6 @@
                                             </div>
                                             <ul class="cr-container">
                                                 <li class="cr-item">
-                                                    <div class="cr-portrait">
-                                                        <a class="cr-link" href="javascript:;" target="_blank" title="查看ta的站点">
-                                                            <img src="/Content/Images/testImg-Paramore.Ps.jpg" alt="github" />
-                                                        </a>
-                                                    </div>
                                                     <div class="cr-content">
                                                         <div class="ct-top said-ellipsis">
                                                             <a href="/" class="ct-name " target="_blank" title="查看ta的站点">风住过的地方</a>
@@ -375,9 +356,6 @@
                                                     </div>
                                                 </li>
                                                 <li class="cr-item">
-                                                    <div class="cr-portrait">
-                                                        <img src="/Content/Images/github.png" alt="github" />
-                                                    </div>
                                                     <div class="cr-content">
                                                         <div class="ct-top said-ellipsis">
                                                             <span class="ct-name ">linkFly</span>&nbsp;&nbsp;回复&nbsp;&nbsp;<a style="" class="ct-name" href="javascript:;">风住过的地方</a>
@@ -394,11 +372,6 @@
                                     </div>
                                 </li>
                                 <li class="comment-item">
-                                    <div class="comment-portrait">
-                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
-                                            <img alt="github" src="/Content/Images/UEDImg/demoImg3.jpg" />
-                                        </a>
-                                    </div>
                                     <div class="ctitem-content">
                                         <div class="ct-top said-ellipsis">
                                             <a href="javascript:;" class="ct-name" target="_blank" title="查看ta的站点">linkFly</a>
@@ -437,8 +410,7 @@
                                                                     <li class="loading-dot">5</li>
                                                                 </ul>
                                                             </div>
-                                                            <span></span>
-                                                            <input type="submit" class="ct-submit" id="reply-submit" value="提交评论" />
+                                                            <input type="button" class="btn btn-info ct-submit" id="reply-submit" value="提交评论" />
                                                         </div>
                                                     </div>
                                                 </form>
@@ -447,11 +419,6 @@
                                     </div>
                                 </li>
                                 <li class="comment-item">
-                                    <div class="comment-portrait">
-                                        <a href="javascript:;" class="cmp-link" target="_blank" title="查看ta的站点">
-                                            <img alt="github" src="/Content/Images/UEDImg/demo-img5.jpg" />
-                                        </a>
-                                    </div>
                                     <div class="ctitem-content">
                                         <div class="ct-top said-ellipsis">
                                             <a href="javascript:;" class="ct-name" style="display: none;" target="_blank" title="查看ta的站点">linkFly</a>
@@ -492,18 +459,13 @@
                                                                 </ul>
                                                             </div>
                                                             <span></span>
-                                                            <input type="submit" class="ct-submit" id="Submit1" value="提交评论" />
+                                                            <input type="button" class="btn btn-info ct-submit" id="Submit1" value="提交评论" />
                                                         </div>
                                                     </div>
                                                 </form>
                                             </div>
                                             <ul class="cr-container">
                                                 <li class="cr-item">
-                                                    <div class="cr-portrait">
-                                                        <a class="cr-link" href="javascript:;" target="_blank" title="查看ta的站点">
-                                                            <img src="/Content/Images/testImg-Paramore.Ps.jpg" alt="github" />
-                                                        </a>
-                                                    </div>
                                                     <div class="cr-content">
                                                         <div class="ct-top said-ellipsis">
                                                             <a href="/" class="ct-name " target="_blank" title="查看ta的站点">风住过的地方</a>
@@ -516,9 +478,6 @@
                                                     </div>
                                                 </li>
                                                 <li class="cr-item">
-                                                    <div class="cr-portrait">
-                                                        <img src="/Content/Images/github.png" alt="github" />
-                                                    </div>
                                                     <div class="cr-content">
                                                         <div class="ct-top said-ellipsis">
                                                             <span class="ct-name ">linkFly</span>&nbsp;&nbsp;回复&nbsp;&nbsp;<a style="" class="ct-name" href="javascript:;">风住过的地方</a>
@@ -542,39 +501,9 @@
             <a class="blog-page-btn blog-prev" href="javascript:;" title="下一篇：世界很大，风住过这里">prev</a>
             <a class="blog-page-btn blog-next" href="javascript:;" title="上一篇：漫步百里">next</a>
         </section>
-
     </section>
-    <footer id="footer">
-        <section id="footer-content">
-            <dl>
-                <dt>推荐</dt>
-                <dd>
-                    <ul class="footer-recm">
-                        <li><a target="_blank" href="http://www.cnblogs.com/">博客园 - 开发者的网上家园</a></li>
-                        <li><a target="_blank" href="http://www.zhangxinxu.com/php/">张鑫旭的个人博客</a></li>
-                        <li><a target="_blank" href="http://www.cnblogs.com/rubylouvre/">司徒正美个人博客 - 博客园</a></li>
-                        <li><a target="_blank" href="https://github.com/linkFly6">Github - linkFly</a></li>
-                    </ul>
-                </dd>
-            </dl>
-            <dl>
-                <dt>许可
-                </dt>
-                <dd>本站原创并且没有注明相关许可协议的内容，默认均采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">《知识共享署名 3.0 中国大陆许可协议》</a>进行许可。非原创内容遵循原文许可协议。
-                </dd>
-            </dl>
-            <dl>
-                <dt>联系方式
-                </dt>
-                <dd>内容基本都是自己原创的，引用的地方都会给出相关引用，如有疏漏，联系方式：</dd>
-                <dd>linkFly6#live.com（#替换成@）</dd>
-            </dl>
-            <!--页脚替换到当前时间-->
-            <div class="footer-copyright">
-                ©2014&nbsp;linkFly&nbsp;-&nbsp;Said:听说&nbsp;&nbsp;京ICP备13014059号
-            </div>
-        </section>
-
+    <footer id="said-footer">
+            <a href="/" title="听说" class="logo"></a>
     </footer>
 </body>
 </html>

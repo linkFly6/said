@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using Said.Controllers.Filters;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Said
@@ -8,6 +9,7 @@ namespace Said
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new UserFilterAttribute());
         }
     }
 }
