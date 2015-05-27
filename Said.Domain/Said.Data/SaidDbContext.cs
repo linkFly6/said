@@ -40,6 +40,8 @@ namespace Said.Domain.Said.Data
         public DbSet<Article> Article { get; set; }
         public DbSet<Song> Song { get; set; }
         public DbSet<Tag> Tag { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<UserRecord> UserRecord { get; set; }
         #endregion
     }
 }

@@ -1,15 +1,24 @@
-﻿using System;
+﻿using Said.Application;
+using Said.Helper;
+using Said.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
+using System.Web.Mvc;
 
 
 namespace Said.Controllers.Filters
 {
-    public class UserFilterAttribute : ActionFilterAttribute
+    public class UserFilterAttribute : ActionFilterAttribute, IActionFilter
     {
+
+        /// <summary>
+        /// 线程锁
+        /// </summary>
+        private static readonly object @lock = new object();
         /*
          * IP地址：http://gghaomm.iteye.com/blog/1748038
          * ip.taobao.com/instructions.php?ip=[ip地址字串] 
@@ -19,20 +28,123 @@ namespace Said.Controllers.Filters
             "county_id":"-1","isp_id":"100017"}}
          * 
          */
-
-        private void GetIP() { 
-        
-        }
-
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        /// <summary>
+        /// 根据IP获取地址
+        /// </summary>
+        /// <param name="ip">ip地址</param>
+        /// <returns>返回一个长度为3的数组，分别表示：[国家,省份,城市]</returns>
+        private async Task<string[]> GetAddress(string ip)
         {
-
-            
-            base.OnActionExecuting(actionContext);
+            if (string.IsNullOrEmpty(ip))
+                return new string[4];
+            return await Task.Run<string[]>(() =>
+            {
+                lock (@lock)
+                {
+                    string result = HttpHelper.GetAddress(ip);
+                    if (string.IsNullOrEmpty(result) || !result.Contains("-"))
+                        return new string[3];
+                    return result.Split('-');
+                }
+            });
         }
-        //public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
-        //{
-        //    base.OnActionExecuted(actionExecutedContext);
-        //}
+
+
+        /// <summary>
+        /// 添加统计记录方法
+        /// </summary>
+        /// <param name="userId">添加记录的用户ID</param>
+        /// <param name="context">收集信息的httpContext上下文</param>
+        private async void AddRecord(string userId, HttpContext context)
+        {
+            //收集统计信息
+            var helper = new HttpHelper(context);
+            UserRecord record = new UserRecord
+            {
+                AccessDate = DateTime.Now,
+                Browser = helper.GetBrowser(),
+                IP = helper.GetIP(),
+                Language = helper.GetLangage(),
+                Key = string.Empty,
+                OS = helper.GetClientOS(),
+                SessionID = context.Session.SessionID,
+                Query = context.Request.Url.Query,
+                SpiderName = helper.GetSpiderBot(),
+                UserID = userId,
+                UserAgent = context.Request.UserAgent,
+                UrlReferrer = string.Empty,
+                LocalPath = context.Request.Url.LocalPath
+            };
+            if (context.Request.UrlReferrer != null)
+                record.UrlReferrer = context.Request.UrlReferrer.AbsolutePath;
+            //异步根据IP获取地址
+            string[] address = await GetAddress(record.IP);
+            UserRecordApplication.Add(record);
+        }
+
+        /// <summary>
+        /// 统计方法
+        /// </summary>
+        /// <param name="context"></param>
+        private void Statistics(HttpContext context)
+        {
+            HttpCookie cookie = context.Request.Cookies.Get("user");
+            string userId = string.Empty, key = string.Empty;
+            if (cookie == null || cookie.Values["id"] == null)//没有用户ID，创建
+            {
+                cookie = new HttpCookie("user");
+                User user = new User { UserID = userId = Guid.NewGuid().ToString().Replace("-", ""), EMail = string.Empty, Name = string.Empty };
+                if (UserApplication.Add(user) > 0)
+                {
+                    cookie.Name = "user";
+                    cookie.Values.Add("id", userId);
+                    context.Request.Cookies.Add(cookie);
+                }
+            }
+            else
+            {
+                userId = cookie.Values["id"];//【【【【【【【【【【【TODO： 这里要验证cookie的合法性】】】】】】】】】】
+            }
+            AddRecord(userId, context);
+        }
+
+        /// <summary>
+        /// 加载action前
+        /// </summary>
+        /// <param name="filterContext"></param>
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            Statistics(HttpContext.Current);
+            base.OnActionExecuting(filterContext);
+        }
+
+        /// <summary>
+        /// 加载action后
+        /// </summary>
+        /// <param name="filterContext"></param>
+        public override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            base.OnActionExecuted(filterContext);
+        }
+
+
+        /// <summary>
+        /// 在action返回前执行
+        /// </summary>
+        /// <param name="filterContext"></param>
+        public override void OnResultExecuting(ResultExecutingContext filterContext)
+        {
+            base.OnResultExecuting(filterContext);
+        }
+
+        /// <summary>
+        /// 在action方法返回后执行
+        /// </summary>
+        /// <param name="filterContext"></param>
+        public override void OnResultExecuted(ResultExecutedContext filterContext)
+        {
+            base.OnResultExecuted(filterContext);
+        }
+
     }
 }

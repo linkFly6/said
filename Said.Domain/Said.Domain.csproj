@@ -71,6 +71,8 @@
     <Compile Include="Said.Service\IService.cs" />
     <Compile Include="Said.Service\SongService.cs" />
     <Compile Include="Said.Service\TagService.cs" />
+    <Compile Include="Said.Service\UserRecordService.cs" />
+    <Compile Include="Said.Service\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

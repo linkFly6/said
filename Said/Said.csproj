@@ -129,6 +129,7 @@
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SourceController.cs" />
     <Compile Include="Global.asax.cs">
@@ -2724,6 +2725,9 @@
     <Content Include="Content\Font\fontawesome-webfont.woff" />
     <Content Include="Content\Font\fontawesome-webfont.woff2" />
     <Content Include="Content\Font\FontAwesome.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Source\Sys\Dat\IP.dat" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

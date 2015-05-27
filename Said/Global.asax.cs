@@ -19,8 +19,10 @@ namespace Said
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            /*默认加载IP查询库*/
+            Said.Helper.IP.Load(Server.MapPath("~/Source/Sys/Dat/IP.dat"));
         }
 
-        
     }
 }

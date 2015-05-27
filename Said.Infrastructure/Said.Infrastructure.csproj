@@ -61,12 +61,15 @@
     <Compile Include="Said.Infrastructure\Common\Image\ImageClass.cs" />
     <Compile Include="Said.Infrastructure\Common\Image\ImageDown.cs" />
     <Compile Include="Said.Infrastructure\Common\Image\ImageUpload.cs" />
+    <Compile Include="Said.Infrastructure\Common\Net\IP.cs" />
+    <Compile Include="Said.Infrastructure\Common\Net\HttpHelper.cs" />
     <Compile Include="Said.Infrastructure\Common\Net\NetHelper.cs" />
     <Compile Include="Said.Infrastructure\Common\Url\UrlCommon.cs" />
     <Compile Include="Said.Infrastructure\Common\YZM\YZMHelper.cs" />
     <Compile Include="Said.Models\BaseModel.cs" />
     <Compile Include="Said.Infrastructure\Common\ModelCommon.cs" />
     <Compile Include="Said.Models\Data\Page.cs" />
+    <Compile Include="Said.Models\Models\Address.cs" />
     <Compile Include="Said.Models\Models\Blog.cs" />
     <Compile Include="Said.Models\Models\Classify.cs" />
     <Compile Include="Said.Models\Models\Article.cs" />
@@ -87,6 +90,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SaidModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Said.Models\Models\User.cs" />
+    <Compile Include="Said.Models\Models\UserRecord.cs" />
+    <Compile Include="Said.Models\Models\UserSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Said.Models\Models\UML\SaidModel.edmx">
