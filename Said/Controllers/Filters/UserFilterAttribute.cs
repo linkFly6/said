@@ -33,20 +33,20 @@ namespace Said.Controllers.Filters
         /// </summary>
         /// <param name="ip">ip地址</param>
         /// <returns>返回一个长度为3的数组，分别表示：[国家,省份,城市]</returns>
-        private async Task<string[]> GetAddress(string ip)
+        private string[] GetAddress(string ip)
         {
             if (string.IsNullOrEmpty(ip))
-                return new string[4];
-            return await Task.Run<string[]>(() =>
-            {
-                lock (@lock)
-                {
-                    string result = HttpHelper.GetAddress(ip);
-                    if (string.IsNullOrEmpty(result) || !result.Contains("-"))
-                        return new string[3];
-                    return result.Split('-');
-                }
-            });
+                return new string[3] { "", "", "" };
+            //return await Task.Run<string[]>(() =>
+            //{
+            //    lock (@lock)
+            //    {
+            string result = HttpHelper.GetAddress(ip);
+            if (string.IsNullOrEmpty(result) || !result.Contains("-"))
+                return new string[3] { "", "", "" };
+            return result.Split('-');
+            //    }
+            //});
         }
 
 
@@ -55,7 +55,7 @@ namespace Said.Controllers.Filters
         /// </summary>
         /// <param name="userId">添加记录的用户ID</param>
         /// <param name="context">收集信息的httpContext上下文</param>
-        private async void AddRecord(string userId, HttpContext context)
+        private void AddRecord(string userId, HttpContext context)
         {
             //收集统计信息
             var helper = new HttpHelper(context);
@@ -78,8 +78,16 @@ namespace Said.Controllers.Filters
             if (context.Request.UrlReferrer != null)
                 record.UrlReferrer = context.Request.UrlReferrer.AbsolutePath;
             //异步根据IP获取地址
-            string[] address = await GetAddress(record.IP);
-            UserRecordApplication.Add(record);
+            Task.Run(() =>
+            {
+                string[] address = GetAddress(record.IP);
+                //string[] address = GetAddress("124.127.118.59");
+                record.Country = address[0];
+                record.Province = address[1];
+                record.City = address[2];
+                UserRecordApplication.Add(record);
+            });
+
         }
 
         /// <summary>
