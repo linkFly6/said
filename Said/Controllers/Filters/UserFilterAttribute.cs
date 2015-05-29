@@ -59,13 +59,16 @@ namespace Said.Controllers.Filters
         {
             //收集统计信息
             var helper = new HttpHelper(context);
+            string key = context.Request["sgs"];
+            if (key == null)
+                key = string.Empty;
             UserRecord record = new UserRecord
             {
                 AccessDate = DateTime.Now,
                 Browser = helper.GetBrowser(),
                 IP = helper.GetIP(),
                 Language = helper.GetLangage(),
-                Key = string.Empty,
+                Key = key,//【【【【【【【【【【【【TODO 这个key是点击参数里的】】】】】】】】】】】】】
                 OS = helper.GetClientOS(),
                 SessionID = context.Session.SessionID,
                 Query = context.Request.Url.Query,
@@ -73,19 +76,28 @@ namespace Said.Controllers.Filters
                 UserID = userId,
                 UserAgent = context.Request.UserAgent,
                 UrlReferrer = string.Empty,
-                LocalPath = context.Request.Url.LocalPath
+                ReferrerAuthority = string.Empty,
+                LocalPath = context.Request.Url.LocalPath,
+                IsFile = context.Request.Url.IsFile
             };
             if (context.Request.UrlReferrer != null)
+            {
                 record.UrlReferrer = context.Request.UrlReferrer.AbsolutePath;
+                record.ReferrerAuthority = context.Request.UrlReferrer.Authority;
+            }
+
             //异步根据IP获取地址
             Task.Run(() =>
             {
-                string[] address = GetAddress(record.IP);
-                //string[] address = GetAddress("124.127.118.59");
-                record.Country = address[0];
-                record.Province = address[1];
-                record.City = address[2];
-                UserRecordApplication.Add(record);
+                lock (@lock)
+                {
+                    string[] address = GetAddress(record.IP);
+                    //string[] address = GetAddress("124.127.118.59");
+                    record.Country = address[0];
+                    record.Province = address[1];
+                    record.City = address[2];
+                    UserRecordApplication.Add(record);
+                }
             });
 
         }
@@ -97,7 +109,7 @@ namespace Said.Controllers.Filters
         private void Statistics(HttpContext context)
         {
             HttpCookie cookie = context.Request.Cookies.Get("user");
-            string userId = string.Empty, key = string.Empty;
+            string userId = string.Empty;
             if (cookie == null || cookie.Values["id"] == null)//没有用户ID，创建
             {
                 cookie = new HttpCookie("user");

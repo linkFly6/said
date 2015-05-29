@@ -126,7 +126,10 @@ namespace Said.Models
         /// </summary>
         public string SpiderName { get; set; }
 
-
+        /// <summary>
+        /// 是否是文件
+        /// </summary>
+        public bool IsFile { get; set; }
 
         /// <summary>
         /// 客户端语言

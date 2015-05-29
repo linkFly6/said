@@ -7,7 +7,6 @@ using System.Web.Mvc;
 
 namespace Said.Controllers
 {
-    [UserFilterAttribute]
     public class BaseController : Controller
     {
         //这个控制器可以定义顶层控制器的行为

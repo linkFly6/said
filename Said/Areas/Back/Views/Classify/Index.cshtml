@@ -39,29 +39,29 @@
 <div class="main-context">
     <div class="row">
         <div class="col-md-6">
-            <div class="bs-table">
+            <div class="bs-table" ms-controller="classify">
                 <div class="navbar-form navbar-left table-tool" id="classToolbar">
-                    <div class="data-form">
+                    @*<div class="data-form">
                         <div class="form-control iconInput">
                             <input type="text" class="input-icon" placeholder="添加一个新的分类" maxlength="20" id="addClassifyInput" />
                         </div>
                         <button class="btn btn-info btn-add">添加</button>
                         <button class="btn btn-success" id="loadIcons">从图库中选择</button>
-                    </div>
-                    <div class="data-form" style="display: none">
+                    </div>*@
+                    <div class="data-form">
                         <div class="form-control iconInput">
-                            <input class="input-icon" placeholder="编辑分类" maxlength="20" id="editClassifyInput" />
+                            <input class="input-icon" ms-attr-placeholder="modelId.length ?'编辑分类':'添加一个新的分类'" maxlength="20" ms-input="input($event)" id="editClassifyInput" />
                         </div>
-                        <button id="classify-btn-up" class="btn btn-warning btn-edit" title="点击将会修改该分类">修改</button>
-                        <button id="loadEditIcons" class="btn btn-success" title="点击将会修改该分类">从图库中选择</button>
-                        <button class="btn btn-info btn-cancel">取消</button>
+                        <button id="classify-btn-up" class="btn" ms-class-1="btn-warning btn-edit:modelId.length" ms-class-2="btn-info btn-add:!modelId.length" ms-attr-title="modelId.length ? '点击将会修改该分类' : '添加一个新的分类'">{{modelId.length ? '修改':'添加' }}</button>
+                        <button id="loadEditIcons" class="btn btn-success">从图库中选择</button>
+                        <button class="btn btn-info btn-cancel" ms-visible="modelId.length" ms-click="cancel($event)">取消</button>
                     </div>
                 </div>
                 <table id="classifyTable" data-toolbar="#classToolbar" class="table table-hover table-striped main-table" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="bs-table">
+            <div class="bs-table" ms-controller="tag">
                 <div class="navbar-form navbar-right table-tool" role="search" id="tagsToolbar">
                     <div class="data-form">
                         <div class="form-group">
@@ -143,9 +143,21 @@
                 'bsTable-cn': ['bsTable']
             }
         });
-        require(['so', 'jquery', 'upload', 'classify', 'popup', 'bsTable-cn', 'showmsg'], function (so, $, Extend) {
+        require(['so', 'jquery', 'avalon', 'upload', 'classify', 'popup', 'bsTable-cn', 'showmsg'], function (so, $, avalon, Extend) {
             $(function () {
                 'use strict';
+                avalon.define({
+                    $id: 'classify',
+                    modelId: '',
+                    input: function (e) {
+
+                    },
+                    cancel: function (e) {
+
+                    }
+                })
+                avalon.scan();
+                return;
                 var $window = $(window),
                     $bsTables = $('.bs-table');
                 (function ($bsTable) {

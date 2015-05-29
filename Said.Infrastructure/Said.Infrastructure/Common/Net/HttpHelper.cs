@@ -614,6 +614,7 @@ namespace Said.Helper
         #endregion
 
 
+        #region 获得操作系统信息
         /// <summary>
         /// 获得操作系统信息
         /// </summary>
@@ -680,7 +681,8 @@ namespace Said.Helper
             else
                 os = "Other";
             return os;
-        }
+        } 
+        #endregion
         #endregion
 
     }
