@@ -85,7 +85,7 @@
             //还要给window绑定回车和空格，按这俩也都隐藏..
         }
         append(elem);
-        setPos(elem.lastElementChild);
+        setPos(time == true ? elem.lastElementChild : elem);
         setGlobalShowMsg(this);
         if (time === true) return;
         this.timeoutId = timeout(function () {

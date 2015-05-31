@@ -23,6 +23,7 @@
     i = 0,
     UploadTest = function ($input, options) {
         //组件化
+        return;
         var config = this.config = $.extend({}, globalConfig, options),
             _self = this,
             $prev = $input.prev(),//上传框和图片容器

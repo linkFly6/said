@@ -2794,7 +2794,6 @@
     //ms-controller绑定已经在scanTag 方法中实现
     //ms-css绑定已由ms-attr绑定实现
 
-
     // bindingHandlers.data 定义在if.js
     bindingExecutors.data = function (val, elem, data) {
         var key = "data-" + data.param
@@ -3693,6 +3692,12 @@
     bindingExecutors.visible = function (val, elem, data) {
         elem.style.display = val ? data.display : "none"
     }
+
+    /*linkFly 扩展，可以使用ms-dom="test"，访问viewModel.elem.test来访问到binding的dom对象*/
+    bindingHandlers.dom = function (data, vms) {
+        vms[0].elem = vms[0].elem || {};
+        vms[0].elem[data.value] = data.element;
+    };
 
     bindingHandlers.widget = function (data, vmodels) {
         var args = data.value.match(rword)

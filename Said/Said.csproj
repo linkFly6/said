@@ -178,9 +178,14 @@
     <Content Include="Content\Back\Images\showMsg\ok.png" />
     <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.js" />
     <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.min.js" />
-    <Content Include="Content\Back\JavaScript\avalon\plus\autoComplete.js" />
-    <Content Include="Content\Back\JavaScript\avalon\plus\groupInput.js" />
-    <Content Include="Content\Back\JavaScript\avalon\plus\upload.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\autoComplete.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\groupInput.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\imgInput.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\popup.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\selectResource.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\template\imgInput.html" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\upload.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\template\popup.html" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
@@ -2728,6 +2733,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Source\Sys\Dat\IP.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Upload.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Path.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

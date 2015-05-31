@@ -244,7 +244,7 @@
             /// Array:使用数组格式化，模板中使用${Index}占位：${0},${1}
             /// </param>
             /// <returns type="String" />
-            if (typeof str !== 'string' || typeof object !== 'object') return '';
+            if (typeof str !== 'string') return '';
             var array = slice.call(arguments, 1);
             //可以被\符转义
             return str.replace(/\\?\${([^{}]+)\}/gm, function (match, key) {

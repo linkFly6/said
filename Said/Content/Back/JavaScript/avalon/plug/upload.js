@@ -108,6 +108,9 @@
         classFile: 'so-upload-input',
         url: null,
         name: 'uploadFile',
+        getTemplate: function () {
+            return template;
+        },
         visible: true,
         //multiple: false,暂时还是不要支持了吧....
         progress: true,

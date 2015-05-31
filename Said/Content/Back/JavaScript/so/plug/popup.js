@@ -13,9 +13,6 @@
             placement: 'auto',//top | bottom | left | right | auto
             close: 'auto'
         },
-        guid = function () {
-            return new Date() - 0;
-        },
         cache = {},
         Popup = function ($elem, option) {
             var _self = this,
@@ -71,11 +68,11 @@
                     html.push('<div class="pupup-arrow arrow-flag"></div><div class="popup-title"><span class="pupup-close"></span>', config.title, '</div>') :
                     html.push('<div class="pupup-arrow"></div>');
                 html.push('<div class="popup-body"></div>');
-                _self.$content = $(
-                    so.format(templent,
+                html = so.format(templent,
                     config.close === 'auto' ?
                         '<div class="popup-mask"></div>' : '',
-                    html.join('')));
+                    html.join(''));
+                _self.$content = $(html);
                 //这里的查找结果是popup-body
                 _self.$context = $(_self.$content.find('.popup-context'));
                 _self.$body = $(_self.$context[0].lastElementChild).append(context);
@@ -89,8 +86,8 @@
                     _self.$content.find('.pupup-close').on('click.popup.close', function () {
                         _self.hide();
                     });
-                if (config.cache)
-                    _self.append();
+                //if (config.cache)
+                //    _self.append();
             }
         },
         show: function () {

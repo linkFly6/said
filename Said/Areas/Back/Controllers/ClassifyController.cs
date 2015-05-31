@@ -13,7 +13,7 @@ namespace Said.Areas.Back.Controllers
     {
         //
         // GET: /Back/Classify/
-        private readonly string ICONPATH = "/Content/Images/icons/";
+        private readonly string ICONPATH = "~/Source/Sys/Images/Icons/";
 
 
         public ActionResult Index()
@@ -36,13 +36,14 @@ namespace Said.Areas.Back.Controllers
         /// <param name="name">分类名</param>
         /// <param name="imgName">分类Icon</param>
         /// <returns></returns>
+        [HttpPost]
         public JsonResult AddClassify(string name, string imgName)
         {
             if (string.IsNullOrWhiteSpace(imgName) || !FileCommon.Exists(Server.MapPath(ICONPATH) + imgName))
                 return ResponseResult(2, "上传的Icon不正确");
             if (string.IsNullOrWhiteSpace(name))
                 return ResponseResult(1, "分类名称不正确");
-            name = name.Trim();
+            name = HttpUtility.UrlDecode(name).Trim();
             if (ClassifyApplication.FindByName(name) != null)
                 return ResponseResult(4, "该分类已经存在！");
             Classify model = new Classify

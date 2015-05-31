@@ -1,6 +1,7 @@
 ﻿(function (window, undefined) {
     var so = window.so,
         $ = window.jQuery,
+        avalon = window.avalon,
         said = {},
         //绑定导航
         bindNavigation = function ($content, keyClass, openClass) {
@@ -17,8 +18,10 @@
 
 
     /*************************************************************************************
-                                和业务相关的通用逻辑
+                                和业务相关的通用逻辑（注册在said命名空间）
     **************************************************************************************/
+
+
 
     said.ajax = function (url, data) {
         //jQuery.ajax的浅warpper
@@ -32,7 +35,15 @@
                 data: data //注意对内容进行编码
             });
     };
+
     window.said = said;
+
+
+    /*************************************************************************************
+                            和业务相关的通用逻辑（注册在window命名空间）
+    **************************************************************************************/
+
+
     //window.$window = $(window);
     //window.$document = $(document);
 })(window);

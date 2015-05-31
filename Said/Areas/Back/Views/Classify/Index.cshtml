@@ -17,17 +17,28 @@
 </div>*@
 
 
-<div class="select-icons" id="selectIcons" style="display: none;">
-    @{
-        if (list != null)
-        {
-            foreach (var item in list)
+<div class="select-icons" id="selectIcons" style="display: none;" ms-controller="iconBox">
+    <div class="icons-box">
+        @{
+            if (list != null)
             {
-        <a href="javascript:;" class="icons-btn" data-name="@item">
-            <img src="@(ViewBag.SourceURL + item)" /></a>        
+                foreach (var item in list)
+                {
+            <a href="javascript:;" class="icons-btn" data-name="@item">
+                <img src="@(ViewBag.SourceURL + item)" /></a>
+                }
             }
         }
-    }
+
+        <a href="javascript:;" class="icons-btn" ms-repeat-item="imgs" ms-attr-data-name="item">
+            <img ms-attr-src="sourcePath+item" /></a>
+    </div>
+    <div class="icons-upload">
+        <div class="icons-upload-btn">
+            <div ms-widget="upload,uploadImages" class="icons-upload-box"></div>
+            <div class="btn btn-primary">上传</div>
+        </div>
+    </div>
 </div>
 <div class="page-header">
     <h2>标签/分类&nbsp;&nbsp;<small>&gt;标签/分类管理</small></h2>
@@ -41,23 +52,19 @@
         <div class="col-md-6">
             <div class="bs-table" ms-controller="classify">
                 <div class="navbar-form navbar-left table-tool" id="classToolbar">
-                    @*<div class="data-form">
-                        <div class="form-control iconInput">
-                            <input type="text" class="input-icon" placeholder="添加一个新的分类" maxlength="20" id="addClassifyInput" />
-                        </div>
-                        <button class="btn btn-info btn-add">添加</button>
-                        <button class="btn btn-success" id="loadIcons">从图库中选择</button>
-                    </div>*@
                     <div class="data-form">
                         <div class="form-control iconInput">
-                            <input class="input-icon" ms-attr-placeholder="modelId.length ?'编辑分类':'添加一个新的分类'" maxlength="20" ms-input="input($event)" id="editClassifyInput" />
+                            <div class="imgInput-box">
+                                <img data-holder-rendered="true" ms-attr-src="img?imgSourece+img:defaultIcon" data-src="holder.js/100%x180" alt="img" />
+                            </div>
+                            <input class="input-icon" ms-dom="input" ms-duplex="value" ms-attr-placeholder="modelId.length ?'编辑分类':'添加一个新的分类'" maxlength="20" ms-keydown="keydown($event)" />
                         </div>
-                        <button id="classify-btn-up" class="btn" ms-class-1="btn-warning btn-edit:modelId.length" ms-class-2="btn-info btn-add:!modelId.length" ms-attr-title="modelId.length ? '点击将会修改该分类' : '添加一个新的分类'">{{modelId.length ? '修改':'添加' }}</button>
-                        <button id="loadEditIcons" class="btn btn-success">从图库中选择</button>
+                        <button id="classify-btn-up" class="btn" ms-click="add(value)" ms-class-1="btn-warning btn-edit:modelId.length" ms-class-2="btn-info btn-add:!modelId.length" ms-attr-title="modelId.length ? '点击将会修改该分类' : '添加一个新的分类'">{{modelId.length ? '修改':'添加' }}</button>
+                        <button class="btn btn-success" ms-dom="loadIcon" ms-widget="popup,loadIcon">从图库中选择</button>
                         <button class="btn btn-info btn-cancel" ms-visible="modelId.length" ms-click="cancel($event)">取消</button>
                     </div>
                 </div>
-                <table id="classifyTable" data-toolbar="#classToolbar" class="table table-hover table-striped main-table" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
+                <table id="classifyTable" ms-dom="table" data-toolbar="#classToolbar" class="table table-hover table-striped main-table" data-striped="true" data-show-refresh="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
             </div>
         </div>
         <div class="col-md-6">
@@ -103,6 +110,8 @@
                 urlEditTag: '@Url.Action("EditTag", "Classify")',
                 urlDelTag: '@Url.Action("DeleteTag", "Classify")',
                 sourceClassify: '@ViewBag.SourceURL',
+                uploadSourceUrl: '@Url.Content("~/Back/Source/UploadClassifyIcons/")',
+                defualtImgUrl: '@Url.Content("~/Content/Images/icons/")',
                 defaultIcon: 'default.png'
             };
 
@@ -129,8 +138,8 @@
                 'so': 'so/so',
                 'classify': 'said/classify',
                 'bsTable': ['../Plug/bootstrap-table/bootstrap-table'],
-                'upload': ['so/plug/upload'],
-                'popup': ['so/plug/popup'],
+                'upload': 'avalon/plug/upload',
+                'popup': ['avalon/plug/popup'],
                 'showmsg': ['so/plug/showMsg'],
                 'bsTable-cn': ['../Plug/bootstrap-table/bootstrap-table-zh-CN'],
             },
@@ -146,50 +155,33 @@
         require(['so', 'jquery', 'avalon', 'upload', 'classify', 'popup', 'bsTable-cn', 'showmsg'], function (so, $, avalon, Extend) {
             $(function () {
                 'use strict';
-                avalon.define({
+                var vmClassify = avalon.define({
                     $id: 'classify',
                     modelId: '',
-                    input: function (e) {
-
-                    },
-                    cancel: function (e) {
-
-                    }
-                })
-                avalon.scan();
-                return;
-                var $window = $(window),
-                    $bsTables = $('.bs-table');
-                (function ($bsTable) {
-                    //分类逻辑 TODO 如果新上传了图片，是不是也要在图片选择框里追加上？？？
-                    //添加分类要检测分类是否存在【【【【【】】】】】】
-                    var $addInput = $('#addClassifyInput'),
-                        $editInput = $('#editClassifyInput'),
-                        isEdit = false,
-                        globalData;
-                    $bsTable.toolTable().on('toggle', function (e, index) {
-                        isEdit = !!index;
-                        if (!isEdit)
-                            globalData = null;
-                    }).on('add', function (e, $addInput) {//新增
-                        var data = $addInput.uploadText();
-                        if (!data.value || !data.value.trim()) {
+                    img: '',
+                    value: '',
+                    imgSourece: Action.defualtImgUrl,
+                    defaultIcon: Action.defualtImgUrl + Action.defaultIcon,
+                    add: function (value) {
+                        var img = vmClassify.img || Action.defaultIcon,
+                            name = value.trim();
+                        if (!name.length) {
                             showMsg('请输入分类名称', showMsg.WARNING);
-                            return $addInput.focus();
+                            return vmClassify.elem.input.focus();
                         }
                         //ajax添加
                         $.ajax(Action.urlAddClassify, {
                             type: 'post',
                             dataType: 'json',
                             contentType: 'application/json',
-                            data: JSON.stringify({ name: data.value, imgName: data.img })
+                            data: JSON.stringify({ name: encodeURIComponent(name), imgName: img })
                         }).done(function (server) {
                             if (server.code === 0) {
                                 //分类添加成功
-                                $addInput.uploadText('');
-                                $classifyTable.bootstrapTable('append', [{
-                                    CName: data.value,
-                                    CIcon: data.img,
+                                vmClassify.value = vmClassify.img = vmClassify.modelId = '';
+                                $table.bootstrapTable('append', [{
+                                    CName: name,
+                                    CIcon: img,
                                     ClassifyId: server.data
                                 }]);
                                 showMsg('添加分类成功', showMsg.OK);
@@ -199,127 +191,204 @@
                         }).fail(function () {
                             showMsg('网络连接异常', showMsg.ERROR);
                         });
-                    }).on('edit', function (e, $editInput, data) {//操作=>编辑
-                        $editInput.uploadText({
-                            value: data.name,
-                            img: data.icon
-                        });
-                        globalData = data;
-                        //$editInput[0].dataset.index = data.index;
-                        //$editInput[0].dataset.id = data.id;
-                    }).on('delete', function (e, $editInput, data) {//操作=>删除
-                        $.ajax(Action.urlDelClassify, {
-                            type: 'post',
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            data: JSON.stringify({ id: data.id })
-                        }).done(function (result) {
-                            if (result.code === 0) {
-                                $classifyTable.bootstrapTable('remove', {
-                                    field: 'ClassifyId',
-                                    values: [data.id]
-                                });
-                                showMsg('删除分类成功', showMsg.OK);
-                            } else {
-                                showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
-                            }
-                        }).fail(function () {
-                            showMsg('网络连接异常', showMsg.ERROR);
-                        });
-                    }).on('save', function () {//编辑=>保存
-                        var data = $editInput.uploadText();
-                        //console.dir(data);
-                        //console.dir(globalData);
-                        if (!data.value || !data.value.trim()) {
-                            showMsg('请输入分类名称', showMsg.WARNING);
-                            return $editInput.focus();
-                        };
-                        if (!globalData)
-                            return showMsg('找不要编辑的分类信息，请重新尝试编辑', showMsg.WARNING);
-                        if (data.value.trim() === globalData.name && data.img.trim() === globalData.icon) {//没有改动直接编辑成功
-                            $bsTable.trigger('changeForm', 0);
-                            return showMsg('编辑成功', showMsg.OK);
-                        };
-                        $.ajax(Action.urlEditClassify, {
-                            type: 'post',
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            data: JSON.stringify({ name: data.value.trim(), imgName: data.img.trim(), id: globalData.id })
-                        }).done(function (result) {
-                            if (result.code === 0) {
-                                $classifyTable.bootstrapTable('updateRow', {
-                                    index: globalData.index,
-                                    row: {
-                                        ClassifyId: globalData.id,
-                                        CName: data.value,
-                                        CIcon: data.img
-                                    }
-                                });
-                                $bsTable.trigger('changeForm', 0);
-                                showMsg('编辑分类成功', showMsg.OK);
-                            } else {
-                                showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
-                            }
-                        }).fail(function () {
-                            showMsg('网络连接异常', showMsg.ERROR, true);
-                        });
-                    });
+                    },
+                    keydown: function (e) {
+                        if (e.keyCode === 13)
+                            vmClassify.add(vmClassify.value);
+                    },
+                    cancel: function (e) {
 
-                    $addInput.uploadText({
-                        defImg: Action.defaultIcon,
-                        fail: function (error) {
-                            showMsg('上传Icon异常：' + error.msg, showMsg.ERROR, true);
-                        }
-                    });
-                    /*
-                        TODO
-                        1、为了保证加载，可以选择分类图，不能一直加载，删除数据的时候要检测分类图是否被引用
-                        2、默认图的处理，Icon是允许没有的，但是有默认图
-                        3、这个上传路径注意可以从站点全局路径对象中配置 TODO
-                        4、删除图片要有弹窗警告提示
-                    */
-                    var $selectIconsBtn = $('#loadIcons,#loadEditIcons').popup({
-                        title: '<i class="icon-picture"></i>从图库中选择Icon',
+                    },
+                    popup: {
+                        title: '请选择或上传新的Icon',
                         context: $('#selectIcons'),
-                        width: 450
-                    });
-                    //刚开始是隐藏的，当popup加载完成再设定为显示，否则页面因为js加载的问题会闪动一下
-                    $('#selectIcons').show().on('click', 'a', function () {
-                        var name = this.dataset.name,
-                            $target = isEdit ? $editInput : $addInput;
-                        $target.uploadText({
-                            value: name,
-                            img: name
-                        });
-                        $selectIconsBtn.popup('hide');
-                    });
-                    $editInput.uploadText({
-                        defImg: Action.defaultIcon,
-                        fail: function (error) {
-                            showMsg('上传Icon异常：' + error.msg, showMsg.ERROR, true);
+                        width: 450,
+                        classIcon: 'icon-picture'
+                    }
+                });
+                //upload
+                var vmUpload = avalon.define({
+                    $id: 'iconBox',
+                    sourcePath: Action.defualtImgUrl,
+                    imgs: [],
+                    upload: {
+                        text: '',
+                        classFile: 'hidden-file',
+                        //name: 'testFile',
+                        url: Action.uploadSourceUrl,
+                        visible: true,
+                        done: function (vm, data) {
+                            if (data.code === 0) {//上传成功
+                                vmUpload.imgs.push(data.name);
+                                return true;
+                            }
+                        },
+                        fail: function (vm, data) {
+                            showMsg(so.format('上传Icon失败', data.msg), showMsg.ERROR, true);
                         }
+                    }
+                });
+                avalon.scan();
+
+                var $table = $(vmClassify.elem.table).bootstrapTable({
+                    columns: [
+                        { field: 'ClassifyId', title: 'ID', visible: false, },
+                        { field: 'CName', title: '名称', align: 'left', valign: 'bottom', sortable: true },
+                        {
+                            field: 'CIcon', title: 'Icon', align: 'left', valign: 'bottom', 'class': 'td-img', formatter: function (value) {
+                                return ['<img src="', Action.sourceClassify + value, '" alt="" class="blog-other-icon"/>'].join('');
+                            }
+                        },
+                        {
+                            field: 'ClassifyId', title: '操作', align: 'center', valign: 'bottom', formatter: function (value, row, index) {
+                                return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '"  data-index="', index, '" data-icon="', row.CIcon, '" data-name="', row.CName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data-id="', value, '" title="删除"></a>'].join('');
+                            }
+                        }],
+                    data: PageDatas.classify
+                });
+
+                return;
+                $(vmClassify.elem.input).uploadText({
+                    defImg: Action.defaultIcon,
+                    fail: function (error) {
+                        showMsg('上传Icon异常：' + error.msg, showMsg.ERROR, true);
+                    }
+                });
+                $table.toolTable().on('toggle', function (e, index) {
+                    isEdit = !!index;
+                    if (!isEdit)
+                        globalData = null;
+                }).on('add', function (e, $addInput) {//新增
+                    var data = $addInput.uploadText();
+                    if (!data.value || !data.value.trim()) {
+                        showMsg('请输入分类名称', showMsg.WARNING);
+                        return $addInput.focus();
+                    }
+                    //ajax添加
+                    $.ajax(Action.urlAddClassify, {
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ name: data.value, imgName: data.img })
+                    }).done(function (server) {
+                        if (server.code === 0) {
+                            //分类添加成功
+                            $addInput.uploadText('');
+                            $classifyTable.bootstrapTable('append', [{
+                                CName: data.value,
+                                CIcon: data.img,
+                                ClassifyId: server.data
+                            }]);
+                            showMsg('添加分类成功', showMsg.OK);
+                        } else {
+                            showMsg('服务器返回异常' + server.msg, showMsg.ERROR, true);
+                        }
+                    }).fail(function () {
+                        showMsg('网络连接异常', showMsg.ERROR);
                     });
-                    var $classifyTable = $('#classifyTable').bootstrapTable({
-                        columns: [
-                            { field: 'ClassifyId', title: 'ID', visible: false, },
-                            { field: 'CName', title: '名称', align: 'left', valign: 'bottom', sortable: true },
-                            {
-                                field: 'CIcon', title: 'Icon', align: 'left', valign: 'bottom', 'class': 'td-img', formatter: function (value) {
-                                    return ['<img src="', Action.sourceClassify + value, '" alt="" class="blog-other-icon"/>'].join('');
-                                }
-                            },
-                            {
-                                field: 'ClassifyId', title: '操作', align: 'center', valign: 'bottom', formatter: function (value, row, index) {
-                                    return ['<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="', value, '"  data-index="', index, '" data-icon="', row.CIcon, '" data-name="', row.CName, '" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data-id="', value, '" title="删除"></a>'].join('');
-                                }
-                            }],
-                        data: PageDatas.classify
+                }).on('edit', function (e, $editInput, data) {//操作=>编辑
+                    $editInput.uploadText({
+                        value: data.name,
+                        img: data.icon
                     });
+                    globalData = data;
+                    //$editInput[0].dataset.index = data.index;
+                    //$editInput[0].dataset.id = data.id;
+                }).on('delete', function (e, $editInput, data) {//操作=>删除
+                    $.ajax(Action.urlDelClassify, {
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: data.id })
+                    }).done(function (result) {
+                        if (result.code === 0) {
+                            $classifyTable.bootstrapTable('remove', {
+                                field: 'ClassifyId',
+                                values: [data.id]
+                            });
+                            showMsg('删除分类成功', showMsg.OK);
+                        } else {
+                            showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                        }
+                    }).fail(function () {
+                        showMsg('网络连接异常', showMsg.ERROR);
+                    });
+                }).on('save', function () {//编辑=>保存
+                    var data = $editInput.uploadText();
+                    //console.dir(data);
+                    //console.dir(globalData);
+                    if (!data.value || !data.value.trim()) {
+                        showMsg('请输入分类名称', showMsg.WARNING);
+                        return $editInput.focus();
+                    };
+                    if (!globalData)
+                        return showMsg('找不要编辑的分类信息，请重新尝试编辑', showMsg.WARNING);
+                    if (data.value.trim() === globalData.name && data.img.trim() === globalData.icon) {//没有改动直接编辑成功
+                        $bsTable.trigger('changeForm', 0);
+                        return showMsg('编辑成功', showMsg.OK);
+                    };
+                    $.ajax(Action.urlEditClassify, {
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ name: data.value.trim(), imgName: data.img.trim(), id: globalData.id })
+                    }).done(function (result) {
+                        if (result.code === 0) {
+                            $classifyTable.bootstrapTable('updateRow', {
+                                index: globalData.index,
+                                row: {
+                                    ClassifyId: globalData.id,
+                                    CName: data.value,
+                                    CIcon: data.img
+                                }
+                            });
+                            $bsTable.trigger('changeForm', 0);
+                            showMsg('编辑分类成功', showMsg.OK);
+                        } else {
+                            showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                        }
+                    }).fail(function () {
+                        showMsg('网络连接异常', showMsg.ERROR, true);
+                    });
+                });
 
 
-                })($bsTables.eq(0));
+                /*
+                       TODO
+                       1、为了保证加载，可以选择分类图，不能一直加载，删除数据的时候要检测分类图是否被引用
+                       2、默认图的处理，Icon是允许没有的，但是有默认图
+                       3、这个上传路径注意可以从站点全局路径对象中配置 TODO
+                       4、删除图片要有弹窗警告提示
+                   */
+
+                //var $selectIconsBtn = $(vmClassify.elem.loadIcon).popup({
+                //    title: '<i class="icon-picture"></i>从图库中选择Icon',
+                //    context: $('#selectIcons'),
+                //    width: 450
+                //});
+
+
+                $('#selectIcons').on('click', 'a', function () {
+                    var name = this.dataset.name,
+                        $target = isEdit ? $editInput : $addInput;
+                    $target.uploadText({
+                        value: name,
+                        img: name
+                    });
+                    $selectIconsBtn.popup('hide');
+                });
+                //$editInput.uploadText({
+                //    defImg: Action.defaultIcon,
+                //    fail: function (error) {
+                //        showMsg('上传Icon异常：' + error.msg, showMsg.ERROR, true);
+                //    }
+                //});
+
+
+
 
                 (function ($bsTable) {
+                    return;
                     //标签操作
                     var isEdit = false,
                         globalData;
@@ -436,9 +505,11 @@
                         }],
                         data: PageDatas.tags
                     });
-                })($bsTables.eq(1));
-            });
+                })();
 
+
+
+            });
         });
     </script>
 }
