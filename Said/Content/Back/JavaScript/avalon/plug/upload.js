@@ -67,7 +67,6 @@
                             try {
                                 var data = JSON.parse(xhr.responseText);
                                 vm.visible = !!done(vm, data);
-
                             } catch (e) {
                                 vm.visible = !!done(vm, xhr, { code: 3, msg: '服务器返回的并不是可解析的结果' });
                             }

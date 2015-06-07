@@ -30,6 +30,10 @@
 .icons-upload { padding-top: 10px; text-align: center; position: relative; }
 .icons-upload-btn { width: 200px; text-align: center; margin: 0 auto; overflow: hidden; position: relative; }
     .icons-upload-btn .btn { width: 100%; }
+    .icons-upload-btn:hover .btn { color: #fff; background-color: #286090; border-color: #204d74; }
+    .icons-upload-btn:active .btn { background-image: none; outline: 0; -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125); box-shadow: inset 0 3px 5px rgba(0,0,0,.125); color: #fff; background-color: #286090; border-color: #204d74; }
+    .icons-upload-btn:focus .btn { color: #fff; background-color: #286090; border-color: #204d74; }
+
 .icons-upload-box { position: absolute; width: 100%; }
     .icons-upload-box .hidden-file { height: 34px; }
 

@@ -674,6 +674,7 @@
     <Content Include="Content\Style\saidList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Source\Sys\Images\Icons\default.png" />
     <Content Include="UED\Back\AddBlog.html" />
     <Content Include="UED\Back\Classify.html" />
     <Content Include="UED\Back\Frmework\css\addSaid.css" />
@@ -1478,7 +1479,6 @@
     <Folder Include="Content\Back\Resource\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Source\Sys\Images\Icons\" />
     <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
@@ -2735,10 +2735,14 @@
     <Content Include="Source\Sys\Dat\IP.dat" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Upload.config" />
+    <Content Include="Config\Upload.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\Path.config" />
+    <Content Include="Config\Path.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
