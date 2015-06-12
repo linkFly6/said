@@ -65,6 +65,8 @@
     <Compile Include="Said.Infrastructure\Common\Net\HttpHelper.cs" />
     <Compile Include="Said.Infrastructure\Common\Net\NetHelper.cs" />
     <Compile Include="Said.Infrastructure\Common\Url\UrlCommon.cs" />
+    <Compile Include="Said.Infrastructure\Common\XML\XmlHelper.cs" />
+    <Compile Include="Said.Infrastructure\Common\XML\XMLProcess.cs" />
     <Compile Include="Said.Infrastructure\Common\YZM\YZMHelper.cs" />
     <Compile Include="Said.Models\BaseModel.cs" />
     <Compile Include="Said.Infrastructure\Common\ModelCommon.cs" />

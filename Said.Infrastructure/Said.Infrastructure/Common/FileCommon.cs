@@ -122,9 +122,10 @@ namespace Said.Common
         public static string getFileName(string path)
         {
             return Path.GetFileName(path);
-        } 
+        }
         #endregion
 
+        #region 获取文件真实的类型
         /// <summary>
         /// 获取文件真实的类型
         /// </summary>
@@ -158,7 +159,9 @@ namespace Said.Common
             }
             return FileExtendsion.unknown;
         }
+        #endregion
 
+        #region 根据Guid生成一个文件名
         /// <summary>
         /// 根据Guid生成一个文件名
         /// </summary>
@@ -168,6 +171,9 @@ namespace Said.Common
         {
             return isTrim ? Guid.NewGuid().ToString().Replace("-", string.Empty) : Guid.NewGuid().ToString();
         }
+        #endregion
+
+        #region 根据时间生成一个文件名
         /// <summary>
         /// 根据时间生成一个文件名
         /// </summary>
@@ -179,7 +185,43 @@ namespace Said.Common
                 format = "ffffyyyymmddHHssMM";//乱七八糟的格式~~~~
             return DateTime.Now.ToString(format, DateTimeFormatInfo.InvariantInfo);
         }
+        #endregion
+
+
+        #region 读取一个文件的到String
+        /// <summary>
+        /// 读取一个文件的到String
+        /// </summary>
+        /// <param name="path">路径</param>
+        /// <returns>读取到的文件</returns>
+        public static string ReadToString(string path)
+        {
+            Encoding code = Encoding.GetEncoding("gb2312");
+            string str = string.Empty;
+            if (File.Exists(path))
+            {
+                StreamReader sr = null;
+                try
+                {
+                    sr = new StreamReader(path, code);
+                    str = sr.ReadToEnd(); // 读取文件
+                }
+                catch { }
+                sr.Close();
+                sr.Dispose();
+            }
+            else
+            {
+                str = string.Empty;
+            }
+
+
+            return str;
+        }
+        #endregion
+
     }
+
     public enum FileExtendsion
     {
         txt = 4946 | 104116 | 239187,

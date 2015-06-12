@@ -13,7 +13,7 @@ namespace Said.Controllers
 
         public BaseController()
         {
-
+            //System.Diagnostics.Debug.Write(ConfigEnum.SourceDataIP);
         }
 
         #region Other

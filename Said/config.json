@@ -11,10 +11,13 @@
 	"source.classify.icons":"/Source/Sys/Images/Icons/",
 	
 	"source.said.images":"/Source/Said/Images/",
-	"source.said.images.maxSize":"/Source/Said/Images/",
-
+	"source.said.images.thumbnail":"/Source/Said/Thumbnail",
+	"source.said.images.maxSize":"1048576",
+	
 	"source.blog.images":"/Source/Blog/Images/",
-	"source.blog.images.maxSize":"/Source/Blog/Images/",
+	"source.blog.images.thumbnail":"/Source/Blog/Thumbnail",
+	"source.blog.images.maxSize":"1048576",
+
 
 	"source.data.ip":"/Source/Sys/Dat/IP.dat"
 

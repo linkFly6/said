@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\ConfigEnum.cs" />
     <Compile Include="Areas\Back\BackAreaRegistration.cs" />
     <Compile Include="Areas\Back\Controllers\BaseController.cs" />
     <Compile Include="Areas\Back\Controllers\BlogController.cs" />
@@ -183,7 +184,9 @@
     <Content Include="Content\Back\JavaScript\avalon\plug\imgInput.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\popup.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\selectResource.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\sourceImages.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\template\imgInput.html" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\template\sourceImages.html" />
     <Content Include="Content\Back\JavaScript\avalon\plug\upload.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\template\popup.html" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
@@ -1406,6 +1409,7 @@
     <Content Include="UED\Back\Frmework\js\zrender-master\test\testArea.html" />
     <Content Include="UED\Back\Frmework\js\jQuery-2.1.1.js" />
     <Content Include="UED\Back\Frmework\Login.html" />
+    <Content Include="UED\Back\Plug\sourceImages.html" />
     <Content Include="UED\Back\requireJSTest\JS\require2-1-11.min.js" />
     <Content Include="UED\Back\requireJSTest\JS\testJS.js" />
     <Content Include="UED\Back\requireJSTest\requireJSTest.html" />
@@ -1418,6 +1422,7 @@
     <Content Include="UED\Back\SaidCenter.html" />
     <Content Include="UED\Back\SaidList.html" />
     <Content Include="UED\Back\AddSaid.html" />
+    <Content Include="UED\Back\SourceConfig.html" />
     <Content Include="UED\beat-Imgs\bg_main.gif" />
     <Content Include="UED\beat-Imgs\bg_texture.jpg" />
     <Content Include="UED\beat-Imgs\camera-bg.jpg" />
@@ -2743,6 +2748,9 @@
     <Content Include="Config\Path.config">
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
