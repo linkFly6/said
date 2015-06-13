@@ -570,7 +570,6 @@
     <Content Include="Content\Back\JavaScript\zrender-master\src\tool\util.js" />
     <Content Include="Content\Back\JavaScript\zrender-master\src\tool\vector.js" />
     <Content Include="Content\Back\JavaScript\zrender-master\src\zrender.js" />
-    <Content Include="Content\Back\Fonts\fontawesome-webfont.svg" />
     <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Back\Fonts\glyphicons\flat-ui-icons-regular.svg" />
     <Content Include="Content\Back\Fonts\lato\lato-black.svg" />
@@ -593,8 +592,6 @@
     <Content Include="Content\Back\Style\classify.css" />
     <Content Include="Content\Back\Style\default.css" />
     <Content Include="Content\Back\Style\flat-ui.min.css" />
-    <Content Include="Content\Back\Style\font-awesome.css" />
-    <Content Include="Content\Back\Style\font-awesome.min.css" />
     <Content Include="Content\Back\Style\grid-table.css" />
     <Content Include="Content\Back\Style\said-said.css" />
     <Content Include="Content\Back\Style\index.css" />
@@ -619,6 +616,7 @@
     <Content Include="Content\Images\not-blog.gif" />
     <Content Include="Content\Images\o_bg-clouds.png" />
     <Content Include="Content\Images\said-banner.jpg" />
+    <Content Include="Content\Images\Said-Images-load.gif" />
     <Content Include="Content\Images\said-public.png" />
     <Content Include="Content\Images\said-logo.png" />
     <Content Include="Content\Images\said-logo2.png" />
@@ -632,6 +630,7 @@
     <Content Include="Content\Images\sidebar-bg.jpg" />
     <Content Include="Content\Images\test-said-img.jpg" />
     <Content Include="Content\Images\testImg-Paramore.Ps.jpg" />
+    <Content Include="Content\Images\tiny.gif" />
     <Content Include="Content\Images\UEDImg\0150427135119.jpg" />
     <Content Include="Content\Images\UEDImg\1164878.jpg" />
     <Content Include="Content\Images\UEDImg\20150514110936.jpg" />
@@ -1683,18 +1682,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\Fonts\lato\lato-regular.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Back\Fonts\fontawesome-webfont.eot" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Back\Fonts\fontawesome-webfont.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Back\Fonts\fontawesome-webfont.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Back\Fonts\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.eot" />

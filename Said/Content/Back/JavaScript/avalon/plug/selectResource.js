@@ -10,7 +10,7 @@
             close: 'auto',
             uploadUrl: '',
 
-            classIcon: 'icon-picture',
+            classIcon: 'fa fa-picture',
             textTitle: '请选择',
         };
     var widget = avalon.ui.popup = function (elem, data, vms) {

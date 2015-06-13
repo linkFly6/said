@@ -235,7 +235,7 @@
                         title: '请选择或上传新的Icon',
                         context: $('#selectIcons'),
                         width: 450,
-                        classIcon: 'icon-picture'
+                        classIcon: 'fa-picture-o'
                     },
                     set: function (img, name, id, index) {
                         vmClassify.img = img;
@@ -403,10 +403,10 @@
                 avalon.scan();
                 var tableTemplate = {
                     ICON: '<img src="' + Action.sourceClassify + '${0}" alt="" class="blog-other-icon"/>',
-                    CLASSIFYOPERATOR: '<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="${id}"  data-index="${index}" data-icon="${img}" data-name="${name}" title="编辑"></a>\
-                               <a class="btn btn-danger icon-trash data-delete" href="javascript:;" data-id="${id}" data-name="${name}" title="删除"></a>',
+                    CLASSIFYOPERATOR: '<a class="btn btn-info fa fa-edit data-edit" href="javascript:;" data-id="${id}"  data-index="${index}" data-icon="${img}" data-name="${name}" title="编辑"></a>\
+                               <a class="btn btn-danger fa fa-trash-o data-delete" href="javascript:;" data-id="${id}" data-name="${name}" title="删除"></a>',
                     DELETE: '您确定要删除${0}[ <span style="color:red;font-weight:bold;">${1}</span> ]么？',
-                    TAGOPERATOR: '<a class="btn btn-info icon-edit data-edit" href="javascript:;" data-id="${id}" data-index="${index}" data-name="${name}" title="编辑"></a><a class="btn btn-danger icon-trash data-delete" href="javascript:;" data-id="${id}" data-name="${name}" title="删除"></a>'
+                    TAGOPERATOR: '<a class="btn btn-info fa fa-edit data-edit" href="javascript:;" data-id="${id}" data-index="${index}" data-name="${name}" title="编辑"></a><a class="btn btn-danger fa fa-trash-o data-delete" href="javascript:;" data-id="${id}" data-name="${name}" title="删除"></a>'
                 },
                     //分类
                     $classifyTable = $(vmClassify.elem.table).bootstrapTable({

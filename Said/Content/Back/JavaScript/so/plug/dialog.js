@@ -34,9 +34,13 @@
             zIndex: 4,
             textOK: '确定',
             textCancel: '取消',
-            once: false
+            className: '',
+            once: false,
+            btns: '<div class="dialog-btns">\
+                            <a href="javascript:;" class="dialog-btn-ok">${textOK}</a><a href="javascript:;" class="dialog-btn-cancel">${textCancel}</a>\
+                    </div>'
         },
-        globalTemplate = '<div class="__dialog" style="display:none;z-index:${zIndex}">\
+        globalTemplate = '<div class="__dialog ${className}" style="display:none;z-index:${zIndex}">\
                 <div class="dialog-mask"></div>\
                 <div class="dialog-content">\
                     <div class="dialog-morph-shape">\
@@ -46,9 +50,8 @@
                     </div>\
                     <div class="dialog-inner">\
                         <div class="dialog-text">${text}</div>\
-                        <div class="dialog-btns">\
-                            <a href="javascript:;" class="dialog-btn-ok">${textOK}</a><a href="javascript:;" class="dialog-btn-cancel">${textCancel}</a>\
-                        </div></div></div></div>';
+                        ${btns}\
+                        </div></div></div>';
     /*
         css3支持嗅探代码摘自：modernizr.js
         github:https://github.com/Modernizr/Modernizr
@@ -108,9 +111,25 @@
         */
 
         if (!(this instanceof Dialog)) return new Dialog(elem, options);
+        this.events = {
+            //成功函数列表
+            ok: null,
+            //取消函数列表
+            cancel: null
+        };
+
+        /// Dialog对象的配置:
+        /// &#10;  [text=""] - 弹窗显示的文本
+        /// &#10;  [zIndex=4] - 弹窗的z-index
+        /// &#10;  [textOK="确定"] - 弹窗"确定"按钮
+        /// &#10;  [textCancel="取消"] - 弹窗"取消"按钮
+        /// &#10;  [once=false] - 弹窗对象是否是一次性的，如果为true，则弹窗对象/DOM隐藏后就会被摧毁，且对象不再可以使用
+        /// &#10;  options.ok - 点击"确定"后执行的函数
+        /// &#10;  options.cancel - 点击"取消"后执行的函数
+        this.options = so.extend({}, defaultOptions);
         var elemType = so.type(elem),
             isNode = elem && elem.nodeType === 1,
-            template;
+            template = globalTemplate;
         if (elemType === 'string') {
             this.options.text = elem;
         } else if (elemType === 'object' && !isNode) {
@@ -118,7 +137,15 @@
             elem = null;
         }
         options && so.extend(this.options, options);
-        template = so.format(globalTemplate, this.options);
+        if (!this.options.btns) {
+            this.options.btns = '';
+        } else
+            template = template.replace('${btns}', this.options.btns);
+        template = so.format(template, this.options);
+
+        this.options.className = dialogClassName + ' ' + (this.options.className ? this.options.className : '');
+
+        console.log(this.options.className);
 
         if (isNode) {//Dialog(elem,options)
             template = template.replace('${text}', '');
@@ -145,35 +172,23 @@
             self.events.cancel && self.events.cancel(e);
             self.toggle(false);
         });
-        each.call(this.elem.getElementsByClassName('dialog-btns')[0].children, function (a, i) {
-            a.addEventListener('click', function (e) {
-                self.events[hash[i]] && self.events[hash[i]](e);
-                self.toggle(false);
+        if (self.options.btns)
+            each.call(this.elem.getElementsByClassName('dialog-btns')[0].children, function (a, i) {
+                a.addEventListener('click', function (e) {
+                    self.events[hash[i]] && self.events[hash[i]](e);
+                    self.toggle(false);
+                });
             });
-        });
 
     };
 
 
-    Dialog.prototype.events = {
-        //成功函数列表
-        ok: null,
-        //取消函数列表
-        cancel: null
-    };
+
 
     //对象是否当前显示
     Dialog.prototype.isOpen = false;
 
-    /// Dialog对象的配置:
-    /// &#10;  [text=""] - 弹窗显示的文本
-    /// &#10;  [zIndex=4] - 弹窗的z-index
-    /// &#10;  [textOK="确定"] - 弹窗"确定"按钮
-    /// &#10;  [textCancel="取消"] - 弹窗"取消"按钮
-    /// &#10;  [once=false] - 弹窗对象是否是一次性的，如果为true，则弹窗对象/DOM隐藏后就会被摧毁，且对象不再可以使用
-    /// &#10;  options.ok - 点击"确定"后执行的函数
-    /// &#10;  options.cancel - 点击"取消"后执行的函数
-    Dialog.prototype.options = defaultOptions;
+
 
 
     ///<summary>
@@ -194,7 +209,8 @@
     /// <returns type="Dialog" />
     Dialog.prototype.toggle = function (isOpen) {
         var self = this,
-            elem = self.elem;
+            elem = self.elem,
+            className = self.options.className;
         if (!elem) return;
         if (isOpen != null)
             this.isOpen = !isOpen;
@@ -208,12 +224,12 @@
                 elem.style.display = 'none';
                 self.isOpen = false;
             });
-            elem.className = dialogClassName;
+            elem.className = className;
         } else {
             elem.style.display = '';
             self.isOpen = true;
             setTimeout(function () {
-                elem.className = '__dialog dialog-open';
+                elem.className = className + ' dialog-open';
             });
         }
         return this;

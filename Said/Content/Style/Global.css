@@ -17,7 +17,7 @@ a:hover {  color: #59c6ff; text-decoration:underline; }
 #00d0ff
 */
 /*chrome下a标签闪烁的事情，添加一个script标签（并且标签里有内容），则没有闪动，如果页面有form，则把form去掉，也可以*/
-a { text-decoration: none; transition: color 0.2s ease-in-out 0s; }
+a { text-decoration: none; transition: color 0.2s ease-in-out 0s; outline: none; }
     a:hover { transition: color 0.2s ease-in-out 0s; }
     a:visited { color: #c03980; }
 .clear, .afterClear:after { clear: both; float: none !important; content: ''; display: block; }
