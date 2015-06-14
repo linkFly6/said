@@ -16,6 +16,7 @@
             ,callback: function () { },//成功后执行的函数，必须指定
             fail: function () { },//失败后执行的函数
             progress: function () { }//上传中执行的函数
+            upload: function () { }//有上传行为的时候执行的函数
             data://TODO=>附加参数，以后尝试支持
             */
         },
@@ -42,12 +43,14 @@
                 isMultiple = elem.multiple ? true : false,//是否多选
                 callback = config.callback,
                 fail = so.isFunction(config.fail) ? config.fail : false,
-                progress = so.isFunction(config.progress) ? config.progress : false;
+                progress = so.isFunction(config.progress) ? config.progress : false,
+                upload = so.isFunction(confirm.upload) ? config.upload : false;
             so.on(elem, 'click', function () {
                 return !lock;
             });
             so.on(elem, 'change', function (e) {
                 lock = true;
+                upload && upload.call(elem, 1);
                 var file = this.files[0],
                     name = file.name,//文件名
                     size = file.size,//文件大小
@@ -62,11 +65,13 @@
                     //尝试后缀名验证，如果后缀名验证则尝试使用文件MIME验证
                     if (ext === -1 || (config.filters.indexOf(ext) === -1 && type !== '' && config.filters.indexOf(type) === -1)) {
                         fail && fail.call(elem, { code: 2, msg: '上传的文件不是可以接受的文件类型' }, file);
+                        upload && upload.call(elem, 0);
                         return lock = false;
                     }
                 }
                 if (config.size > 0 && size > config.size) {
                     fail && fail.call(elem, { code: 1, msg: '上传的文件超过了约定的最大大小（>' + Math.floor(config.size / 1024 / 1024) + 'MB）' }, file);
+                    upload && upload.call(elem, 0);
                     return lock = false;
                 }
                 data.append('name', encodeURIComponent(name));//追加文件名标志
@@ -88,6 +93,7 @@
                             try {
                                 var data = JSON.parse(xhr.responseText);
                                 callback && callback.call(elem, data, file);
+                                upload && upload.call(elem, 0);
                             } catch (e) {
                                 //这是什么Error
                                 fail && fail.call(elem, { code: 3, msg: '服务器返回的并不是可解析的结果' }, file);
@@ -96,6 +102,7 @@
                         } else {
                             fail && fail.call(elem, { code: 4, msg: '服务器返回异常' }, file);
                         }
+                        upload && upload.call(elem, 0);
                         lock = false;
                         if (progress)
                             progress.call(elem, 0);

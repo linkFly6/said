@@ -8,7 +8,7 @@
         body { font-family: "Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif; }
     </style>
     <link href="../../../Content/Back/Style/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="../../../Content/Back/Style/font-awesome.css" rel="stylesheet" />
+    <link href="../../../Content/Style/font-awesome.min.css" rel="stylesheet" />
     <link href="../../../Content/Style/Global.css" rel="stylesheet" />
     <style type="text/css">
         /*dialog*/
@@ -59,7 +59,10 @@
                 .source-box .source-thum.selected { border-color: #4cae4c; background-color: #5cb85c; opacity: 0.8; }
                     .source-box .source-thum.selected .source-img-info { color: #000; }
             .source-box img { display: block; width: 256px; height: 140px; }
-            .source-box .source-img-info { text-align: center; color: #666; }
+            .source-box .source-img-info { text-align: left; color: #666; overflow: hidden; }
+            .source-box .source-delete { float: right; color: #666; transition: all 0.4s ease-in-out 0s; font-size: 16px; }
+                .source-box .source-delete:hover { color: red; }
+            .source-box .source-img-name, .source-box .source-delete { vertical-align: middle; line-height: 26px; }
             .source-box .source-loading { padding: 10px; width: 90%; margin: 10px auto 0; border-top: 1px solid #ececec; overflow: hidden; }
             .source-box .source-state { overflow: hidden; padding: 2px 39px 2px 9px; }
             .source-box .source-path, .source-box .source-count { color: #999; }
@@ -91,14 +94,14 @@
         <div id="sourceImage" class="source-box">
             <div class="source-state">
                 <div class="source-path">路径：/resource/sys/images/</div>
-                <div class="source-count">已选择&nbsp;<span>2</span>&nbsp;/&nbsp;132&nbsp;张</div>
+                <div class="source-count"><span>2</span>&nbsp;/&nbsp;132</div>
             </div>
             <div class="source-table">
                 <div class="source-thum">
-                    <div class="source-thum-con">
-                        <img src="../../../Content/Images/UEDImg/20150514110936.jpg" alt="100%x180" data-src="loading" data-holder-rendered="true" title="引用在文章《世界很大，风住过这里》" />
+                    <div class="source-thum-con" title="引用在文章《世界很大，风住过这里》">
+                        <img src="../../../Content/Images/UEDImg/20150514110936.jpg" alt="100%x180" data-src="loading" data-holder-rendered="true" />
                     </div>
-                    <div class="source-img-info"><span>20150613190551.jpg</span><a href="javascript:;">删除</a></div>
+                    <div class="source-img-info"><span class="source-img-name">20150613190551.jpg</span><a href="javascript:;" class="fa fa-times source-delete" title="删除"></a></div>
                 </div>
                 <div class="source-thum selected">
                     <div class="source-thum-con">
@@ -232,6 +235,13 @@
                         this.classList.contains('selected') ?
                         'remove' : 'add'
                     ]('selected');
+                });
+            });
+
+            Array.prototype.forEach.call(imgBox.getElementsByClassName('source-delete'), function (elem) {
+                elem.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    dialog('test', { once: true }).show();
                 });
             });
 
