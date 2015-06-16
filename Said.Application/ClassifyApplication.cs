@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
+    /// <summary>
+    /// 分类逻辑中心
+    /// </summary>
     public static class ClassifyApplication
     {
         private static IClassifyService service;

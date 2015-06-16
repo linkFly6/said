@@ -114,7 +114,9 @@
     so.upload = Upload;
     //兼容amd
     if (typeof define === "function" && define.amd) {
-        define("upload", [], function () { });
+        define("upload", [], function () {
+            return Upload;
+        });
     }
 
 })(window);

@@ -109,6 +109,13 @@ namespace Said.Application
             return Context.GetPage(page, m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords), m => m.BDate);
         }
 
+
+        /// <summary>
+        /// 分页查询列表，怎么和上面方法一样啊，WTF！！
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="keywords"></param>
+        /// <returns></returns>
         public static IPagedList<Blog> FindToList(Models.Data.Page page, string keywords)
         {
             return Context.FindToList(page, keywords);

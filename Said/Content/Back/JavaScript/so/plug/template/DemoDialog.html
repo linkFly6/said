@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Dialog组件资源和演示</title>
+    <style type="text/css">
+        .content { max-width: 1000px; padding: 0 1em; margin: 0 auto; text-align: center; }
+        body { font-family: "Helvetica Neue",Helvetica,Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif; }
+    </style>
+    <link href="/Content/Back/Style/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/Content/Style/font-awesome.min.css" rel="stylesheet" />
+    <link href="/Content/Style/Global.css" rel="stylesheet" />
+    <style type="text/css">
+        /*dialog*/
+        .__dialog, .__dialog .dialog-mask { width: 100%; height: 100%; top: 0; left: 0; }
+        .__dialog { position: fixed; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; pointer-events: none; }
+            .__dialog .dialog-mask { position: absolute; z-index: 1; background: rgba(55, 58, 71, 0.9); opacity: 0; -webkit-transition: opacity 0.3s; transition: opacity 0.3s; -webkit-backface-visibility: hidden; }
+            .__dialog.dialog-open .dialog-mask { opacity: 1; pointer-events: auto; }
+            .__dialog .dialog-content { width: 50%; max-width: 560px; min-width: 290px; background: #fff; padding: 4em; text-align: center; position: relative; z-index: 5; opacity: 0; box-shadow: none; top: -10%; }
+            .__dialog.dialog-open .dialog-content { pointer-events: auto; opacity: 1; }
+            .__dialog.dialog-open .dialog-mask { -webkit-transition-duration: 0.8s; transition-duration: 0.8s; }
+            .__dialog .dialog-content { padding: 0px; background: transparent; box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6); }
+            .__dialog .dialog-morph-shape { position: absolute; width: calc(100% + 4px); height: calc(100% + 3px); top: -2px; left: -3px; z-index: -1; }
+                .__dialog .dialog-morph-shape svg rect { stroke: #fff; stroke-width: 2px; stroke-dasharray: 1680; }
+            .__dialog.dialog-open .dialog-morph-shape svg rect { -webkit-animation: dialog-anim-dash 0.6s forwards; animation: dialog-anim-dash 0.6s forwards; }
+            .__dialog .dialog-inner { opacity: 0; background: #fff; }
+            .__dialog.dialog-open .dialog-inner { opacity: 1; -webkit-transition: opacity 0.85s 0.35s; transition: opacity 0.85s 0.35s; }
+            .__dialog.dialog-open .dialog-text { padding: 1em; min-height: 50px; }
+            .__dialog .dialog-btns a { line-height: 1.42857; text-decoration: none; display: inline-block; width: 50%; padding: 10px 0; }
+                .__dialog .dialog-btns a:active { box-shadow: inset 0 3px 5px rgba(0,0,0,.125); }
+            .__dialog .dialog-btn-ok { background: #5bc0de; color: #fff; }
+                .__dialog .dialog-btn-ok:hover { background-color: #31b0d5; }
+            .__dialog .dialog-btn-cancel { background: #b6bece; color: #fff; }
+                .__dialog .dialog-btn-cancel:hover { background: #a3abba; }
+
+        @keyframes dialog-anim-dash {
+            0% { stroke-dashoffset: 1680; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        @-webkit-keyframes dialog-anim-dash {
+            0% { stroke-dashoffset: 1680; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+
+
+        /*sourceImages*/
+        .source-dialog .dialog-content { max-width: none; max-height: none; width: auto; }
+        .source-dialog .source-footer { margin: 0 auto; padding: 15px 15px 0; }
+        .source-dialog .dialog-btn-ok { margin-right: 25px; }
+
+        .source-dialog .dialog-btn-cancel { }
+        .source-dialog a.dialog-btn-ok, .source-dialog a.dialog-btn-cancel { width: 130px; border-radius: 4px; }
+        .source-box { width: 1200px; margin: 0 auto; padding: 10px; position: relative; }
+            .source-box .source-table { height: 500px; overflow-y: scroll; text-align: left; }
+            .source-box .source-noResult { text-align: center; font-weight: bold; }
+            .source-box .source-thum { padding: 4px; border: 1px solid #ddd; border-radius: 4px; display: inline-block; margin: 9px; transition: border .2s ease-in-out; cursor: pointer; }
+                .source-box .source-thum:hover { border-color: #337ab7; }
+                .source-box .source-thum.selected { border-color: #4cae4c; background-color: #5cb85c; opacity: 0.8; }
+                    .source-box .source-thum.selected .source-img-info { color: #000; }
+            .source-box img { display: block; width: 256px; height: 140px; }
+            .source-box .source-img-info { text-align: left; color: #666; overflow: hidden; }
+            .source-box .source-delete { float: right; color: #666; transition: all 0.4s ease-in-out 0s; font-size: 16px; }
+                .source-box .source-delete:hover { color: red; }
+            .source-box .source-img-name, .source-box .source-delete { vertical-align: middle; line-height: 26px; }
+            .source-box .source-loading { padding: 10px; width: 90%; margin: 10px auto 0; border-top: 1px solid #ececec; overflow: hidden; }
+            .source-box .source-state { overflow: hidden; padding: 2px 39px 2px 9px; }
+            .source-box .source-path, .source-box .source-count { color: #999; }
+            .source-box .source-path { float: left; }
+            .source-box .source-count { float: right; }
+                .source-box .source-count span { color: red; font-size: 16px; }
+            .source-box .source-footer { overflow: hidden; }
+            .source-box .source-btns-box { float: right; }
+                .source-box .source-btns-box a { width: 140px; }
+            .source-box .source-upload-box { float: left; position: relative; width: 140px; height: 34px; }
+            .source-box .so-upload-mask, .source-box .hidden-file, .source-box .so-upload-text, .source-box .so-upload-progress, .source-box .so-upload-mask { position: absolute; left: 0; top: 0; height: 100%; width: 100%; }
+            .source-box .so-upload-mask { background-color: #428bca; border-color: #357ebd; color: #fff; border-radius: 4px; overflow: hidden; }
+                .source-box .so-upload-mask:hover { background-color: #286090; border-color: #204d74; }
+                .source-box .so-upload-mask:active { box-shadow: inset 0 3px 5px rgba(0,0,0,.125); }
+                .source-box .so-upload-mask[disabled], .source-box .so-upload-mask.lock { opacity: .65; background-color: #286090; border-color: #204d74; }
+            .source-box .so-upload-progress { background-color: #103554; transition: width .1s ease; width: 0%; }
+            .source-box .so-upload-text { text-align: center; text-align: center; line-height: 34px; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2); z-index: 1; }
+            .source-box .hidden-file { z-index: 3; }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div id="testDOM">这是正文啊</div>
+            <a href="javascript:;" id="test">尚未点击</a>
+        </div>
+    </div>
+    <!-- /container -->
+    <script src="../../../requirejs-2.1.15.js"></script>
+    <script src="../../so.js"></script>
+    <script src="../../../jQuery-2.1.1.min.js"></script>
+
+    <script>
+        require.config({
+            baseUrl: '/Content/Back/JavaScript',
+            paths: {
+                'upload': 'so/plug/upload',
+                'dialog': 'so/plug/dialog',
+                'showMsg': 'so/plug/showMsg',
+                'source': 'so/plug/source'
+            },
+            packages: [
+            {
+                name: 'so',
+                location: 'so',
+                main: 'so'
+            },
+            {
+                name: 'said',
+                location: 'said',
+                main: 'said'
+            }]
+        });
+        require(['jquery', 'source'], function ($) {
+            $(document.body).source({
+                loadUrl: '/Back/Source/GetImagesList',
+                path: '/Source/Blog/Images/'
+            }).trigger('source.show');
+        });
+
+    </script>
+</body>
+</html>
+

@@ -145,8 +145,6 @@
 
         this.options.className = dialogClassName + ' ' + (this.options.className ? this.options.className : '');
 
-        console.log(this.options.className);
-
         if (isNode) {//Dialog(elem,options)
             template = template.replace('${text}', '');
             if (~elem.className.indexOf(dialogClassName))

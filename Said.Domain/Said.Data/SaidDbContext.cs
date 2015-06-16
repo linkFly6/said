@@ -42,6 +42,7 @@ namespace Said.Domain.Said.Data
         public DbSet<Tag> Tag { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserRecord> UserRecord { get; set; }
+        public DbSet<Image> Image { get; set; }
         #endregion
     }
 }

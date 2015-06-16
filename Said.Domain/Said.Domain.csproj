@@ -68,6 +68,7 @@
     <Compile Include="Said.Service\BaseService.cs" />
     <Compile Include="Said.Service\BlogService.cs" />
     <Compile Include="Said.Service\ClassifyService.cs" />
+    <Compile Include="Said.Service\ImageService.cs" />
     <Compile Include="Said.Service\IService.cs" />
     <Compile Include="Said.Service\SongService.cs" />
     <Compile Include="Said.Service\TagService.cs" />

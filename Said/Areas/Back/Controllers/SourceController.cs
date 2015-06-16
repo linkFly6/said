@@ -1,4 +1,7 @@
-﻿using Said.Common;
+﻿using Said.Application;
+using Said.Common;
+using Said.Models;
+using Said.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,9 +35,10 @@ namespace Said.Areas.Back.Controllers
 
 
 
+        #region 上传一个文件
         // GET: /Source/
         /// <summary>
-        /// 上传一个文件方法
+        /// 上传一个文件
         /// </summary>
         /// <param name="file">上传的文件</param>
         /// <param name="maxSize">接受的最大的文件大小</param>
@@ -67,8 +71,10 @@ namespace Said.Areas.Back.Controllers
             //分析上传的文件信息，返回解析得到的结果
             return UploadResult(0, "上传成功", newFileName);
         }
+        #endregion
 
 
+        #region 上传Said图片
         /// <summary>
         /// 上传Said图片
         /// </summary>
@@ -78,8 +84,10 @@ namespace Said.Areas.Back.Controllers
             //分析上传的文件信息，返回解析得到的结果
             return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, imgMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Images/")));
         }
+        #endregion
 
 
+        #region 上传Said图片
         /// <summary>
         /// 上传Said图片
         /// </summary>
@@ -89,8 +97,10 @@ namespace Said.Areas.Back.Controllers
             //分析上传的文件信息，返回解析得到的结果
             return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, imgMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Blog/Images/")));
         }
+        #endregion
 
 
+        #region 上传歌曲
         /// <summary>
         /// 上传歌曲
         /// </summary>
@@ -102,8 +112,10 @@ namespace Said.Areas.Back.Controllers
                 musicMaxSize,
                 FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Musics/")));
         }
+        #endregion
 
 
+        #region 上传类别Icon
         /// <summary>
         /// 上传类别Icon
         /// </summary>
@@ -116,6 +128,28 @@ namespace Said.Areas.Back.Controllers
                 imgMaxSize,
                 FileCommon.ExistsCreate(Server.MapPath("~/Source/Sys/Images/Icons/")));
         }
+        #endregion
+
+
+        #region 获取图片
+        public JsonResult GetImagesList(int limit, int offset)
+        {
+            var page = new Page
+            {
+                PageNumber = offset / limit + 1,
+                PageSize = limit
+            };
+            var res = ImageApplication.FindToList(page);
+            return Json(new
+            {
+                //hasNextPage = res.HasNextPage,
+                //hasPreviousPage = res.HasPreviousPage,
+                total = res.Count,
+                datas = res.Select(m => new { id = m.ImageId, name = m.IName, img = m.IFileName, data = m.IFileName })
+            }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
 
         #region 通用方法
         private JsonResult UploadResult(int code, string msg, string name = null)

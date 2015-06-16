@@ -361,6 +361,7 @@
     <Content Include="Content\Back\JavaScript\so\plug\search.js" />
     <Content Include="Content\Back\JavaScript\so\plug\showMsg.js" />
     <Content Include="Content\Back\JavaScript\so\plug\source.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\template\DemoDialog.html" />
     <Content Include="Content\Back\JavaScript\so\plug\template\Dialog.html" />
     <Content Include="Content\Back\JavaScript\so\plug\upload.js" />
     <Content Include="Content\Back\JavaScript\so\plug\validate.js" />
