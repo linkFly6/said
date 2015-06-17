@@ -18,21 +18,18 @@ namespace Said.Common
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static string ExistsCreate(string path)
+        public static bool ExistsCreate(string path)
         {
             if (!Directory.Exists(path))
             {
                 try
                 {
                     Directory.CreateDirectory(path);
-                    return path;
+                    return true;
                 }
-                catch (Exception)
-                {
-                    return null;
-                }
+                catch (Exception) { return false; }
             }
-            return path;
+            return true;
         }
         #endregion
 
@@ -217,6 +214,28 @@ namespace Said.Common
 
 
             return str;
+        }
+        #endregion
+
+
+        #region 移动一个文件到新的文件夹
+        /// <summary>
+        /// 移动一个文件到新的文件夹
+        /// </summary>
+        /// <param name="path">原路径</param>
+        /// <param name="newPath">新路径（如果没有则自动创建）</param>
+        /// <param name="isConvert">如果是windows系统，默认需要进行path转义</param>
+        public static void Move(string path, string newPath, bool isConvert = true)
+        {
+            string symbol = isConvert ? "\\" : "/";
+            if (isConvert)
+            {
+                path = path.Replace("/", "\\");
+                newPath = newPath.Replace("/", "\\");
+            }
+            string newDir = newPath.Substring(0, newPath.LastIndexOf(symbol) + 1);
+            if (File.Exists(path) && FileCommon.ExistsCreate(newDir))
+                File.Move(path, newPath);
         }
         #endregion
 

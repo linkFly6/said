@@ -121,7 +121,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\ConfigEnum.cs" />
     <Compile Include="Areas\Back\BackAreaRegistration.cs" />
     <Compile Include="Areas\Back\Controllers\BaseController.cs" />
     <Compile Include="Areas\Back\Controllers\BlogController.cs" />

@@ -1,15 +1,15 @@
 ﻿{
 	
+	//注意每次修改配置要重启机器
 	"images.maxSize":"1048576",
 	"images.filter":"gif,jpg,jpeg,png,bmp",
 
 	
 	"music.maxSize":"6291456",
 	"music.filter":"mp3,ogg",
+	"music":"/Source/Said/Musics/",
 
-	
-	"source.classify.icons":"/Source/Sys/Images/Icons/",
-	
+		
 	"source.said.images":"/Source/Said/Images/",
 	"source.said.images.thumbnail":"/Source/Said/Thumbnail",
 	"source.said.images.maxSize":"1048576",
@@ -17,6 +17,12 @@
 	"source.blog.images":"/Source/Blog/Images/",
 	"source.blog.images.thumbnail":"/Source/Blog/Thumbnail",
 	"source.blog.images.maxSize":"1048576",
+
+
+	"source.sys.images":"/Source/Sys/Images",
+	"source.sys.images.maxSize":"1048576",
+	"source.sys.icons":"/Source/Sys/Images/Icons/",
+	"source.sys.icons.maxSize":"102400",
 
 
 	"source.data.ip":"/Source/Sys/Dat/IP.dat"

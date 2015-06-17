@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Said
+namespace Said.Config
 {
     /// <summary>
     /// 配置枚举类
@@ -23,7 +23,6 @@ namespace Said
 
         #endregion
 
-
         #region 默认音乐上传限制
 
         /// <summary>
@@ -35,14 +34,25 @@ namespace Said
         /// </summary>
         public const string MusicFilter = "music.filter";
 
+
+        /// <summary>
+        /// 默认图片上传路径
+        /// </summary>
+        public const string MusicPath = "music";
+
         #endregion
 
         #region 默认Icons上传限制
 
         /// <summary>
-        /// 默认分类Icons上传路径
+        /// 默认Icons上传路径
         /// </summary>
-        public const string SourceClassifyIcons = "source.classify.icons";
+        public const string SourceIcons = "source.sys.icons";
+
+        /// <summary>
+        /// 默认Icons上传大小
+        /// </summary>
+        public const string SourceIconsMaxSize = "source.sys.icons.maxSize";
 
         #endregion
 
@@ -73,6 +83,11 @@ namespace Said
 
         #endregion
 
+
+        #region 默认系统图（页面图）
+        public const string SystemImages = "source.sys.images";
+        public const string SystemImagesSize = "source.sys.images.maxSize";
+        #endregion
 
         #region 默认IP库位置
         /// <summary>

@@ -41,6 +41,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,6 +69,8 @@
     <Compile Include="Said.Infrastructure\Common\XML\XmlHelper.cs" />
     <Compile Include="Said.Infrastructure\Common\XML\XMLProcess.cs" />
     <Compile Include="Said.Infrastructure\Common\YZM\YZMHelper.cs" />
+    <Compile Include="Said.Infrastructure\Config\ConfigEnum.cs" />
+    <Compile Include="Said.Infrastructure\Config\ConfigTable.cs" />
     <Compile Include="Said.Models\BaseModel.cs" />
     <Compile Include="Said.Infrastructure\Common\ModelCommon.cs" />
     <Compile Include="Said.Models\Data\Page.cs" />

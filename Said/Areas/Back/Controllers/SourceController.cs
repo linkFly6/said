@@ -1,5 +1,6 @@
 ﻿using Said.Application;
 using Said.Common;
+using Said.Config;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -13,24 +14,57 @@ namespace Said.Areas.Back.Controllers
 {
     public class SourceController : BaseController
     {
-        //【【【TODO 这些常量都得可以配置】】】
-        #region Other
+        #region 配置
+
         /// <summary>
         /// 图片过滤
         /// </summary>
-        readonly static Array IMGFILTERARRAY = "gif,jpg,jpeg,png,bmp".Split(',');
-        /// <summary>
-        /// 图片最大容量（1mb）
-        /// </summary>
-        int imgMaxSize = 1048576;
+        readonly static Array IMGFILTERARRAY = ConfigTable.Get(ConfigEnum.ImgFilter).Split(',');
         /// <summary>
         /// 音乐文件过滤
         /// </summary>
-        readonly static Array MUSICFILTERARRAY = "mp3,ogg".Split(',');
+        readonly static Array MUSICFILTERARRAY = ConfigTable.Get(ConfigEnum.MusicFilter).Split(',');
+
         /// <summary>
-        /// 音乐最大容量（6mb）
+        /// Blog上传的图片路径
         /// </summary>
-        int musicMaxSize = 6291456;
+        readonly static string SourceBlogPath = ConfigTable.Get(ConfigEnum.SourceBlogImages);
+
+        /// <summary>
+        /// Said上传的图片路径
+        /// </summary>
+        readonly static string SourceSaidPath = ConfigTable.Get(ConfigEnum.SourceSaidImages);
+
+        /// <summary>
+        /// 音乐上传的路径
+        /// </summary>
+        readonly static string SourceMusicPath = ConfigTable.Get(ConfigEnum.MusicPath);
+
+        /// <summary>
+        /// Icon上传的路径
+        /// </summary>
+        readonly static string SourceIconsPath = ConfigTable.Get(ConfigEnum.MusicPath);
+
+        /// <summary>
+        /// Blog允许的最大上传图片
+        /// </summary>
+        readonly int SizeBlogImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
+
+        /// <summary>
+        /// Said允许的最大图片
+        /// </summary>
+        readonly int SizeSaidImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
+
+        /// <summary>
+        /// Music允许的最大图片
+        /// </summary>
+        readonly int SizeMusic = int.Parse(ConfigTable.Get(ConfigEnum.MusicMaxSize));
+
+        /// <summary>
+        /// Icons允许的最大图片
+        /// </summary>
+        readonly int SizeIcons = int.Parse(ConfigTable.Get(ConfigEnum.SourceIconsMaxSize));
+
         #endregion
 
 
@@ -47,6 +81,7 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         private JsonResult UploadFile(HttpPostedFileBase file, Array filters, int maxSize, string dirPath)
         {
+            FileCommon.ExistsCreate(dirPath);
             if (file == null)
             {
                 return UploadResult(1, "没有文件");
@@ -82,7 +117,7 @@ namespace Said.Areas.Back.Controllers
         public JsonResult UploadSaidImg()
         {
             //分析上传的文件信息，返回解析得到的结果
-            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, imgMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Images/")));
+            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, SizeSaidImage, SourceSaidPath);
         }
         #endregion
 
@@ -95,7 +130,7 @@ namespace Said.Areas.Back.Controllers
         public JsonResult UploadBlogImg()
         {
             //分析上传的文件信息，返回解析得到的结果
-            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, imgMaxSize, FileCommon.ExistsCreate(Server.MapPath("~/Source/Blog/Images/")));
+            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, SizeBlogImage, SourceBlogPath);
         }
         #endregion
 
@@ -109,8 +144,8 @@ namespace Said.Areas.Back.Controllers
         {
             return UploadFile(Request.Files["uploadFile"],
                 MUSICFILTERARRAY,
-                musicMaxSize,
-                FileCommon.ExistsCreate(Server.MapPath("~/Source/Said/Musics/")));
+                SizeMusic,
+                SourceMusicPath);
         }
         #endregion
 
@@ -125,8 +160,8 @@ namespace Said.Areas.Back.Controllers
             return UploadFile(
                 Request.Files["uploadFile"],
                 IMGFILTERARRAY,
-                imgMaxSize,
-                FileCommon.ExistsCreate(Server.MapPath("~/Source/Sys/Images/Icons/")));
+                SizeSaidImage,
+                SourceIconsPath);
         }
         #endregion
 
@@ -147,6 +182,33 @@ namespace Said.Areas.Back.Controllers
                 total = res.Count,
                 datas = res.Select(m => new { id = m.ImageId, name = m.IName, img = m.IFileName, data = m.IFileName })
             }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+
+        #region 删除图片
+        /// <summary>
+        /// 删除图片（逻辑删除，修改isDelete，移动图片路径）
+        /// </summary>
+        /// <param name="id">image</param>
+        /// <returns></returns>
+        public JsonResult DeleteImage(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(1, "没有数据");
+            Image image = ImageApplication.Find(id);
+            if (image == null)
+                return ResponseResult(2, "没有找到图片");
+            image.IsDel = 1;
+            switch (image.Type)
+            {
+
+                default:
+                    break;
+            }
+            FileCommon.Move();
+
+            return ResponseResult();
         }
         #endregion
 
