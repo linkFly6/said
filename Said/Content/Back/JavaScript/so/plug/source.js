@@ -26,6 +26,7 @@
         offset: 1,//当前数据请求的起始索引，如果为-1则加载全部资源
         callback: noop,//点击确定执行
         cancel: noop,//点击取消执行
+        remove: noop,//点击删除执行
         multiple: true//多选模式
     },
     globalTemplate = '<div id="${id}" class="source-box ${className}">\
@@ -109,16 +110,16 @@
 
         }).on('source.click', '.source-delete', function () {//删除
             deleteDialog.on('您确定要删除图片[ ' + this.dataset.name + ' ]么？', function () {
-                self._removeData(this.dataset.id);
+                var id = this.dataset.id;
+                self._removeData(id);
                 $(this.parentNode.parentNode).remove();
-
-                //【【ajax删除】】
-
+                self.options.remove(id);
             }).show();
         }).on('source.load', 'img', function () {
             console.log(this);
         });
         this._fetch({ limit: this.options.limit, offset: offset }, function (data) {
+            this.options.total = data.total;
             $count.html('<span>0</span>&nbsp;/&nbsp;' + data.total + '');
             if (data.total === 0) {//没有数据
                 $load.hide();
@@ -137,6 +138,13 @@
     };
 
 
+    //上传的图片插入到DOM
+    Source.prototype._insert = function (data) {
+        this.datas.unshift(data);
+        this.$body.append(so.format(templateItem, data));
+        return this;
+    };
+
     Source.prototype._initUpload = function () {
         var self = this,
             $elem = self.$elem.find('.so-upload-mask'),//蒙版
@@ -144,7 +152,13 @@
             $progress = $elem.find('.so-upload-progress');//进度
         upload($elem.find('.hidden-file'), {
             callback: function (data) {
+                if (data.code === 0) {
+                    self._insert(data);
+                    //TODO 更新总数
 
+                } else {
+                    self.errorDialog.text(data.msg).show();
+                }
             },
             fail: function (error) {
                 self.errorDialog.text(error.msg).show();
@@ -180,6 +194,8 @@
         this.datas.push(data);
         return this;
     };
+
+
     Source.prototype._removeData = function (id) {
         var index = -1;
         if (!id) return this;

@@ -46,6 +46,17 @@ namespace Said.Areas.Back.Controllers
         readonly static string SourceIconsPath = ConfigTable.Get(ConfigEnum.MusicPath);
 
         /// <summary>
+        /// 系统图片上传的路径
+        /// </summary>
+        readonly static string SourceSystemPath = ConfigTable.Get(ConfigEnum.SystemImages);
+
+        /// <summary>
+        /// 资源删除后存放的路径
+        /// </summary>
+        readonly static string SourceSystemDelete = ConfigTable.Get(ConfigEnum.SystemDelete);
+
+
+        /// <summary>
         /// Blog允许的最大上传图片
         /// </summary>
         readonly int SizeBlogImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
@@ -64,6 +75,11 @@ namespace Said.Areas.Back.Controllers
         /// Icons允许的最大图片
         /// </summary>
         readonly int SizeIcons = int.Parse(ConfigTable.Get(ConfigEnum.SourceIconsMaxSize));
+
+        /// <summary>
+        /// 系统图片允许的最大上传大小
+        /// </summary>
+        readonly int SizeSystem = int.Parse(ConfigTable.Get(ConfigEnum.SystemImagesSize));
 
         #endregion
 
@@ -108,6 +124,58 @@ namespace Said.Areas.Back.Controllers
         }
         #endregion
 
+
+        #region 上传一个图片，保存并返回图片信息新生成的文件名
+        /// <summary>
+        /// 上传一个图片，保存并返回图片信息新生成的文件名
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="filters"></param>
+        /// <param name="maxSize"></param>
+        /// <param name="dirPath"></param>
+        /// <returns></returns>
+        private Dictionary<string, string> Save(HttpPostedFileBase file, Array filters, int maxSize, string dirPath)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            FileCommon.ExistsCreate(dirPath);
+            if (file == null)
+            {
+                result.Add("code", "1");
+                result.Add("msg", "没有文件");
+                return result;
+            }
+            if (file.InputStream == null || file.InputStream.Length > maxSize)
+            {
+                result.Add("code", "1");
+                result.Add("msg", "上传文件大小超过限制");
+                return result;
+            }
+            //file.InputStream可以获取到System.io.Stream对象，由此可以对文件进行hash加密运算
+            string fileName = file.FileName,
+            fileExt = Path.GetExtension(fileName).ToLower();//扩展名
+            if (string.IsNullOrEmpty(fileExt) || Array.IndexOf(filters, fileExt.Substring(1).ToLower()) == -1)
+            {
+                result.Add("code", "1");
+                result.Add("msg", "上传文件扩展名是不允许的扩展名");
+                return result;
+            }
+            string newFileName = string.Empty, //新生成的文件名
+                   filePath = string.Empty;
+            if (string.IsNullOrEmpty(dirPath))
+            {
+                result.Add("code", "1");
+                result.Add("msg", "服务器异常");
+                return result;
+            }
+            newFileName = FileCommon.CreateFileNameByTime() + fileExt;
+            filePath = dirPath + newFileName;
+            file.SaveAs(filePath);
+            result.Add("code", "0");
+            result.Add("name", newFileName);
+            return result;
+        }
+
+        #endregion
 
         #region 上传Said图片
         /// <summary>
@@ -200,16 +268,39 @@ namespace Said.Areas.Back.Controllers
             if (image == null)
                 return ResponseResult(2, "没有找到图片");
             image.IsDel = 1;
+            string path = string.Empty;
             switch (image.Type)
             {
-
+                case ImageType.Blog:
+                    path = SourceBlogPath;
+                    break;
+                case ImageType.Said:
+                    path = SourceSaidPath;
+                    break;
+                case ImageType.System:
+                case ImageType.Icon:
+                case ImageType.Page:
+                case ImageType.Lab:
+                case ImageType.Other:
                 default:
+                    path = SourceSystemPath;
                     break;
             }
-            FileCommon.Move();
-
+            FileCommon.Move(path + image.IFileName, string.Format("{0}${1}-${2}-${3}", SourceSystemDelete, image.ImageId, image.IFileName, image.Type));
+            //更新到数据库，改动了isDel
+            ImageApplication.Update(image);
             return ResponseResult();
         }
+        #endregion
+
+        #region 资源中心的上传
+        public JsonResult UploadSaidImage(int type = 0)
+        {
+            //分析上传的文件信息，返回解析得到的结果
+            return UploadImage(Request.Files["uploadFile"], IMGFILTERARRAY, SizeSaidImage, SourceSaidPath, ImageType.Said);
+        }
+
+
         #endregion
 
 
@@ -217,6 +308,35 @@ namespace Said.Areas.Back.Controllers
         private JsonResult UploadResult(int code, string msg, string name = null)
         {
             return Json(new { code = code, msg = msg, name = name });
+        }
+
+
+
+        private JsonResult UploadImage(HttpPostedFileBase file, Array filters, int maxSize, string dirPath, ImageType type)
+        {
+            //分析上传的文件信息，返回解析得到的结果
+            Dictionary<string, string> result = Save(file, IMGFILTERARRAY, SizeBlogImage, SourceBlogPath);
+            if (result["code"] == "1")
+                return Json(new { code = 1, msg = result["msg"] });
+            Image model = new Image
+            {
+                //TODO   -  UserID,ISize
+                Date = DateTime.Now,
+                IFileName = result["name"],
+                Type = type,
+                ImageId = Guid.NewGuid().ToString().Replace("-", ""),
+                IName = result["name"]
+            };
+            if (ImageApplication.Add(model) > 0)
+                return Json(new
+                {
+                    code = 0,
+                    id = model.ImageId,
+                    name = model.IFileName,
+                    data = model.IFileName,
+                    img = model.IFileName
+                });
+            return Json(new { code = 2, msg = "插入到数据库失败" });
         }
         #endregion
 

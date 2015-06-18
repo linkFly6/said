@@ -45,6 +45,16 @@ namespace Said.Controllers
         readonly static string SourceIconsPath = ConfigTable.Get(ConfigEnum.MusicPath);
 
         /// <summary>
+        /// 系统图片上传的路径
+        /// </summary>
+        readonly static string SourceSystemPath = ConfigTable.Get(ConfigEnum.SystemImages);
+
+        /// <summary>
+        /// 资源删除后存放的路径
+        /// </summary>
+        readonly static string SourceSystemDelete = ConfigTable.Get(ConfigEnum.SystemDelete);
+
+        /// <summary>
         /// Blog允许的最大上传图片
         /// </summary>
         readonly int SizeBlogImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
@@ -63,6 +73,11 @@ namespace Said.Controllers
         /// Icons允许的最大图片
         /// </summary>
         readonly int SizeIcons = int.Parse(ConfigTable.Get(ConfigEnum.SourceIconsMaxSize));
+
+        /// <summary>
+        /// 系统图片允许的最大上传大小
+        /// </summary>
+        readonly int SizeSystem = int.Parse(ConfigTable.Get(ConfigEnum.SystemImagesSize));
 
         #endregion
 

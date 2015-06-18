@@ -23,7 +23,7 @@ namespace Said
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
             //加载配置文件
-            ConfigTable.LoadConfig(Server.MapPath("~/config.js"));
+            ConfigTable.LoadConfig(Server.MapPath("~/config.json"));
             /*默认加载IP查询库*/
             Said.Helper.IP.Load(Server.MapPath(ConfigTable.Table[ConfigEnum.SourceDataIP]));
 

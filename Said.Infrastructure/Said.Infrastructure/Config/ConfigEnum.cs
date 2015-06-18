@@ -89,6 +89,10 @@ namespace Said.Config
         public const string SystemImagesSize = "source.sys.images.maxSize";
         #endregion
 
+        #region 资源删除路径
+        public const string SystemDelete = "source.sys.delete";
+        #endregion
+
         #region 默认IP库位置
         /// <summary>
         /// 默认IP库位置

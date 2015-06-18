@@ -36,9 +36,9 @@ namespace Said.Models
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// 类型：6 - 页面图 , 1 - Blog , 2 - Said ,  3 - ICON , 4 - 导航图 , 5 - 实验室图 , 6 - 其他图
+        /// 图片类型
         /// </summary>
-        public int Type { get; set; }
+        public ImageType Type { get; set; }
 
         /// <summary>
         /// 上传用户ID

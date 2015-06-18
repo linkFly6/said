@@ -2738,7 +2738,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="config.json" />
+    <None Include="config.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,6 +1,5 @@
 ﻿{
 	
-	//注意每次修改配置要重启机器
 	"images.maxSize":"1048576",
 	"images.filter":"gif,jpg,jpeg,png,bmp",
 
@@ -11,16 +10,17 @@
 
 		
 	"source.said.images":"/Source/Said/Images/",
-	"source.said.images.thumbnail":"/Source/Said/Thumbnail",
+	"source.said.images.thumbnail":"/Source/Said/Thumbnail/",
 	"source.said.images.maxSize":"1048576",
 	
 	"source.blog.images":"/Source/Blog/Images/",
-	"source.blog.images.thumbnail":"/Source/Blog/Thumbnail",
+	"source.blog.images.thumbnail":"/Source/Blog/Thumbnail/",
 	"source.blog.images.maxSize":"1048576",
 
 
-	"source.sys.images":"/Source/Sys/Images",
+	"source.sys.images":"/Source/Sys/Images/",
 	"source.sys.images.maxSize":"1048576",
+	"source.sys.delete":"/Source/delete/",
 	"source.sys.icons":"/Source/Sys/Images/Icons/",
 	"source.sys.icons.maxSize":"102400",
 

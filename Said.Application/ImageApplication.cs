@@ -22,7 +22,7 @@ namespace Said.Application
 
 
         /// <summary>
-        /// 添加一篇文章
+        /// 添加一张图片
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -32,6 +32,17 @@ namespace Said.Application
             return service.Submit();
         }
 
+
+        /// <summary>
+        /// 修改图片
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int Update(Image model)
+        {
+            Context.Update(model);
+            return service.Submit();
+        }
 
         #region 逻辑
 
