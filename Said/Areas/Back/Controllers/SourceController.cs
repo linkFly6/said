@@ -137,6 +137,7 @@ namespace Said.Areas.Back.Controllers
         private Dictionary<string, string> Save(HttpPostedFileBase file, Array filters, int maxSize, string dirPath)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
+            dirPath = Server.MapPath(dirPath);
             FileCommon.ExistsCreate(dirPath);
             if (file == null)
             {
@@ -254,7 +255,7 @@ namespace Said.Areas.Back.Controllers
         #endregion
 
 
-        #region 删除图片
+        #region 删除图片（逻辑删除）
         /// <summary>
         /// 删除图片（逻辑删除，修改isDelete，移动图片路径）
         /// </summary>
@@ -293,14 +294,63 @@ namespace Said.Areas.Back.Controllers
         }
         #endregion
 
+
+        #region 删除图片（物理删除）
+        /// <summary>
+        /// 删除图片（物理删除）
+        /// </summary>
+        /// <param name="id">image</param>
+        /// <returns></returns>
+        public JsonResult RealDeleteImage(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(1, "没有数据");
+            Image image = ImageApplication.Find(id);
+            if (image == null)
+                return ResponseResult(2, "没有找到图片");
+            image.IsDel = 1;
+            string path = string.Empty;
+            switch (image.Type)
+            {
+                case ImageType.Blog:
+                    path = SourceBlogPath;
+                    break;
+                case ImageType.Said:
+                    path = SourceSaidPath;
+                    break;
+                case ImageType.System:
+                case ImageType.Icon:
+                case ImageType.Page:
+                case ImageType.Lab:
+                case ImageType.Other:
+                default:
+                    path = SourceSystemPath;
+                    break;
+            }
+            FileCommon.Remove(path + image.IFileName);
+            ImageApplication.Delete(image);
+            return ResponseResult();
+        }
+        #endregion
+
         #region 资源中心的上传
-        public JsonResult UploadSaidImage(int type = 0)
+        public JsonResult UploadSaidImage()
         {
             //分析上传的文件信息，返回解析得到的结果
             return UploadImage(Request.Files["uploadFile"], IMGFILTERARRAY, SizeSaidImage, SourceSaidPath, ImageType.Said);
         }
 
+        public JsonResult UploadBlogImage()
+        {
+            //分析上传的文件信息，返回解析得到的结果
+            return UploadImage(Request.Files["uploadFile"], IMGFILTERARRAY, SizeBlogImage, SourceBlogPath, ImageType.Blog);
+        }
 
+        public JsonResult UploadSystemImage()
+        {
+            //分析上传的文件信息，返回解析得到的结果
+            return UploadImage(Request.Files["uploadFile"], IMGFILTERARRAY, SizeSystem, SourceSystemPath, ImageType.System);
+        }
         #endregion
 
 
@@ -315,7 +365,7 @@ namespace Said.Areas.Back.Controllers
         private JsonResult UploadImage(HttpPostedFileBase file, Array filters, int maxSize, string dirPath, ImageType type)
         {
             //分析上传的文件信息，返回解析得到的结果
-            Dictionary<string, string> result = Save(file, IMGFILTERARRAY, SizeBlogImage, SourceBlogPath);
+            Dictionary<string, string> result = Save(file, IMGFILTERARRAY, maxSize, dirPath);
             if (result["code"] == "1")
                 return Json(new { code = 1, msg = result["msg"] });
             Image model = new Image

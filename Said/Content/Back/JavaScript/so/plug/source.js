@@ -1,38 +1,47 @@
 ﻿define(['jquery', 'so', 'upload', 'dialog'], function ($, so, upload, dialog) {
+    'use strict';
     var noop = function () { },
-        findIndex = Array.prototype.find
-    config = {
-        //解析的数据格式
-        data: {
-            total: 100,//总数
-            datas: [
-            {
-                id: '资源id',//model
-                name: '资源名称',
-                data: '资源数据',
-                img: '显示图片',
-            }]
+        findIndex = Array.prototype.find,
+        config = {
+            //解析的数据格式
+            //data: {
+            //    total: 100,//总数
+            //    datas: [ //数据库返回
+            //    {
+            //        id: '资源id',//model
+            //        name: '资源名称',
+            //        data: '资源数据',
+            //        img: '显示图片',
+            //    }],
+            //    datas: { //对象存储
+            //        '资源ID': {
+            //            name: '资源名称',
+            //            data: '资源数据',
+            //            img: '显示图片'
+            //        }
+            //    }
+            //},
+            id: '',
+            className: '',
+            loadUrl: '/',//加载资源的路径
+            deleteUrl: '/',//删除资源的url，可选项目
+            uploadUrl: '/',
+            path: '/',//资源路径
+            loading: '',//正在加载的时候显示的图片
+            filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
+            size: 1048576,
+            //doc: document.body,
+            limit: 16,//每次翻页请求的个数
+            offset: 1,//当前数据请求的起始索引，如果为-1则加载全部资源
+            callback: noop,//点击确定执行
+            cancel: noop,//点击取消执行
+            remove: noop,//点击删除执行
+            multiple: true//多选模式
         },
-        id: '',
-        className: '',
-        loadUrl: '/',
-        deleteUrl: '',//删除资源的url，可选项目
-        path: '/',//资源路径
-        loading: '',//正在加载的时候显示的图片
-        filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
-        size: 1048576,
-        //doc: document.body,
-        limit: 16,//每次翻页请求的个数
-        offset: 1,//当前数据请求的起始索引，如果为-1则加载全部资源
-        callback: noop,//点击确定执行
-        cancel: noop,//点击取消执行
-        remove: noop,//点击删除执行
-        multiple: true//多选模式
-    },
     globalTemplate = '<div id="${id}" class="source-box ${className}">\
             <div class="source-state">\
                 <div class="source-path">路径：${path}</div>\
-                <div class="source-count"><span>0</span>&nbsp;/&nbsp;0</div>\
+                <div class="source-count"><span class="source-count-curr">0</span>/<span class="source-count-sum">0</span></div>\
             </div>\
             <div class="source-table">\
                 <div class="source-body"></div>\
@@ -62,7 +71,7 @@
                 <div class="source-thum-con" title="引用在文章《世界很大，风住过这里》">\
                     <img src="${path}${img}" alt="100%x180" data-src="loading" data-holder-rendered="true" />\
                 </div>\
-                <div class="source-img-info"><span class="source-img-name">${name}</span><a href="javascript:;" data-id="${id}" class="fa fa-times source-delete" title="删除"></a></div>\
+                <div class="source-img-info"><span class="source-img-name">${name}</span><a href="javascript:;" data-id="${id}" data-name="${name}" class="fa fa-times source-delete" title="删除"></a></div>\
             </div>';
 
     var Source = function (doc, options) {
@@ -71,28 +80,82 @@
             options = this.options = $.extend({}, Source.DEFAULTS, options),
             template = globalTemplate,
             $elem,
-            datas = self.datas = [],
             $table,//滚动条容器
             $body,//滚动条内容
             offset = options.offset,
             loadingHeight = 51,//正在加载的DOM高度是61
             errorDialog = self.errorDialog = dialog(),
-            deleteDialog = self.deleteDialog = dialog(),
-            $count,
-            $load,
-            isLoad = true;
+            $load;
 
+        this.data = {};
 
         template = so.format(template, options);
         $elem = self.$elem = $(template);
         $table = $elem.find('.source-table');
         $body = self.$body = $table.find('.source-body');
-        $count = $elem.find('.source-count');//数量
         $load = $table.find('.source-loading');//加载条
 
-        self._initUpload();
-        self._initDialog();
+        self.$sum = $elem.find('.source-count-sum');
+        self.$curr = $elem.find('.source-count-curr');
 
+        self._initUpload($elem, this.options.uploadUrl)
+            ._initDialog($doc, $elem)
+            ._initScroll($body)
+            ._initEvent($body);
+
+
+        this._fetch({ limit: this.options.limit, offset: offset }, function (data) {
+            this.options.total = data.total;
+            this.$sum.html(data.total);
+            if (data.total === 0) {//没有数据
+                $load.hide();
+                $body.html('<div class="source-noResult">没有数据</div>');
+            }
+        });
+
+    };
+
+    Source.prototype._initEvent = function ($body) {
+        var self = this,
+            deleteDialog = dialog(),
+            errorDialog = self.errorDialog;
+        $body.on('click.source', '.source-thum', function () {//选中
+            var isSelect = this.classList.contains('selected');
+            this.classList[isSelect ? 'remove' : 'add']('selected');
+            isSelect ?
+                self._removeData(this.dataset.id) :
+                self._data(this.dataset);
+
+        }).on('click.source', '.source-delete', function () {//删除
+            var elem = this;
+            deleteDialog.text('您确定要删除图片[<span style="color:red;padding:0 0.5em;">' + this.dataset.name + '</span>]么？').on(function () {
+                var id = elem.dataset.id;
+                self._removeData(id);
+                $(elem.parentNode.parentNode).remove();
+                $.ajax({
+                    url: self.options.deleteUrl,
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    type: 'post',
+                    data: { id: id }
+                }).done(function (data) {
+                    if (data.code !== 0)
+                        errorDialog.text('删除图片失败，服务器返回消息：' + data.msg).show();
+                }).fail(function (res) {
+                    errorDialog.text('删除图片失败：网络连接异常').show();
+                });
+                //self.options.remove(id);
+            }).show();
+        }).on('source.load', 'img', function () {
+            console.log(this);
+        });
+        return this;
+    }
+
+
+
+    Source.prototype._initScroll = function ($body) {
+        var isLoad = false;
         $body.on('scroll', function () {
             var scrollTop = $body.scrollTop();
             var scrollHeight = $table.height();
@@ -101,60 +164,25 @@
                 alert("到达底部");
                 //加载数据
             }
-        }).on('source.click', '.source-thum', function () {//选中
-            var isSelect = this.classList.contains('selected');
-            this.classList[isSelect ? 'remove' : 'add']('selected');
-            isSelect ?
-                self._removeData(this.dataset.id) :
-                self._data(this.dataset);
-
-        }).on('source.click', '.source-delete', function () {//删除
-            deleteDialog.on('您确定要删除图片[ ' + this.dataset.name + ' ]么？', function () {
-                var id = this.dataset.id;
-                self._removeData(id);
-                $(this.parentNode.parentNode).remove();
-                self.options.remove(id);
-            }).show();
-        }).on('source.load', 'img', function () {
-            console.log(this);
         });
-        this._fetch({ limit: this.options.limit, offset: offset }, function (data) {
-            this.options.total = data.total;
-            $count.html('<span>0</span>&nbsp;/&nbsp;' + data.total + '');
-            if (data.total === 0) {//没有数据
-                $load.hide();
-                isLoad = false;
-                $body.off('scroll').html('<div class="source-noResult">没有数据</div>');
-            }
-        });
-        this.dialog = dialog($elem[0], {
-            className: 'source-dialog',
-            btns: ''
-        }).on(function () {
-            if (datas.length)
-                datas.apply($elem[0], datas);
-        });
-        $doc.append(this.dialog.elem);
-    };
-
-
-    //上传的图片插入到DOM
-    Source.prototype._insert = function (data) {
-        this.datas.unshift(data);
-        this.$body.append(so.format(templateItem, data));
         return this;
     };
 
-    Source.prototype._initUpload = function () {
+    Source.prototype._setCount = function (sum) {
+
+    }
+
+    Source.prototype._initUpload = function ($elem, url) {
         var self = this,
             $elem = self.$elem.find('.so-upload-mask'),//蒙版
             $text = $elem.find('.so-upload-text'),//文本
             $progress = $elem.find('.so-upload-progress');//进度
-        upload($elem.find('.hidden-file'), {
+        upload($elem.find('.hidden-file')[0], {
+            url: url,
             callback: function (data) {
+                console.log(data);
                 if (data.code === 0) {
                     self._insert(data);
-                    //TODO 更新总数
 
                 } else {
                     self.errorDialog.text(data.msg).show();
@@ -178,34 +206,46 @@
                 }
             }
         });
+        return this;
     };
 
-    Source.prototype._initDialog = function () {
-        var $elem = this.$elem;
-        this.dialog = dialog($elem[0]).on(function () {
-            //确定
-
-        }, function () {
-            //关闭
+    Source.prototype._initDialog = function ($doc, $elem) {
+        var data = this.data = [];
+        this.dialog = dialog($elem[0], {
+            className: 'source-dialog',
+            btns: ''
+        }).on(function () {
+            if (datas.length)
+                datas.apply($elem[0], datas);
         });
-    };
-
-    Source.prototype._data = function (data) {
-        this.datas.push(data);
+        $doc.append(this.dialog.elem);
         return this;
     };
 
 
+
+
+    Source.prototype._data = function (data) {
+        //This key already exists
+        if (data[id]) return this;
+        var id = data.id;
+        delete data.id
+        this.data[id] = data;
+        return this;
+    };
+
     Source.prototype._removeData = function (id) {
-        var index = -1;
-        if (!id) return this;
-        this.datas.some(function (item, i) {
-            if (item.id === id) {
-                index = i;
-                return true;
-            }
-        });
-        ~index && this.datas.splice(index, 1);
+        if (!id || !this.data[id]) return this;
+        delete this.data[id];
+        return this;
+    };
+
+
+    //上传的图片插入到DOM
+    Source.prototype._insert = function (data) {
+        data.path = this.options.path;
+        this.datas.unshift(data);
+        this.$body.append(so.format(templateItem, data));
         return this;
     };
 
@@ -226,6 +266,7 @@
         $.ajax({
             url: self.options.loadUrl,
             contentType: 'application/json',
+            //type: 'post',
             dataType: 'json',
             data: data
         }).done(function (data) {
@@ -235,7 +276,7 @@
             self._create(data.datas);
             //解析数据
             if ($.isFunction(callback))
-                callback(data);
+                callback.call(self, data);
         })
         .fail(function (res) {
             $elem.trigger('source.error', res.status);

@@ -69,7 +69,8 @@
             .source-box .source-path, .source-box .source-count { color: #999; }
             .source-box .source-path { float: left; }
             .source-box .source-count { float: right; }
-                .source-box .source-count span { color: red; font-size: 16px; }
+            .source-box .source-count-curr { color: red; font-size: 16px; padding-right: 0.5em; }
+            .source-box .source-count-count { padding-left: 0.5em; }
             .source-box .source-footer { overflow: hidden; }
             .source-box .source-btns-box { float: right; }
                 .source-box .source-btns-box a { width: 140px; }
@@ -121,7 +122,11 @@
         require(['jquery', 'source'], function ($) {
             $(document.body).source({
                 loadUrl: '/Back/Source/GetImagesList',
-                path: '/Source/Blog/Images/'
+                path: '/Source/Sys/Images/',
+                type: 1,
+                uploadUrl: '/Back/Source/UploadSystemImage',
+                deleteUrl: '/Back/Source/RealDeleteImage'//这个是物理删除，测试用这个
+                //deleteUrl: '/Back/Source/DeleteImage' //这个是逻辑删除，上线用这个
             }).trigger('source.show');
         });
 

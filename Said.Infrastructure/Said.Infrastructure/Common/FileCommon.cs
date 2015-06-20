@@ -239,6 +239,27 @@ namespace Said.Common
         }
         #endregion
 
+        #region 删除一个文件
+        /// <summary>
+        /// 删除一个文件
+        /// </summary>
+        /// <param name="path">删除文件的路径</param>
+        /// <returns></returns>
+        public static bool Remove(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        #endregion
+
     }
 
     public enum FileExtendsion

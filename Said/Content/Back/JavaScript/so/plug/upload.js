@@ -11,7 +11,8 @@
             filters: '*',//默认允许上传所有文件，为数组的话则限定上传的数组后缀
             url: '/',//上传路径，默认本页
             //['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],//默认是图片
-            size: 1048576//默认1mb，<=0表示允许无限
+            size: 1048576,//默认1mb，<=0表示允许无限
+            name: 'uploadFile'
             /*
             ,callback: function () { },//成功后执行的函数，必须指定
             fail: function () { },//失败后执行的函数
@@ -35,7 +36,7 @@
          */
         Upload = function (elem, config) {
             var config = so.extend({}, globalConfig, config);
-            elem = so.find(elem);
+            elem = so.find(elem);//后续upload要改成jQuery插件
             if (!elem || elem.tagName !== 'INPUT' || elem.type !== 'file' || !so.isFunction(config.callback)) return elem;
             if (!config.filters.length)
                 config.filters = '*';
@@ -44,7 +45,8 @@
                 callback = config.callback,
                 fail = so.isFunction(config.fail) ? config.fail : false,
                 progress = so.isFunction(config.progress) ? config.progress : false,
-                upload = so.isFunction(confirm.upload) ? config.upload : false;
+                upload = so.isFunction(confirm.upload) ? config.upload : false,
+                uploadName = config.name;
             so.on(elem, 'click', function () {
                 return !lock;
             });
@@ -80,7 +82,7 @@
                     参考：http://javascript.ruanyifeng.com/bom/ajax.html#toc1
                     formData对象append方法很碉堡...
                 */
-                data.append('saidFile', file /*file.slice(0)//如果需要支持断点续传的话*/, encodeURIComponent(name));//文件
+                data.append(uploadName, file /*file.slice(0)//如果需要支持断点续传的话*/, encodeURIComponent(name));//文件
                 xhr.open('post', config.url, true);
                 //xhr.setRequestHeader("Content-Disposition", 'Content-Disposition: form-data; name="img"; filename="blob"');
                 if (progress)

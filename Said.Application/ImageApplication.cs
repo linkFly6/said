@@ -44,6 +44,17 @@ namespace Said.Application
             return service.Submit();
         }
 
+        /// <summary>
+        /// 删除图片（物理删除）
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int Delete(Image model)
+        {
+            Context.Delete(model);
+            return service.Submit();
+        }
+
         #region 逻辑
 
         #endregion

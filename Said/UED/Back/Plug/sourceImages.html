@@ -69,7 +69,8 @@
             .source-box .source-path, .source-box .source-count { color: #999; }
             .source-box .source-path { float: left; }
             .source-box .source-count { float: right; }
-                .source-box .source-count span { color: red; font-size: 16px; }
+            .source-box .source-count-curr { color: red; font-size: 16px; padding-right: 0.5em; }
+            .source-box .source-count-count { padding-left: 0.5em; }
             .source-box .source-footer { overflow: hidden; }
             .source-box .source-btns-box { float: right; }
                 .source-box .source-btns-box a { width: 140px; }
@@ -95,7 +96,7 @@
         <div id="sourceImage" class="source-box">
             <div class="source-state">
                 <div class="source-path">路径：/resource/sys/images/</div>
-                <div class="source-count"><span>2</span>&nbsp;/&nbsp;132</div>
+                <div class="source-count"><span class="source-count-curr">2</span>/<span class="source-count-sum">132</span></div>
             </div>
             <div class="source-table">
                 <div class="source-thum">
