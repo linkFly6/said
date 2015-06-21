@@ -159,6 +159,9 @@
             return this;
         }
     });
+
+
+    /*===========================================================================基础模块===========================================================================*/
     so.extend({
         //基础函数
         isFunction: isFunction,
@@ -369,7 +372,7 @@
     });
 
 
-    /*date模块*/
+    /*===========================================================================date模块===========================================================================*/
     so.extend({
         //转换时间
         parseDate: function (jsonDate) {
@@ -464,12 +467,13 @@
     });
 
 
-    /*浏览器特性支持模块*/
+    /*===========================================================================浏览器特性支持模块*===========================================================================*/
     var Support = {
         localStorage: !!window.localStorage
     };
 
-    /*DataBase模块*/
+
+    /*===========================================================================DataBase模块===========================================================================*/
     var localStorage = window.localStorage,
         rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,//检测是否是json对象格式
         getLocalStorageItem = function (value) {
@@ -533,6 +537,37 @@
     so.extend({
         DataBase: DataBase
     });
+
+
+
+
+    /*===========================================================================图片加载===========================================================================*/
+    var imgConfig = {
+        //src: '',//要加载的图片
+        load: '/Content/Images/Said-Images-load.gif',//加载中显示
+        error: '/Content/Images/img-failed.png'//加载失败显示
+    };
+    so.imgLoad = function (elem, options) {
+        //image element
+        options = so.extend({}, imgConfig, elem.dataset, options);//支持dataset和传参配置
+        if (!elem.src)
+            elem.src = options.load;
+        var img = new Image();
+        //img.complete
+        img.onload = function () {
+            elem.src = options.src;
+            img.onload = null;
+        };
+        img.onabort = img.onerror = function () {
+            elem.src = options.error;
+            img.onerror = null;
+        };
+        img.src = options.src;
+        if (img.complete)
+            img.onload();
+    };
+    so.imgLoad.DEFAULTS = imgConfig;
+
 
 
 

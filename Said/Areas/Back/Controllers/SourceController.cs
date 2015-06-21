@@ -1,4 +1,5 @@
-﻿using Said.Application;
+﻿//using PagedList;
+using Said.Application;
 using Said.Common;
 using Said.Config;
 using Said.Models;
@@ -178,6 +179,7 @@ namespace Said.Areas.Back.Controllers
 
         #endregion
 
+
         #region 上传Said图片
         /// <summary>
         /// 上传Said图片
@@ -248,7 +250,7 @@ namespace Said.Areas.Back.Controllers
             {
                 //hasNextPage = res.HasNextPage,
                 //hasPreviousPage = res.HasPreviousPage,
-                total = res.Count,
+                total = res.TotalItemCount,
                 datas = res.Select(m => new { id = m.ImageId, name = m.IName, img = m.IFileName, data = m.IFileName })
             }, JsonRequestBehavior.AllowGet);
         }

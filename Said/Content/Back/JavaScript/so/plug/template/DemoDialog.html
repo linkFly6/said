@@ -59,6 +59,7 @@
                 .source-box .source-thum:hover { border-color: #337ab7; }
                 .source-box .source-thum.selected { border-color: #4cae4c; background-color: #5cb85c; opacity: 0.8; }
                     .source-box .source-thum.selected .source-img-info { color: #000; }
+            .source-box .source-thum-con { background-color: #f4f4f4; }
             .source-box img { display: block; width: 256px; height: 140px; }
             .source-box .source-img-info { text-align: left; color: #666; overflow: hidden; }
             .source-box .source-delete { float: right; color: #666; transition: all 0.4s ease-in-out 0s; font-size: 16px; }
@@ -105,7 +106,8 @@
                 'upload': 'so/plug/upload',
                 'dialog': 'so/plug/dialog',
                 'showMsg': 'so/plug/showMsg',
-                'source': 'so/plug/source'
+                'source': 'so/plug/source',
+                'underscore': 'underscore'
             },
             packages: [
             {
@@ -119,15 +121,23 @@
                 main: 'said'
             }]
         });
+
         require(['jquery', 'source'], function ($) {
-            $(document.body).source({
+            var $elem = $(document.body).source({
                 loadUrl: '/Back/Source/GetImagesList',
                 path: '/Source/Sys/Images/',
                 type: 1,
                 uploadUrl: '/Back/Source/UploadSystemImage',
-                deleteUrl: '/Back/Source/RealDeleteImage'//这个是物理删除，测试用这个
+                deleteUrl: '/Back/Source/RealDeleteImage',//这个是物理删除，测试用这个
+                //multiple: true,
                 //deleteUrl: '/Back/Source/DeleteImage' //这个是逻辑删除，上线用这个
+                callback: function (data) {
+
+                }
             }).trigger('source.show');
+            $('#test').on('click', function () {
+                $elem.trigger('source.show');
+            });
         });
 
     </script>

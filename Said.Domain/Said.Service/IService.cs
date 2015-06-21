@@ -118,6 +118,45 @@ namespace Said.IServices
         /// <returns></returns>
         IPagedList<T> GetPage<TOrder>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order);
 
+
+        /// <summary>
+        /// 分页查询（按照排序表达式倒序排列）
+        /// </summary>
+        /// <typeparam name="TOrder">实体</typeparam>
+        /// <param name="page">分页对象</param>
+        /// <param name="where">分页表达式</param>
+        /// <param name="order">排序表达式（按照排序表达式倒序排列）</param>
+        /// <returns></returns>
+        IPagedList<T> GetPageDesc<TOrder>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order);
+
+
+
+                /// <summary>
+        /// 分页查询，允许查询模型的一部分数据
+        /// </summary>
+        /// <typeparam name="TOrder">排序对象</typeparam>
+        /// <typeparam name="TResult">linq to Sql要提取模型的一部分数据，所以需要提供一个匿名类作为linq to sql的过度</typeparam>
+        /// <param name="page">分页对象</param>
+        /// <param name="where">条件过滤</param>
+        /// <param name="order">排序</param>
+        /// <param name="selector">linq to Sql的匿名对象表达式</param>
+        /// <param name="selectorToEntity">sql to Entity（匿名对象转实体）的表达式</param>
+        /// <returns></returns>
+        IPagedList<T> GetPage<TOrder, TResult>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order, Expression<Func<T, TResult>> selector, Func<TResult, T> selectorToEntity);
+
+
+        /// <summary>
+        /// 分页查询，允许查询模型的一部分数据（按照排序表达式倒序排列）
+        /// </summary>
+        /// <typeparam name="TOrder">排序对象</typeparam>
+        /// <typeparam name="TResult">linq to Sql要提取模型的一部分数据，所以需要提供一个匿名类作为linq to sql的过度</typeparam>
+        /// <param name="page">分页对象</param>
+        /// <param name="where">条件过滤</param>
+        /// <param name="order">排序（按照排序表达式倒序排列）</param>
+        /// <param name="selector">linq to Sql的匿名对象表达式</param>
+        /// <param name="selectorToEntity">sql to Entity（匿名对象转实体）的表达式</param>
+        /// <returns></returns>
+        IPagedList<T> GetPageDesc<TOrder, TResult>(Page page, Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order, Expression<Func<T, TResult>> selector, Func<TResult, T> selectorToEntity);
         #endregion
 
         #region 提交
