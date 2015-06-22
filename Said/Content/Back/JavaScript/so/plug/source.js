@@ -26,6 +26,7 @@
             //},
             id: '',
             className: '',
+            multiple: true,//多选模式
             // ============= url配置
             loadUrl: '/',//加载资源的路径
             deleteUrl: '/',//删除资源的url，可选项目
@@ -38,14 +39,13 @@
 
             // ============= 分页
             limit: 16,//每次翻页请求的个数
-            offset: 1,//当前数据请求的起始索引，如果为-1则加载全部资源
+            offset: 0,//当前数据请求的起始索引，如果为-1则加载全部资源
 
 
             // ============= 回调函数
             callback: noop,//点击确定执行
             cancel: noop,//点击取消执行
             remove: noop,//点击删除执行
-            multiple: true,//多选模式
 
             // ============= 资源加载
             imgLoading: '/Content/Images/Said-Images-load.gif',//正在加载的时候显示的图片
@@ -120,7 +120,7 @@
 
         //事件
         self._initUpload($elem, this.options.uploadUrl)
-            ._initDialog($doc, $elem)
+            ._initDialog($doc, $elem, this.options.callback, this.options.cancel)
             ._initScroll($table, $body)
             ._initEvent($body);
 
@@ -153,17 +153,18 @@
                     self._data(this.dataset.id)
                 }
             } : function () {//单选
-                if (cache) {
-                    cache.classList.remove('selected');
-                    self._removeData(cache.dataset.id);
-                }
                 var isSelect = this.classList.contains('selected');
                 if (isSelect) {
                     this.classList.remove('selected');
                     self._removeData(this.dataset.id);
+                    cache = null;
                 } else {
                     this.classList.add('selected');
                     self._data(this.dataset.id);
+                    if (cache) {
+                        cache.classList.remove('selected');
+                        self._removeData(cache.dataset.id);
+                    }
                     cache = this;
                 }
 
@@ -191,6 +192,7 @@
                      });
                      //self.options.remove(id);
                  }).show();
+                 return false;
              });
         return this;
     }
@@ -217,11 +219,10 @@
                 if (scrollTop >= scrollHeight - windowHeight) {
                     //加载数据
                     isLoad = true;
-                    self._fetch({ limit: self.options.limit, offset: ++self.options.offset }).always(function (data) {
-                        if (data && data.total && self.datas.length >= data.total) {
-                            //console.clear();
-                            console.log(self.datas.length);
-                            isLoad = true;
+                    self._fetch({ limit: self.options.limit, offset: (self.options.offset += self.options.limit) }).always(function (data) {
+                        if (data && data.total && self.datas.length >= data.total) {//所有数据全部加载完成
+                            //isLoad = true;
+                            $table.off('scroll');
                         } else
                             isLoad = false;
                     });
@@ -271,16 +272,31 @@
         return this;
     };
 
-    Source.prototype._initDialog = function ($doc, $elem) {
-        var datas = this.datas;
-        this.dialog = dialog($elem[0], {
+    Source.prototype._initDialog = function ($doc, $elem, callback, cancel) {
+        var self = this,
+            datas = self.datas,
+            $box;
+        self.dialog = dialog($elem[0], {
             className: 'source-dialog',
             btns: ''
-        }).on(function () {
-            if (datas.length)
-                datas.apply($elem[0], datas);
         });
-        $doc.append(this.dialog.elem);
+        $doc.append(self.dialog.elem);
+        $box = $(self.dialog.elem);
+
+        $box.find('.btn-success').on('click.source', function () {
+            if (datas.length) {
+                if (self.hidecallback.apply($elem[0], datas) !== false)//返回false则不关闭
+                    self.hide();
+            } else {
+                self.hide();
+            }
+
+        });
+        //TODO 这个取消怎么破？？点击蒙板dialog是不会触发取消的
+        $box.find('.btn-default').on('click.source', function () {
+            cancel.apply($elem[0], datas);
+            self.hide();
+        });
         return this;
     };
 
@@ -378,10 +394,12 @@
             //    "path": "/Source/Sys/Images/",
             //    "loading": "/Content/Images/Said-Images-load.gif"
             //});
+
             self._create(data.datas);
             self.datas = self.datas.concat(data.datas);
             if (self.datas.length >= data.total)
                 self.$load.hide();
+
             //解析数据
             if ($.isFunction(callback))
                 callback.call(self, data);
