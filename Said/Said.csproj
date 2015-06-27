@@ -610,6 +610,7 @@
     <Content Include="Content\Images\icons\icon-Require.gif" />
     <Content Include="Content\Images\icons\icon-VS.gif" />
     <Content Include="Content\Images\ico_sliding.png" />
+    <Content Include="Content\Images\img-failed.png" />
     <Content Include="Content\Images\index_focus_bg.png" />
     <Content Include="Content\Images\nav-close.png" />
     <Content Include="Content\Images\nav-icon_search.png" />
@@ -1482,7 +1483,6 @@
     <Folder Include="Areas\Back\Models\" />
     <Folder Include="Common\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
-    <Folder Include="Content\Back\Resource\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="User\" />

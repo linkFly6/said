@@ -26,6 +26,7 @@
             //},
             id: '',
             className: '',
+            zIndex: 4,
             multiple: true,//多选模式
             // ============= url配置
             loadUrl: '/',//加载资源的路径
@@ -97,7 +98,7 @@
             $body,//滚动条内容
             offset = options.offset,
             loadingHeight = 51,//正在加载的DOM高度是61
-            errorDialog = self.errorDialog = dialog();
+            errorDialog = self.errorDialog = dialog({ zIndex: options.zIndex + 1 });
         options.img = {
             load: options.imgLoading,
             error: options.imgFail
@@ -278,7 +279,8 @@
             $box;
         self.dialog = dialog($elem[0], {
             className: 'source-dialog',
-            btns: ''
+            btns: '',
+            zIndex: self.options.zIndex
         });
         $doc.append(self.dialog.elem);
         $box = $(self.dialog.elem);
