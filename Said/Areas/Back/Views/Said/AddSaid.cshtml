@@ -43,12 +43,12 @@
             <div class="col-md-6">
                 <div class="panel panel-default relative-container">
                     @*  <div class="said-mask" id="uploadSong">
-                        <span>上传歌曲</span>
-                        <div class="progress">
-                            <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info"></div>
-                        </div>
-                        @Html.TextBoxFor(Model => Model.Song.SongId, new { @class = "hidden-file", type = "file" })
-                    </div>*@
+                            <span>上传歌曲</span>
+                            <div class="progress">
+                                <div style="width: 0;" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info"></div>
+                            </div>
+                            @Html.TextBoxFor(Model => Model.Song.SongId, new { @class = "hidden-file", type = "file" })
+                        </div>*@
                     <div class="panel-heading">歌曲</div>
                     <div class="panel-body" id="songModel">
                         <div class="afterClear">
@@ -154,10 +154,12 @@
                         <div class="checkbox said-checkbox">
                             <label>
                                 @*@Html.CheckBoxFor(Model => Model.SReprint, new { @type = "checkbox" })如果是直接提交表单，则可以直接采用checkbox控件，会生成两个input，具体请查阅：http://www.cnblogs.com/freeliver54/archive/2013/05/10/3070384.html*@
-                                @Html.TextBoxFor(Model => Model.SReprint, new { @type = "checkbox" })是否转载</label>
+                                @Html.TextBoxFor(Model => Model.SReprint, new { @type = "checkbox" })是否转载
+                            </label>
                             <label>
                                 <input type="checkbox" />
-                                @Html.TextBoxFor(Model => Model.SIsTop, new { @type = "checkbox" })是否置顶</label>
+                                @Html.TextBoxFor(Model => Model.SIsTop, new { @type = "checkbox" })是否置顶
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -176,8 +178,8 @@
     <link href="@Url.Content("~/Content/Back/Style/addSaid.css")" rel="stylesheet" />
 }
 @*@section HeadJs{
-    <script src="@Url.Content("")"></script>
-}*@
+        <script src="@Url.Content("")"></script>
+    }*@
 @section FootJs{
     <script type="text/javascript">
         var Action = {
@@ -250,8 +252,13 @@
             baseUrl: '/Content/Back/JavaScript',
             paths: {
                 'saidAdd': 'said/addSaid',
+                'avalon': 'avalon/avalon.mobile.min',
+                'groupInput': 'avalon/plug/groupInput',
+                'upload': 'avalon/plug/upload',
+                'showMsg': 'so/plug/showMsg',
+                'source': 'so/plug/source',
                 'markdown': ['showdown/showdown'],
-                'showDownThemeGithub': ['showdown/extensions/github']
+                'showDownThemeGithub': 'showdown/extensions/github'
             },
             packages: [
             {
@@ -277,6 +284,13 @@
             }], shim: {
                 'showDownThemeGithub': ['markdown']//依赖showdown
             }
+        });
+
+        require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'source', 'markdown', 'showDownThemeGithub', 'groupInput', 'upload'], function ($, so, Search, avalon, showMsg, source, showdown) {
+            $(function () {
+
+                avalon.scan();
+            })
         });
 
         require(['jquery', 'so/so', 'so/plug/search', 'so/plug/validate', 'so/plug/model', 'saidAdd', 'markdown', 'showDownThemeGithub'], function ($, so, search, validate, saidModel, addSaid, showdown, github) {

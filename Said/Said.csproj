@@ -2587,7 +2587,7 @@
     <Content Include="Areas\Back\Views\Said\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Back\Views\Said\SaidCenter.cshtml" />
+    <Content Include="Areas\Back\Views\Said\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Back\Views\Home\Index.cshtml" />
@@ -2713,7 +2713,7 @@
     <Content Include="UED\Temp\avalon.oniui-master\chameleon\oniui-theme.scss" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Back\Views\Blog\BlogCenter.cshtml" />
+    <Content Include="Areas\Back\Views\Blog\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Back\Views\Blog\Edit.cshtml" />

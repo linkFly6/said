@@ -18,12 +18,6 @@ namespace Said.Areas.Back.Controllers
 
         public ActionResult Index()
         {
-            return View();
-        }
-
-
-        public ActionResult BlogCenter()
-        {
             ViewBag.Title = "Blog管理 - Said后台管理系统";
             return View();
         }

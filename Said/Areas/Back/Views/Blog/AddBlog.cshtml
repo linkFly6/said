@@ -34,7 +34,7 @@
     {
         <div class="said-article">
             <div class="said-title-con">
-                @Html.TextBoxFor(m => m.BTitle, new Dictionary<string, object>() { 
+                @Html.TextBoxFor(m => m.BTitle, new Dictionary<string, object>() {
                             { "ms-duplex", "bTitle" },
                             { "class", "said-title" },
                             { "ms-class", "said-error:!bTitle.length" },
@@ -45,7 +45,7 @@
             })
             </div>
             <div class="said-context-content">
-                @Html.TextAreaFor(m => m.BContext, new Dictionary<string, object>() { 
+                @Html.TextAreaFor(m => m.BContext, new Dictionary<string, object>() {
                             { "class", "said-context" },
                             { "ms-duplex", "bContext" },
                             { "ms-change", "saveTolocalStorage('bContext',bContext)" },
@@ -54,7 +54,7 @@
             </div>
             <button class="btn btn-lg said-priview center-block" ms-click="preview(bContext)" type="button">预览</button>
         </div>
-@*ms-controller="defaultsDatas"*@
+        @*ms-controller="defaultsDatas"*@
         <div class="row said-view-container">
             <div class="col-md-6">
                 <div class="panel panel-default relative-container">
@@ -62,7 +62,7 @@
                     <div class="panel-body">
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            @Html.TextBoxFor(m => m.BTag, new Dictionary<string, object>() { 
+                            @Html.TextBoxFor(m => m.BTag, new Dictionary<string, object>() {
                             { "class", "tag-input" },
                             { "ms-change", "saveTolocalStorage('bTag',bTag)" },
                             { "ms-widget", "groupInput" },
@@ -72,7 +72,7 @@
                         </div>
                         <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
-                            @Html.TextBoxFor(m => m.Classify.CName, new Dictionary<string, object>() { 
+                            @Html.TextBoxFor(m => m.Classify.CName, new Dictionary<string, object>() {
                             { "class", "classify-input" },
                             { "ms-duplex", "classify" },
                             { "placeholder", "分类名称" },
@@ -94,7 +94,7 @@
                             </div>
                         </div>
                         <div class="col-md-8">
-                            @Html.TextAreaFor(m => m.BSummary, new Dictionary<string, object>() { 
+                            @Html.TextAreaFor(m => m.BSummary, new Dictionary<string, object>() {
                             { "class", "said-dis" },
                             { "ms-duplex", "bSummary" },
                             { "ms-class", "said-error:bImg&&!bSummary.length" },
@@ -115,7 +115,7 @@
                     <div class="panel-body">
                         <div class="input-group" ms-class="has-error:checkFile">
                             <span class="input-group-addon">文件</span>
-                            @Html.TextBoxFor(m => m.BName, new Dictionary<string, object>() { 
+                            @Html.TextBoxFor(m => m.BName, new Dictionary<string, object>() {
                                 { "class", "form-control" },
                                 { "ms-duplex", "bName" },
                                 { "ms-input", "checkFileName(this,bName)" },
@@ -129,7 +129,7 @@
                         </div>
                         <div class="form-group">
                             <label>JavaScript</label>
-                            @Html.TextAreaFor(m => m.BScript, new Dictionary<string, object>() { 
+                            @Html.TextAreaFor(m => m.BScript, new Dictionary<string, object>() {
                                 { "class", "form-control" },
                                 { "placeholder", "自定义JavaScript" },
                                 { "ms-change", "saveTolocalStorage('bScript',bScript)" },
@@ -138,7 +138,7 @@
                         </div>
                         <div class="form-group">
                             <label>CSS</label>
-                            @Html.TextAreaFor(m => m.BCSS, new Dictionary<string, object>() { 
+                            @Html.TextAreaFor(m => m.BCSS, new Dictionary<string, object>() {
                                 { "class", "form-control" },
                                 { "placeholder", "自定义CSS" },
                                 { "ms-change", "saveTolocalStorage('bCSS',bCSS)" },
@@ -147,15 +147,17 @@
                         </div>
                         <div class="checkbox said-checkbox">
                             <label>
-                                @Html.CheckBoxFor(m => m.BReprint, new Dictionary<string, object>() { 
+                                @Html.CheckBoxFor(m => m.BReprint, new Dictionary<string, object>() {
                                 { "ms-duplex-checked", "bReprint" },
                                 { "ms-change", "saveTolocalStorage('bReprint',bReprint)" }
-                            })是否转载</label>
+                            })是否转载
+                            </label>
                             <label>
-                                @Html.CheckBoxFor(m => m.BIsTop, new Dictionary<string, object>() { 
+                                @Html.CheckBoxFor(m => m.BIsTop, new Dictionary<string, object>() {
                                 { "ms-duplex-checked", "bIsTop" },
                                 { "ms-change", "saveTolocalStorage('bIsTop',bIsTop)" }
-                            })是否置顶</label>
+                            })是否置顶
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -197,30 +199,32 @@
 @section FootJs{
 
     <script id="tplOpen" type="text/template">
-<!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>预览Blog - 你听，你静静听</title>
-        <link href="/Content/Style/Global.css" rel="stylesheet" />
-        <link href="/Content/Style/music.css" rel="stylesheet" />
-        <link href="/Content/Back/JavaScript/syntaxhighlighter/styles/shCoreDefault.css" rel="stylesheet" />
-    <replaceScript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shCore.js"></replaceScript>
-    <replaceScript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushJScript.js"></replaceScript>
-    <replaceScript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCSharp.js"></replaceScript>
-    <replaceScript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCss.js"></replaceScript>
-    <replaceScript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushSql.js"></replaceScript>
-    </head>
+        <!DOCTYPE HTML>
+        <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <title>预览Blog - 你听，你静静听</title>
+            <link href="/Content/Style/Global.css" rel="stylesheet" />
+            <link href="/Content/Style/music.css" rel="stylesheet" />
+            <link href="/Content/Back/JavaScript/syntaxhighlighter/styles/shCoreDefault.css" rel="stylesheet" />
+            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shCore.js"></replacescript>
+            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushJScript.js"></replacescript>
+            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCSharp.js"></replacescript>
+            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCss.js"></replacescript>
+            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushSql.js"></replacescript>
+        </head>
         <body>
             <section id="said-page">
                 <header id="header">
                     <div id="nav-logo">
                         <a class="logo" title="听说" href="javascript:;">
-                            <img src="/Content/Images/Said.png" alt="said logo" /></a>
+                            <img src="/Content/Images/Said.png" alt="said logo" />
+                        </a>
                     </div>
                     <nav id="nav">
                         <ul id="nav-flip">
-                            <li><a href="javascript:;">首页</a>
+                            <li>
+                                <a href="javascript:;">首页</a>
                             </li>
                             <li><a href="javascript:;">blog</a></li>
                             <li><a href="javascript:;" class="nav-active">听说</a></li>
@@ -245,7 +249,8 @@
                     <section class="music-song">
                         <dl class="music-song-content">
                             <dt class="music-song-img">
-                                <img src="/Content/Images/testImg-Paramore.Ps.jpg" alt="paramore" /></dt>
+                                <img src="/Content/Images/testImg-Paramore.Ps.jpg" alt="paramore" />
+                            </dt>
                             <dd class="music-song-info">
                                 <ul>
                                     <li>
@@ -262,7 +267,8 @@
                                 <ul class="music-play-status">
                                     <li class="music-play-detail">
                                         <div class="music-time music-play-sound"><span>01:03</span><span>&nbsp;/&nbsp;03:42</span></div>
-                                        <a class="music-like music-play-sound" href="javascript:;" title="我喜欢~么么哒">like</a><a class="music-volume music-play-sound" href="javascript:;" title="音量" id="said-play-volume"></a></li>
+                                        <a class="music-like music-play-sound" href="javascript:;" title="我喜欢~么么哒">like</a><a class="music-volume music-play-sound" href="javascript:;" title="音量" id="said-play-volume"></a>
+                                    </li>
                                     <li>
                                         <div class="music-play-progress">
                                             <div class="play-progress" id="said-progress" style="width: 28%;"></div>
@@ -294,13 +300,17 @@
                                     <form action="/" class="comment-form">
                                         <ul class="blog-comment-info" style="">
                                             <li>
-                                                <input placeholder="名称" /></li>
+                                                <input placeholder="名称" />
+                                            </li>
                                             <li>
-                                                <input type="email" placeholder="Email" /></li>
+                                                <input type="email" placeholder="Email" />
+                                            </li>
                                             <li>
-                                                <input type="url" placeholder="您的站点" /></li>
+                                                <input type="url" placeholder="您的站点" />
+                                            </li>
                                             <li>
-                                                <input type="checkbox" id="comment-cookie" /><label for="comment-cookie">下次自动填写</label></li>
+                                                <input type="checkbox" id="comment-cookie" /><label for="comment-cookie">下次自动填写</label>
+                                            </li>
                                         </ul>
                                         <div class="comment-bar">
                                             <textarea name="comment" class="cmt-context" id="comment-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea><div class="comment-more-bar">
@@ -340,79 +350,80 @@
                     <div class="footer-copyright">©2015&nbsp;linkFly&nbsp;-&nbsp;Said:听说&nbsp;&nbsp;京ICP备13014059号</div>
                 </section>
             </footer>
-            <replaceScript type="text/javascript">     
-                document.title = "预览Said -" + window.said.title;        
-                document.getElementById("title").innerHTML = window.said.title;        
-                document.getElementById("context").innerHTML = window.said.context;    
-                SyntaxHighlighter.defaults["toolbar"] = false;        
-                SyntaxHighlighter.defaults["collapse"] = false;       
+            <replacescript type="text/javascript">
+                document.title = "预览Said -" + window.said.title;
+                document.getElementById("title").innerHTML = window.said.title;
+                document.getElementById("context").innerHTML = window.said.context;
+                SyntaxHighlighter.defaults["toolbar"] = false;
+                SyntaxHighlighter.defaults["collapse"] = false;
                 SyntaxHighlighter.all();
-            </replaceScript>
+            </replacescript>
         </body>
     </html>
-    </script>
+</script>
 
 
-    <script type="text/javascript">
-        require.config({
-            baseUrl: '/Content/Back/JavaScript',
-            paths: {
-                'saidAdd': 'said/addSaid',
-                'avalon': 'avalon/avalon.mobile.min',
-                'groupInput': 'avalon/plug/groupInput',
-                'upload': 'avalon/plug/upload',
-                'showMsg': 'so/plug/showMsg',
-                'markdown': 'showdown/showdown',
-                'showDownThemeGithub': 'showdown/extensions/github'
-            },
-            packages: [
-            {
-                name: 'so',
-                location: 'so',
-                main: 'so'
-            },
-            {
-                name: 'said',
-                location: 'said',
-                main: 'said'
-            }],
-            shim: {
-                avalon: { exports: "avalon" },
-                'showDownThemeGithub': ['markdown']//依赖showdown
-            }
-        });
-
-        var Action = {
-            song: '/Source/SaidSong',
-            imagesSourceCenter: '@Url.Action("UploadBlogImg", "Source")',
-            imgLocation: '@Url.Content("~/Source/Blog/Images/")',
-            music: '@Url.Action("UploadMusic", "Source")',
-            existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
-            existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
-            form: '@Url.Action("AddBlog", "Blog")'
+<script type="text/javascript">
+    require.config({
+        baseUrl: '/Content/Back/JavaScript',
+        paths: {
+            'saidAdd': 'said/addSaid',
+            'avalon': 'avalon/avalon.mobile.min',
+            'groupInput': 'avalon/plug/groupInput',
+            'upload': 'avalon/plug/upload',
+            'showMsg': 'so/plug/showMsg',
+            'source': 'so/plug/source',
+            'markdown': 'showdown/showdown',
+            'showDownThemeGithub': 'showdown/extensions/github'
         },
-        DataCenter = {
-            tags: [],
-            classifyDatas: [],
-            classifyList: [],
-            files: []
-        };
+        packages: [
+        {
+            name: 'so',
+            location: 'so',
+            main: 'so'
+        },
+        {
+            name: 'said',
+            location: 'said',
+            main: 'said'
+        }],
+        shim: {
+            avalon: { exports: "avalon" },
+            'showDownThemeGithub': ['markdown']//依赖showdown
+        }
+    });
 
-        @if (ClassifysList != null)
+    var Action = {
+        song: '/Source/SaidSong',
+        imagesSourceCenter: '@Url.Action("UploadBlogImg", "Source")',
+        imgLocation: '@Url.Content("~/Source/Blog/Images/")',
+        music: '@Url.Action("UploadMusic", "Source")',
+        existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
+        existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
+        form: '@Url.Action("AddBlog", "Blog")'
+    },
+    DataCenter = {
+        tags: [],
+        classifyDatas: [],
+        classifyList: [],
+        files: []
+    };
+
+    @if (ClassifysList != null)
         {
             foreach (var item in ClassifysList)
             {
                 Write(new HtmlString(string.Format("DataCenter.classifyDatas.push(['{0}','{1}']);", item.CName, item.ClassifyId)));
             }
         }
-        @if (TagList != null)
+    @if (TagList != null)
         {
             foreach (var item in TagList)
             {
                 Write(new HtmlString(string.Format("DataCenter.tags.push('{0}');", item.TagName)));
             }
         }
-        @if (BlogFiles != null)
+    @if (BlogFiles != null)
         {
             foreach (var item in BlogFiles)
             {
@@ -421,245 +432,245 @@
         }
 
 
-        if (DataCenter.classifyDatas.length) {
-            DataCenter.classifyList = DataCenter.classifyDatas.map(function (item) {
-                return item[0];
-            });
-        }
-        if (DataCenter.files.length)
-            DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
-        console.log(DataCenter.files);
-        require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'markdown', 'showDownThemeGithub', 'groupInput', 'upload'], function ($, so, Search, avalon, showMsg, showdown) {
-            $(function () {
-                var previewTemplent = document.getElementById('tplOpen').innerHTML.replace(/replaceScript/g, 'script'),
-                    //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
-                    showdown = window.Showdown,
-                    converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
-                    preview = function () {
-                        var previewWindow,//上一次打开的window
-                                isSupport = true,//是否支持弹窗
-                                supportError = function () {
-                                    if (!isSupport)
-                                        dialog(TemplatePromptText.supportNewWindow[0], TemplatePromptText.supportNewWindow[1]);
-                                    return isSupport;
-                                };
-                        return function (title, context) {
-                            if (!supportError()) return false;
-                            if (!previewWindow || previewWindow.closed)
-                                previewWindow = window.open();
-                            if (!previewWindow) {//没有权限弹窗
-                                isSupport = false;
-                                return supportError();
-                            }
-                            /*
-                            document.write只能输出到body，但HTML标签可以输出，但是输出没用，样式js都不解析执行..
-                            所以访问window给它设置值来执行
-                            */
-
-                            previewWindow.document.open();
-                            previewWindow.said = {
-                                title: title.replace(/</g, '').replace(/>/g, ''),//标题
-                                context: context//正文
+    if (DataCenter.classifyDatas.length) {
+        DataCenter.classifyList = DataCenter.classifyDatas.map(function (item) {
+            return item[0];
+        });
+    }
+    if (DataCenter.files.length)
+        DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
+    console.log(DataCenter.files);
+    require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'source', 'markdown', 'showDownThemeGithub', 'groupInput', 'upload'], function ($, so, Search, avalon, showMsg, source, showdown) {
+        $(function () {
+            var previewTemplent = document.getElementById('tplOpen').innerHTML.replace(/replaceScript/g, 'script'),
+                //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
+                showdown = window.Showdown,
+                converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
+                preview = function () {
+                    var previewWindow,//上一次打开的window
+                            isSupport = true,//是否支持弹窗
+                            supportError = function () {
+                                if (!isSupport)
+                                    dialog(TemplatePromptText.supportNewWindow[0], TemplatePromptText.supportNewWindow[1]);
+                                return isSupport;
                             };
-                            previewWindow.document.write(previewTemplent);
-                            previewWindow.document.close();
+                    return function (title, context) {
+                        if (!supportError()) return false;
+                        if (!previewWindow || previewWindow.closed)
+                            previewWindow = window.open();
+                        if (!previewWindow) {//没有权限弹窗
+                            isSupport = false;
+                            return supportError();
+                        }
+                        /*
+                        document.write只能输出到body，但HTML标签可以输出，但是输出没用，样式js都不解析执行..
+                        所以访问window给它设置值来执行
+                        */
+
+                        previewWindow.document.open();
+                        previewWindow.said = {
+                            title: title.replace(/</g, '').replace(/>/g, ''),//标题
+                            context: context//正文
+                        };
+                        previewWindow.document.write(previewTemplent);
+                        previewWindow.document.close();
+                        return true;
+                    }
+                }(),
+                //利用avalon封装bootstrap modal组件
+                dialog = function (model) {
+                    var vm = avalon.define('modal', function (vm) {
+                        vm.title = vm.body = '';
+                    });
+                    return function (title, context) {
+                        if (context == null && title != null)
+                            vm.body = title;
+                        else {
+                            vm.title = title || '';
+                            vm.body = context || '';
+                        }
+                        return model.modal('show');
+                    };
+                }($('#blog-modal')),
+                database = new so.DataBase('back.addBlog'),
+                checkEmptyValue = function (key, title, summary) {
+                    if (!vmBlog[key]) {
+                        dialog(title, summary);
+                        return false;
+                    }
+                    return true;
+                },
+                errorHash = {
+                    'bTitle': TemplatePromptText.errorBTitle,
+                    'bContext': TemplatePromptText.errorBContext,
+                    'bImg': TemplatePromptText.errorImg,
+                    'bSummary': TemplatePromptText.errorBSummary,
+                    'classify': TemplatePromptText.errorClasify
+                },
+                encode = function (value) {
+                    return encodeURIComponent(value);
+                };
+
+
+            var vmBlog = avalon.define({
+                $id: 'blog',
+                bTitle: database.val('bTitle'),
+                bTag: database.val('bTag'),
+                bSummary: database.val('bSummary'),
+                bReprint: database.val('bReprint'),
+                bScript: database.val('bScript'),
+                bIsTop: database.val('bIsTop'),
+                bCSS: database.val('bCSS'),
+                bContext: database.val('bContext'),
+                bImg: database.val('bImg'),
+                bName: database.val('bName'),
+                classify: database.val('classify'),
+                checkFile: false,
+                submitState: false,
+                $skipArray: ['bTag'],
+                //保存到本地数据库
+                saveTolocalStorage: function (name, value) {
+                    database.val(name, value);
+                },
+                //预览
+                preview: function (markdownCode) {
+                    if (!markdownCode.length) {
+                        showMsg(TemplatePromptText.previewInputBContext, showMsg.WARNING, 2000);
+                        return;
+                    }
+                    preview(so.format(TemplatePromptText.previewTitle, vmBlog.title || '没有标题'), converter.makeHtml(markdownCode));
+                },
+                checkFileName: function () {
+                    //考虑性能，DOM缓存
+                    var $cache, key = 'bName';
+                    return function (elem, value) {
+                        !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
+                        vmBlog.checkFile = !!(value && ~DataCenter.files.indexOf(value.toLowerCase()));
+                        $cache.tooltip(vmBlog.checkFile ? 'show' : 'hide');
+                        vmBlog.checkFile ?
+                            database.remove(key) : database.val(key, value);
+                    }
+                }(),
+                check: function () {
+                    vmBlog.submitState = true;
+                    var temp;
+                    return ['bTitle', 'bContext', 'classify', 'bImg', 'bSummary'].every(function (key) {
+                        temp = errorHash[key];
+                        return checkEmptyValue(key, temp[0], temp[1]);
+                    });
+                },
+                save: function () {
+                    //锁定按钮状态
+                    if (vmBlog.submitState) return;
+                    if (!(vmBlog.submitState = vmBlog.check())) return;
+
+                    //针对分类id特殊处理下
+                    var classifyId = DataCenter.classifyDatas.filter(function (item) {
+                        return item[0].toLowerCase() === vmBlog.classify.toLowerCase();
+                    });
+                    classifyId = classifyId.length ? classifyId[0][1] : '';
+                    said.ajax(Action.form, {
+                        'BTitle': encode(vmBlog.bTitle),
+                        'BTag': encode(vmBlog.bTag.join(',')),
+                        'BSummary': encode(vmBlog.bSummary),
+                        'BHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
+                        'BReprint': encode(vmBlog.bReprint),
+                        'BScript': encode(vmBlog.bScript),
+                        'BIsTop': encode(vmBlog.bIsTop),
+                        'BCSS': encode(vmBlog.bCSS),
+                        'BContext': encode(vmBlog.bContext),
+                        'BImg': encode(vmBlog.bImg),
+                        'BName': encode(vmBlog.bName),
+                        'ClassifyId': encode(classifyId)
+                    }).done(function (data) {
+                        if (!data.code) {//done
+                            showMsg(so.format(TemplatePromptText.addBlogDone, vmBlog.bTitle), showMsg.OK, true);
+                        } else {
+                            showMsg(so.format(TemplatePromptText.addBlogError, data.data.msg.split(',').map(function (msg) {
+                                return '<p>' + msg + '</p>';
+                            }).join(''), data.code), showMsg.ERROR, true);
+                        }
+
+                    }).fail(function (data) {
+                        showMsg(so.format(TemplatePromptText.addBlogFail, data.status, data.statusText), showMsg.ERROR, true);
+                    }).always(function () {
+                        vmBlog.submitState = false;
+                    });
+                }
+            });
+
+            //vmBlog.$watch('$all', function () {
+            //    console.log(arguments);
+            //});
+
+            //tag
+            avalon.define({
+                $id: 'tagController',
+                //tags: DataCenter.tags,
+                groupInput: {
+                    datas: DataCenter.tags,
+                    multiple: true,
+                    zIndex: 5,
+                    callback: function (values) {
+                        //console.log(values);
+                        vmBlog.bTag = values;
+                        database.val('bTag', values);
+                    },
+                    values: vmBlog.bTag
+                }
+            });
+            //classify
+            avalon.define({
+                $id: 'classifyController',
+                groupInput: {
+                    datas: DataCenter.classifyList,
+                    zIndex: 4,
+                    custom: false,
+                    callback: function (value) {
+                        database.val('classify', value);
+                    }
+                    //classContaier: 'queryInputBar'
+                }
+            });
+
+            //upload
+            var vmUpload = avalon.define({
+                $id: 'uploadController',
+                sourcePath: Action.imgLocation,
+                removeImg: function (id) {
+                    avalon.vmodels[id].visible = true;
+                    vmBlog.bImg = '';
+                    database.remove('bImg');
+                },
+                upload: {
+                    classFile: 'hidden-file',
+                    //name: 'testFile',
+                    url: Action.imagesSourceCenter,
+                    visible: !vmBlog.bImg,
+                    done: function (vm, data) {
+                        if (data.code) {
+                            showMsg(so.format(TemplatePromptText.uploadImgError, data.msg), showMsg.ERROR, true);
                             return true;
                         }
-                    }(),
-                    //利用avalon封装bootstrap modal组件
-                    dialog = function (model) {
-                        var vm = avalon.define('modal', function (vm) {
-                            vm.title = vm.body = '';
-                        });
-                        return function (title, context) {
-                            if (context == null && title != null)
-                                vm.body = title;
-                            else {
-                                vm.title = title || '';
-                                vm.body = context || '';
-                            }
-                            return model.modal('show');
-                        };
-                    }($('#blog-modal')),
-                    database = new so.DataBase('back.addBlog'),
-                    checkEmptyValue = function (key, title, summary) {
-                        if (!vmBlog[key]) {
-                            dialog(title, summary);
-                            return false;
-                        }
-                        return true;
+                        database.val('bImg', vmBlog.bImg = data.name);
                     },
-                    errorHash = {
-                        'bTitle': TemplatePromptText.errorBTitle,
-                        'bContext': TemplatePromptText.errorBContext,
-                        'bImg': TemplatePromptText.errorImg,
-                        'bSummary': TemplatePromptText.errorBSummary,
-                        'classify': TemplatePromptText.errorClasify
-                    },
-                    encode = function (value) {
-                        return encodeURIComponent(value);
-                    };
-
-
-                var vmBlog = avalon.define({
-                    $id: 'blog',
-                    bTitle: database.val('bTitle'),
-                    bTag: database.val('bTag'),
-                    bSummary: database.val('bSummary'),
-                    bReprint: database.val('bReprint'),
-                    bScript: database.val('bScript'),
-                    bIsTop: database.val('bIsTop'),
-                    bCSS: database.val('bCSS'),
-                    bContext: database.val('bContext'),
-                    bImg: database.val('bImg'),
-                    bName: database.val('bName'),
-                    classify: database.val('classify'),
-                    checkFile: false,
-                    submitState: false,
-                    $skipArray: ['bTag'],
-                    //保存到本地数据库
-                    saveTolocalStorage: function (name, value) {
-                        database.val(name, value);
-                    },
-                    //预览
-                    preview: function (markdownCode) {
-                        if (!markdownCode.length) {
-                            showMsg(TemplatePromptText.previewInputBContext, showMsg.WARNING, 2000);
-                            return;
-                        }
-                        preview(so.format(TemplatePromptText.previewTitle, vmBlog.title || '没有标题'), converter.makeHtml(markdownCode));
-                    },
-                    checkFileName: function () {
-                        //考虑性能，DOM缓存
-                        var $cache, key = 'bName';
-                        return function (elem, value) {
-                            !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
-                            vmBlog.checkFile = !!(value && ~DataCenter.files.indexOf(value.toLowerCase()));
-                            $cache.tooltip(vmBlog.checkFile ? 'show' : 'hide');
-                            vmBlog.checkFile ?
-                                database.remove(key) : database.val(key, value);
-                        }
-                    }(),
-                    check: function () {
-                        vmBlog.submitState = true;
-                        var temp;
-                        return ['bTitle', 'bContext', 'classify', 'bImg', 'bSummary'].every(function (key) {
-                            temp = errorHash[key];
-                            return checkEmptyValue(key, temp[0], temp[1]);
-                        });
-                    },
-                    save: function () {
-                        //锁定按钮状态
-                        if (vmBlog.submitState) return;
-                        if (!(vmBlog.submitState = vmBlog.check())) return;
-
-                        //针对分类id特殊处理下
-                        var classifyId = DataCenter.classifyDatas.filter(function (item) {
-                            return item[0].toLowerCase() === vmBlog.classify.toLowerCase();
-                        });
-                        classifyId = classifyId.length ? classifyId[0][1] : '';
-                        said.ajax(Action.form, {
-                            'BTitle': encode(vmBlog.bTitle),
-                            'BTag': encode(vmBlog.bTag.join(',')),
-                            'BSummary': encode(vmBlog.bSummary),
-                            'BHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
-                            'BReprint': encode(vmBlog.bReprint),
-                            'BScript': encode(vmBlog.bScript),
-                            'BIsTop': encode(vmBlog.bIsTop),
-                            'BCSS': encode(vmBlog.bCSS),
-                            'BContext': encode(vmBlog.bContext),
-                            'BImg': encode(vmBlog.bImg),
-                            'BName': encode(vmBlog.bName),
-                            'ClassifyId': encode(classifyId)
-                        }).done(function (data) {
-                            if (!data.code) {//done
-                                showMsg(so.format(TemplatePromptText.addBlogDone, vmBlog.bTitle), showMsg.OK, true);
-                            } else {
-                                showMsg(so.format(TemplatePromptText.addBlogError, data.data.msg.split(',').map(function (msg) {
-                                    return '<p>' + msg + '</p>';
-                                }).join(''), data.code), showMsg.ERROR, true);
-                            }
-
-                        }).fail(function (data) {
-                            showMsg(so.format(TemplatePromptText.addBlogFail, data.status, data.statusText), showMsg.ERROR, true);
-                        }).always(function () {
-                            vmBlog.submitState = false;
-                        });
+                    fail: function (vm, data) {
+                        showMsg(so.format(TemplatePromptText.uploadImgFail, data.msg), showMsg.ERROR, true);
                     }
-                });
-
-                //vmBlog.$watch('$all', function () {
-                //    console.log(arguments);
-                //});
-
-                //tag
-                avalon.define({
-                    $id: 'tagController',
-                    //tags: DataCenter.tags,
-                    groupInput: {
-                        datas: DataCenter.tags,
-                        multiple: true,
-                        zIndex: 5,
-                        callback: function (values) {
-                            //console.log(values);
-                            vmBlog.bTag = values;
-                            database.val('bTag', values);
-                        },
-                        values: vmBlog.bTag
-                    }
-                });
-                //classify
-                avalon.define({
-                    $id: 'classifyController',
-                    groupInput: {
-                        datas: DataCenter.classifyList,
-                        zIndex: 4,
-                        custom: false,
-                        callback: function (value) {
-                            database.val('classify', value);
-                        }
-                        //classContaier: 'queryInputBar'
-                    }
-                });
-
-                //upload
-                var vmUpload = avalon.define({
-                    $id: 'uploadController',
-                    sourcePath: Action.imgLocation,
-                    removeImg: function (id) {
-                        avalon.vmodels[id].visible = true;
-                        vmBlog.bImg = '';
-                        database.remove('bImg');
-                    },
-                    upload: {
-                        classFile: 'hidden-file',
-                        //name: 'testFile',
-                        url: Action.imagesSourceCenter,
-                        visible: !vmBlog.bImg,
-                        done: function (vm, data) {
-                            if (data.code) {
-                                showMsg(so.format(TemplatePromptText.uploadImgError, data.msg), showMsg.ERROR, true);
-                                return true;
-                            }
-                            database.val('bImg', vmBlog.bImg = data.name);
-                        },
-                        fail: function (vm, data) {
-                            showMsg(so.format(TemplatePromptText.uploadImgFail, data.msg), showMsg.ERROR, true);
-                        }
-                    }
-                });
-
-                //console.log(vmUpload);
-
-
-
-
-                //var vmBlog = avalon.define('blog', function (vm) {
-                //    vm.BTitle = '';
-                //});
-                avalon.scan();
-                //console.dir(avalon.vmodels);
+                }
             });
+
+            //console.log(vmUpload);
+
+
+
+
+            //var vmBlog = avalon.define('blog', function (vm) {
+            //    vm.BTitle = '';
+            //});
+            avalon.scan();
+            //console.dir(avalon.vmodels);
         });
-    </script>
+    });
+</script>
 }

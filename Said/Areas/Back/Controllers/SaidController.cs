@@ -21,13 +21,6 @@ namespace Said.Areas.Back.Controllers
 
         #region Pages
 
-        public ActionResult SaidCenter()
-        {
-
-            return View();
-        }
-
-
         [HttpGet]
         public ActionResult AddSaid()
         {
