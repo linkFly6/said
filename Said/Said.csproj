@@ -128,6 +128,7 @@
     <Compile Include="Areas\Back\Controllers\HomeController.cs" />
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
+    <Compile Include="Common\ConfigInfo.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -187,6 +188,7 @@
     <Content Include="Content\Back\JavaScript\avalon\plug\template\imgInput.html" />
     <Content Include="Content\Back\JavaScript\avalon\plug\template\sourceImages.html" />
     <Content Include="Content\Back\JavaScript\avalon\plug\upload.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\uploadBox.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\template\popup.html" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
@@ -1481,7 +1483,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
-    <Folder Include="Common\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />

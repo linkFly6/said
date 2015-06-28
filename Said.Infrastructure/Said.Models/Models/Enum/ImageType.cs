@@ -22,22 +22,26 @@ namespace Said.Models
         /// <summary>
         /// Said图
         /// </summary>
-        Said = 2,
+        Music = 2,
+        /// <summary>
+        /// Music图片
+        /// </summary>
+        Said = 3,
         /// <summary>
         /// Icon
         /// </summary>
-        Icon = 3,
+        Icon = 4,
         /// <summary>
         /// 页面引用图
         /// </summary>
-        Page = 4,
+        Page = 5,
         /// <summary>
         /// 实验室图
         /// </summary>
-        Lab = 5,
+        Lab = 6,
         /// <summary>
         /// 其他图
         /// </summary>
-        Other = 6
+        Other = 7
     }
 }

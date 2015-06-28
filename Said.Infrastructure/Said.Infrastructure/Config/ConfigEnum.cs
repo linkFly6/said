@@ -34,11 +34,15 @@ namespace Said.Config
         /// </summary>
         public const string MusicFilter = "music.filter";
 
-
         /// <summary>
-        /// 默认图片上传路径
+        /// 默认音乐资源上传路径
         /// </summary>
         public const string MusicPath = "music";
+
+        /// <summary>
+        /// 默认音乐图片上传路径
+        /// </summary>
+        public const string MusicImage = "music.images";
 
         #endregion
 

@@ -28,10 +28,11 @@
             className: '',
             zIndex: 4,
             multiple: true,//多选模式
+
             // ============= url配置
             loadUrl: '/',//加载资源的路径
             deleteUrl: '/',//删除资源的url，可选项目
-            uploadUrl: '/',//上传的url
+            uploadUrl: '',//上传的url，没有指定则没有上传功能
             path: '/',//资源路径
 
             // ============= 上传项
@@ -66,9 +67,9 @@
                 </div>\
             </div>\
             <div class="source-footer">\
-                <div class="source-upload-box">\
+                <div class="source-upload-box" style="UPLOAD">\
                     <div class="icons-upload-box">\
-                        <div style="z-index: 3; display: block;" class="so-upload-mask">\
+                        <div style="z-index: 3;" class="so-upload-mask">\
                             <span class="so-upload-text">上传</span>\
                             <div role="progressbar" class="so-upload-progress" style="width: 0"></div>\
                             <input type="file" class="hidden-file" style="display: block;" />\
@@ -82,7 +83,7 @@
             </div>\
         </div>',
         templateItem = '<div class="source-thum" data-id="${id}">\
-                <div class="source-thum-con" title="引用在文章《世界很大，风住过这里》">\
+                <div class="source-thum-con">\
                     <img src="${loading}" alt="100%x180" data-src="${path}${img}" data-holder-rendered="true" />\
                 </div>\
                 <div class="source-img-info"><span class="source-img-name">${name}</span><a href="javascript:;" data-id="${id}" data-name="${name}" class="fa fa-times source-delete" title="删除"></a></div>\
@@ -103,6 +104,7 @@
             load: options.imgLoading,
             error: options.imgFail
         };
+        template = template.replace('UPLOAD', options.uploadUrl ? '' : 'display:none')
         template = so.format(template, options);
         //DOM
         $elem = self.$elem = $(template);
@@ -126,7 +128,7 @@
             ._initEvent($body);
 
 
-        this._fetch({ limit: this.options.limit, offset: offset }, function (data) {
+        this._fetch({ limit: this.options.limit, offset: offset, imgType: this.options.type }, function (data) {
             self._setCount(this.total = data.total);
             //this.$sum.html(data.total);
             if (data.total === 0) {//没有数据
@@ -220,7 +222,7 @@
                 if (scrollTop >= scrollHeight - windowHeight) {
                     //加载数据
                     isLoad = true;
-                    self._fetch({ limit: self.options.limit, offset: (self.options.offset += self.options.limit) }).always(function (data) {
+                    self._fetch({ limit: self.options.limit, offset: (self.options.offset += self.options.limit), imgType: self.options.type }).always(function (data) {
                         if (data && data.total && self.datas.length >= data.total) {//所有数据全部加载完成
                             //isLoad = true;
                             $table.off('scroll');
@@ -239,6 +241,7 @@
     }
 
     Source.prototype._initUpload = function ($elem, url) {
+        if (!this.options.uploadUrl) return this;
         var self = this,
             $elem = self.$elem.find('.so-upload-mask'),//蒙版
             $text = $elem.find('.so-upload-text'),//文本
@@ -275,7 +278,6 @@
 
     Source.prototype._initDialog = function ($doc, $elem, callback, cancel) {
         var self = this,
-            datas = self.datas,
             $box;
         self.dialog = dialog($elem[0], {
             className: 'source-dialog',
@@ -286,17 +288,12 @@
         $box = $(self.dialog.elem);
 
         $box.find('.btn-success').on('click.source', function () {
-            if (datas.length) {
-                if (self.hidecallback.apply($elem[0], datas) !== false)//返回false则不关闭
-                    self.hide();
-            } else {
+            if (callback.apply($elem[0], self._get()) !== false)//返回false则不关闭
                 self.hide();
-            }
-
         });
         //TODO 这个取消怎么破？？点击蒙板dialog是不会触发取消的
         $box.find('.btn-default').on('click.source', function () {
-            cancel.apply($elem[0], datas);
+            cancel && cancel.call($elem[0]);
             self.hide();
         });
         return this;
@@ -334,7 +331,6 @@
         return this;
     };
 
-
     Source.prototype._removeData = function (id) {
         var index;
         if (!id || !~(index = this.ids.indexOf(id))) return this;
@@ -344,6 +340,13 @@
         return this;
     };
 
+    //获取当前已经选中的对象数据
+    Source.prototype._get = function (ids) {
+        ids = ids ? [ids] : this.ids;
+        return this.datas.filter(function (item) {
+            return ~ids.indexOf(item.id);
+        })
+    };
 
     //上传的图片插入到DOM
     Source.prototype._insert = function (data) {
@@ -351,6 +354,7 @@
         data.path = this.options.path;
         this._setCount(++this.total);
         data.loading = this.options.imgLoading;
+        data.img = data.name;
         var $elem = $(so.format(templateItem, data));
         this._loadImg($elem.find('img'));
         this.$body.prepend($elem);
@@ -421,20 +425,20 @@
 
     Source.DEFAULTS = config;
     $.fn.source = function (options) {
-        //传递的dom将会被吸附到上面?????因为这里的this(jquery/dom)完全用不到啊..
-        var $this = $(this);
-        var data = $this.data('source');
-        if (!data) {
-            $this.data('source', (data = new Source(this, options)));
-            $this.on('source.show', function () {
-                data.show();
-            }).on('source.hide', function () {
-                data.hide();
-            });
-        }
-        return $this;
+        //var $this = $(this);
+        //var data = $this.data('source');
+        //if (!data) {
+        //    $this.data('source', (data = new Source(this, options)));
+        //    $this.on('source.show', function () {
+        //        data.show();
+        //    }).on('source.hide', function () {
+        //        data.hide();
+        //    });
+        //}
+        //return $this;
+        return new Source(this, options);
     };
-    $.source = function (elem, options) {
-        return $(elem).source(options);
+    $.source = function (options) {
+        return $(document.body).source(options);
     };
 });

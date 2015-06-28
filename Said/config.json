@@ -5,8 +5,10 @@
 
 	
 	"music.maxSize":"6291456",
-	"music.filter":"mp3,ogg",
-	"music":"/Source/Said/Musics/",
+    "music.filter": "mp3,ogg",
+    "music.images":"/Source/Said/Musics/Images",
+    "music": "/Source/Said/Musics/",
+    
 
 		
 	"source.said.images":"/Source/Said/Images/",

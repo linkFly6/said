@@ -63,27 +63,27 @@
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
                             @Html.TextBoxFor(m => m.BTag, new Dictionary<string, object>() {
-                            { "class", "tag-input" },
-                            { "ms-change", "saveTolocalStorage('bTag',bTag)" },
-                            { "ms-widget", "groupInput" },
-                            { "placeholder", "标签，支持[tab]分隔" },
-                            { "autocomplete", "off" }
-            })
+                                { "class", "tag-input" },
+                                { "ms-change", "saveTolocalStorage('bTag',bTag)" },
+                                { "ms-widget", "groupInput" },
+                                { "placeholder", "标签，支持[tab]分隔" },
+                                { "autocomplete", "off" }
+                            })
                         </div>
                         <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
                             @Html.TextBoxFor(m => m.Classify.CName, new Dictionary<string, object>() {
-                            { "class", "classify-input" },
-                            { "ms-duplex", "classify" },
-                            { "placeholder", "分类名称" },
-                            { "autocomplete", "off" },
-                            { "ms-widget", "groupInput" }
-            })
+                                { "class", "classify-input" },
+                                { "ms-duplex", "classify" },
+                                { "placeholder", "分类名称" },
+                                { "autocomplete", "off" },
+                                { "ms-widget", "groupInput" }
+                            })
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-default relative-container" ms-controller="uploadController">
-                    <div ms-widget="upload,uploadImages"></div>
+                    <div ms-widget="upload,uploadImages" ms-elem="summaryMask"></div>
                     <div class="panel-heading">描述</div>
                     <div class="panel-body">
                         <div class="col-md-4">
@@ -372,6 +372,7 @@
             'groupInput': 'avalon/plug/groupInput',
             'upload': 'avalon/plug/upload',
             'showMsg': 'so/plug/showMsg',
+            'dialog': 'so/plug/dialog',
             'source': 'so/plug/source',
             'markdown': 'showdown/showdown',
             'showDownThemeGithub': 'showdown/extensions/github'
@@ -439,7 +440,7 @@
     }
     if (DataCenter.files.length)
         DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
-    console.log(DataCenter.files);
+    //console.log(DataCenter.files);
     require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'source', 'markdown', 'showDownThemeGithub', 'groupInput', 'upload'], function ($, so, Search, avalon, showMsg, source, showdown) {
         $(function () {
             var previewTemplent = document.getElementById('tplOpen').innerHTML.replace(/replaceScript/g, 'script'),

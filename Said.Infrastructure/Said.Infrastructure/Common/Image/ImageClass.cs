@@ -102,6 +102,23 @@ namespace Said.Helper
         }
         #endregion
 
+
+
+        /// <summary>
+        /// 裁剪图片
+        /// </summary>
+        /// <param name="image">图片</param>
+        /// <param name="ratio">比例（将取图片长宽最小值，按照比例裁剪）</param>
+        /// <param name="savePath">保存路径</param>
+        public static bool CutImg(Bitmap image, int ratio, string savePath)
+        {
+            if (image.Width > image.Height)
+            {
+
+            }
+            return true;
+        }
+
         #region 图片水印
         /// <summary>
         /// 图片水印处理方法

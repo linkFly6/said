@@ -100,6 +100,17 @@ namespace Said.Application
             return Context.GetPageDesc(page, m => m.IsDel == 0, m => m.Date);
         }
 
+        /// <summary>
+        /// 分页查询返回多条
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="keywords"></param>
+        /// <returns></returns>
+        public static IPagedList<Image> FindToList(Models.Data.Page page, ImageType type)
+        {
+            return Context.GetPageDesc(page, m => m.IsDel == 0 && m.Type == type, m => m.Date);
+        }
+
         #endregion
 
     }

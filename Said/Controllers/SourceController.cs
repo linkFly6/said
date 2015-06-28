@@ -13,74 +13,6 @@ namespace Said.Controllers
 {
     public class SourceController : Controller
     {
-        #region 配置
-
-        /// <summary>
-        /// 图片过滤
-        /// </summary>
-        readonly static Array IMGFILTERARRAY = ConfigTable.Get(ConfigEnum.ImgFilter).Split(',');
-        /// <summary>
-        /// 音乐文件过滤
-        /// </summary>
-        readonly static Array MUSICFILTERARRAY = ConfigTable.Get(ConfigEnum.MusicFilter).Split(',');
-
-        /// <summary>
-        /// Blog上传的图片路径
-        /// </summary>
-        readonly static string SourceBlogPath = ConfigTable.Get(ConfigEnum.SourceBlogImages);
-
-        /// <summary>
-        /// Said上传的图片路径
-        /// </summary>
-        readonly static string SourceSaidPath = ConfigTable.Get(ConfigEnum.SourceSaidImages);
-
-        /// <summary>
-        /// 音乐上传的路径
-        /// </summary>
-        readonly static string SourceMusicPath = ConfigTable.Get(ConfigEnum.MusicPath);
-
-        /// <summary>
-        /// Icon上传的路径
-        /// </summary>
-        readonly static string SourceIconsPath = ConfigTable.Get(ConfigEnum.MusicPath);
-
-        /// <summary>
-        /// 系统图片上传的路径
-        /// </summary>
-        readonly static string SourceSystemPath = ConfigTable.Get(ConfigEnum.SystemImages);
-
-        /// <summary>
-        /// 资源删除后存放的路径
-        /// </summary>
-        readonly static string SourceSystemDelete = ConfigTable.Get(ConfigEnum.SystemDelete);
-
-        /// <summary>
-        /// Blog允许的最大上传图片
-        /// </summary>
-        readonly int SizeBlogImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
-
-        /// <summary>
-        /// Said允许的最大图片
-        /// </summary>
-        readonly int SizeSaidImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
-
-        /// <summary>
-        /// Music允许的最大图片
-        /// </summary>
-        readonly int SizeMusic = int.Parse(ConfigTable.Get(ConfigEnum.MusicMaxSize));
-
-        /// <summary>
-        /// Icons允许的最大图片
-        /// </summary>
-        readonly int SizeIcons = int.Parse(ConfigTable.Get(ConfigEnum.SourceIconsMaxSize));
-
-        /// <summary>
-        /// 系统图片允许的最大上传大小
-        /// </summary>
-        readonly int SizeSystem = int.Parse(ConfigTable.Get(ConfigEnum.SystemImagesSize));
-
-        #endregion
-
 
 
         // GET: /Source/
@@ -124,7 +56,7 @@ namespace Said.Controllers
         public JsonResult UploadSaidImg()
         {
             //分析上传的文件信息，返回解析得到的结果
-            return UploadFile(Request.Files["saidFile"], IMGFILTERARRAY, SizeSaidImage, SourceSaidPath);
+            return UploadFile(Request.Files["saidFile"], ConfigInfo.ImageFileterArray, ConfigInfo.SizeSaidImage, ConfigInfo.SourceSaidPath);
 
         }
         /// <summary>
@@ -134,9 +66,9 @@ namespace Said.Controllers
         public JsonResult UploadMusic()
         {
             return UploadFile(Request.Files["saidFile"],
-                MUSICFILTERARRAY,
-                SizeMusic,
-                SourceMusicPath);
+                ConfigInfo.MusicFilterArray,
+                ConfigInfo.SizeMusic,
+                ConfigInfo.SourceMusicPath);
         }
 
         public ActionResult Index()

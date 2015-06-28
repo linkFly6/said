@@ -1,4 +1,5 @@
-﻿//using PagedList;
+﻿using PagedList;
+//using PagedList;
 using Said.Application;
 using Said.Common;
 using Said.Config;
@@ -15,77 +16,6 @@ namespace Said.Areas.Back.Controllers
 {
     public class SourceController : BaseController
     {
-        #region 配置
-
-        /// <summary>
-        /// 图片过滤
-        /// </summary>
-        readonly static Array IMGFILTERARRAY = ConfigTable.Get(ConfigEnum.ImgFilter).Split(',');
-        /// <summary>
-        /// 音乐文件过滤
-        /// </summary>
-        readonly static Array MUSICFILTERARRAY = ConfigTable.Get(ConfigEnum.MusicFilter).Split(',');
-
-        /// <summary>
-        /// Blog上传的图片路径
-        /// </summary>
-        readonly static string SourceBlogPath = ConfigTable.Get(ConfigEnum.SourceBlogImages);
-
-        /// <summary>
-        /// Said上传的图片路径
-        /// </summary>
-        readonly static string SourceSaidPath = ConfigTable.Get(ConfigEnum.SourceSaidImages);
-
-        /// <summary>
-        /// 音乐上传的路径
-        /// </summary>
-        readonly static string SourceMusicPath = ConfigTable.Get(ConfigEnum.MusicPath);
-
-        /// <summary>
-        /// Icon上传的路径
-        /// </summary>
-        readonly static string SourceIconsPath = ConfigTable.Get(ConfigEnum.MusicPath);
-
-        /// <summary>
-        /// 系统图片上传的路径
-        /// </summary>
-        readonly static string SourceSystemPath = ConfigTable.Get(ConfigEnum.SystemImages);
-
-        /// <summary>
-        /// 资源删除后存放的路径
-        /// </summary>
-        readonly static string SourceSystemDelete = ConfigTable.Get(ConfigEnum.SystemDelete);
-
-
-        /// <summary>
-        /// Blog允许的最大上传图片
-        /// </summary>
-        readonly int SizeBlogImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
-
-        /// <summary>
-        /// Said允许的最大图片
-        /// </summary>
-        readonly int SizeSaidImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
-
-        /// <summary>
-        /// Music允许的最大图片
-        /// </summary>
-        readonly int SizeMusic = int.Parse(ConfigTable.Get(ConfigEnum.MusicMaxSize));
-
-        /// <summary>
-        /// Icons允许的最大图片
-        /// </summary>
-        readonly int SizeIcons = int.Parse(ConfigTable.Get(ConfigEnum.SourceIconsMaxSize));
-
-        /// <summary>
-        /// 系统图片允许的最大上传大小
-        /// </summary>
-        readonly int SizeSystem = int.Parse(ConfigTable.Get(ConfigEnum.SystemImagesSize));
-
-        #endregion
-
-
-
         #region 上传一个文件
         // GET: /Source/
         /// <summary>
@@ -180,32 +110,6 @@ namespace Said.Areas.Back.Controllers
         #endregion
 
 
-        #region 上传Said图片
-        /// <summary>
-        /// 上传Said图片
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult UploadSaidImg()
-        {
-            //分析上传的文件信息，返回解析得到的结果
-            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, SizeSaidImage, SourceSaidPath);
-        }
-        #endregion
-
-
-        #region 上传Said图片
-        /// <summary>
-        /// 上传Said图片
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult UploadBlogImg()
-        {
-            //分析上传的文件信息，返回解析得到的结果
-            return UploadFile(Request.Files["uploadFile"], IMGFILTERARRAY, SizeBlogImage, SourceBlogPath);
-        }
-        #endregion
-
-
         #region 上传歌曲
         /// <summary>
         /// 上传歌曲
@@ -214,9 +118,9 @@ namespace Said.Areas.Back.Controllers
         public JsonResult UploadMusic()
         {
             return UploadFile(Request.Files["uploadFile"],
-                MUSICFILTERARRAY,
-                SizeMusic,
-                SourceMusicPath);
+                ConfigInfo.MusicFilterArray,
+                ConfigInfo.SizeMusic,
+                ConfigInfo.SourceMusicPath);
         }
         #endregion
 
@@ -230,22 +134,44 @@ namespace Said.Areas.Back.Controllers
         {
             return UploadFile(
                 Request.Files["uploadFile"],
-                IMGFILTERARRAY,
-                SizeSaidImage,
-                SourceIconsPath);
+                ConfigInfo.ImageFileterArray,
+                ConfigInfo.SizeSaidImage,
+                ConfigInfo.SourceIconsPath);
         }
         #endregion
 
 
         #region 获取图片
-        public JsonResult GetImagesList(int limit, int offset)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="offset"></param>
+        /// <param name="imgType">为空或为-1表示查询全部图片，否则查询指定类别的</param>
+        /// <returns></returns>
+        public JsonResult GetImagesList(int limit, int offset, string imgType = null)
         {
             var page = new Page
             {
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
-            var res = ImageApplication.FindToList(page);
+            IPagedList<Image> res = null;
+            if (string.IsNullOrEmpty(imgType) || imgType == "-1")
+            {
+                res = ImageApplication.FindToList(page);
+            }
+            else
+            {
+                ImageType imageType;
+                if (Enum.TryParse<ImageType>(imgType, out imageType))
+                {
+                    //转换成功，查询类别
+                    res = ImageApplication.FindToList(page, imageType);
+                }
+                else
+                    res = ImageApplication.FindToList(page);//转换失败，查询全部
+            }
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,
@@ -275,10 +201,10 @@ namespace Said.Areas.Back.Controllers
             switch (image.Type)
             {
                 case ImageType.Blog:
-                    path = SourceBlogPath;
+                    path = ConfigInfo.SourceBlogPath;
                     break;
                 case ImageType.Said:
-                    path = SourceSaidPath;
+                    path = ConfigInfo.SourceSaidPath;
                     break;
                 case ImageType.System:
                 case ImageType.Icon:
@@ -286,10 +212,10 @@ namespace Said.Areas.Back.Controllers
                 case ImageType.Lab:
                 case ImageType.Other:
                 default:
-                    path = SourceSystemPath;
+                    path = ConfigInfo.SourceSystemPath;
                     break;
             }
-            FileCommon.Move(path + image.IFileName, string.Format("{0}${1}-${2}-${3}", SourceSystemDelete, image.ImageId, image.IFileName, image.Type));
+            FileCommon.Move(path + image.IFileName, string.Format("{0}${1}-${2}-${3}", ConfigInfo.SourceSystemDelete, image.ImageId, image.IFileName, image.Type));
             //更新到数据库，改动了isDel
             ImageApplication.Update(image);
             return ResponseResult();
@@ -315,10 +241,10 @@ namespace Said.Areas.Back.Controllers
             switch (image.Type)
             {
                 case ImageType.Blog:
-                    path = SourceBlogPath;
+                    path = ConfigInfo.SourceBlogPath;
                     break;
                 case ImageType.Said:
-                    path = SourceSaidPath;
+                    path = ConfigInfo.SourceSaidPath;
                     break;
                 case ImageType.System:
                 case ImageType.Icon:
@@ -326,7 +252,7 @@ namespace Said.Areas.Back.Controllers
                 case ImageType.Lab:
                 case ImageType.Other:
                 default:
-                    path = SourceSystemPath;
+                    path = ConfigInfo.SourceSystemPath;
                     break;
             }
             FileCommon.Remove(path + image.IFileName);
@@ -339,20 +265,27 @@ namespace Said.Areas.Back.Controllers
         public JsonResult UploadSaidImage()
         {
             //分析上传的文件信息，返回解析得到的结果
-            return UploadImage(Request.Files["uploadFile"], IMGFILTERARRAY, SizeSaidImage, SourceSaidPath, ImageType.Said);
+            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, ConfigInfo.SizeSaidImage, ConfigInfo.SourceSaidPath, ImageType.Said);
         }
 
         public JsonResult UploadBlogImage()
         {
             //分析上传的文件信息，返回解析得到的结果
-            return UploadImage(Request.Files["uploadFile"], IMGFILTERARRAY, SizeBlogImage, SourceBlogPath, ImageType.Blog);
+            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, ConfigInfo.SizeBlogImage, ConfigInfo.SourceBlogPath, ImageType.Blog);
         }
 
         public JsonResult UploadSystemImage()
         {
             //分析上传的文件信息，返回解析得到的结果
-            return UploadImage(Request.Files["uploadFile"], IMGFILTERARRAY, SizeSystem, SourceSystemPath, ImageType.System);
+            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, ConfigInfo.SizeSystem, ConfigInfo.SourceSystemPath, ImageType.System);
         }
+
+        public JsonResult UploadSongImage()
+        {
+            //分析上传的文件信息，返回解析得到的结果
+            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, ConfigInfo.SizeSystem, ConfigInfo.SourceMusicImagePath, ImageType.Music);
+        }
+
         #endregion
 
 
@@ -367,7 +300,7 @@ namespace Said.Areas.Back.Controllers
         private JsonResult UploadImage(HttpPostedFileBase file, Array filters, int maxSize, string dirPath, ImageType type)
         {
             //分析上传的文件信息，返回解析得到的结果
-            Dictionary<string, string> result = Save(file, IMGFILTERARRAY, maxSize, dirPath);
+            Dictionary<string, string> result = Save(file, ConfigInfo.ImageFileterArray, maxSize, dirPath);
             if (result["code"] == "1")
                 return Json(new { code = 1, msg = result["msg"] });
             Image model = new Image
