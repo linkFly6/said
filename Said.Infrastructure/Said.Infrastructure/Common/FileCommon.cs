@@ -217,7 +217,6 @@ namespace Said.Common
         }
         #endregion
 
-
         #region 移动一个文件到新的文件夹
         /// <summary>
         /// 移动一个文件到新的文件夹

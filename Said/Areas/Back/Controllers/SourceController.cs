@@ -103,6 +103,7 @@ namespace Said.Areas.Back.Controllers
             filePath = dirPath + newFileName;
             file.SaveAs(filePath);
             result.Add("code", "0");
+            result.Add("path", filePath);
             result.Add("name", newFileName);
             return result;
         }
@@ -303,6 +304,11 @@ namespace Said.Areas.Back.Controllers
             Dictionary<string, string> result = Save(file, ConfigInfo.ImageFileterArray, maxSize, dirPath);
             if (result["code"] == "1")
                 return Json(new { code = 1, msg = result["msg"] });
+            var isCurOk = ImageCommon.CutImg(result["path"]);
+            if (!isCurOk)
+            {
+                return Json(new { code = 3, msg = "裁剪图片失败" });
+            }
             Image model = new Image
             {
                 //TODO   -  UserID,ISize

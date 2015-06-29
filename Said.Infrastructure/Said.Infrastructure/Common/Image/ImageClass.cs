@@ -108,16 +108,64 @@ namespace Said.Helper
         /// 裁剪图片
         /// </summary>
         /// <param name="image">图片</param>
-        /// <param name="ratio">比例（将取图片长宽最小值，按照比例裁剪）</param>
+        /// <param name="ratio">比例（将取图片长宽最小值，按照比例裁剪，注意比例是宽长比（width/height））</param>
         /// <param name="savePath">保存路径</param>
-        public static bool CutImg(Bitmap image, int ratio, string savePath)
+        public static Bitmap CutImg(Bitmap image, double ratio)
         {
-            if (image.Width > image.Height)
+            int width = image.Width;
+            int height = image.Height;
+            Rectangle rect = new Rectangle();
+            if (image.Width >= image.Height)//宽比长大，以高度为基准
             {
+                //检测比例是否正确
+                if (image.Width / image.Height >= ratio)
+                {
+                    //在基数范围内，要以高为单位
+                    rect.Y = 0;
+                    rect.Height = image.Height;
+                    rect.Width = (int)(rect.Height * ratio);
+                    rect.X = (int)(image.Width - rect.Width) / 2;//居中
+                }
+                else
+                {
+                    //在基数范围外，则裁掉高度
+                    rect.X = 0;
+                    rect.Width = image.Width;
+                    rect.Height = (int)(rect.Width / ratio);
+                    rect.Y = (int)(image.Height - rect.Height) / 2;//居中
+                }
 
             }
-            return true;
+            else
+            { //长比宽大
+                rect.X = 0;
+                rect.Width = image.Width;
+                rect.Height = (int)(rect.Width / ratio);
+                rect.X = (int)((image.Height - rect.Height) / 2);//居中
+            }
+            Graphics g = null;
+            try
+            {
+                g = Graphics.FromImage(image);
+                g.DrawImage(image,
+                    new Rectangle(0, 0, image.Width, image.Height),
+                    rect,
+                    GraphicsUnit.Pixel);
+                return image;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                if (g != null)
+                    g.Dispose();
+            }
         }
+
+
+
 
         #region 图片水印
         /// <summary>
