@@ -103,7 +103,86 @@ namespace Said.Helper
         #endregion
 
 
+        //TODO  这个缩略图生成模式，是不是可以采用枚举？？
 
+        /// <summary>
+        /// 生成高质量缩略图（为缩略图的质量，请按照JPEG格式保存）
+        /// </summary>
+        /// <param name="image">原图</param>
+        /// <param name="height">高度（默认认为原图的比缩略图的更高）</param>
+        /// <param name="ratio">裁剪比例（width/height）</param>
+        /// <returns>图片为了质量，请按照JPEG格式保存</returns>
+        public static Bitmap MakeThumbnail(Bitmap image, int height, double ratio)
+        {
+            Bitmap newImage = null;
+            Graphics g = null;
+            int width = (int)(height * ratio);
+            try
+            {
+
+                Rectangle rect = new Rectangle();
+                rect.Height = height;
+                rect.Width = width;
+                if (image.Width / image.Height <= ratio)
+                {
+                    rect.X = 0;
+                    rect.Width = image.Width;
+                    rect.Height = (int)(rect.Width / ratio);
+                    rect.Y = (int)((image.Height - rect.Height) / 2);//居中
+                }
+                else
+                {
+                    rect.Y = 0;
+                    rect.Height = image.Height;
+                    rect.Width = (int)(rect.Height * ratio);
+                    rect.X = (int)((image.Width - rect.Width) / 2);
+
+                }
+
+                newImage = new System.Drawing.Bitmap(rect.Width, rect.Height);
+                g = Graphics.FromImage(newImage);
+
+                //设置高质量插值法
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+
+                //设置高质量,低速度呈现平滑程度
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+                //清空画布并以透明背景色填充
+                g.Clear(System.Drawing.Color.Transparent);
+                g.DrawImage(image,
+                    new System.Drawing.Rectangle(0, 0, rect.Width, rect.Height), //新图绘制的点
+                    rect, //从原图绘制的点
+                    System.Drawing.GraphicsUnit.Pixel);
+                return newImage;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                if (g != null)
+                    g.Dispose();
+            }
+
+        }
+
+
+        /// <summary>
+        /// 生成缩略图（根据已经按照指定的比例裁剪过的图片生成）
+        /// </summary>
+        /// <param name="image">原图（已经按照比例裁剪过）</param>
+        /// <param name="height">缩略图高度</param>
+        /// <returns></returns>
+        public static Bitmap MakeThumbnail(Bitmap image, int height)
+        {
+            double ratio = image.Width * image.Height / height;
+            return CutImg(image, ratio);
+        }
+
+
+        #region 裁剪图片
         /// <summary>
         /// 裁剪图片
         /// </summary>
@@ -115,43 +194,32 @@ namespace Said.Helper
             int width = image.Width;
             int height = image.Height;
             Rectangle rect = new Rectangle();
-            if (image.Width >= image.Height)//宽比长大，以高度为基准
+            if (image.Width / image.Height <= ratio)
             {
-                //检测比例是否正确
-                if (image.Width / image.Height >= ratio)
-                {
-                    //在基数范围内，要以高为单位
-                    rect.Y = 0;
-                    rect.Height = image.Height;
-                    rect.Width = (int)(rect.Height * ratio);
-                    rect.X = (int)(image.Width - rect.Width) / 2;//居中
-                }
-                else
-                {
-                    //在基数范围外，则裁掉高度
-                    rect.X = 0;
-                    rect.Width = image.Width;
-                    rect.Height = (int)(rect.Width / ratio);
-                    rect.Y = (int)(image.Height - rect.Height) / 2;//居中
-                }
-
-            }
-            else
-            { //长比宽大
+                //在基数范围外，则裁掉高度
                 rect.X = 0;
                 rect.Width = image.Width;
                 rect.Height = (int)(rect.Width / ratio);
-                rect.X = (int)((image.Height - rect.Height) / 2);//居中
+                rect.Y = (int)((image.Height - rect.Height) / 2);//居中
+            }
+            else
+            {
+                rect.Y = 0;
+                rect.Height = image.Height;
+                rect.Width = (int)(rect.Height * ratio);
+                rect.X = (int)((image.Width - rect.Width) / 2);
             }
             Graphics g = null;
+            Bitmap newImage = null;
             try
             {
-                g = Graphics.FromImage(image);
+                newImage = new Bitmap(rect.Width, rect.Height, PixelFormat.Format24bppRgb);
+                g = Graphics.FromImage(newImage);
                 g.DrawImage(image,
-                    new Rectangle(0, 0, image.Width, image.Height),
-                    rect,
+                    new Rectangle(0, 0, rect.Width, rect.Height),//在新图上绘制的点，如果这个设置不正确，那么windows资源管理器里面显示缩略图的时候就会显示一大片黑色
+                    rect,//从原图上绘制的点
                     GraphicsUnit.Pixel);
-                return image;
+                return newImage;
             }
             catch (Exception)
             {
@@ -163,9 +231,7 @@ namespace Said.Helper
                     g.Dispose();
             }
         }
-
-
-
+        #endregion
 
         #region 图片水印
         /// <summary>
