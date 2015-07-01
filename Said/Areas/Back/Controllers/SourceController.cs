@@ -28,7 +28,7 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         private JsonResult UploadFile(HttpPostedFileBase file, Array filters, int maxSize, string dirPath)
         {
-            FileCommon.ExistsCreate(dirPath);
+            //FileCommon.ExistsCreate(dirPath);
             if (file == null)
             {
                 return UploadResult(1, "没有文件");
@@ -69,7 +69,7 @@ namespace Said.Areas.Back.Controllers
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             dirPath = Server.MapPath(dirPath);
-            FileCommon.ExistsCreate(dirPath);
+            //FileCommon.ExistsCreate(dirPath);
             if (file == null)
             {
                 result.Add("code", "1");
@@ -104,6 +104,7 @@ namespace Said.Areas.Back.Controllers
             file.SaveAs(filePath);
             result.Add("code", "0");
             result.Add("path", filePath);
+            result.Add("dir", dirPath);
             result.Add("name", newFileName);
             return result;
         }
@@ -304,11 +305,20 @@ namespace Said.Areas.Back.Controllers
             Dictionary<string, string> result = Save(file, ConfigInfo.ImageFileterArray, maxSize, dirPath);
             if (result["code"] == "1")
                 return Json(new { code = 1, msg = result["msg"] });
+            //裁剪图片
             var isCurOk = ImageCommon.CutImg(result["path"]);
             if (!isCurOk)
             {
                 return Json(new { code = 3, msg = "裁剪图片失败" });
             }
+            //生成缩略图 TODO 这里要从外面传进来
+            isCurOk = ImageCommon.MakeThumbnail(result["path"], Server.MapPath(ConfigInfo.SourceSystemThumbnailPath + result["name"]));
+            if (!isCurOk)
+            {
+                return Json(new { code = 4, msg = "生成缩略图失败" });
+            }
+
+
             Image model = new Image
             {
                 //TODO   -  UserID,ISize

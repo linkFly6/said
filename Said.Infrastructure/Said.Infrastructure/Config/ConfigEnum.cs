@@ -71,6 +71,10 @@ namespace Said.Config
         /// </summary>
         public const string SourceSaidImagesMaxSize = "source.said.images.maxSize";
 
+        /// <summary>
+        /// Said缩略图路径
+        /// </summary>
+        public const string SourceSaidImagesThumbnail = "source.said.images.thumbnail";
         #endregion
 
 
@@ -85,12 +89,27 @@ namespace Said.Config
         /// </summary>
         public const string SourceBlogImagesMaxSize = "source.blog.images.maxSize";
 
+        /// <summary>
+        /// Blog缩略图路径 
+        /// </summary>
+        public const string SourceBlogImagesThumbnail = "source.blog.images.thumbnail";
         #endregion
 
 
         #region 默认系统图（页面图）
+        /// <summary>
+        /// 系统图片路径
+        /// </summary>
         public const string SystemImages = "source.sys.images";
+        /// <summary>
+        /// 系统图片上传大小
+        /// </summary>
         public const string SystemImagesSize = "source.sys.images.maxSize";
+        /// <summary>
+        /// 系统缩略图路径
+        /// </summary>
+        public const string SystemImagesThumbnail = "source.sys.images.thumbnail";
+
         #endregion
 
         #region 资源删除路径

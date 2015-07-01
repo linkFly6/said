@@ -27,10 +27,22 @@ namespace Said.Common
         /// </summary>
         public readonly static string SourceBlogPath = ConfigTable.Get(ConfigEnum.SourceBlogImages);
 
+
+        /// <summary>
+        /// Blog缩略图路径
+        /// </summary>
+        public readonly static string SourceBlogThumbnailPath = ConfigTable.Get(ConfigEnum.SourceBlogImagesThumbnail);
+
+
         /// <summary>
         /// Said上传的图片路径
         /// </summary>
         public readonly static string SourceSaidPath = ConfigTable.Get(ConfigEnum.SourceSaidImages);
+
+        /// <summary>
+        /// Said缩略图路径
+        /// </summary>
+        public readonly static string SourceSaidThumbnailPath = ConfigTable.Get(ConfigEnum.SourceSaidImagesThumbnail);
 
         /// <summary>
         /// 音乐上传的路径
@@ -51,6 +63,12 @@ namespace Said.Common
         /// 系统图片上传的路径
         /// </summary>
         public readonly static string SourceSystemPath = ConfigTable.Get(ConfigEnum.SystemImages);
+
+
+        /// <summary>
+        /// 系统缩略图路径
+        /// </summary>
+        public readonly static string SourceSystemThumbnailPath = ConfigTable.Get(ConfigEnum.SystemImagesThumbnail);
 
         /// <summary>
         /// 资源删除后存放的路径

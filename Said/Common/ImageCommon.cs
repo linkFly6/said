@@ -30,6 +30,11 @@ namespace Said.Common
         private static readonly double minWidth = minHeight * ratio;
 
 
+        private static readonly int ThumbnailMinHeight = 400;
+
+        private static readonly int ThumbnailMinWidth = 840;
+
+        #region CutImg（裁剪图片）
         /// <summary>
         /// 裁剪一张图片，默认按照1.82比例裁剪
         /// </summary>
@@ -70,7 +75,7 @@ namespace Said.Common
                 try
                 {
                     Bitmap bitmap = new Bitmap(url);
-                    //本身比例就是对的...
+                    //本身比例就是对的，就不用处理了
                     if (bitmap.Width / bitmap.Height == ratio)
                         return true;
                     using (Bitmap image = ImageClass.CutImg(bitmap, ratio))
@@ -88,8 +93,45 @@ namespace Said.Common
             }
             return false;
         }
+        #endregion
 
 
+
+
+        #region MakeThumbnail（生成缩略图）
+        /// <summary>
+        /// 生成缩略图
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="saveUrl"></param>
+        /// <returns></returns>
+        public static bool MakeThumbnail(string url, string saveUrl)
+        {
+            if (FileCommon.Exists(url))
+            {
+                try
+                {
+                    Bitmap bitmap = new Bitmap(url);
+                    using (Bitmap image = ImageClass.MakeThumbnail(bitmap, ThumbnailMinWidth, ThumbnailMinHeight))
+                    {
+                        bitmap.Dispose();
+                        //这里保存图片，被线程占用了
+                        image.Save(saveUrl);
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+        #endregion
+
+
+
+        #region CheckImage（检测图片是否适合裁剪或者缩略）
         public static bool CheckImage(string url)
         {
             return true;
@@ -97,9 +139,10 @@ namespace Said.Common
 
         public static bool CheckImage(HttpPostedFileBase file)
         {
-            
+
             return true;
         }
+        #endregion
 
 
 
