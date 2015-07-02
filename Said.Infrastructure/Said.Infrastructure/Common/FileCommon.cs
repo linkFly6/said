@@ -122,7 +122,9 @@ namespace Said.Common
         }
         #endregion
 
-        #region 获取文件真实的类型
+
+
+        #region 获取文件的类型
         /// <summary>
         /// 获取文件真实的类型
         /// </summary>
@@ -156,6 +158,8 @@ namespace Said.Common
             }
             return FileExtendsion.unknown;
         }
+
+
         #endregion
 
         #region 根据Guid生成一个文件名
@@ -183,7 +187,6 @@ namespace Said.Common
             return DateTime.Now.ToString(format, DateTimeFormatInfo.InvariantInfo);
         }
         #endregion
-
 
         #region 读取一个文件的到String
         /// <summary>
@@ -258,6 +261,8 @@ namespace Said.Common
             }
         }
         #endregion
+
+        //public static 
 
     }
 

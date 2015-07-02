@@ -220,14 +220,25 @@ namespace Said.Helper
             {
                 //PixelFormat.Format24bppRgb
                 newImage = new Bitmap(rect.Width, rect.Height, PixelFormat.Format24bppRgb);
+
                 g = Graphics.FromImage(newImage);
                 g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 g.Clear(System.Drawing.Color.Transparent);
                 g.DrawImage(image,
-                    new Rectangle(0, 0, image.Width, image.Height),//在新图上绘制的点？？？？，如果这个设置不正确，那么windows资源管理器里面显示缩略图的时候就会显示一大片黑色
+                    new Rectangle(0, 0, rect.Width, rect.Height),//在新图上绘制的点？？？？，如果这个设置不正确，那么windows资源管理器里面显示缩略图的时候就会显示一大片黑色
                     rect,//从原图上绘制的点
                     GraphicsUnit.Pixel);
+
+
+                /*
+                newImage = new Bitmap(2592, 1795, PixelFormat.Format24bppRgb);
+                g = Graphics.FromImage(newImage);
+                g.DrawImage(image,
+                    new Rectangle(0, 0, 2592, 1795),//在新图上绘制的点？？？？，如果这个设置不正确，那么windows资源管理器里面显示缩略图的时候就会显示一大片黑色
+                    new Rectangle(0, 0, 2592, 1795),//从原图上绘制的点
+                    GraphicsUnit.Pixel);
+                 */
                 return newImage;
             }
             catch (Exception)
