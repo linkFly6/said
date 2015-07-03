@@ -46,6 +46,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -129,6 +132,8 @@
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
+    <Compile Include="Common\ImageCommon.cs" />
+    <Compile Include="Common\LogCommon.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1486,6 +1491,7 @@
     <Folder Include="Content\Back\JavaScript\said\plug\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
+    <Folder Include="System\Log\" />
     <Folder Include="User\" />
   </ItemGroup>
   <ItemGroup>
@@ -2741,6 +2747,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config.json" />
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

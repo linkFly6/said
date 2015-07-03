@@ -106,6 +106,7 @@ namespace Said.Areas.Back.Controllers
             result.Add("path", filePath);
             result.Add("dir", dirPath);
             result.Add("name", newFileName);
+            LogCommon.Info("保存了新图片到：" + filePath);
             return result;
         }
 
@@ -342,7 +343,7 @@ namespace Said.Areas.Back.Controllers
         #endregion
 
 
-        
+
 
         public ActionResult Index()
         {

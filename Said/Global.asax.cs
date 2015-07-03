@@ -1,4 +1,5 @@
-﻿using Said.Common;
+﻿using log4net.Config;
+using Said.Common;
 using Said.Config;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace Said
             ConfigTable.LoadConfig(Server.MapPath("~/config.json"));
             /*默认加载IP查询库*/
             Said.Helper.IP.Load(Server.MapPath(ConfigTable.Table[ConfigEnum.SourceDataIP]));
+
 
             //启动的时候创建所有路径
             FileCommon.ExistsCreate(Server.MapPath(ConfigInfo.SourceBlogPath));

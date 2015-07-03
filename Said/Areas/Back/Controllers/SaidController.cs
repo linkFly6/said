@@ -1,4 +1,5 @@
 ﻿using Said.Application;
+using Said.Common;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -24,6 +25,8 @@ namespace Said.Areas.Back.Controllers
         [HttpGet]
         public ActionResult AddSaid()
         {
+
+            LogCommon.Info("访问了addSaid");
             ViewBag.Title = "添加一篇Said";
             //初始化歌曲数据
             ViewData["ClassifysList"] = ClassifyApplication.Find();
