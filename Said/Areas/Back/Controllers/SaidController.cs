@@ -25,15 +25,6 @@ namespace Said.Areas.Back.Controllers
         [HttpGet]
         public ActionResult AddSaid()
         {
-            try
-            {
-                User user = null;
-                user.Name = "linkFly";
-            }
-            catch (Exception e)
-            {
-                LogCommon.Error(e);
-            }
             ViewBag.Title = "添加一篇Said";
             //初始化歌曲数据
             ViewData["ClassifysList"] = ClassifyApplication.Find();

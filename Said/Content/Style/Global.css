@@ -27,7 +27,7 @@ input { border: 1px solid #929596; font-family: inherit; padding: 2px 5px; box-s
 /*ellipsis*/
 .said-ellipsis { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 /*word*/
-.wordbreak { text-align: justify; word-break: break-all; word-wrap: break-word; white-space: pre-wrap; }
+.wordbreak { text-align: justify; word-break: break-all; word-wrap: break-word; /*white-space: pre-wrap;*/ }
 /*arrow*/
 .arrow-border { display: block; height: 15px; overflow: hidden; position: absolute; width: 18px; }
     .arrow-border:before, .arrow-border:after { content: '◆'; display: block; font-family: "SimSun"; font-size: 20px; height: 15px; overflow: hidden; }

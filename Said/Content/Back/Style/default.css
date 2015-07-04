@@ -52,6 +52,11 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
     .sub-menu .title { padding-left: 8px; }
 .open .sub-menu { display: inherit; }
 
+/*public*/
+.said-watermark, .said-watermark2 { background-image: url('/Content/Images/said-watermark.png'); background-repeat: no-repeat; background-position: 95% 90%; }
+.said-watermark2 { background-image: url('/Content/Images/said-watermark-2.png'); }
+
+
 /*body*/
 .container-main { padding: 15px; }
 /*.main-context { overflow: hidden; }*/
@@ -70,6 +75,23 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 
 /*.data-delete { }*/
 .table-tool { margin: 0; padding-left: 0; }
+
+
+
+.page-header { margin-top: 0; overflow: hidden; }
+    .page-header h3 { margin-top: 10px; }
+/*said-page-mask*/
+#said-page-mask, #said-mask-box { width: 100%; height: 100%; left: 0; top: 0; }
+#said-page-mask { position: fixed; z-index: 1000; /*pointer-events: none;*/ display: none; }
+#said-mask-box { position: absolute; background: white; opacity: 0.4; }
+.said-mask-content { display: none; z-index: 1; position: absolute; transform: translate(-50%,0); left: 50%; top: 30%; box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4); border: 2px solid #4fc3f7; border-radius: 3px; padding: 20px; text-align: justify; word-break: break-all; word-wrap: break-word; }
+    .said-mask-content .keywords { color: #52b12d; }
+/*help*/
+#said-help-btn { color: #47b2e4; float: right; font-size: 22px; margin-right: 15px; margin-top: 2px; }
+    #said-help-btn:hover { color: #a5cf5e; }
+#said-help { min-width: 600px; min-height: 100px; max-width: 960px; background-color: #fafafa; }
+    #said-help ul, #said-help li { list-style: inside none disc; }
+
 
 
 /*plug - showMsg */
