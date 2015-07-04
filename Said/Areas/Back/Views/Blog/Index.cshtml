@@ -1,0 +1,190 @@
+﻿@{
+    Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+}
+<div class="page-header">
+    <h3>文章管理&nbsp;&nbsp;<small>&nbsp;&nbsp;在这里你可以管理你所有的文章</small></h3>
+</div>
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li class="active">文章管理</li>
+</ol>
+<div class="main-context">
+    <div class="context-chart">
+        <div id="userChart">
+        </div>
+    </div>
+    <div class="bs-table">
+        <table id="btTable" class="table table-hover table-striped" data-url="/Blog/GetBlogList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server">
+        </table>
+    </div>
+</div>
+@section Css{
+    <link href="~/UED/Back/Frmework/css/saidCenter.css" rel="stylesheet" />
+    <link href="~/UED/Back/Frmework/js/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+}
+@section FootJs{
+    <script src="@Url.Content("~/UED/Back/Frmework/js/bootstrap-table/bootstrap-table.js")"></script>
+    <script>
+        var Action = {
+            blog: '@Url.Action("Blog", "Home")' + '/',
+            editBlog: '@Url.Action("Edit", "Blog")' + '/',
+            img: '@Url.Action("UploadSaidImg", "Source")',
+            imgLocation: '@Url.Content("~/Source/Said/Images/")',
+            form: '@Url.Action("AddBlog", "Blog")'
+        };
+        $(function () {
+            require.config({
+                baseUrl: '/Content/Back/JavaScript',
+                paths: {
+                    'dialog': 'so/plug/dialog',
+                },
+                packages: [
+                    { name: 'so', location: 'so', main: 'so' },
+                    { name: 'said', location: 'said', main: 'said' },
+                    { name: 'echarts', location: 'echarts-2.1.8/src', main: 'echarts' },
+                    { name: 'zrender', location: 'zrender-master/src', main: 'zrender' }]
+            });
+            var option = {
+                title: {
+                    text: '2014-11-15',
+                    subtext: '昨日/今日访问量'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['昨日', '今日']
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['0:00', '1:00', '2:00', '3:00', '4:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: '昨日',
+                        type: 'line',
+                        smooth: true,
+                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                        data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
+                    },
+                    {
+                        name: '今日',
+                        type: 'line',
+                        smooth: true,
+                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                        data: [5, 2, 5, 5, 5, 3, 3, 9, 10, 19, 16, 16, 22, 7, 7, 8, 8, 0, 0, 0, 0, 1, 6, 7]
+                    }
+                ]
+            };
+            require(['echarts', 'echarts/chart/line'], function (ec) {
+                var myChart = ec.init(document.getElementById('userChart'));
+                myChart.setOption(option);
+            });
+
+        });
+
+        (function (window, undefined) {
+            var $ = window.jQuery;
+            require(['dialog'], function (Dialog) {
+                var dialogDelete = Dialog();
+                $('#btTable').bootstrapTable({
+                    columns: [
+                     {
+                         field: 'BTitle',
+                         title: '名&nbsp;&nbsp;&nbsp;称',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return ['<a target="_black" href="', Action.blog, row.BlogId, '">', value, '</a>'].join('');
+                         }
+                     },
+                     {
+                         field: 'BSummary',
+                         title: '描&nbsp;&nbsp;&nbsp;述',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BPV',
+                         title: '浏&nbsp;&nbsp;&nbsp;览',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BDate',
+                         title: '发布时间',
+                         sortable: true,
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return so.dateFormat(value);
+                         }
+                     },
+                     {
+                         field: 'Classify.CName',
+                         title: '分&nbsp;&nbsp;&nbsp;类',
+                         sortable: true,
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BTag',
+                         title: '标&nbsp;&nbsp;&nbsp;签',
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BlogId',
+                         title: '操&nbsp;&nbsp;&nbsp;作',
+                         formatter: function (value, row, index) {
+                             ///Back/Said/Edit/b5166390-4dfb-4469-9994-0b5709f803c1
+                             return ['<a class="btn btn-default btn-sm" target="_blank" href="', Action.editBlog, value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm blog-delete" data-id="', value, '" data-title="', row.BTitle, '">删除</a>'].join('');
+                         }
+                     }]
+                }).on('dbl-click-row.bs.table', function (e, row, $element) {
+
+                }).on('click', '.blog-delete', function (e) {
+                    var blogId = this.dataset.id;
+                    dialogDelete.text('您确定要删除文章《' + this.dataset.title + "》吗？").on(function () {
+                        console.log('您点击了删除');
+                    }).show();
+                });
+
+
+
+
+            });
+
+
+            //解决ecahrt的bug
+        })(window);
+    </script>
+}
