@@ -129,6 +129,7 @@
     <Compile Include="Areas\Back\Controllers\BlogController.cs" />
     <Compile Include="Areas\Back\Controllers\ClassifyController.cs" />
     <Compile Include="Areas\Back\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Back\Controllers\ImageController.cs" />
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
@@ -629,6 +630,8 @@
     <Content Include="Content\Images\said-public.png" />
     <Content Include="Content\Images\said-logo.png" />
     <Content Include="Content\Images\said-logo2.png" />
+    <Content Include="Content\Images\said-watermark-2.png" />
+    <Content Include="Content\Images\said-watermark.png" />
     <Content Include="Content\Images\sidebar-bg.jpg" />
     <Content Include="Content\Images\test-said-img.jpg" />
     <Content Include="Content\Images\testImg-Paramore.Ps.jpg" />
@@ -701,6 +704,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
+    <Folder Include="Content\Back\Style\sass\" />
+    <Folder Include="Content\Style\sass\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="System\Log\" />
@@ -1079,6 +1084,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Back\Views\Image\Index.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

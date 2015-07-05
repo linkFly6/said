@@ -17,16 +17,15 @@
         </div>
     </div>
     <div class="bs-table">
-        <table id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server">
-        </table>
+        <table id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server"></table>
     </div>
 </div>
 @section Css{
-    <link href="~/UED/Back/Frmework/css/saidCenter.css" rel="stylesheet" />
-    <link href="~/UED/Back/Frmework/js/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/Content/Back/Style/saidCenter.css" rel="stylesheet" />
+    <link href="~/Content/Back/JavaScript/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
 }
 @section FootJs{
-    <script src="@Url.Content("~/UED/Back/Frmework/js/bootstrap-table/bootstrap-table.js")"></script>
+    <script src="@Url.Content("~/Content/Back/JavaScript/bootstrap-table/bootstrap-table.js")"></script>
     <script>
         var Action = {
             article: '@Url.Action("Said", "Home")',
@@ -109,90 +108,92 @@
                 myChart.setOption(option);
             });
 
+
+            (function (window, undefined) {
+                var $ = window.jQuery;
+                $('#btTable').bootstrapTable({
+                    columns: [
+                     {
+                         field: 'STitle',
+                         title: '名&nbsp;&nbsp;&nbsp;称',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             console.log(row); //row可以访问到数据
+                             //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
+                             return ['<a target="_black" href="@Url.Action("Edit", "Said", new { id = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
+                         }
+                     },
+                     {
+                         field: 'SSummary',
+                         title: '描&nbsp;&nbsp;&nbsp;述',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'Song.SongName',
+                         title: '歌&nbsp;&nbsp;&nbsp;曲',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'SPV',
+                         title: '浏&nbsp;&nbsp;&nbsp;览',
+                         valign: 'middle',
+                         sortable: true,
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'SDate',
+                         title: '发布时间',
+                         sortable: true,
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return so.dateFormat(value);
+                         }
+                     },
+                     {
+                         field: 'Classify.CName',
+                         title: '分&nbsp;&nbsp;&nbsp;类',
+                         sortable: true,
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'STag',
+                         title: '标&nbsp;&nbsp;&nbsp;签',
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'SaidId',
+                         title: '操&nbsp;&nbsp;&nbsp;作',
+                         formatter: function (value, row, index) {
+                             return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
+                         }
+                     }
+
+                    ],
+
+                }).on('dbl-click-row.bs.table', function (e, row, $element) {
+                })
+
+                //解决ecahrt的bug
+            })(window);
         });
 
-        (function (window, undefined) {
-            var $ = window.jQuery;
-            $('#btTable').bootstrapTable({
-                columns: [
-                 {
-                     field: 'STitle',
-                     title: '名&nbsp;&nbsp;&nbsp;称',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         console.log(row); //row可以访问到数据
-                         //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
-                         return ['<a target="_black" href="@Url.Action("Edit", "Said", new { id = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
-                     }
-                 },
-                 {
-                     field: 'SSummary',
-                     title: '描&nbsp;&nbsp;&nbsp;述',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'Song.SongName',
-                     title: '歌&nbsp;&nbsp;&nbsp;曲',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'SPV',
-                     title: '浏&nbsp;&nbsp;&nbsp;览',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'SDate',
-                     title: '发布时间',
-                     sortable: true,
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return so.dateFormat(value);
-                     }
-                 },
-                 {
-                     field: 'Classify.CName',
-                     title: '分&nbsp;&nbsp;&nbsp;类',
-                     sortable: true,
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'STag',
-                     title: '标&nbsp;&nbsp;&nbsp;签',
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'SaidId',
-                     title: '操&nbsp;&nbsp;&nbsp;作',
-                     formatter: function (value, row, index) {
-                         return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
-                     }
-                 }
 
-                ],
-
-            }).on('dbl-click-row.bs.table', function (e, row, $element) {
-            })
-
-            //解决ecahrt的bug
-        })(window);
     </script>
 }
