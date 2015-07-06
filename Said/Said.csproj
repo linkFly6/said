@@ -198,42 +198,14 @@
     <Content Include="Content\Back\JavaScript\avalon\plug\template\popup.html" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
     <Content Include="Content\Back\JavaScript\bootgrid.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap-table\bootstrap-table-zh-CN.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap-table\bootstrap-table.css" />
+    <Content Include="Content\Back\JavaScript\bootstrap-table\bootstrap-table.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="Content\Back\JavaScript\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap-table\test.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.min.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\bar.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\chord.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\eventRiver.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\force.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\funnel.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\gauge.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\k.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\line.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\map.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\pie.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\radar.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\chart\scatter.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\echarts-all.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\dist\echarts.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\bar.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\chord.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\eventRiver.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\force.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\funnel.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\gauge.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\k.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\line.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\map.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\pie.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\radar.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\chart\scatter.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\echarts-all.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\build\source\echarts.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\BMap\doc\BMap.html" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\BMap\doc\BMap.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\BMap\doc\doc.html" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\BMap\doc\example.html" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\BMap\doc\example.js" />
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\BMap\src\main.js" />
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\chart.js" />
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\chart\bar.js" />
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\chart\base.js" />
@@ -604,6 +576,7 @@
     <Content Include="Content\Back\Style\grid-table.css" />
     <Content Include="Content\Back\Style\said-said.css" />
     <Content Include="Content\Back\Style\index.css" />
+    <Content Include="Content\Back\Style\saidCenter.css" />
     <Content Include="Content\Font\fontawesome-webfont.svg" />
     <Content Include="Content\Images\code-bg.jpg" />
     <Content Include="Content\Images\github.png" />
@@ -704,7 +677,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
-    <Folder Include="Content\Back\Style\sass\" />
     <Folder Include="Content\Style\sass\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
@@ -794,9 +766,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.woff" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Back\JavaScript\echarts-2.1.8\extension\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\util\mapData\rawData\geoJson\an_hui_geo.json" />
@@ -1090,6 +1059,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Content\Back\Style\sass\imagesCenter.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

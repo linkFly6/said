@@ -1,4 +1,56 @@
-.source-head {
-  border: 1px solid red; }
+.source-content {
+  padding-right: 260px; }
+  .source-content .source-head {
+    padding: 10px;
+    border: 1px solid red; }
+  .source-content .source-body {
+    padding: 10px;
+    /*text-align: justify;
+    -moz-text-align-last: justify;
+    -ms-text-align-last: justify;
+    text-align-last: justify;*/ }
+    .source-content .source-body .source-item {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-block;
+      margin: 9px;
+      padding: 4px;
+      transition: border 0.2s ease-in-out 0s; }
+      .source-content .source-body .source-item .item-img {
+        width: 256px;
+        height: 140px;
+        background: url("/Content/Images/Said-Images-load.gif") center 0 no-repeat;
+        background-size: cover; }
+      .source-content .source-body .source-item .item-info {
+        color: #666;
+        overflow: hidden;
+        text-align: left; }
+        .source-content .source-body .source-item .item-info .img-name, .source-content .source-body .source-item .item-info .item-delete {
+          line-height: 26px;
+          vertical-align: middle; }
+        .source-content .source-body .source-item .item-info .item-delete {
+          color: #666;
+          float: right;
+          font-size: 16px;
+          transition: all 0.4s ease-in-out 0s; }
+    .source-content .source-body .source-item.selected {
+      background-color: #5cb85c;
+      border-color: #4cae4c; }
+
+.keywords {
+  color: #52b12d; }
+
+.source-detail {
+  position: absolute;
+  width: 250px;
+  padding: 10px;
+  /*border: $debug;*/
+  right: 0;
+  top: 0;
+  bottom: 0; }
+
+.source-info li {
+  line-height: 30px; }
 
 /*# sourceMappingURL=imagesCenter.css.map */

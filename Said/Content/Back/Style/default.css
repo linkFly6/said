@@ -59,7 +59,7 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 
 /*body*/
 .container-main { padding: 15px; }
-/*.main-context { overflow: hidden; }*/
+.main-context { /*overflow: hidden;*/ position: relative; }
 .context-chart { min-height: 300px; background-color: #FAFAFA; }
 
 .said-submit { background-color: transparent; color: #563d7c; border-radius: 6px; font-size: 18px; line-height: 1.33; padding: 10px 16px; user-select: none; background-image: none; border: 1px solid #563d7c; cursor: pointer; display: inline-block; font-weight: 400; margin-bottom: 0; text-align: center; vertical-align: middle; white-space: nowrap; }

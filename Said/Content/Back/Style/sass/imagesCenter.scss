@@ -1,8 +1,91 @@
 ﻿$debug: 1px solid red;
+$source-detail-bar: 250px;
 
-.source-head {
-    border: $debug;
+
+$source-box-padding: 10px;
+
+@mixin box-border {
+    padding: $source-box-padding;
 }
 
-body {
+@mixin img-info {
+}
+
+.source-content {
+    padding-right: $source-detail-bar+$source-box-padding;
+    //工具栏
+    .source-head {
+        @include box-border;
+        border: $debug;
+    }
+    //图片容器
+    .source-body {
+        @include box-border;
+        //border: $debug;
+        /*text-align: justify;
+        -moz-text-align-last: justify;
+        -ms-text-align-last: justify;
+        text-align-last: justify;*/
+        .source-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            margin: 9px;
+            padding: 4px;
+            transition: border 0.2s ease-in-out 0s;
+
+            .item-img {
+                width: 256px;
+                height: 140px;
+                background: url('/Content/Images/Said-Images-load.gif') center 0 no-repeat;
+                background-size: cover;
+            }
+
+            .item-info {
+                color: #666;
+                overflow: hidden;
+                text-align: left;
+
+                .img-name, .item-delete {
+                    line-height: 26px;
+                    vertical-align: middle;
+                }
+
+                .item-delete {
+                    color: #666;
+                    float: right;
+                    font-size: 16px;
+                    transition: all 0.4s ease-in-out 0s;
+                }
+            }
+        }
+
+        .source-item.selected {
+            background-color: #5cb85c;
+            border-color: #4cae4c;
+        }
+    }
+}
+
+.keywords {
+    color: #52b12d;
+}
+
+
+//图片详情
+.source-detail {
+    position: absolute;
+    width: $source-detail-bar;
+    @include box-border;
+    /*border: $debug;*/
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.source-info {
+    li {
+        line-height: 30px;
+    }
 }
