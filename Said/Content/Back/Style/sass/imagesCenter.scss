@@ -50,7 +50,7 @@ $source-box-padding: 10px;
             border-radius: 20px;
             position: relative;
             width: 50px;
-            height: 30px;
+            height: 28px;
             display: inline-block;
             cursor: pointer;
             vertical-align: middle;
@@ -61,7 +61,7 @@ $source-box-padding: 10px;
                 width: 28px;
                 top: 0px;
                 left: 0px;
-                height: 28px;
+                height: 26px;
                 position: absolute;
                 /*border: 1px solid #dedede;*/
                 border-radius: 100%;
@@ -142,6 +142,10 @@ $source-box-padding: 10px;
             background-color: #5cb85c;
             border-color: #4cae4c;
         }
+    }
+
+    .source-footer {
+        text-align: center;
     }
 }
 
