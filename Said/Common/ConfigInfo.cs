@@ -54,10 +54,17 @@ namespace Said.Common
         /// </summary>
         public readonly static string SourceMusicImagePath = ConfigTable.Get(ConfigEnum.MusicImage);
 
+
+        /// <summary>
+        /// 音乐缩略图
+        /// </summary>
+        public readonly static string SourceMusicThumbnailPath = ConfigTable.Get(ConfigEnum.MusicImage);
+
         /// <summary>
         /// Icon上传的路径
         /// </summary>
         public readonly static string SourceIconsPath = ConfigTable.Get(ConfigEnum.SourceIcons);
+
 
         /// <summary>
         /// 系统图片上传的路径

@@ -44,6 +44,12 @@ namespace Said.Config
         /// </summary>
         public const string MusicImage = "music.images";
 
+
+        /// <summary>
+        /// Said缩略图路径
+        /// </summary>
+        public const string MusicImagesThumbnail = "music.images.thumbnail";
+
         #endregion
 
         #region 默认Icons上传限制
