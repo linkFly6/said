@@ -20,8 +20,8 @@
     </ul>
 </div>
 <div class="main-context">
-    <div class="source-content">
-        <div class="source-head" ms-controller="toolbar">
+    <div class="source-content" ms-controller="model">
+        <div class="source-head">
             <div class="toolbar-left">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{typeText||'全部'}} <span class="caret"></span></button>
@@ -41,7 +41,7 @@
                 <div class="said-toggle" ms-class="selected:multiple" title="是否多选" ms-click="toggleMultiple()"></div>
             </div>
             <div class="source-loading">
-                <div class="loading-line">
+                <div class="loading-line" ms-visible="isLoading">
                     <span class="loading-dot"></span>
                     <span class="loading-dot"></span>
                     <span class="loading-dot"></span>
@@ -55,30 +55,21 @@
         </div>
         <div class="source-context">
             <div class="source-body">
-                <div data-id="cac2b7cb398c470296e69765bd2fdd51" class="source-item selected">
-                    <div class="item-img" data-src="/Source/Sys/Images/Thumbnail028620152702234207.jpg" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)">
-                    </div>
+                <div ms-repeat-item="datas" class="source-item" ms-css="selected:item.selected">
+                    <div class="item-img" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)" ms-css-background-image="item.done? 'url('+typeUrl+item.name+')':'url(/Content/Images/img-failed.png)' "></div>
                     <div class="item-info">
-                        <span class="img-name">196620151803225207.jpg</span>
-                        <a title="删除" class="fa fa-times item-delete" data-name="196620151803225207.jpg" data-id="cac2b7cb398c470296e69765bd2fdd51" href="javascript:;"></a>
+                        <span class="img-name">{{item.name}}</span>
+                        <a title="删除" class="fa fa-times item-delete" href="javascript:;" ms-live-click="select(item,$index)"></a>
                     </div>
                 </div>
-                <div data-id="cac2b7cb398c470296e69765bd2fdd51" class="source-item">
-                    <div class="item-img" data-src="/Source/Sys/Images/Thumbnail028620152702234207.jpg">
-                    </div>
-                    <div class="item-info">
-                        <span class="img-name">196620151803225207.jpg</span>
-                        <a title="删除" class="fa fa-times item-delete" data-name="196620151803225207.jpg" data-id="cac2b7cb398c470296e69765bd2fdd51" href="javascript:;"></a>
-                    </div>
-                </div>
-                <div data-id="cac2b7cb398c470296e69765bd2fdd51" class="source-item selected">
-                    <div class="item-img" data-src="/Source/Sys/Images/Thumbnail069420152702232107.jpg" style="background-image:url(/Source/Sys/Images/Thumbnail069420152702232107.jpg)">
-                    </div>
-                    <div class="item-info">
-                        <span class="img-name">196620151803225207.jpg</span>
-                        <a title="删除" class="fa fa-times item-delete" data-name="196620151803225207.jpg" data-id="cac2b7cb398c470296e69765bd2fdd51" href="javascript:;"></a>
-                    </div>
-                </div>
+                @*<div data-id="cac2b7cb398c470296e69765bd2fdd51" class="source-item selected">
+                        <div class="item-img" data-src="/Source/Sys/Images/Thumbnail028620152702234207.jpg" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)">
+                        </div>
+                        <div class="item-info">
+                            <span class="img-name">196620151803225207.jpg</span>
+                            <a title="删除" class="fa fa-times item-delete" data-name="196620151803225207.jpg" data-id="cac2b7cb398c470296e69765bd2fdd51" href="javascript:;"></a>
+                        </div>
+                    </div>*@
             </div>
             <nav class="source-footer">
                 <ul class="pagination">
@@ -141,17 +132,23 @@
         require(['jquery', 'avalon', 'so', 'upload', 'showMsg'], function ($, avalon, _, upload, showMsg) {
             $(function () {
                 'use strict';
-                var vmTool = avalon.define({
-                    $id: 'toolbar',
-                    select: function (e) {
-                        vmTool.typeText = e.target.innerHTML;
+                var vmModel = avalon.define({
+                    $id: 'model',
+                    select: function (e, typeId) {
+                        vmModel.typeText = e.target.innerHTML;
+                        vmModel.typeId = typeId;
+                        vmModel.typeUrl = '/Source/Sys/Images/';
                     },
                     multiple: false,
+                    typeId: '',
+                    typeUrl: '',
                     typeText: '',
                     selectCount: 0,
                     sum: 0,
+                    isLoading: false,
+                    datas: [],
                     toggleMultiple: function () {
-                        vmTool.multiple = !vmTool.multiple;
+                        vmModel.isLoading = vmModel.multiple = !vmModel.multiple;
                     }
                 });
                 avalon.scan();

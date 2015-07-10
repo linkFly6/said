@@ -76,7 +76,8 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 /*.data-delete { }*/
 .table-tool { margin: 0; padding-left: 0; }
 
-
+/*avalon*/
+[ms-controller] { visibility: hidden; display: none; }
 
 .page-header { margin-top: 0; overflow: hidden; }
     .page-header h3 { margin-top: 10px; }

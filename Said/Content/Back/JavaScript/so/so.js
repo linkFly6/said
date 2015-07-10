@@ -545,22 +545,30 @@
     var imgConfig = {
         //src: '',//要加载的图片
         load: '/Content/Images/Said-Images-load.gif',//加载中显示
-        error: '/Content/Images/img-failed.png'//加载失败显示
+        error: '/Content/Images/img-failed.png',//加载失败显示
+        //done: noop,
+        //fail: noop
     };
     so.imgLoad = function (elem, options) {
         //image element
-        options = so.extend({}, imgConfig, elem.dataset, options);//支持dataset和传参配置
-        if (!elem.src)
-            elem.src = options.load;
+        if (typeof elem === 'object') {//imgLoad(options)
+            options = elem;
+            elem = null;
+        }
+        options = so.extend({}, IMGDEFAULTS, elem && elem.dataset, options);//支持dataset和传参配置
         var img = new Image();
+        if (elem)
+            elem.src = options.load;
         //img.complete
         img.onload = function () {
-            elem.src = options.src;
+            if (elem) elem.src = options.src;
+            if (isFunction(options.done)) options.done(options.src);
             img.onload = null;
         };
         img.onabort = img.onerror = function () {
-            elem.src = options.error;
-            img.onerror = null;
+            if (elem) elem.src = options.error;
+            if (isFunction(options.fail)) options.fail(options.error);
+            img.onabort = img.onerror = null;
         };
         img.src = options.src;
         if (img.complete)
