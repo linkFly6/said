@@ -29,8 +29,8 @@ namespace Said.Areas.Back.Controllers
         /// <summary>
         /// 分页获取图片图片
         /// </summary>
-        /// <param name="limit"></param>
-        /// <param name="offset"></param>
+        /// <param name="limit">分页大小</param>
+        /// <param name="offset">获取数据项的起点</param>
         /// <param name="imgType">为空或为-1表示查询全部图片，否则查询指定类别的</param>
         /// <returns></returns>
         public JsonResult GetImagesList(int limit, int offset, string imgType = null)
@@ -61,7 +61,8 @@ namespace Said.Areas.Back.Controllers
                 //hasNextPage = res.HasNextPage,
                 //hasPreviousPage = res.HasPreviousPage,
                 total = res.TotalItemCount,
-                datas = res.Select(m => new { id = m.ImageId, name = m.IName, img = m.IFileName, data = m.IFileName })
+                //这里要输出完整的！！！
+                datas = res.Select(m => new { id = m.ImageId, name = m.IName, img = m.IFileName, /*data = m.IFileName,*/ type = m.Type })
             }, JsonRequestBehavior.AllowGet);
         }
         #endregion

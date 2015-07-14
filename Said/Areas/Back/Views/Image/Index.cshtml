@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Said.Common;
+@{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
 }
@@ -37,7 +38,13 @@
                     </ul>
 
                 </div>
-                <button type="button" class="btn btn-default btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;上传图片&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                <div class="btn btn-upload btn-default btn-sm">
+                    <div style="z-index: 3;" class="upload-mask">
+                        <span class="upload-text">&nbsp;&nbsp;&nbsp;&nbsp;上传图片&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        <div role="progressbar" class="upload-progress" style="width: 20%;"></div>
+                        <input type="file" />
+                    </div>
+                </div>
                 <div class="said-toggle" ms-class="selected:multiple" title="是否多选" ms-click="toggleMultiple()"></div>
             </div>
             <div class="source-loading">
@@ -55,11 +62,12 @@
         </div>
         <div class="source-context">
             <div class="source-body">
-                <div ms-repeat-item="datas" class="source-item" ms-css="selected:item.selected">
-                    <div class="item-img" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)" ms-css-background-image="item.done? 'url('+typeUrl+item.name+')':'url(/Content/Images/img-failed.png)' "></div>
+                <div ms-repeat-item="datas" class="source-item">
+                    <!--ms-class="selected:item.selected"-->
+                    <div class="item-img" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)" ms-css-background-image="'url(' + item.img + ')'"></div>
                     <div class="item-info">
                         <span class="img-name">{{item.name}}</span>
-                        <a title="删除" class="fa fa-times item-delete" href="javascript:;" ms-live-click="select(item,$index)"></a>
+                        <a title="删除" class="fa fa-times item-delete" href="javascript:;" ms-live-click="deleteImage"></a>
                     </div>
                 </div>
                 @*<div data-id="cac2b7cb398c470296e69765bd2fdd51" class="source-item selected">
@@ -73,13 +81,17 @@
             </div>
             <nav class="source-footer">
                 <ul class="pagination">
-                    <li><a href="javascript:;" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                    <li><a href="javascript:;">1</a></li>
-                    <li><a href="javascript:;">2</a></li>
-                    <li><span>...</span></li>
-                    <li><a href="javascript:;">7</a></li>
-                    <li><a href="javascript:;">8</a></li>
-                    <li><a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                    <!--ms-visible="total==0"-->
+                    <li ms-if="pageIndex>1"><a href="javascript:;" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                    <li ms-if="pageIndex>2"><a href="javascript:;"><span>1</span></a></li>
+                    <li ms-if="pageIndex>2"><span>...</span></li>
+                    <li ms-repeat-index="pages">
+                        <a ms-if="index!=pageIndex" href="javascript:;">{{index}}</a>
+                        <span ms-if="index==pageIndex">{{index}}</span>
+                    </li>
+                    <li ms-visible="pageIndex < sumPage - 2 "><span>...</span></li>
+                    <li ms-if="pageIndex < sumPage - 2 "><a href="javascript:;"><span>{{sumPage}}</span></a></li>
+                    <li ms-visible="pageIndex != sumPage"><a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a></li>
                 </ul>
             </nav>
         </div>
@@ -101,6 +113,33 @@
 
 @section FootJs{
     <script>
+
+        var Action = {
+            getImageList: '@Url.Action("GetImagesList", "Image")'
+        },
+            Source = {
+                thumbnail: [
+                    '@ConfigInfo.SourceSystemThumbnailPath',
+                    '@ConfigInfo.SourceBlogThumbnailPath',
+                    '@ConfigInfo.SourceMusicThumbnailPath',
+                    '@ConfigInfo.SourceSaidThumbnailPath',
+                    '@ConfigInfo.SourceIconsPath',
+                    '@ConfigInfo.SourceSystemThumbnailPath',
+                    '@ConfigInfo.SourceSystemThumbnailPath',
+                    '@ConfigInfo.SourceSystemThumbnailPath'
+                ],
+                image: [
+                    '@ConfigInfo.SourceSystemPath',
+                    '@ConfigInfo.SourceBlogPath',
+                    '@ConfigInfo.SourceMusicImagePath',
+                    '@ConfigInfo.SourceSaidPath',
+                    '@ConfigInfo.SourceIconsPath',
+                    '@ConfigInfo.SourceSystemPath',
+                    '@ConfigInfo.SourceSystemPath',
+                    '@ConfigInfo.SourceSystemPath'
+                ]
+
+            };
         var ImageType = {
             System: 0,
             Blog: 1,
@@ -132,6 +171,14 @@
         require(['jquery', 'avalon', 'so', 'upload', 'showMsg'], function ($, avalon, _, upload, showMsg) {
             $(function () {
                 'use strict';
+                var imageUrl = {
+                    thumbnail: function (imgName, typeId) {
+                        return (Source.thumbnail[typeId] || Source.thumbnail[0]) + imgName;
+                    },
+                    get: function (imgName, type) {
+                        return (Source.image[typeId] || Source.image[0]) + imgName;
+                    }
+                };
                 var vmModel = avalon.define({
                     $id: 'model',
                     select: function (e, typeId) {
@@ -147,10 +194,55 @@
                     sum: 0,
                     isLoading: false,
                     datas: [],
+                    allDatas: [],//已经翻页加载过的数据就不要再加载了
                     toggleMultiple: function () {
                         vmModel.isLoading = vmModel.multiple = !vmModel.multiple;
+                    },
+                    deleteImage: function (e) {
+                        console.log(arguments);
+                    },
+                    /*分页*/
+                    limit: 12,//个数
+                    offset: 0,//数据起点
+                    pageIndex: 1,//当前页码
+                    pages: ['1', '2', '3', '4', '5'],
+                    sumPage: 0,//总页码
+                    $skipArray: ['limit', 'offset'],
+                    load: function (pageIndex) {
+                        var self = this,
+                            pages = [];
+                        //检查datas里面有没有
+                        if (pageIndex)
+                            this.offset = parseInt(pageIndex / this.limit + 1);
+                        said.ajax(Action.getImageList, {
+                            limit: self.limit,
+                            offset: self.offset
+                        }).done(function (res) {
+                            if (res.total <= 0) return;
+                            self.sum = res.total;
+
+                            self.sumPage = res.total % self.limit === 0 ? res.total / self.limit : parseInt(res.total / self.limit) + 1;
+                            console.log(res);
+                            vmModel.datas = res.datas.map(function (item, i) {
+                                item.img = _.imgLoad.DEFAULTS.load;
+                                _.imgLoad({
+                                    src: imageUrl.thumbnail(item.name, item.type),
+                                    done: function (url) {
+                                        vmModel.datas[i].img = url;
+                                    },
+                                    fail: function (url) {
+                                        vmModel.datas[i].img = url;
+                                    }
+                                });
+                                return item;
+                            });
+                            //解析数据啦。。。
+                        }).fail(function () {
+
+                        });
                     }
                 });
+                vmModel.load();
                 avalon.scan();
             });
         })

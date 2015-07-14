@@ -574,6 +574,7 @@
     <Content Include="Content\Back\Style\default.css" />
     <Content Include="Content\Back\Style\flat-ui.min.css" />
     <Content Include="Content\Back\Style\grid-table.css" />
+    <Content Include="Content\Back\Style\imagesCenter.css" />
     <Content Include="Content\Back\Style\said-said.css" />
     <Content Include="Content\Back\Style\index.css" />
     <Content Include="Content\Back\Style\saidCenter.css" />
@@ -1060,6 +1061,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Back\Style\sass\imagesCenter.scss" />
+    <Content Include="Content\Back\Style\imagesCenter.css.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

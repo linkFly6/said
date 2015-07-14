@@ -555,7 +555,7 @@
             options = elem;
             elem = null;
         }
-        options = so.extend({}, IMGDEFAULTS, elem && elem.dataset, options);//支持dataset和传参配置
+        options = so.extend({}, imgConfig, elem && elem.dataset, options);//支持dataset和传参配置
         var img = new Image();
         if (elem)
             elem.src = options.load;

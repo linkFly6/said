@@ -103,6 +103,8 @@ $source-box-padding: 10px;
         -moz-text-align-last: justify;
         -ms-text-align-last: justify;
         text-align-last: justify;*/
+        text-align: center;
+
         .source-item {
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -112,10 +114,14 @@ $source-box-padding: 10px;
             padding: 4px;
             transition: border 0.2s ease-in-out 0s;
 
+            &:hover {
+                border-color: #4cae4c;
+            }
+
             .item-img {
                 width: 256px;
                 height: 140px;
-                background: url('/Content/Images/Said-Images-load.gif') center 0 no-repeat;
+                background: url('/Content/Images/Said-Images-load.gif') center 0 no-repeat #f4f4f4;
                 background-size: cover;
             }
 
@@ -134,6 +140,11 @@ $source-box-padding: 10px;
                     float: right;
                     font-size: 16px;
                     transition: all 0.4s ease-in-out 0s;
+                    text-decoration: none;
+                }
+
+                .item-delete:hover {
+                    color: red;
                 }
             }
         }

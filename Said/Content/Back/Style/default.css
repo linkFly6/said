@@ -55,7 +55,18 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 /*public*/
 .said-watermark, .said-watermark2 { background-image: url('/Content/Images/said-watermark.png'); background-repeat: no-repeat; background-position: 95% 90%; }
 .said-watermark2 { background-image: url('/Content/Images/said-watermark-2.png'); }
-
+/*upload*/
+.btn-upload { display: inline-block; z-index: 3; }
+    .btn-upload .upload-mask { display: block; position: relative; width: 100%; overflow: hidden; height: 100%; padding: 6px 12px; line-height: 1.42857143; top: 0; left: 0; }
+    .btn-upload .upload-text { position: relative; z-index: 2; }
+    .btn-upload .upload-progress { position: absolute; height: 100%; z-index: 1; top: 0; left: 0; }
+    .btn-upload input[type=file] { position: absolute; height: 100%; width: 100%; opacity: 0; z-index: 3; display: block; top: 0; left: 0; cursor: pointer; }
+    .btn-upload.btn-lg .upload-mask { padding: 10px 16px; line-height: 1.3333333; border-radius: 3px; font-size: 18px; }
+    .btn-upload.btn-sm .upload-mask { padding: 5px 10px; line-height: 1.5; border-radius: 3px; font-size: 12px; }
+    .btn-upload.btn-xs .upload-mask { padding: 1px 5px; line-height: 1.5; border-radius: 3px; font-size: 12px; }
+    .btn-upload.btn-default, .btn-upload.btn-primary, .btn-upload.btn-success, .btn-upload.btn-warning, .btn-upload.btn-info, .btn-upload.btn-danger { padding: 0; }
+        /*找时间改写成sass，这里锁的样式怎么加？*/
+        .btn-upload.btn-default .upload-mask.lock { background-color: #e6e6e6; }
 
 /*body*/
 .container-main { padding: 15px; }

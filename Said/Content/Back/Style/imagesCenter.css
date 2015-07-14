@@ -60,7 +60,8 @@
     /*text-align: justify;
     -moz-text-align-last: justify;
     -ms-text-align-last: justify;
-    text-align-last: justify;*/ }
+    text-align-last: justify;*/
+    text-align: center; }
     .source-content .source-body .source-item {
       border: 1px solid #ddd;
       border-radius: 4px;
@@ -69,10 +70,12 @@
       margin: 9px;
       padding: 4px;
       transition: border 0.2s ease-in-out 0s; }
+      .source-content .source-body .source-item:hover {
+        border-color: #4cae4c; }
       .source-content .source-body .source-item .item-img {
         width: 256px;
         height: 140px;
-        background: url("/Content/Images/Said-Images-load.gif") center 0 no-repeat;
+        background: url("/Content/Images/Said-Images-load.gif") center 0 no-repeat #f4f4f4;
         background-size: cover; }
       .source-content .source-body .source-item .item-info {
         color: #666;
@@ -85,7 +88,10 @@
           color: #666;
           float: right;
           font-size: 16px;
-          transition: all 0.4s ease-in-out 0s; }
+          transition: all 0.4s ease-in-out 0s;
+          text-decoration: none; }
+        .source-content .source-body .source-item .item-info .item-delete:hover {
+          color: red; }
     .source-content .source-body .source-item.selected {
       background-color: #5cb85c;
       border-color: #4cae4c; }
