@@ -19,6 +19,8 @@
       top: 10px; }
     .source-content .source-head .search {
       width: 170px; }
+    .source-content .source-head .upload-text {
+      padding: 0 15px; }
     .source-content .source-head .said-toggle {
       border: 1px solid #ccc;
       border-radius: 20px;

@@ -28,7 +28,7 @@ namespace Said.Models
         /// <summary>
         /// 图片大小
         /// </summary>
-        public string ISize { get; set; }
+        public int ISize { get; set; }
 
         /// <summary>
         /// 上传日期
@@ -44,6 +44,12 @@ namespace Said.Models
         /// 上传用户ID
         /// </summary>
         public string UserID { get; set; }
+
+
+        /// <summary>
+        /// 被引用次数
+        /// </summary>
+        public int ReferenceCount { get; set; }
 
         /// <summary>
         /// 上传用户

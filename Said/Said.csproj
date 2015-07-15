@@ -1062,6 +1062,7 @@
     </Content>
     <Content Include="Content\Back\Style\sass\imagesCenter.scss" />
     <Content Include="Content\Back\Style\imagesCenter.css.map" />
+    <Content Include="Content\Back\Style\sass\koala-config.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

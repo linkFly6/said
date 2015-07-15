@@ -1,8 +1,8 @@
 ﻿define(['jquery', 'avalon'], function ($, avalon) {
-    var template = '<div class="CLASS_CONTAINER" ms-visible="visible" ms-class="uploading:uploading" style="z-index:ZINDEX;">\
+    var template = '<div class="CLASS_CONTAINER" ms-visible="visible" ms-class="lock:uploading" style="z-index:ZINDEX;">\
                         <span class="CLASS_TEXT">{{text}}</span>\
                      <div class="CLASS_PROGRESS" role="progressbar" ms-css-width="{{progress}}%"></div>\
-                      <input type="file" class="CLASS_FILEINPUT" ms-visible="!uploading" ms-change="change($event)"/>\</div>',
+                      <input type="file" class="CLASS_FILEINPUT" ms-visible="!uploading" ms-change="change($event)" ms-click="up($event)"/>\</div>',
         fileExttension = /\.[^\.]+/i,//得到后缀
         clearDirtyName = /\W/g,//清除脏字符
         noop = function () { };
@@ -26,6 +26,11 @@
             vm.text = config.text;
             vm.uploading = false;
             vm.progress = 0;
+            vm.up = function (e) {
+                if (vm.uploading && !config.multiple) {
+                    e.preventDefault();
+                }
+            }
             vm.change = function (e) {
                 var file = e.target.files[0],
                     name = file.name,//文件名
@@ -56,6 +61,7 @@
                 data.append(config.name, file /*file.slice(0)//如果需要支持断点续传的话*/, encodeURIComponent(name));//文件
 
                 xhr.open('post', config.url, true);
+                vm.uploading = true;
                 //xhr.setRequestHeader("Content-Disposition", 'Content-Disposition: form-data; name="img"; filename="blob"');
                 if (config.progress)
                     xhr.upload.addEventListener("progress", function (e) {
@@ -81,7 +87,7 @@
                 };
                 xhr.send(data);
                 vm.text = '上传中';
-                vm.uploading = true;
+
             };
             vm.$init = function () {
                 //elem.parentNode.replaceChild(containerDOM, elem);
@@ -111,7 +117,7 @@
             return template;
         },
         visible: true,
-        //multiple: false,暂时还是不要支持了吧....
+        multiple: false,//暂时还是不要支持了吧....
         progress: true,
         text: '上传缩略图',
         size: 1048576,//默认1mb，<=0表示允许无限

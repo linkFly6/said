@@ -62,7 +62,8 @@ namespace Said.Areas.Back.Controllers
                 //hasPreviousPage = res.HasPreviousPage,
                 total = res.TotalItemCount,
                 //这里要输出完整的！！！
-                datas = res.Select(m => new { id = m.ImageId, name = m.IName, img = m.IFileName, /*data = m.IFileName,*/ type = m.Type })
+                //datas = res.Select(m => new { id = m.ImageId, name = m.IName, img = m.IFileName, /*data = m.IFileName,*/ type = m.Type })
+                datas = res
             }, JsonRequestBehavior.AllowGet);
         }
         #endregion
@@ -178,6 +179,8 @@ namespace Said.Areas.Back.Controllers
                 Date = DateTime.Now,
                 IFileName = result["name"],
                 Type = type,
+                ReferenceCount = 0,
+                ISize = file.ContentLength,//字节为大小
                 ImageId = Guid.NewGuid().ToString().Replace("-", ""),
                 IName = result["name"]
             };

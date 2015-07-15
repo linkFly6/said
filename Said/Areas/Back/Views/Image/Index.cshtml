@@ -38,13 +38,14 @@
                     </ul>
 
                 </div>
-                <div class="btn btn-upload btn-default btn-sm">
-                    <div style="z-index: 3;" class="upload-mask">
-                        <span class="upload-text">&nbsp;&nbsp;&nbsp;&nbsp;上传图片&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                @*<div class="btn btn-upload btn-default btn-sm">
+                    <div style="z-index: 3;" class="upload-mask lock">
+                        <span class="upload-text">上传图片</span>
                         <div role="progressbar" class="upload-progress" style="width: 20%;"></div>
                         <input type="file" />
                     </div>
-                </div>
+                </div>*@
+                <div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn btn-upload btn-default btn-sm"></div>
                 <div class="said-toggle" ms-class="selected:multiple" title="是否多选" ms-click="toggleMultiple()"></div>
             </div>
             <div class="source-loading">
@@ -62,12 +63,11 @@
         </div>
         <div class="source-context">
             <div class="source-body">
-                <div ms-repeat-item="datas" class="source-item">
-                    <!--ms-class="selected:item.selected"-->
+                <div ms-repeat-item="datas" class="source-item" ms-class="selected:activeIndex==$index" ms-click="activeItem(item,$index)">
                     <div class="item-img" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)" ms-css-background-image="'url(' + item.img + ')'"></div>
                     <div class="item-info">
-                        <span class="img-name">{{item.name}}</span>
-                        <a title="删除" class="fa fa-times item-delete" href="javascript:;" ms-live-click="deleteImage"></a>
+                        <span class="img-name">{{item.IName}}</span>
+                        <a title="删除" class="fa fa-times item-delete" href="javascript:;" ms-click="deleteImage($event,item,$index)"></a>
                     </div>
                 </div>
                 @*<div data-id="cac2b7cb398c470296e69765bd2fdd51" class="source-item selected">
@@ -91,19 +91,19 @@
                     </li>
                     <li ms-visible="pageIndex < sumPage - 2 "><span>...</span></li>
                     <li ms-if="pageIndex < sumPage - 2 "><a href="javascript:;"><span>{{sumPage}}</span></a></li>
-                    <li ms-visible="pageIndex != sumPage"><a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                    <li ms-visible="pageIndex < sumPage"><a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a></li>
                 </ul>
             </nav>
         </div>
     </div>
-    <div class="source-detail">
-        <ul class="source-info">
-            <li>Thumbnail069420152702232107.jpg</li>
-            <li>2015-7-6 22:54:15</li>
-            <li>1024MB</li>
-            <li>系统图片</li>
-            <li>被引用12次</li>
-            <li class="text-center"><a href="javascript:;" class="btn btn-default">查看大图</a></li>
+    <div class="source-detail" ms-controller="currData">
+        <ul class="source-info" ms-visible="ImageId">
+            <li>{{IName}}</li>
+            <li>{{Date}}</li>
+            <li>{{ISize}}MB</li>
+            <li>{{Type}}</li>
+            <li>被引用{{ReferenceCount}}次</li>
+            <li class="text-center"><a ms-href="Img" target="_blank" class="btn btn-default">查看大图</a></li>
         </ul>
     </div>
 </div>
@@ -115,7 +115,8 @@
     <script>
 
         var Action = {
-            getImageList: '@Url.Action("GetImagesList", "Image")'
+            getImageList: '@Url.Action("GetImagesList", "Image")',
+            upload: '@Url.Action("Upload", "Image")'
         },
             Source = {
                 thumbnail: [
@@ -137,8 +138,10 @@
                     '@ConfigInfo.SourceSystemPath',
                     '@ConfigInfo.SourceSystemPath',
                     '@ConfigInfo.SourceSystemPath'
-                ]
-
+                ],
+                typeName: ['系统图片', '日志', '音乐', 'Said', 'Icon', '页面', '无', '其他'],
+                maxImageSize: '@ConfigInfo.SizeSystem',
+                filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
             };
         var ImageType = {
             System: 0,
@@ -153,8 +156,8 @@
         require.config({
             baseUrl: '/Content/Back/JavaScript',
             paths: {
-                'upload': 'so/plug/upload',
-                'showMsg': 'so/plug/showMsg'
+                'showMsg': 'so/plug/showMsg',
+                'avalonUpload': 'avalon/plug/uploadBox'
             },
             packages: [
             {
@@ -168,17 +171,28 @@
                 main: 'said'
             }]
         });
-        require(['jquery', 'avalon', 'so', 'upload', 'showMsg'], function ($, avalon, _, upload, showMsg) {
+        require(['jquery', 'avalon', 'so', 'showMsg', 'avalonUpload'], function ($, avalon, _, showMsg, upload) {
             $(function () {
                 'use strict';
                 var imageUrl = {
                     thumbnail: function (imgName, typeId) {
                         return (Source.thumbnail[typeId] || Source.thumbnail[0]) + imgName;
                     },
-                    get: function (imgName, type) {
+                    get: function (imgName, typeId) {
                         return (Source.image[typeId] || Source.image[0]) + imgName;
                     }
                 };
+                var vmCurrData = avalon.define({
+                    $id: 'currData',
+                    ImageId: '',
+                    IName: '',
+                    Img: '',
+                    Date: '',
+                    ISize: '',
+                    Type: '',
+                    ReferenceCount: '',
+                });
+
                 var vmModel = avalon.define({
                     $id: 'model',
                     select: function (e, typeId) {
@@ -190,6 +204,7 @@
                     typeId: '',
                     typeUrl: '',
                     typeText: '',
+                    activeIndex: -1,
                     selectCount: 0,
                     sum: 0,
                     isLoading: false,
@@ -198,8 +213,19 @@
                     toggleMultiple: function () {
                         vmModel.isLoading = vmModel.multiple = !vmModel.multiple;
                     },
-                    deleteImage: function (e) {
-                        console.log(arguments);
+                    deleteImage: function (e, item, i) {
+                        e.stopPropagation();
+                    },
+                    activeItem: function (item, i) {
+                        vmModel.activeIndex = i;
+                        vmCurrData.IName = item.IName;
+                        vmCurrData.Img = imageUrl.get(item.IFileName, item.type);
+                        vmCurrData.Type = Source.typeName[item.type] || '未知';
+                        vmCurrData.Date = _.dateToLocal(item.Date);
+                        vmCurrData.ReferenceCount = item.ReferenceCount || '未知';
+                        vmCurrData.ISize = (item.ISize * 1024 * 1024) || '未知';
+                        vmCurrData.ImageId = item.ImageId;
+
                     },
                     /*分页*/
                     limit: 12,//个数
@@ -207,7 +233,7 @@
                     pageIndex: 1,//当前页码
                     pages: ['1', '2', '3', '4', '5'],
                     sumPage: 0,//总页码
-                    $skipArray: ['limit', 'offset'],
+                    $skipArray: ['limit', 'offset', 'allDatas'],
                     load: function (pageIndex) {
                         var self = this,
                             pages = [];
@@ -218,15 +244,16 @@
                             limit: self.limit,
                             offset: self.offset
                         }).done(function (res) {
-                            if (res.total <= 0) return;
+                            if (res.total <= 0) {
+                                vmModel.pages = [];
+                            };
                             self.sum = res.total;
-
                             self.sumPage = res.total % self.limit === 0 ? res.total / self.limit : parseInt(res.total / self.limit) + 1;
                             console.log(res);
                             vmModel.datas = res.datas.map(function (item, i) {
                                 item.img = _.imgLoad.DEFAULTS.load;
                                 _.imgLoad({
-                                    src: imageUrl.thumbnail(item.name, item.type),
+                                    src: imageUrl.thumbnail(item.IFileName, item.type),
                                     done: function (url) {
                                         vmModel.datas[i].img = url;
                                     },
@@ -240,6 +267,32 @@
                         }).fail(function () {
 
                         });
+                    },
+
+
+
+                    //widget
+                    $uploadImagesConfig: {
+                        classFile: 'hidden-file',
+                        //name: 'testFile',
+                        filters: Source.filters,
+                        url: Action.upload,
+                        text: '上传图片',
+                        classContainer: 'upload-mask',
+                        classText: 'upload-text',
+                        classProgress: 'upload-progress',
+                        size: Source.maxImageSize,
+                        //上传要支持附带一些数据上去！！！！！！
+
+                        done: function (vm, data) {
+                            if (data.code) {
+                                showMsg('服务器返回异常：' + data.msg, showMsg.ERROR, true);
+                            }
+                            return true;
+                        },
+                        fail: function (vm, data) {
+                            showMsg('上传失败：' + data.msg, showMsg.ERROR, true);
+                        }
                     }
                 });
                 vmModel.load();

@@ -67,6 +67,17 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
     .btn-upload.btn-default, .btn-upload.btn-primary, .btn-upload.btn-success, .btn-upload.btn-warning, .btn-upload.btn-info, .btn-upload.btn-danger { padding: 0; }
         /*找时间改写成sass，这里锁的样式怎么加？*/
         .btn-upload.btn-default .upload-mask.lock { background-color: #e6e6e6; }
+        .btn-upload.btn-default .upload-progress { background-color: #fff; }
+        .btn-upload.btn-primary .upload-mask.lock { background-color: #286090; }
+        .btn-upload.btn-primary .upload-progress { background-color: #337ab7; }
+        .btn-upload.btn-success .upload-mask.lock { background-color: #449d44; }
+        .btn-upload.btn-success .upload-progress { background-color: #5cb85c; }
+        .btn-upload.btn-warning .upload-mask.lock { background-color: #ec971f; }
+        .btn-upload.btn-warning .upload-progress { background-color: #f0ad4e; }
+        .btn-upload.btn-info .upload-mask.lock { background-color: #31b0d5; }
+        .btn-upload.btn-info .upload-progress { background-color: #5bc0de; }
+        .btn-upload.btn-danger .upload-mask.lock { background-color: #c9302c; }
+        .btn-upload.btn-danger .upload-progress { background-color: #d9534f; }
 
 /*body*/
 .container-main { padding: 15px; }
