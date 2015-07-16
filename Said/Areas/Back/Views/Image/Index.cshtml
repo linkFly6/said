@@ -18,6 +18,7 @@
         <li>上传的图片，最后会被裁剪为<span class="keywords">1.82</span>比例的图片</li>
         <li>上传的图片不允许超过<span class="keywords">1MB</span></li>
         <li>上传的音乐文件不允许超过<span class="keywords">6MB</span></li>
+        <li>上传图片的时候注意上传的分类！默认上传在<span class="keywords">其他</span>分类下</li>
     </ul>
 </div>
 <div class="main-context">
@@ -39,12 +40,12 @@
 
                 </div>
                 @*<div class="btn btn-upload btn-default btn-sm">
-                    <div style="z-index: 3;" class="upload-mask lock">
-                        <span class="upload-text">上传图片</span>
-                        <div role="progressbar" class="upload-progress" style="width: 20%;"></div>
-                        <input type="file" />
-                    </div>
-                </div>*@
+                        <div style="z-index: 3;" class="upload-mask lock">
+                            <span class="upload-text">上传图片</span>
+                            <div role="progressbar" class="upload-progress" style="width: 20%;"></div>
+                            <input type="file" />
+                        </div>
+                    </div>*@
                 <div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn btn-upload btn-default btn-sm"></div>
                 <div class="said-toggle" ms-class="selected:multiple" title="是否多选" ms-click="toggleMultiple()"></div>
             </div>
@@ -64,7 +65,7 @@
         <div class="source-context">
             <div class="source-body">
                 <div ms-repeat-item="datas" class="source-item" ms-class="selected:activeIndex==$index" ms-click="activeItem(item,$index)">
-                    <div class="item-img" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)" ms-css-background-image="'url(' + item.img + ')'"></div>
+                    <div class="item-img" ms-css-background-image="'url(' + item.img + ')'"></div>
                     <div class="item-info">
                         <span class="img-name">{{item.IName}}</span>
                         <a title="删除" class="fa fa-times item-delete" href="javascript:;" ms-click="deleteImage($event,item,$index)"></a>
@@ -83,15 +84,15 @@
                 <ul class="pagination">
                     <!--ms-visible="total==0"-->
                     <li ms-if="pageIndex>1"><a href="javascript:;" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                    <li ms-if="pageIndex>2"><a href="javascript:;"><span>1</span></a></li>
+                    <li ms-if="pageIndex>2"><a href="javascript:;" ms-click="load(1)"><span>1</span></a></li>
                     <li ms-if="pageIndex>2"><span>...</span></li>
                     <li ms-repeat-index="pages">
-                        <a ms-if="index!=pageIndex" href="javascript:;">{{index}}</a>
+                        <a ms-if="index!=pageIndex" href="javascript:;" ms-click="load(index)">{{index}}</a>
                         <span ms-if="index==pageIndex">{{index}}</span>
                     </li>
-                    <li ms-visible="pageIndex < sumPage - 2 "><span>...</span></li>
-                    <li ms-if="pageIndex < sumPage - 2 "><a href="javascript:;"><span>{{sumPage}}</span></a></li>
-                    <li ms-visible="pageIndex < sumPage"><a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                    <li ms-if="pageIndex < sumPage - 2 "><span>...</span></li>
+                    <li ms-if="pageIndex < sumPage - 2 "><a href="javascript:;" ms-click="load(sumPage)"><span>{{sumPage}}</span></a></li>
+                    <li ms-if="pageIndex < sumPage"><a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a></li>
                 </ul>
             </nav>
         </div>
@@ -231,21 +232,44 @@
                     limit: 12,//个数
                     offset: 0,//数据起点
                     pageIndex: 1,//当前页码
-                    pages: ['1', '2', '3', '4', '5'],
+                    pages: [],
                     sumPage: 0,//总页码
-                    $skipArray: ['limit', 'offset', 'allDatas'],
+                    $skipArray: ['limit', 'offset', 'allDatas', 'sumPage'],
+                    skipPage: function (currIndex, sumPage) {
+                        var pages = [],
+                            len = 0,
+                            i = 0;
+                        if (sumPage - currIndex > 5) {
+                            i = currIndex - 2;
+                            len = currIndex + 2;
+                        } else if (sumPage <= 5) {
+                            i = 1;
+                            len = sumPage;
+                        } else {
+                            i = sumPage - 5;
+                            len = sumPage;
+                        }
+                        console.log('分页', i, len);
+                        for (; i <= len; i++) {
+                            pages.push(i);
+                        }
+                        this.pages = pages;
+                    },
                     load: function (pageIndex) {
-                        var self = this,
+                        var self = vmModel,
                             pages = [];
                         //检查datas里面有没有
-                        if (pageIndex)
-                            this.offset = parseInt(pageIndex / this.limit + 1);
+                        if (pageIndex) {
+                            self.offset = parseInt(pageIndex / self.limit + 1);
+                            self.pageIndex = pageIndex;
+                        }
                         said.ajax(Action.getImageList, {
                             limit: self.limit,
                             offset: self.offset
                         }).done(function (res) {
-                            if (res.total <= 0) {
+                            if (res.total < 1) {
                                 vmModel.pages = [];
+                                return;
                             };
                             self.sum = res.total;
                             self.sumPage = res.total % self.limit === 0 ? res.total / self.limit : parseInt(res.total / self.limit) + 1;
@@ -255,6 +279,7 @@
                                 _.imgLoad({
                                     src: imageUrl.thumbnail(item.IFileName, item.type),
                                     done: function (url) {
+                                        //严重！！！TypeError: vmModel.datas[i] is undefined，因为浏览器的缓存！！！！这里早早就触发了，但其实vmModel.datas还没有被赋值
                                         vmModel.datas[i].img = url;
                                     },
                                     fail: function (url) {
@@ -263,7 +288,7 @@
                                 });
                                 return item;
                             });
-                            //解析数据啦。。。
+                            self.skipPage(self.currIndex, self.sumPage);
                         }).fail(function () {
 
                         });
@@ -282,11 +307,15 @@
                         classText: 'upload-text',
                         classProgress: 'upload-progress',
                         size: Source.maxImageSize,
-                        //上传要支持附带一些数据上去！！！！！！
-
+                        postData: function () {//postData是附带数据发送
+                            return { imageType: vmModel.typeId };
+                        },
                         done: function (vm, data) {
                             if (data.code) {
                                 showMsg('服务器返回异常：' + data.msg, showMsg.ERROR, true);
+                            } else {
+                                showMsg('上传成功', showMsg.OK);
+                                //data.model
                             }
                             return true;
                         },
@@ -295,8 +324,11 @@
                         }
                     }
                 });
-                vmModel.load();
                 avalon.scan();
+
+                //setTimeout(function () {
+                vmModel.load();
+                //}, 300)
             });
         })
     </script>

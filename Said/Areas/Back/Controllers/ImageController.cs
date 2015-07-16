@@ -73,8 +73,20 @@ namespace Said.Areas.Back.Controllers
         #region 上传不同的分类图片
         public JsonResult Upload()
         {
+            string type = Request["imageType"];
+            ImageType imgType;
+            if (string.IsNullOrEmpty(type))
+            {
+                imgType = ImageType.Other;
+            }
+            else
+            {
+                if (!Enum.TryParse(type, out imgType))//没有上传图片默认视为（其他图）
+                    imgType = ImageType.Other;
+            }
+
             //分析上传的文件信息，返回解析得到的结果
-            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, ConfigInfo.SizeSystem, ConfigInfo.SourceSystemPath, ConfigInfo.SourceSystemThumbnailPath, ImageType.Said);
+            return Upload(imgType);
         }
 
 
@@ -83,7 +95,7 @@ namespace Said.Areas.Back.Controllers
         /// </summary>
         /// <param name="type">图片类型</param>
         /// <returns></returns>
-        public JsonResult Upload(ImageType type)
+        private JsonResult Upload(ImageType type)
         {
             string resourcePath = string.Empty,
                    thumbnailPath = string.Empty;
@@ -130,7 +142,7 @@ namespace Said.Areas.Back.Controllers
                     break;
             }
             //分析上传的文件信息，返回解析得到的结果
-            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, ConfigInfo.SizeSaidImage, ConfigInfo.SourceSaidPath, thumbnailPath, ImageType.Said);
+            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, maxSize, resourcePath, thumbnailPath, type);
         }
         #endregion
 
@@ -165,7 +177,7 @@ namespace Said.Areas.Back.Controllers
             //Icon图不需要生成缩略图
             if (intImageType < 4 || intImageType > 6)//[4:Icon,5:Page,6:Lab]不需要生成缩略图
             {
-                isCurOk = ImageCommon.MakeThumbnail(result["path"], Server.MapPath(thumbnailPath + result["name"]));
+                isCurOk = ImageCommon.MakeThumbnail(result["path"], Server.MapPath(thumbnailPath) + result["name"]);
                 if (!isCurOk)
                 {
                     return Json(new { code = 4, msg = "生成缩略图失败" });
@@ -188,10 +200,7 @@ namespace Said.Areas.Back.Controllers
                 return Json(new
                 {
                     code = 0,
-                    id = model.ImageId,
-                    name = model.IFileName,
-                    data = model.IFileName,
-                    img = model.IFileName
+                    model = model
                 });
             return Json(new { code = 2, msg = "插入到数据库失败" });
         }

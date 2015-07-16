@@ -128,7 +128,7 @@ namespace Said.Common
                         //缩略图一律默认jpeg格式
                         string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(savePath);//无扩展名的文件名
                         string dir = Path.GetDirectoryName(savePath);//文件目录路径
-                        image.Save(dir + fileNameWithoutExtension + ".jpg", ImageFormat.Jpeg);
+                        image.Save(dir + "\\" + fileNameWithoutExtension + ".jpg", ImageFormat.Jpeg);
                         return true;
                     }
                 }

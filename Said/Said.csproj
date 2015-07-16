@@ -193,7 +193,6 @@
     <Content Include="Content\Back\JavaScript\avalon\plug\sourceImages.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\template\imgInput.html" />
     <Content Include="Content\Back\JavaScript\avalon\plug\template\sourceImages.html" />
-    <Content Include="Content\Back\JavaScript\avalon\plug\upload.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\uploadBox.js" />
     <Content Include="Content\Back\JavaScript\avalon\plug\template\popup.html" />
     <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
