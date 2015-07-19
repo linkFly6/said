@@ -55,6 +55,10 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 /*public*/
 .said-watermark, .said-watermark2 { background-image: url('/Content/Images/said-watermark.png'); background-repeat: no-repeat; background-position: 95% 90%; }
 .said-watermark2 { background-image: url('/Content/Images/said-watermark-2.png'); }
+.said-red { color: red; }
+.said-bold { font-weight: bold; }
+
+
 /*upload*/
 .btn-upload { display: inline-block; z-index: 3; }
     .btn-upload .upload-mask { display: block; position: relative; width: 100%; overflow: hidden; height: 100%; padding: 6px 12px; line-height: 1.42857143; top: 0; left: 0; }

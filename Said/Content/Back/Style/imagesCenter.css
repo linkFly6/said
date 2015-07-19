@@ -53,6 +53,8 @@
       margin-right: 5px; }
     .source-content .source-head .source-sum {
       color: #999; }
+    .source-content .source-head .selected-path {
+      padding-right: 10px; }
     .source-content .source-head .selected-count {
       color: red;
       font-size: 22px; }

@@ -147,8 +147,6 @@ namespace Said.Areas.Back.Controllers
         #endregion
 
 
-
-
         #region 上传图片通用
 
         #region 上传图片
@@ -187,12 +185,12 @@ namespace Said.Areas.Back.Controllers
 
             Image model = new Image
             {
-                //TODO   -  UserID,ISize
+                //TODO   -  UserID
                 Date = DateTime.Now,
                 IFileName = result["name"],
                 Type = type,
                 ReferenceCount = 0,
-                ISize = file.ContentLength,//字节为大小
+                ISize = file.ContentLength,//TODO 这里要显示裁剪字节信息，不能用原始的
                 ImageId = Guid.NewGuid().ToString().Replace("-", ""),
                 IName = result["name"]
             };
@@ -261,6 +259,45 @@ namespace Said.Areas.Back.Controllers
         }
 
         #endregion
+        #endregion
+
+
+        #region 删除图片（物理删除）
+        /// <summary>
+        /// 删除图片（物理删除）
+        /// </summary>
+        /// <param name="id">image</param>
+        /// <returns></returns>
+        public JsonResult RealDeleteImage(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(1, "没有数据");
+            Image image = ImageApplication.Find(id);
+            if (image == null)
+                return ResponseResult(2, "没有找到图片");
+            image.IsDel = 1;
+            string path = string.Empty;
+            switch (image.Type)
+            {
+                case ImageType.Blog:
+                    path = ConfigInfo.SourceBlogPath;
+                    break;
+                case ImageType.Said:
+                    path = ConfigInfo.SourceSaidPath;
+                    break;
+                case ImageType.System:
+                case ImageType.Icon:
+                case ImageType.Page:
+                case ImageType.Lab:
+                case ImageType.Other:
+                default:
+                    path = ConfigInfo.SourceSystemPath;
+                    break;
+            }
+            FileCommon.Remove(path + image.IFileName);
+            ImageApplication.Delete(image);
+            return ResponseResult();
+        }
         #endregion
     }
 }
