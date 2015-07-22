@@ -130,6 +130,7 @@
     <Compile Include="Areas\Back\Controllers\ClassifyController.cs" />
     <Compile Include="Areas\Back\Controllers\HomeController.cs" />
     <Compile Include="Areas\Back\Controllers\ImageController.cs" />
+    <Compile Include="Areas\Back\Controllers\MusicController.cs" />
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
@@ -1054,6 +1055,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Back\Views\Image\Index.cshtml" />
+    <Content Include="Areas\Back\Views\Music\Index.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

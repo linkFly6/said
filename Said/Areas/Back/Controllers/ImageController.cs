@@ -111,9 +111,8 @@ namespace Said.Areas.Back.Controllers
                     break;
                 case ImageType.Music:
                     {
-                        maxSize = ConfigInfo.SizeMusic;
+                        maxSize = ConfigInfo.SizeMusicImage;
                         resourcePath = ConfigInfo.SourceMusicImagePath;
-                        thumbnailPath = ConfigInfo.SourceMusicThumbnailPath;
                     }
                     break;
                 case ImageType.Said:
@@ -129,7 +128,11 @@ namespace Said.Areas.Back.Controllers
                         resourcePath = ConfigInfo.SourceIconsPath;
                     }
                     break;
-                //case ImageType.System:
+                case ImageType.System:
+                    {
+                        thumbnailPath = ConfigInfo.SourceSystemThumbnailPath;
+                        goto default;
+                    }
                 //case ImageType.Page:
                 //case ImageType.Lab:
                 //case ImageType.Other:
@@ -137,7 +140,7 @@ namespace Said.Areas.Back.Controllers
                     {
                         maxSize = ConfigInfo.SizeSystem;
                         resourcePath = ConfigInfo.SourceSystemPath;
-                        thumbnailPath = ConfigInfo.SourceSystemThumbnailPath;
+
                     }
                     break;
             }
@@ -172,8 +175,7 @@ namespace Said.Areas.Back.Controllers
             {
                 return Json(new { code = 3, msg = "裁剪图片失败" });
             }
-            //Icon图不需要生成缩略图
-            if (intImageType < 4 || intImageType > 6)//[4:Icon,5:Page,6:Lab]不需要生成缩略图
+            if (string.Empty == thumbnailPath)//不需要生成缩略图
             {
                 isCurOk = ImageCommon.MakeThumbnail(result["path"], Server.MapPath(thumbnailPath) + result["name"]);
                 if (!isCurOk)

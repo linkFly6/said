@@ -30,10 +30,10 @@ namespace Said.Models
         /// 歌曲Like数量
         /// </summary>
         public string SongLikeCount { get; set; }
-        /// <summary>
-        /// 歌曲图片
-        /// </summary>
-        public string SongImg { get; set; }
+        ///// <summary>
+        ///// 歌曲图片
+        ///// </summary>
+        //public string SongImg { get; set; }
         /// <summary>
         /// 歌手
         /// </summary>
@@ -42,6 +42,32 @@ namespace Said.Models
         /// 歌曲专辑
         /// </summary>
         public string SongAlbum { get; set; }
+
+        /// <summary>
+        /// 创建日期
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        /// <summary>
+        /// 发布日期
+        /// </summary>
+        public DateTime ReleaseDate { get; set; }
+
+        /// <summary>
+        /// 音乐时长
+        /// </summary>
+        public int Duration { get; set; }
+
+
+        /// <summary>
+        /// 音乐图片ID
+        /// </summary>
+        public string ImageId { get; set; }
+
+        /// <summary>
+        /// 音乐图片
+        /// </summary>
+        public virtual Image Image { get; set; }
 
         /// <summary>
         /// 歌曲文件名

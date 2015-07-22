@@ -1,4 +1,5 @@
-﻿using Said.Models;
+﻿using PagedList;
+using Said.Models;
 using Said.Service;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,39 @@ namespace Said.Application
             get { return service ?? (service = new SongService(new Domain.Said.Data.DatabaseFactory())); }
         }
 
+
+        /// <summary>
+        /// 验证音乐
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static string ValidateAndCorrectSubmit(Song model)
+        {
+            if (string.IsNullOrWhiteSpace(model.SongName))
+            {
+                return "歌曲名称不可为空（不可获取）";
+            }
+            if (string.IsNullOrWhiteSpace(model.ImageId))
+            {
+                return "歌曲图片不可为空（不可获取）";
+            }
+            if (string.IsNullOrWhiteSpace(model.SongArtist))
+            {
+                return "歌手不可为空（不可获取）";
+            }
+            if (string.IsNullOrWhiteSpace(model.SongFileName))
+            {
+                return "歌曲文件名不可为空（不可获取）";
+            }
+            model.Image = ImageApplication.Find(model.ImageId);
+            if (model.Image == null)
+            {
+                return "歌曲不正确（不可获取）";
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// 添加
         /// </summary>
@@ -31,6 +65,17 @@ namespace Said.Application
             //return song.SongId;
             Context.Add(song);
             return Context.Submit();
+        }
+
+        /// <summary>
+        /// 删除（物理删除）
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int Delete(Song model)
+        {
+            Context.Delete(model);
+            return service.Submit();
         }
 
 
@@ -82,6 +127,28 @@ namespace Said.Application
         public static IEnumerable<Song> Find()
         {
             return Context.GetAll();
+        }
+
+        /// <summary>
+        /// 分页查询返回多条
+        /// </summary>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public static IPagedList<Song> FindToList(Models.Data.Page page)
+        {
+            return Context.GetPageDesc(page, m => m.IsDel == 0, m => m.Date);
+        }
+
+
+        /// <summary>
+        /// 分页查询返回多条
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="keywords">查询关键字</param>
+        /// <returns></returns>
+        public static IPagedList<Song> FindToList(Models.Data.Page page, string keywords)
+        {
+            return Context.GetPageDesc(page, m => m.IsDel == 0 && (m.SongName.Contains(keywords) || m.SongArtist.Contains(keywords) || m.SongAlbum.Contains(keywords)), m => m.Date);
         }
         #endregion
 

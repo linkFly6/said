@@ -54,6 +54,11 @@ namespace Said.Common
         /// </summary>
         public readonly static string SourceMusicImagePath = ConfigTable.Get(ConfigEnum.MusicImage);
 
+        /// <summary>
+        /// Music允许的最大图片
+        /// </summary>
+        public readonly static int SizeMusic = int.Parse(ConfigTable.Get(ConfigEnum.MusicMaxSize));
+
 
         /// <summary>
         /// 音乐缩略图
@@ -94,9 +99,9 @@ namespace Said.Common
         public readonly static int SizeSaidImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceBlogImagesMaxSize));
 
         /// <summary>
-        /// Music允许的最大图片
+        /// Said允许的最大图片
         /// </summary>
-        public readonly static int SizeMusic = int.Parse(ConfigTable.Get(ConfigEnum.MusicMaxSize));
+        public readonly static int SizeMusicImage = int.Parse(ConfigTable.Get(ConfigEnum.SourceMusicImagesMaxSize));
 
         /// <summary>
         /// Icons允许的最大图片

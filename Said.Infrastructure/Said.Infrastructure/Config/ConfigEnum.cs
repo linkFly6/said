@@ -29,6 +29,11 @@ namespace Said.Config
         /// 默认音乐上传大小(byte)
         /// </summary>
         public const string MusicMaxSize = "music.maxSize";
+
+        /// <summary>
+        /// 默认音乐图片上传大小
+        /// </summary>
+        public const string SourceMusicImagesMaxSize = "music.images.maxSize";
         /// <summary>
         /// 默认图片过滤
         /// </summary>
