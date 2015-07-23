@@ -47,7 +47,6 @@ namespace Said.Application
             {
                 return "歌曲不正确（不可获取）";
             }
-
             return null;
         }
 

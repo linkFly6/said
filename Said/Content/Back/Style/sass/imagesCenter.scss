@@ -163,8 +163,21 @@ $source-box-padding: 10px;
         }
     }
 
+
     .source-footer {
         text-align: center;
+    }
+    //添加音乐
+    .add-song {
+        padding-top: 100px;
+        width: 800px;
+        margin: 0 auto;
+    }
+
+    .upload-file-box {
+        .btn {
+            width: 200px;
+        }
     }
 }
 

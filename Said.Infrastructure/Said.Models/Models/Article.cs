@@ -148,7 +148,7 @@ namespace Said.Models
                 yield return new ValidationResult("歌曲信息不正确");
             else if (Song != null)
             {
-                if (string.IsNullOrWhiteSpace(Song.SongImg))
+                if (string.IsNullOrWhiteSpace(Song.ImageId))
                     yield return new ValidationResult("歌曲图片不允许为空");
                 //if (string.IsNullOrWhiteSpace(Song.SongArtist))
                 //    yield return new ValidationResult("歌手不允许为空");

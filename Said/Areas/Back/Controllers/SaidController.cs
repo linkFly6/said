@@ -84,7 +84,7 @@ namespace Said.Areas.Back.Controllers
             {
                 model.Song = new Song
                 {
-                    SongImg = form["Song.songImg"],
+                    ImageId = form["Song.songImg"],
                     SongName = form["Song.SongName"],
                     SongAlbum = form["Song.SongAlbum"],
                     SongArtist = form["Song.SongArtist"],

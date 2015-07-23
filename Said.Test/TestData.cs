@@ -80,7 +80,7 @@ namespace Said.Test
                     SongArtist="Coldplay",
                     SongAlbum="Yellow",
                     SongFileName="302320154702223701.mp3",
-                    SongImg="098920153702223601.jpg"
+                    ImageId="098920153702223601.jpg"
                 },
                 new Song {
                     SongId="97279318-f809-488c-b31c-fe642acb322b",
@@ -88,7 +88,7 @@ namespace Said.Test
                     SongArtist="Westlife",
                     SongAlbum="Coust To Coust",
                     SongFileName="484720153302224501.mp3",
-                    SongImg="107320153502225701.png"
+                    ImageId="107320153502225701.png"
                 }
             };
             Console.WriteLine("======================正在添加Song数据======================");

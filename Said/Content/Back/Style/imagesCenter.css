@@ -101,6 +101,12 @@
       border-color: #4cae4c; }
   .source-content .source-footer {
     text-align: center; }
+  .source-content .add-song {
+    padding-top: 100px;
+    width: 800px;
+    margin: 0 auto; }
+  .source-content .upload-file-box .btn {
+    width: 200px; }
 
 .keywords {
   color: #52b12d; }

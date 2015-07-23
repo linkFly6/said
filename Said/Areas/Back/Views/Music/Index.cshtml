@@ -24,32 +24,12 @@
 <div class="main-context">
     <div class="source-content" ms-controller="model">
         <div class="source-head">
-            <div class="toolbar-left">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{typeText||'全部'}} <span class="caret"></span></button>
-                    <ul class="dropdown-menu">
-                        <li><a href="javascript:;" title="选择系统分类下的图片" ms-click="select($event,-1)">全部</a></li>
-                        <li><a href="javascript:;" title="选择系统分类下的图片" ms-click="select($event,0)">系统</a></li>
-                        <li><a href="javascript:;" title="选择Blog分类下的图片" ms-click="select($event,1)">日志</a></li>
-                        <li><a href="javascript:;" title="选择Said分类下的图片" ms-click="select($event,2)">音乐</a></li>
-                        <li><a href="javascript:;" title="选择Music分类下的图片" ms-click="select($event,3)">Said</a></li>
-                        <li><a href="javascript:;" title="选择Page分类下的图片" ms-click="select($event,5)">页面</a></li>
-                        <li><a href="javascript:;" title="选择Other分类下的图片" ms-click="select($event,7)">其他</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="javascript:;" title="尚未推出">实验室</a></li>
-
-                    </ul>
-
+            <div class="toolbar-left form-inline">
+                <button class="btn btn-default btn-sm">添加音乐</button>
+                <div class="form-group">
+                    <input type="search" class="form-control" placeholder="Search" style="height:30px;" />
                 </div>
-                @*<div class="btn btn-upload btn-default btn-sm">
-                        <div style="z-index: 3;" class="upload-mask lock">
-                            <span class="upload-text">上传图片</span>
-                            <div role="progressbar" class="upload-progress" style="width: 20%;"></div>
-                            <input type="file" />
-                        </div>
-                    </div>*@
-                <div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn btn-upload btn-default btn-sm"></div>
-                @*<div class="said-toggle" ms-class="selected:multiple" title="是否多选" ms-click="toggleMultiple()"></div>*@
+                @*<div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn btn-upload btn-default btn-sm"></div>*@
             </div>
             <div class="source-loading">
                 <div class="loading-line" ms-visible="isLoading">
@@ -61,10 +41,61 @@
                 </div>
             </div>
             <div class="toolbar-right">
-                <span class="source-sum"><span class="selected-path">{{selectPath}}</span>-&nbsp;{{sum}}</span>
+                <span class="source-sum"><span class="selected-path">@ConfigInfo.SourceMusicPath</span>-&nbsp;{{sum}}</span>
             </div>
         </div>
         <div class="source-context">
+            <div class="source-body add-song">
+                <div class="panel-body" avalonctrl="song">
+                    <div class="upload-file-box" style="display:none;">
+                        <div class="btn  btn-upload btn-lg btn-primary">
+                            <div style="z-index: 3; display: block;" class="upload-mask">
+                                <span class="upload-text">上传图片</span>
+                                <div role="progressbar" class="upload-progress" style="width: 0%;"></div>
+                                <input type="file" class="hidden-file" style="display: block;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-form">
+                        <div class="col-md-4">
+                            <div class="music-img">
+                                <div title="点击选择图片" class="addSaid-mask" style="z-index: 2; display: block;">
+                                    <span class="song-mask-text">选择歌曲图片</span>
+                                </div>
+                                <div class="thumbnail">
+                                    <img src="/Source/Said/Musics/Images864820153228222306.jpg">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="music-info col-md-8 form-horizontal">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">歌　　曲</span>
+                                <input type="text" value="" required="" placeholder="歌曲名称" name="Song.SongName" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">专　　辑</span>
+                                <input type="text" value="" placeholder="歌曲专辑" name="Song.SongAlbum" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">歌　　手</span>
+                                <input type="text" value="" placeholder="艺术家" name="Song.SongArtist" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">发行日期</span>
+                                <input type="date" value="" placeholder="发行日期" name="Song.SongFileName" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">图　　片</span>
+                                <input type="text" value="" placeholder="图片（自动生成）" name="Song.SongFileName" disabled="disabled" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon">文　　件</span>
+                                <input type="text" value="" placeholder="文件名（自动生成）" name="Song.SongFileName" disabled="disabled" class="form-control" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="source-body">
                 <div ms-repeat-item="datas" class="source-item" ms-class="selected:activeIndex==$index" ms-click="activeItem(item,$index)">
                     <div class="item-img" ms-css-background-image="'url(' + item.img + ')'"></div>
@@ -118,45 +149,15 @@
     <script>
 
         var Action = {
-            getImageList: '@Url.Action("GetImagesList", "Image")',
-            realDeleteImage: '@Url.Action("RealDeleteImage", "Image")',
-            upload: '@Url.Action("Upload", "Image")'
+            getList: '@Url.Action("GetMusicList", "Music")',
+            realDelete: '@Url.Action("RealDeleteMusic", "Music")',
+            upload: '@Url.Action("Upload", "Music")'
         },
             Source = {
-                thumbnail: [
-                    '@ConfigInfo.SourceSystemThumbnailPath',
-                    '@ConfigInfo.SourceBlogThumbnailPath',
-                    '@ConfigInfo.SourceMusicThumbnailPath',
-                    '@ConfigInfo.SourceSaidThumbnailPath',
-                    '@ConfigInfo.SourceIconsPath',
-                    '@ConfigInfo.SourceSystemThumbnailPath',
-                    '@ConfigInfo.SourceSystemThumbnailPath',
-                    '@ConfigInfo.SourceSystemThumbnailPath'
-                ],
-                image: [
-                    '@ConfigInfo.SourceSystemPath',
-                    '@ConfigInfo.SourceBlogPath',
-                    '@ConfigInfo.SourceMusicImagePath',
-                    '@ConfigInfo.SourceSaidPath',
-                    '@ConfigInfo.SourceIconsPath',
-                    '@ConfigInfo.SourceSystemPath',
-                    '@ConfigInfo.SourceSystemPath',
-                    '@ConfigInfo.SourceSystemPath'
-                ],
-                typeName: ['系统图片', '日志', '音乐', 'Said', 'Icon', '页面', '无', '其他'],
-                maxImageSize: '@ConfigInfo.SizeSystem',
-                filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
+                image: '@ConfigInfo.SourceMusicImagePath',
+                maxSize: '@ConfigInfo.SizeMusic',
+                filters: ['mp3', 'ogg']
             };
-        var ImageType = {
-            System: 0,
-            Blog: 1,
-            Music: 2,
-            Said: 3,
-            Icon: 4,
-            Page: 5,
-            Lab: 6,
-            Other: 7
-        };
         require.config({
             baseUrl: '/Content/Back/JavaScript',
             paths: {
@@ -179,13 +180,10 @@
         require(['jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload'], function ($, avalon, _, showMsg, dialog, upload) {
             $(function () {
                 'use strict';
-                var database = _.DataBase('back.Image');
+                var database = _.DataBase('back.Music');
                 var imageUrl = {
-                    thumbnail: function (imgName, typeId) {
-                        return (Source.thumbnail[typeId] || Source.thumbnail[0]) + imgName;
-                    },
-                    get: function (imgName, typeId) {
-                        return (Source.image[typeId] || Source.image[0]) + imgName;
+                    get: function (imgName) {
+                        return Source.image + imgName;
                     }
                 },
                 $dialog = dialog();
@@ -204,8 +202,6 @@
                     $id: 'model',
                     select: function (e, typeId) {
                         vmModel.typeText = typeof e === 'string' ? e : this.innerHTML;
-                        vmModel.selectPath = Source.image[typeId] || '';
-                        database.val('typeText', vmModel.typeText).val('typeId', typeId);
                         avalon.vmodels.uploadImages.visible = typeId < 4 || typeId > 6 ? true : false;
                         vmModel.reload(typeId);
                     },
@@ -213,7 +209,6 @@
                     typeId: -1,
                     typeText: '',
                     activeIndex: -1,
-                    selectPath: '',
                     sum: 0,
                     isLoading: false,
                     datas: [],
@@ -223,7 +218,7 @@
                     },
                     deleteImage: function (e, item, i) {
                         $dialog.text('您确定要永久删除图片【<span class="said-red said-bold"> ' + item.IName + ' </span>】么？').on(function () {
-                            said.ajax(Action.realDeleteImage, {
+                            said.ajax(Action.realDelete, {
                                 id: item.ImageId
                             }).done(function (result) {
                                 if (result.code === 0) {
@@ -256,7 +251,6 @@
                         vmModel.activeIndex = i;
                         vmCurrData.IName = item.IName;
                         vmCurrData.Img = imageUrl.get(item.IFileName, item.Type);
-                        vmCurrData.Type = Source.typeName[item.Type] || '类型未知';
                         vmCurrData.Date = _.dateToLocal(item.Date);
                         vmCurrData.ReferenceCount = item.ReferenceCount;
                         vmCurrData.ISize = vmModel.convertSize(item.ISize);
@@ -323,10 +317,9 @@
                             vmModel.isLoading = false;
                             return;
                         }
-                        said.ajax(Action.getImageList, {
+                        said.ajax(Action.getList, {
                             limit: self.limit,
                             offset: self.offset,
-                            imgType: vmModel.typeId
                         }).done(function (res) {
                             if (res.total < 1) {
                                 vmModel.pages = [];
@@ -341,7 +334,7 @@
                                 //只能先处理res.datas，再赋值到vmModels.datas，否则会触发：TypeError: vmModel.datas[i] is undefined，因为浏览器的缓存！这里早早就触发了，但其实vmModel.datas还没有被赋值
                                 item.img = _.imgLoad.DEFAULTS.load;
                                 _.imgLoad({
-                                    src: imageUrl.thumbnail(item.IFileName, item.Type),
+                                    src: imageUrl.get(item.IFileName, item.Type),
                                     done: function (url) {
                                         vmModel.datas[i] ? vmModel.datas[i].img = url : item.img = url;
                                     },
@@ -372,10 +365,7 @@
                         classContainer: 'upload-mask',
                         classText: 'upload-text',
                         classProgress: 'upload-progress',
-                        size: Source.maxImageSize,
-                        postData: function () {//postData是附带数据发送
-                            return { imageType: vmModel.typeId };
-                        },
+                        size: Source.maxSize,
                         done: function (vm, data) {
                             if (data.code) {
                                 showMsg('服务器返回异常：' + data.msg, showMsg.ERROR, true);
@@ -383,7 +373,7 @@
                                 showMsg('上传成功', showMsg.OK);
                                 data.model.img = _.imgLoad.DEFAULTS.load;
                                 _.imgLoad({
-                                    src: imageUrl.thumbnail(data.model.IFileName, data.model.Type),
+                                    src: imageUrl.get(data.model.IFileName, data.model.Type),
                                     done: function (url) {
                                         vmModel.datas[0] ? vmModel.datas[0].img = url : data.model.img = url;
                                     },
@@ -408,9 +398,6 @@
 
                 avalon.scan();
                 if (database.val('typeId')) {
-                    vmModel.typeText = database.val('typeText');
-                    vmModel.typeId = database.val('typeId');
-                    vmModel.selectPath = Source.image[vmModel.typeId] || '';
                 }
                 vmModel.load();
                 //setTimeout(function () {

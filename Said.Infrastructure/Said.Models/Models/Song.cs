@@ -30,10 +30,12 @@ namespace Said.Models
         /// 歌曲Like数量
         /// </summary>
         public string SongLikeCount { get; set; }
-        ///// <summary>
-        ///// 歌曲图片
-        ///// </summary>
-        //public string SongImg { get; set; }
+
+        /// <summary>
+        /// 文件类型
+        /// </summary>
+        public string FileType { get; set; }
+
         /// <summary>
         /// 歌手
         /// </summary>

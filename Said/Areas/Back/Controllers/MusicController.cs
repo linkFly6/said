@@ -71,16 +71,23 @@ namespace Said.Areas.Back.Controllers
         #region 添加音乐（提交音乐表单）
         public JsonResult Add(Song model)
         {
-            
+            string errorMsg = SongApplication.ValidateAndCorrectSubmit(model);
+            if (errorMsg != null)
+                return ResponseResult(1, errorMsg);
+            model.SongId = Guid.NewGuid().ToString().Replace("-", "");
+            model.Date = DateTime.Now;
+            return SongApplication.Add(model) > 0 ?
+                ResponseResult(model.SongId) :
+                ResponseResult(2, "插入到数据库失败");
         }
         #endregion
 
 
         #region 上传音乐通用
 
-        #region 上传图片
+        #region 上传音乐文件
         /// <summary>
-        /// 上传图片
+        /// 上传音乐文件
         /// </summary>
         /// <param name="file"></param>
         /// <param name="filters"></param>
@@ -144,6 +151,14 @@ namespace Said.Areas.Back.Controllers
             newFileName = FileCommon.CreateFileNameByTime() + fileExt;
             filePath = dirPath + newFileName;
             file.SaveAs(filePath);
+
+            //这里是调试
+            string test = MusicCommon.GetFileInfo(filePath);
+
+            System.Diagnostics.Debug.Write(test);
+
+
+
             result.Add("code", "0");
             result.Add("path", filePath);
             result.Add("dir", dirPath);
@@ -161,7 +176,7 @@ namespace Said.Areas.Back.Controllers
         /// </summary>
         /// <param name="id">image</param>
         /// <returns></returns>
-        public JsonResult RealDeleteSong(string id)
+        public JsonResult RealDeleteMusic(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "没有数据");
