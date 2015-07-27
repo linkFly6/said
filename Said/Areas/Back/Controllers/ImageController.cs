@@ -175,7 +175,7 @@ namespace Said.Areas.Back.Controllers
             {
                 return Json(new { code = 3, msg = "裁剪图片失败" });
             }
-            if (string.Empty == thumbnailPath)//不需要生成缩略图
+            if (string.Empty != thumbnailPath)//不需要生成缩略图
             {
                 isCurOk = ImageCommon.MakeThumbnail(result["path"], Server.MapPath(thumbnailPath) + result["name"]);
                 if (!isCurOk)

@@ -102,13 +102,17 @@
   .source-content .source-footer {
     text-align: center; }
   .source-content .add-song {
-    padding-top: 100px;
-    width: 800px;
+    padding-top: 0px;
+    width: 500px;
     margin: 0 auto; }
   .source-content .add-form .col-md-4 .mask-hover:first-child {
     margin-bottom: 15px; }
   .source-content .upload-file-box .btn {
     width: 200px; }
+  .source-content .said-submit {
+    width: 200px; }
+  .source-content .music-info {
+    margin-top: 10px; }
 
 .keywords {
   color: #52b12d; }

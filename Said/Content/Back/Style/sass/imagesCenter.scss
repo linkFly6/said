@@ -169,8 +169,8 @@ $source-box-padding: 10px;
     }
     //添加音乐
     .add-song {
-        padding-top: 100px;
-        width: 800px;
+        padding-top: 0px;
+        width: 500px;
         margin: 0 auto;
     }
 
@@ -188,6 +188,14 @@ $source-box-padding: 10px;
         .btn {
             width: 200px;
         }
+    }
+
+    .said-submit {
+        width: 200px;
+    }
+
+    .music-info {
+        margin-top: 10px;
     }
 }
 

@@ -3,7 +3,6 @@
     ViewBag.Title = "Said管理 - 音乐管理";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
 }
-
 <div class="page-header">
     <h3>音乐管理&nbsp;&nbsp;<small>&gt;&nbsp;管理每一个跳动的音符，悸动的每一个时代</small><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></h3>
 </div>
@@ -25,11 +24,10 @@
     <div class="source-content" ms-controller="model">
         <div class="source-head">
             <div class="toolbar-left form-inline">
-                <button class="btn btn-default btn-sm">添加音乐</button>
+                <button class="btn btn-default btn-sm" ms-click="toggleForm(isAdd)">{{isAdd?'取消添加':'添加音乐'}}</button>
                 <div class="form-group">
-                    <input type="search" class="form-control" placeholder="Search" style="height:30px;" />
+                    <input type="search" class="form-control" placeholder="Search" style="height:30px;" ms-duplex="searchText" />
                 </div>
-                @*<div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn btn-upload btn-default btn-sm"></div>*@
             </div>
             <div class="source-loading">
                 <div class="loading-line" ms-visible="isLoading">
@@ -45,70 +43,71 @@
             </div>
         </div>
         <div class="source-context">
-            <div class="source-body add-song">
-                <div class="panel-body" avalonctrl="song">
-                    <div class="upload-file-box" style="display:none;">
-                        <div class="btn  btn-upload btn-lg btn-primary">
-                            <div style="z-index: 3; display: block;" class="upload-mask">
-                                <span class="upload-text">上传图片</span>
-                                <div role="progressbar" class="upload-progress" style="width: 0%;"></div>
-                                <input type="file" class="hidden-file" style="display: block;">
-                            </div>
-                        </div>
+            <div class="source-body add-song" ms-visible="isAdd">
+                <div class="panel-body">
+                    <div class="upload-file-box" ms-visible="!isUploadedImage">
+                        <div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn  btn-upload btn-lg btn-primary"></div>
                     </div>
-                    <div class="add-form">
-                        <div class="col-md-4">
-                            <div class="mask-hover">
-                                <div class="mask-box" style="cursor:pointer;">
-                                    <span class="song-mask-text">点击试听</span>
-                                </div>
-                                <div class="mask-content">
-                                    <div class="thumbnail">
-                                        <img src="/Source/Said/Musics/Images864820153228222306.jpg">
+                    <div class="add-form" ms-visible="isUploadedImage">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mask-hover">
+                                    <div class="mask-box" style="cursor:pointer;">
+                                        <span class="song-mask-text">点击试听</span>
+                                    </div>
+                                    <div class="mask-content">
+                                        <div class="thumbnail">
+                                            <img src="/Source/Said/Musics/Images864820153228222306.jpg" style="height:200px;width:200px;">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mask-hover">
-                                <div class="mask-box" style="cursor:pointer;">
-                                    <span class="song-mask-text">选择歌曲图片</span>
-                                </div>
-                                <div class="mask-content">
-                                    <div class="thumbnail">
-                                        <img src="/Source/Said/Musics/Images864820153228222306.jpg" style="height:200px; width:200px;">
+                            <div class="col-md-6">
+                                <div class="mask-hover">
+                                    <div class="mask-box" style="cursor:pointer;">
+                                        <span class="song-mask-text">选择歌曲图片</span>
+                                    </div>
+                                    <div class="mask-content">
+                                        <div class="thumbnail">
+                                            <img src="/Source/Said/Musics/Images864820153228222306.jpg" style="height:200px;width:200px;">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="music-info col-md-8 form-horizontal">
+                        <div class="music-info">
                             <div class="form-group input-group">
                                 <span class="input-group-addon">歌　　曲</span>
-                                <input type="text" value="" required="" placeholder="歌曲名称" name="Song.SongName" class="form-control" autocomplete="off">
+                                <input type="text" value="" required="" placeholder="歌曲名称" ms-duplex="SongName" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">专　　辑</span>
-                                <input type="text" value="" placeholder="歌曲专辑" name="Song.SongAlbum" class="form-control" autocomplete="off">
+                                <input type="text" value="" placeholder="歌曲专辑" ms-duplex="SongAlbum" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">歌　　手</span>
-                                <input type="text" value="" placeholder="艺术家" name="Song.SongArtist" class="form-control" autocomplete="off">
+                                <input type="text" value="" placeholder="艺术家" ms-duplex="SongArtist" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">发行日期</span>
-                                <input type="date" value="" placeholder="发行日期" name="Song.SongFileName" class="form-control" autocomplete="off">
+                                <input type="date" value="" placeholder="发行日期" ms-duplex="ReleaseDate" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group">
-                                <span class="input-group-addon">图　　片</span>
-                                <input type="text" value="" placeholder="图片（自动生成）" name="Song.SongFileName" disabled="disabled" class="form-control" autocomplete="off">
+                                <span class="input-group-addon">图片名称</span>
+                                <input type="text" value="" placeholder="图片（自动生成）" ms-value="IName" disabled="disabled" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">文　　件</span>
-                                <input type="text" value="" placeholder="文件名（自动生成）" name="Song.SongFileName" disabled="disabled" class="form-control" autocomplete="off">
+                                <input type="text" value="" placeholder="文件名（自动生成）" ms-value="SongFileName" disabled="disabled" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="submit-container">
+                                <button type="button" class="btn btn-lg said-submit">添加</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="source-body">
+            <div class="source-body" ms-visible="!isAdd">
                 <div ms-repeat-item="datas" class="source-item" ms-class="selected:activeIndex==$index" ms-click="activeItem(item,$index)">
                     <div class="item-img" ms-css-background-image="'url(' + item.img + ')'"></div>
                     <div class="item-info">
@@ -201,23 +200,29 @@
                 $dialog = dialog();
                 var vmCurrData = avalon.define({
                     $id: 'currData',
-                    ImageId: '',
-                    IName: '',
-                    Img: '',
+                    SongId: '',
+                    SongName: '',
+                    SongLikeCount: '',
+                    FileType: '',
+                    SongArtist: '',
+                    SongAlbum: '',
                     Date: '',
-                    ISize: '',
-                    Type: '',
-                    ReferenceCount: '',
+                    ReleaseDate: '',
+                    Duration: '',
+                    IName: ''
                 });
 
                 var vmModel = avalon.define({
                     $id: 'model',
+                    isAdd: false,
                     select: function (e, typeId) {
                         vmModel.typeText = typeof e === 'string' ? e : this.innerHTML;
                         avalon.vmodels.uploadImages.visible = typeId < 4 || typeId > 6 ? true : false;
                         vmModel.reload(typeId);
                     },
+                    searchText: '',
                     multiple: false,
+                    isUploadedImage: false,
                     typeId: -1,
                     typeText: '',
                     activeIndex: -1,
@@ -225,11 +230,14 @@
                     isLoading: false,
                     datas: [],
                     caches: [],//已经翻页加载过的数据就不要再加载了
+                    toggleForm: function (isAdd) {
+                        vmModel.isAdd = !isAdd;
+                    },
                     toggleMultiple: function () {
                         vmModel.multiple = !vmModel.multiple;
                     },
                     deleteImage: function (e, item, i) {
-                        $dialog.text('您确定要永久删除图片【<span class="said-red said-bold"> ' + item.IName + ' </span>】么？').on(function () {
+                        $dialog.text('您确定要永久删除歌曲【<span class="said-red said-bold"> ' + item.IName + ' </span>】么？').on(function () {
                             said.ajax(Action.realDelete, {
                                 id: item.ImageId
                             }).done(function (result) {
@@ -373,7 +381,7 @@
                         //name: 'testFile',
                         filters: Source.filters,
                         url: Action.upload,
-                        text: '上传图片',
+                        text: '添加音乐',
                         classContainer: 'upload-mask',
                         classText: 'upload-text',
                         classProgress: 'upload-progress',
@@ -383,16 +391,6 @@
                                 showMsg('服务器返回异常：' + data.msg, showMsg.ERROR, true);
                             } else {
                                 showMsg('上传成功', showMsg.OK);
-                                data.model.img = _.imgLoad.DEFAULTS.load;
-                                _.imgLoad({
-                                    src: imageUrl.get(data.model.IFileName, data.model.Type),
-                                    done: function (url) {
-                                        vmModel.datas[0] ? vmModel.datas[0].img = url : data.model.img = url;
-                                    },
-                                    fail: function (url) {
-                                        vmModel.datas[0] ? vmModel.datas[0].img = url : data.model.img = url;
-                                    }
-                                });
                                 vmModel.sum++;
                                 vmModel.datas.unshift(data.model);
                                 vmModel.activeItem(vmModel.datas[0], 0);
