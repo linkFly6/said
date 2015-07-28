@@ -36,6 +36,8 @@ namespace Said.Models
         /// </summary>
         public string FileType { get; set; }
 
+        public string SongSize { get; set; }
+
         /// <summary>
         /// 歌手
         /// </summary>

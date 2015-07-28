@@ -58,6 +58,7 @@
     <Compile Include="Said.Infrastructure\Common\Encrypt\MySecurity.cs" />
     <Compile Include="Said.Infrastructure\Common\Encrypt\RSACryption.cs" />
     <Compile Include="Said.Infrastructure\Common\FileCommon.cs" />
+    <Compile Include="Said.Infrastructure\Common\File\MusicInfo.cs" />
     <Compile Include="Said.Infrastructure\Common\File\MusicCommon.cs" />
     <Compile Include="Said.Infrastructure\Common\HTMLCommon.cs" />
     <Compile Include="Said.Infrastructure\Common\Image\ImageClass.cs" />

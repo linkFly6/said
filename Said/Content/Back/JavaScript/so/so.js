@@ -1,7 +1,12 @@
 ﻿'use strict';
 (function (global, factory) {
-    //兼容node/commonJs
-    if (typeof module === "object" && typeof module.exports === "object") {
+    //兼容amd
+    if (typeof define === "function" && define.amd) {
+        define("so", [], function () {
+            return factory(window);
+        });
+    } else if (typeof module === "object" && typeof module.exports === "object") {
+        //兼容node/commonJs
         module.exports = global.document ?
 			factory(global, true) :
 			function (w) {
@@ -310,6 +315,9 @@
             } catch (e) {
                 return null;
             }
+        },
+        now: Date.now || function () {
+            return +new Date;
         }
     });
 
@@ -374,6 +382,29 @@
 
     /*===========================================================================date模块===========================================================================*/
     so.extend({
+        praseTime: function (value, type) {
+            //转换一个时间到秒，例如：00:04:59
+
+        },
+        parseBit: function (value) {
+            //转换一个字节单位到合适阅读的单位
+            var radix = 1024;
+            ['B', 'KB', 'MB', 'GB'].some(function (unitStr, i) {
+                i++;
+                if (value < Math.pow(radix, i)) {
+                    debugger;
+                    value = value / Math.pow(radix, i) + unitStr;
+                    return true;
+                }
+            });
+            return value;
+
+            //return value > radix && value < (radix = radix * 1024) ?
+            //        (value / 1024).toFixed(2) + 'MB' :
+            //        value > radix * 1024 ?
+            //        (value / 1024 / 1024).toFixed(2) + 'GB' :
+            //        value + 'KB';
+        },
         //转换时间
         parseDate: function (jsonDate) {
             try {
@@ -463,6 +494,158 @@
             if (timeSpan / 86400000 <= 3)//1day=86400000ms
                 return Math.floor(timeSpan / 86400000) + '天前';
             return so.dateFormat(oldDate, 'yyyy年MM月dd日 HH:mm:ss');//完整的时间
+        },
+        /**
+        * so.parseData(value) - 将一个字符串转换成相应的数据类型
+        * @param {string} value - 要转换的字符串
+        * @returns {object}
+        */
+        parseData: function (value) {
+            //来自jQuery.data
+            return value === "true" ? true :
+                    value === "false" ? false :
+                    value === "null" ? null :
+                    +value + "" === value ? +value :
+                    rbrace.test(value) ? so.parseJSON(value) || value :
+                    value;
+        },
+        //模拟String.prototype.startsWith - ECMAScript 2015(ES6) 规范
+        startsWith: function (subjectString, searchString, position) {
+            position = position || 0;
+            return subjectString.indexOf(searchString, position) === position;
+        },
+        endsWith: function (subjectString, searchString, position) {
+            if (position === undefined || position > subjectString.length) {
+                position = subjectString.length;
+            }
+            position -= searchString.length;
+            var lastIndex = subjectString.indexOf(searchString, position);
+            return !!~lastIndex && lastIndex === position;
+        },
+        /**
+        * 函数节流 -  把原函数封装为拥有函数节流阀的函数，当重复调用函数，只有到达这个阀值（wait毫秒）才会执行
+        * 引自underscore
+        * @param {function} func - 回调函数
+        * @param {int} wait - 阀值(ms)
+        * @param {object} options = null - 想禁用第一次首先执行的话，传递{leading: false}，还有如果你想禁用最后一次执行的话，传递{trailing: false}
+        * @returns {function}
+        */
+        throttle: function (func, wait, options) {
+            var context, args, result;
+            var timeout = null;
+            var previous = 0;
+            if (!options) options = {};
+            var later = function () {
+                previous = options.leading === false ? 0 : so.now();
+                timeout = null;
+                result = func.apply(context, args);
+                if (!timeout) context = args = null;
+            };
+            return function () {
+                var now = so.now();
+                if (!previous && options.leading === false) previous = now;
+                var remaining = wait - (now - previous);
+                context = this;
+                args = arguments;
+                if (remaining <= 0 || remaining > wait) {
+                    if (timeout) {
+                        clearTimeout(timeout);
+                        timeout = null;
+                    }
+                    previous = now;
+                    result = func.apply(context, args);
+                    if (!timeout) context = args = null;
+                } else if (!timeout && options.trailing !== false) {
+                    timeout = setTimeout(later, remaining);
+                }
+                return result;
+            };
+        },
+        /**
+        * 函数节流 -  把原函数封装为拥有防反跳的函数，延迟函数的执行(wait毫秒)，当重复调用函数时候，只执行最后一个调用（在wait毫秒之后）
+        * 引自backbone
+        * @param {function} func - 回调函数
+        * @param {int} wait - 参数
+        * @param {object} immediate = false - 表示是否逆转调用时机，为true表示：wait毫秒内的多次调用，仅第一次生效
+        * @returns {function}
+        */
+        debounce: function (func, wait, immediate) {
+            var timeout, args, context, timestamp, result;
+
+            var later = function () {
+                var last = so.now() - timestamp;
+
+                if (last < wait && last >= 0) {
+                    timeout = setTimeout(later, wait - last);
+                } else {
+                    timeout = null;
+                    if (!immediate) {
+                        result = func.apply(context, args);
+                        if (!timeout) context = args = null;
+                    }
+                }
+            };
+
+            return function () {
+                context = this;
+                args = arguments;
+                timestamp = so.now();
+                var callNow = immediate && !timeout;
+                if (!timeout) timeout = setTimeout(later, wait);
+                if (callNow) {
+                    result = func.apply(context, args);
+                    context = args = null;
+                }
+
+                return result;
+            };
+        },
+
+
+        /**
+        * 封装一个函数，只有在运行了count次之后才有效果
+        * 引自underscore
+        * @param {int} count - 次数
+        * @param {function} func - 回调函数
+        * @param {object} $this = null - this
+        * @returns {function}
+        */
+        after: function (count, func, $this) {
+            $this = $this === undefined ? null : $this;
+            return function () {
+                if (--count < 1) {
+                    return apply(func, arguments, $this);
+                }
+            };
+        },
+        /**
+        * 封装一个函数，调用不超过count次
+        * 引自underscore
+        * @param {int} count - 次数
+        * @param {function} func - 回调函数
+        * @param {object} $this = null - this
+        * @returns {function}
+        */
+        before: function (count, func, $this) {
+            var memo;
+            $this = $this === undefined ? null : $this;
+            return function () {
+                if (--count > 0) {
+                    memo = apply(func, arguments, $this);
+                }
+                if (count <= 1) func = null;
+                return memo;
+            };
+        },
+        /**
+        * 创建一个只能调用一次的函数。重复调用改进的方法也没有效果，只会返回第一次执行时的结果
+        * 引自underscore
+        * @param {function} func - 回调函数
+        * @param {object} $this = null - this
+        * @returns {function}
+        */
+        once: function (func, $this) {
+            return so.before(2, func, $this);
         }
     });
 
@@ -476,66 +659,101 @@
     /*===========================================================================DataBase模块===========================================================================*/
     var localStorage = window.localStorage,
         rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,//检测是否是json对象格式
-        getLocalStorageItem = function (value) {
-            //来自jQuery的jQuery.data
-            return value === "true" ? true :
-                    value === "false" ? false :
-                    value === "null" ? null :
-                    +value + "" === value ? +value :
-                    rbrace.test(value) ? so.parseJSON(value) :
-                    value;
-        },
-        DataBase = function (namespace) {
-            //修正命名空间
+        Database = function (namespace) {
+            if (!(this instanceof Database))
+                return new Database(namespace);
             namespace = namespace || '';
+            //修正命名空间
             if (namespace && namespace.charAt(namespace.length - 1) != '.')
                 namespace += '.';
-            var getKey = function (key) {
-                if (!key) return key;
-                return namespace + key;
-            },
-                support = Support.localStorage;
-            return {
-                support: support,
-                val: function (key, value) {
-                    //TODO 后续的val要强大的足够支持json
-                    var valueType;
-                    if (arguments.length > 1) {
-                        //set
-                        valueType = so.type(value);
-                        if (support)
-                            localStorage.setItem(getKey(key), valueType === 'array' || valueType === 'object' ? JSON.stringify(value) : value);
-                        return this;
-                    }
-                    //get
-                    return getLocalStorageItem(support ? localStorage.getItem(getKey(key), value) || '' : '');
-                },
-                remove: function (key) {
-                    //TODO 后续的remove要支持多个参数key：['name1','name2']和多个参数remove('name1','name2')
-                    if (support && key) {
-                        key = getKey(key);
-                        var res = getLocalStorageItem(key);
-                        localStorage.removeItem(key);
-                        return res;
-                    }
-                    return '';
-                },
-                clear: function (nameSpace) {
-                    nameSpace = nameSpace || namespace;
-                    var name, reg = new RegExp('\b' + nameSpace), res = Object.create(null);
-                    for (var i = 0, len = localStorage.length; i < len; i++) {
-                        if (reg.test((name = localStorage.key(i)))) {
-                            res[name] = localStorage[name];
-                            localStorage.removeItem(name);
-                        }
-                    }
-                    return res;
-                }
-            };
+            this.namespace = namespace;
         };
-    DataBase.clear = window.localStorage.clear;
+    so.extend(Database.prototype, {
+        //获取命名空间下的key
+        _getKey: function (key) {
+            if (!key) return key;
+            return this.namespace + key;
+        },
+        /*
+        * 获取/设置一个项到数据中心（不得包含javascript语句，例如含有js的HTML片段）
+        * TODO - 后续尝试和cookie一样支持超时的设置？
+        * TODO - 后续尝试array的读取？
+        * Database.prototype.val(key) - 读取
+        * Database.prototype.val(key, value) - 设置
+        * Database.prototype.val(obj) - 设置一组
+        * @param {string} key - key
+        * @param {object} value - 值
+        * @param {object} obj - 将一个对象存储到数据中心
+        * @returns {Service}
+        */
+        val: function (key, value) {
+            if (isObject(key)) {//如果是object
+                //set
+                Object.keys(key).forEach(function (name) {
+                    this.val(name, key[name]);
+                }, this);
+                return this;
+            }
+            var valueType;
+            if (arguments.length > 1) {
+                //set
+                valueType = so.type(value);
+                localStorage.setItem(this._getKey(key), valueType === 'array' || valueType === 'object' ? JSON.stringify(value) : value);
+                return this;
+            }
+            //get
+            return so.parseData(localStorage.getItem(this._getKey(key)));
+        },
+
+        /*
+        * 移除一个/一组数据项，返回被移除的数据值
+        * Database.prototype.remove(key) - 从数据中心移除一个数据
+        * Database.prototype.remove(array) - 从数据中心移除一组数据
+        * @param {string} key - 要移除的key
+        * @param {Array} array - 要移除的一组key
+        * @returns {object|array}
+        */
+        remove: function (key) {
+            var res;
+            if (isArray(key)) {
+                //批量移除：key===['name1','name2']
+                res = key.map(function (item) {
+                    return this.remove(item);
+                }, this);
+                return res;
+            };
+            if (key) {
+                key = this._getKey(key);
+                res = localStorage.getItem(key);
+                if (res) {
+                    res = so.parseData(res);
+                    localStorage.removeItem(key);
+                }
+                return res;
+            }
+            return '';
+        },
+
+        /*
+        * Database.prototype.clear() - 清空一个数据中心
+        */
+        clear: function () {
+            var nameSpace = this.namespace;
+            var name, reg = new RegExp('^' + nameSpace), res = Object.create(null);
+            for (var i = 0, len = localStorage.length; i < len; i++) {
+                name = localStorage.key(i);
+                if (reg.test(name)) {
+                    res[name] = so.parseData(localStorage[name]);
+                    localStorage.removeItem(name);
+                }
+            }
+            return res;
+        }
+    });
+
+    Database.clear = window.localStorage.clear;
     so.extend({
-        DataBase: DataBase
+        Database: Database
     });
 
 
@@ -578,13 +796,6 @@
 
 
 
-
-    //兼容amd
-    if (typeof define === "function" && define.amd) {
-        define("so", [], function () {
-            return so;
-        });
-    }
     if (typeof noGlobal === strundefined) {
         window.so = so;
     }

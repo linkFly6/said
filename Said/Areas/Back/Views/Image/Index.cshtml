@@ -41,13 +41,6 @@
                     </ul>
 
                 </div>
-                @*<div class="btn btn-upload btn-default btn-sm">
-                        <div style="z-index: 3;" class="upload-mask lock">
-                            <span class="upload-text">上传图片</span>
-                            <div role="progressbar" class="upload-progress" style="width: 20%;"></div>
-                            <input type="file" />
-                        </div>
-                    </div>*@
                 <div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn btn-upload btn-default btn-sm"></div>
                 @*<div class="said-toggle" ms-class="selected:multiple" title="是否多选" ms-click="toggleMultiple()"></div>*@
             </div>
@@ -73,19 +66,9 @@
                         <a title="删除" class="fa fa-times item-delete" href="javascript:;" ms-click="deleteImage($event,item,$index)"></a>
                     </div>
                 </div>
-                @*<div data-id="cac2b7cb398c470296e69765bd2fdd51" class="source-item selected">
-                        <div class="item-img" data-src="/Source/Sys/Images/Thumbnail028620152702234207.jpg" style="background-image:url(/Source/Sys/Images/Thumbnail028620152702234207.jpg)">
-                        </div>
-                        <div class="item-info">
-                            <span class="img-name">196620151803225207.jpg</span>
-                            <a title="删除" class="fa fa-times item-delete" data-name="196620151803225207.jpg" data-id="cac2b7cb398c470296e69765bd2fdd51" href="javascript:;"></a>
-                        </div>
-                    </div>*@
             </div>
             <nav class="source-footer">
                 <ul class="pagination">
-                    <!--ms-visible="total==0"-->
-                    @*<li ms-if="pageIndex>1"><a href="javascript:;" aria-label="Previous"><span aria-hidden="true">«</span></a></li>*@
                     <li ms-if="pageIndex > 3"><a href="javascript:;" ms-click="load(1)"><span>1</span></a></li>
                     <li ms-if="pageIndex > 3"><span>...</span></li>
                     <li ms-repeat-index="pages" ms-class="active:index==pageIndex">
@@ -94,7 +77,6 @@
                     </li>
                     <li ms-if="sumPage - 5 >= pageIndex"><span>...</span></li>
                     <li ms-if="sumPage - 5 >= pageIndex "><a href="javascript:;" ms-click="load(sumPage)"><span>{{sumPage}}</span></a></li>
-                    @*<li ms-if="pageIndex < sumPage"><a href="javascript:;" aria-label="Next"><span aria-hidden="true">»</span></a></li>*@
                 </ul>
             </nav>
         </div>

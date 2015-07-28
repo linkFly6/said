@@ -63,7 +63,7 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult Upload()
         {
-            return UploadMusic(Request.Files["uploadFile"], ConfigInfo.MusicFilterArray, ConfigInfo.SizeMusic, ConfigInfo.SourceMusicImagePath);
+            return UploadMusic(Request.Files["uploadFile"], ConfigInfo.MusicFilterArray, ConfigInfo.SizeMusic, ConfigInfo.SourceMusicPath);
         }
 
         #endregion
@@ -97,10 +97,10 @@ namespace Said.Areas.Back.Controllers
         private JsonResult UploadMusic(HttpPostedFileBase file, Array filters, int maxSize, string dirPath)
         {
             //分析上传的文件信息，返回解析得到的结果
-            Dictionary<string, string> result = Save(file, ConfigInfo.ImageFileterArray, maxSize, dirPath);
+            Dictionary<string, string> result = Save(file, ConfigInfo.MusicFilterArray, maxSize, dirPath);
             if (result["code"] == "1")
                 return Json(new { code = 1, msg = result["msg"] });
-            return ResponseResult(result["name"]);
+            return ResponseResult(0, result["name"], result["data"]);
         }
 
         #endregion
@@ -152,17 +152,16 @@ namespace Said.Areas.Back.Controllers
             filePath = dirPath + newFileName;
             file.SaveAs(filePath);
 
-            //这里是调试
-            string test = MusicCommon.GetFileInfo(filePath);
-
-            System.Diagnostics.Debug.Write(test);
-
+            //TODO 这里需要检测有没有什么异常
+            MusicInfo music = MusicCommon.GetFileInfo(filePath);
+            music.Size = file.ContentLength;
 
 
             result.Add("code", "0");
             result.Add("path", filePath);
             result.Add("dir", dirPath);
             result.Add("name", newFileName);
+            result.Add("data", JavaScriptCommon.Serialize(music));
             return result;
         }
 
@@ -170,7 +169,7 @@ namespace Said.Areas.Back.Controllers
         #endregion
 
 
-        #region 删除图片（物理删除）
+        #region 删除音乐（物理删除）
         /// <summary>
         /// 删除图片（物理删除）
         /// </summary>
@@ -185,6 +184,23 @@ namespace Said.Areas.Back.Controllers
                 return ResponseResult(2, "没有找到音乐对象");
             FileCommon.Remove(ConfigInfo.SourceMusicPath + model.SongFileName);
             SongApplication.Delete(model);
+            return ResponseResult();
+        }
+        #endregion
+
+
+        #region 删除文件（物理删除）
+        /// <summary>
+        /// 删除图片（物理删除）
+        /// </summary>
+        /// <param name="id">image</param>
+        /// <returns></returns>
+        public JsonResult RealDeleteFile(string fileName)
+        {
+            return ResponseResult();
+            if (string.IsNullOrWhiteSpace(fileName))
+                return ResponseResult(1, "没有数据");
+            FileCommon.Remove(ConfigInfo.SourceMusicPath + fileName);
             return ResponseResult();
         }
         #endregion

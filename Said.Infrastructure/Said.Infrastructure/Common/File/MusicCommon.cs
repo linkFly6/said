@@ -16,26 +16,27 @@ namespace Said.Common
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
-        public static string GetFileInfo(string filePath)
+        public static MusicInfo GetFileInfo(string filePath)
         {
             ShellClass sh = new ShellClass();
             Folder dir = sh.NameSpace(Path.GetDirectoryName(filePath));
             FolderItem item = dir.ParseName(Path.GetFileName(filePath));
-            StringBuilder sb = new StringBuilder();
-            for (int i = -1; i < 50; i++)
+            //StringBuilder sb = new StringBuilder();
+            //for (int i = -1; i < 87; i++)
+            //{
+            //    sb.AppendFormat("{0}:{1}\n", i, dir.GetDetailsOf(item, i));
+            //}
+            //sb.ToString();
+            return new MusicInfo
             {
-                // 0 Retrieves the name of the item. 
-                // 1 Retrieves the size of the item. 
-                // 2 Retrieves the type of the item. 
-                // 3 Retrieves the date and time that the item was last modified. 
-                // 4 Retrieves the attributes of the item. 
-                // -1 Retrieves the info tip information for the item. 
-                sb.Append(i.ToString());
-                sb.Append(":");
-                sb.Append(dir.GetDetailsOf(item, i));
-                sb.Append("rn");
-            }
-            return sb.ToString();
+                Album = dir.GetDetailsOf(item, 14),
+                Artists = dir.GetDetailsOf(item, 13),
+                BitRate = dir.GetDetailsOf(item, 28),
+                Length = dir.GetDetailsOf(item, 27),
+                //Size = dir.GetDetailsOf(item, 1),
+                Title = dir.GetDetailsOf(item, 21),
+                Type = dir.GetDetailsOf(item, 2)
+            };
         }
 
 

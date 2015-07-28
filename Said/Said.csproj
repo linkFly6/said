@@ -135,6 +135,7 @@
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
     <Compile Include="Common\ImageCommon.cs" />
+    <Compile Include="Common\JavaScriptCommon.cs" />
     <Compile Include="Common\LogCommon.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
