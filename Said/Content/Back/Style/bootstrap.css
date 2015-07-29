@@ -787,7 +787,7 @@ th { text-align: left; }
 .table-condensed > tfoot > tr > th,
 .table-condensed > thead > tr > td,
 .table-condensed > tbody > tr > td,
-.table-condensed > tfoot > tr > td { padding: 5px; }
+.table-condensed > tfoot > tr > td { padding: 4px 12px; }
 .table-bordered { border: 1px solid #ddd; }
     .table-bordered > thead > tr > th,
     .table-bordered > tbody > tr > th,

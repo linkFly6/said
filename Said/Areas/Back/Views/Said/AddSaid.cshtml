@@ -508,47 +508,6 @@
         imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
         musicFilters: ['mp3', 'ogg']
     };
-    //除非下面的js代码也是从外层定义的，否则require.config必须定义在当前页面内，因为requireJS加载的代码都是异步的
-    require.config({
-        baseUrl: '/Content/Back/JavaScript',
-        paths: {
-            'saidAdd': 'said/addSaid',
-            'avalon': 'avalon/avalon.mobile.min',
-            'groupInput': 'avalon/plug/groupInput',
-            'avalonUpload': 'avalon/plug/uploadBox',
-            'upload': 'so/plug/upload',
-            'showMsg': 'so/plug/showMsg',
-            'dialog': 'so/plug/dialog',
-            'source': 'so/plug/source',
-            'markdown': ['showdown/showdown'],
-            'showDownThemeGithub': 'showdown/extensions/github'
-        },
-        packages: [
-        {
-            name: 'echarts',
-            location: 'echarts-2.1.8/src',
-            main: 'echarts'
-        },
-        {
-            name: 'zrender',
-            //location: 'http://ecomfe.github.io/zrender/src',
-            location: 'zrender-master/src',
-            main: 'zrender'
-        },
-        {
-            name: 'so',
-            location: 'so',
-            main: 'so'
-        },
-        {
-            name: 'said',
-            location: 'said',
-            main: 'said'
-        }], shim: {
-            'showDownThemeGithub': ['markdown']//依赖showdown
-        }
-    });
-
     require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'source', 'dialog', 'markdown', 'upload', 'avalonUpload', 'showDownThemeGithub', 'groupInput'], function ($, so, Search, avalon, showMsg, source, dialog, showdown) {
         $(function () {
             var slice = Array.prototype.slice;

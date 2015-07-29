@@ -296,7 +296,7 @@ namespace Said.Areas.Back.Controllers
                     path = ConfigInfo.SourceSystemPath;
                     break;
             }
-            FileCommon.Remove(path + image.IFileName);
+            FileCommon.Remove(Server.MapPath(path + image.IFileName));
             ImageApplication.Delete(image);
             return ResponseResult();
         }

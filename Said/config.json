@@ -6,7 +6,7 @@
 
     "music.maxSize": "6291456",
     "music.filter": "mp3,ogg",
-    "music.images": "/Source/Said/Musics/Images",
+    "music.images": "/Source/Said/Musics/Images/",
     "music.images.maxSize": "1048576",
     "music.images.thumbnail": "/Source/Said/Musics/Images/Thumbnail/",
     "music": "/Source/Said/Musics/",

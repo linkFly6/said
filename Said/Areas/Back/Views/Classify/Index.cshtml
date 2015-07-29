@@ -121,28 +121,6 @@
                     Write(new HtmlString(string.Format("PageDatas.imgs.push('{0}');", item)));
                 }
             }
-
-        require.config({
-            baseUrl: '/Content/Back/JavaScript',
-            paths: {
-                'so': 'so/so',
-                'classify': 'said/classify',
-                'bsTable': ['../Plug/bootstrap-table/bootstrap-table'],
-                'upload': 'avalon/plug/upload',
-                'popup': ['avalon/plug/popup'],
-                'showmsg': ['so/plug/showMsg'],
-                'dialog': ['so/plug/dialog'],
-                'bsTable-cn': ['../Plug/bootstrap-table/bootstrap-table-zh-CN'],
-            },
-            packages: [
-            {
-                name: 'said',
-                location: 'said',
-                main: 'said'
-            }], shim: {
-                'bsTable-cn': ['bsTable']
-            }
-        });
         require(['so', 'jquery', 'avalon', 'dialog', 'upload', 'classify', 'popup', 'bsTable-cn', 'showmsg'], function (so, $, avalon, dialog) {
             $(function () {
                 'use strict';

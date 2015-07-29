@@ -182,7 +182,7 @@ namespace Said.Areas.Back.Controllers
             Song model = SongApplication.Find(id);
             if (model == null)
                 return ResponseResult(2, "没有找到音乐对象");
-            FileCommon.Remove(ConfigInfo.SourceMusicPath + model.SongFileName);
+            FileCommon.Remove(Server.MapPath(ConfigInfo.SourceMusicPath + model.SongFileName));
             SongApplication.Delete(model);
             return ResponseResult();
         }
@@ -197,10 +197,9 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult RealDeleteFile(string fileName)
         {
-            return ResponseResult();
             if (string.IsNullOrWhiteSpace(fileName))
                 return ResponseResult(1, "没有数据");
-            FileCommon.Remove(ConfigInfo.SourceMusicPath + fileName);
+            FileCommon.Remove(Server.MapPath(ConfigInfo.SourceMusicPath + fileName));
             return ResponseResult();
         }
         #endregion

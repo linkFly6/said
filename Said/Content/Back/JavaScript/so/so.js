@@ -390,20 +390,12 @@
             //转换一个字节单位到合适阅读的单位
             var radix = 1024;
             ['B', 'KB', 'MB', 'GB'].some(function (unitStr, i) {
-                i++;
-                if (value < Math.pow(radix, i)) {
-                    debugger;
-                    value = value / Math.pow(radix, i) + unitStr;
+                if (value < Math.pow(radix, i + 1)) {
+                    value = (value / Math.pow(radix, i)).toFixed(2) + unitStr;
                     return true;
                 }
             });
             return value;
-
-            //return value > radix && value < (radix = radix * 1024) ?
-            //        (value / 1024).toFixed(2) + 'MB' :
-            //        value > radix * 1024 ?
-            //        (value / 1024 / 1024).toFixed(2) + 'GB' :
-            //        value + 'KB';
         },
         //转换时间
         parseDate: function (jsonDate) {

@@ -57,7 +57,7 @@
                                     </div>
                                     <div class="mask-content">
                                         <div class="thumbnail">
-                                            <img src="/Source/Said/Musics/Images864820153228222306.jpg" style="height:200px;width:200px;">
+                                            <img src="/Content/Back/Images/cd-default.png" style="height:200px;width:200px;">
                                         </div>
                                     </div>
                                 </div>
@@ -69,32 +69,35 @@
                                     </div>
                                     <div class="mask-content">
                                         <div class="thumbnail">
-                                            <img src="/Source/Said/Musics/Images864820153228222306.jpg" style="height:200px;width:200px;">
+                                            <img src="/Content/Back/Images/cd-default2.png" style=" height:200px;width:200px;">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="music-info">
-                            <div class="form-group input-group">
+                            <div class="form-group input-group" ms-class="has-error:!SongName.length">
                                 <span class="input-group-addon">歌　　曲</span>
                                 <input type="text" value="" required="" placeholder="歌曲名称" ms-duplex="SongName" class="form-control" autocomplete="off">
                             </div>
-                            <div class="form-group input-group">
+                            <div class="form-group input-group" ms-class="has-error:!SongAlbum.length">
                                 <span class="input-group-addon">专　　辑</span>
                                 <input type="text" value="" placeholder="歌曲专辑" ms-duplex="SongAlbum" class="form-control" autocomplete="off">
                             </div>
-                            <div class="form-group input-group">
+                            <div class="form-group input-group" ms-class="has-error:!SongArtist.length">
                                 <span class="input-group-addon">歌　　手</span>
                                 <input type="text" value="" placeholder="艺术家" ms-duplex="SongArtist" class="form-control" autocomplete="off">
                             </div>
-                            <div class="form-group input-group">
+
+                            <div class=" form-group input-group input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
                                 <span class="input-group-addon">发行日期</span>
-                                <input type="date" value="" placeholder="发行日期" ms-duplex="ReleaseDate" class="form-control" autocomplete="off">
+                                <input size="16" value="" placeholder="发行日期" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-today-btn="true" ms-duplex="ReleaseDate" ms-dom="ReleaseDate" class="form-control" autocomplete="off" readonly />
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-calendar"></i></span>
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">大　　小</span>
-                                <input type="text" value="" placeholder="文件大小（自动生成）" ms-attr-value="SongSize" disabled="disabled" class="form-control" autocomplete="off">
+                                <input type="text" value="" placeholder="文件大小（自动生成）" ms-attr-value="SongSizeText" disabled="disabled" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">时　　长</span>
@@ -152,6 +155,7 @@
 </div>
 @section Css{
     <link href="@Url.Content("~/Content/Back/Style/imagesCenter.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/Style/bootstrap-datetimepicker.css")" rel="stylesheet" />
 }
 
 @section FootJs{
@@ -168,28 +172,10 @@
                 maxSize: '@ConfigInfo.SizeMusic',
                 filters: ['mp3', 'ogg']
             };
-        require.config({
-            baseUrl: '/Content/Back/JavaScript',
-            paths: {
-                'showMsg': 'so/plug/showMsg',
-                'avalonUpload': 'avalon/plug/uploadBox',
-                'dialog': 'so/plug/dialog'
-            },
-            packages: [
-            {
-                name: 'so',
-                location: 'so',
-                main: 'so'
-            },
-            {
-                name: 'said',
-                location: 'said',
-                main: 'said'
-            }]
-        });
-        require(['jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload'], function ($, avalon, _, showMsg, dialog, upload) {
+        require(['jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload', 'bs-datetimepicker'], function ($, avalon, _, showMsg, dialog, upload) {
             $(function () {
                 'use strict';
+                //_.Database('back.Music').clear();
                 var database = _.Database('back.Music'),
                     localSong = database.val('music'),
                     hasLocalSong = !!localSong;
@@ -224,7 +210,8 @@
                     IName: localSong.IName || '',
                     Duration: localSong.Duration || '',
                     SongFileName: localSong.SongFileName || '',
-                    SongSize: localSong.SongSize ? _.parseBit(localSong.SongSize) : '',
+                    SongSize: localSong.SongSize || '',
+                    SongSizeText: localSong.SongSize ? _.parseBit(localSong.SongSize) : '',
                     isUploadedFile: hasLocalSong,
                     reset: function () {
                         vmSong.SongId = vmSong.SongName = vmSong.SongAlbum = vmSong.SongArtist = vmSong.ReleaseDate = vmSong.IName = vmSong.Duration = vmSong.SongFileName = '';
@@ -279,6 +266,7 @@
                                 vmSong.FileType = data.Type;
                                 vmSong.Duration = data.Length;
                                 vmSong.SongSize = data.Size;
+                                vmSong.SongSizeText = _.parseBit(data.Size);
                                 database.val('music', {
                                     SongName: vmSong.SongName,
                                     SongAlbum: data.Album,
@@ -286,11 +274,13 @@
                                     ReleaseDate: data.Artists,
                                     IName: '',
                                     FileType: data.Type,
+                                    SongFileName: vmSong.SongFileName,
                                     Duration: data.Length,
                                     SongSize: data.Size
                                 });
                                 vmSong.isUploadedFile = true;
                             }
+                            return true;
                         },
                         fail: function (vm, data) {
                             showMsg('上传失败：' + data.msg, showMsg.ERROR, true);
@@ -460,6 +450,11 @@
 
 
                 avalon.scan();
+                //绑定date_input
+                $(vmSong.elem.ReleaseDate).datetimepicker({
+                    minView: 'month'
+                });
+
                 if (database.val('typeId')) {
                 }
 
