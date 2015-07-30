@@ -58,6 +58,11 @@
                 }
                 data.append('name', encodeURIComponent(name));//追加文件名标志
                 data.append('fileId', id);//追加文件id标志
+                if (so.isPlainObject(config.data)) {
+                    so.each(config.data, function (name, value) {
+                        data.append(name, value);
+                    });
+                }
                 if (config.postData) {
                     postDatas = config.postData(file);
                     so.isObject(postDatas) && so.each(postDatas, function (name, value) {
@@ -77,13 +82,16 @@
                 xhr.onreadystatechange = function (e) {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
+                            var data, error = false;
                             try {
-                                var data = JSON.parse(xhr.responseText);
-                                vm.visible = !!done(vm, data);
+                                data = JSON.parse(xhr.responseText);//解析JSON异常
                             } catch (e) {
-                                vm.visible = !!done(vm, xhr, { code: 3, msg: '服务器返回的并不是可解析的结果' });
+                                error = e;
+                            } finally {
+                                //上传完成
+                                vm.visible = !!(error ? done(vm, xhr, { code: 3, msg: '服务器返回的并不是可解析的结果' }, error) : done(vm, data));
                             }
-                            //上传完成
+                            
                         } else {
                             fail(vm, { code: 4, msg: '服务器返回异常' }, xhr);
                         }

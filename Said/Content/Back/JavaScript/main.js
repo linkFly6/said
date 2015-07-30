@@ -7,6 +7,7 @@
         'groupInput': 'avalon/plug/groupInput',
         'avalonUpload': 'avalon/plug/uploadBox',
         'upload': 'so/plug/upload',
+        'underscore': 'underscore',
         'showMsg': 'so/plug/showMsg',
         'dialog': 'so/plug/dialog',
         'source': 'so/plug/source',

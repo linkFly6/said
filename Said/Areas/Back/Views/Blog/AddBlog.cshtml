@@ -493,7 +493,7 @@
                         return model.modal('show');
                     };
                 }($('#blog-modal')),
-                database = new so.DataBase('back.addBlog'),
+                database = new so.Database('back.addBlog'),
                 checkEmptyValue = function (key, title, summary) {
                     if (!vmBlog[key]) {
                         dialog(title, summary);

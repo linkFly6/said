@@ -170,7 +170,15 @@ namespace Said.Areas.Back.Controllers
             if (result["code"] == "1")
                 return Json(new { code = 1, msg = result["msg"] });
             //裁剪图片
-            var isCurOk = ImageCommon.CutImg(result["path"]);
+            var isCurOk = true;
+            if (type == ImageType.Music)//音乐需要特殊的裁剪
+            {
+                isCurOk = ImageCommon.CutImg(result["path"]);
+            }
+            else
+            {
+                isCurOk = ImageCommon.CutImg(result["path"]);
+            }
             if (!isCurOk)
             {
                 return Json(new { code = 3, msg = "裁剪图片失败" });

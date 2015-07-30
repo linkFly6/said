@@ -20,11 +20,11 @@ namespace Said.Models
         /// </summary>
         Blog = 1,
         /// <summary>
-        /// Said图
+        /// Music图
         /// </summary>
         Music = 2,
         /// <summary>
-        /// Music图片
+        /// Said图片
         /// </summary>
         Said = 3,
         /// <summary>

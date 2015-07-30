@@ -182,6 +182,8 @@
     <Content Include="bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll" />
     <Content Include="bin\zh-Hans\System.Web.WebPages.Razor.resources.dll" />
     <Content Include="bin\zh-Hans\System.Web.WebPages.resources.dll" />
+    <Content Include="Content\Back\Images\cd-default2.png" />
+    <Content Include="Content\Back\Images\cd-default.png" />
     <Content Include="Content\Back\Images\showMsg\warning.png" />
     <Content Include="Content\Back\Images\showMsg\error.png" />
     <Content Include="Content\Back\Images\showMsg\ok.png" />
@@ -207,6 +209,8 @@
     <Content Include="Content\Back\JavaScript\bootstrap-table\test.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.js" />
     <Content Include="Content\Back\JavaScript\bootstrap.min.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-datetimepicker\bootstrap-datetimepicker.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\chart.js" />
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\chart\bar.js" />
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\chart\base.js" />
@@ -567,6 +571,8 @@
     <Content Include="Content\Back\Plug\bootstrap-table\bootstrap-table.min.js" />
     <Content Include="Content\Back\Plug\bootstrap-table\test.js" />
     <Content Include="Content\Back\Style\addSaid.css" />
+    <Content Include="Content\Back\Style\bootstrap-datetimepicker.css" />
+    <Content Include="Content\Back\Style\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\Back\Style\bootstrap-theme.css" />
     <Content Include="Content\Back\Style\bootstrap-theme.min.css" />
     <Content Include="Content\Back\Style\bootstrap.css" />
@@ -678,6 +684,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
+    <Folder Include="Content\Back\JavaScript\jquery\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
     <Folder Include="Content\Style\sass\" />
     <Folder Include="Data\" />

@@ -18,6 +18,7 @@
             fail: function () { },//失败后执行的函数
             progress: function () { }//上传中执行的函数
             upload: function () { }//有上传行为的时候执行的函数
+            postData:function(){},//每次上传都会执行的函数，返回的数据作为附加参数
             data://TODO=>附加参数，以后尝试支持
             */
         },
@@ -78,6 +79,17 @@
                 }
                 data.append('name', encodeURIComponent(name));//追加文件名标志
                 data.append('fileId', id);//追加文件id标志
+                if (so.isPlainObject(config.data)) {
+                    so.each(config.data, function (name, value) {
+                        data.append(name, value);
+                    });
+                }
+                if (config.postData) {
+                    postDatas = config.postData(file);
+                    so.isObject(postDatas) && so.each(postDatas, function (name, value) {
+                        data.append(name, value);
+                    })
+                }
                 /*
                     参考：http://javascript.ruanyifeng.com/bom/ajax.html#toc1
                     formData对象append方法很碉堡...

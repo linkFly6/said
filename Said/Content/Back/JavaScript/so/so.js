@@ -761,7 +761,7 @@
     };
     so.imgLoad = function (elem, options) {
         //image element
-        if (typeof elem === 'object') {//imgLoad(options)
+        if (so.isPlainObject(elem)) {//imgLoad(options)
             options = elem;
             elem = null;
         }

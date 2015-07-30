@@ -63,13 +63,13 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="mask-hover">
+                                <div class="mask-hover" ms-click="showSource()">
                                     <div class="mask-box" style="cursor:pointer;">
                                         <span class="song-mask-text">选择歌曲图片</span>
                                     </div>
                                     <div class="mask-content">
                                         <div class="thumbnail">
-                                            <img src="/Content/Back/Images/cd-default2.png" style=" height:200px;width:200px;">
+                                            <img ms-attr-src="ImagePath ? ImagePath : '/Content/Back/Images/cd-default2.png'" style=" height:200px;width:200px;">
                                         </div>
                                     </div>
                                 </div>
@@ -78,20 +78,20 @@
                         <div class="music-info">
                             <div class="form-group input-group" ms-class="has-error:!SongName.length">
                                 <span class="input-group-addon">歌　　曲</span>
-                                <input type="text" value="" required="" placeholder="歌曲名称" ms-duplex="SongName" class="form-control" autocomplete="off">
+                                <input type="text" value="" required="" placeholder="歌曲名称" ms-duplex="SongName" ms-change="saveTolocalStorage('SongName',SongName)" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group" ms-class="has-error:!SongAlbum.length">
                                 <span class="input-group-addon">专　　辑</span>
-                                <input type="text" value="" placeholder="歌曲专辑" ms-duplex="SongAlbum" class="form-control" autocomplete="off">
+                                <input type="text" value="" placeholder="歌曲专辑" ms-duplex="SongAlbum" class="form-control" ms-change="saveTolocalStorage('SongAlbum',SongAlbum)" autocomplete="off">
                             </div>
                             <div class="form-group input-group" ms-class="has-error:!SongArtist.length">
                                 <span class="input-group-addon">歌　　手</span>
-                                <input type="text" value="" placeholder="艺术家" ms-duplex="SongArtist" class="form-control" autocomplete="off">
+                                <input type="text" value="" placeholder="艺术家" ms-duplex="SongArtist" class="form-control" ms-change="saveTolocalStorage('SongArtist',SongArtist)" autocomplete="off">
                             </div>
 
                             <div class=" form-group input-group input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
                                 <span class="input-group-addon">发行日期</span>
-                                <input size="16" value="" placeholder="发行日期" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-today-btn="true" ms-duplex="ReleaseDate" ms-dom="ReleaseDate" class="form-control" autocomplete="off" readonly />
+                                <input size="16" value="" placeholder="发行日期（请选择）" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" ms-change="saveTolocalStorage('ReleaseDate',ReleaseDate)" data-date-today-btn="true" ms-duplex="ReleaseDate" ms-dom="ReleaseDate" class="form-control" autocomplete="off" readonly />
                                 <span class="add-on"><i class="icon-remove"></i></span>
                                 <span class="add-on"><i class="icon-calendar"></i></span>
                             </div>
@@ -165,56 +165,69 @@
             getList: '@Url.Action("GetMusicList", "Music")',
             realDelete: '@Url.Action("RealDeleteMusic", "Music")',
             upload: '@Url.Action("Upload", "Music")',
-            realDeleteFile: '@Url.Action("RealDeleteFile", "Music")'
+            uploadImage: '@Url.Action("Upload", "Image")',
+            realDeleteFile: '@Url.Action("RealDeleteFile", "Music")',
+            realDeleteImage: '@Url.Action("RealDeleteImage","Image")',
+            GetImagesList: '@Url.Action("GetImagesList", "Image")'
         },
             Source = {
                 image: '@ConfigInfo.SourceMusicImagePath',
                 maxSize: '@ConfigInfo.SizeMusic',
+                songImageType: '@((int)Said.Models.ImageType.Music)',
                 filters: ['mp3', 'ogg']
             };
-        require(['jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload', 'bs-datetimepicker'], function ($, avalon, _, showMsg, dialog, upload) {
+        require(['jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload', 'bs-datetimepicker', 'source'], function ($, avalon, _, showMsg, dialog, upload) {
             $(function () {
                 'use strict';
                 //_.Database('back.Music').clear();
-                var database = _.Database('back.Music'),
-                    localSong = database.val('music'),
-                    hasLocalSong = !!localSong;
-                localSong = localSong || {};
-                var imageUrl = {
-                    get: function (imgName) {
-                        return Source.image + imgName;
-                    }
-                },
-                $dialog = dialog();
-                var vmCurrData = avalon.define({
-                    $id: 'currData',
+
+                //一个干净的歌曲模型，后面有歌曲详情vm和歌曲表单vm需要搀和它
+                var songPlanModel = {
                     SongId: '',
                     SongName: '',
                     SongLikeCount: '',
                     FileType: '',
                     SongArtist: '',
                     SongAlbum: '',
-                    Date: '',
                     ReleaseDate: '',
                     Duration: '',
+                    ImageId: '',
                     IName: '',
-                    SongSize: ''
+                    SongSize: '',
+                    SongFileName: ''
+                };
+               
+                var database = _.Database('back.Music'),
+                    hasLocalSong = !!database.val('SongFileName'),
+                    localSong = {};
+                $.each(songPlanModel, function (key) {
+                    localSong[key] = database.val(key) || '';
                 });
-                var vmSong = avalon.define({
+                localSong['SongSizeText'] = database.val('SongSizeText') || '';
+                localSong['ImagePath'] = database.val('ImagePath') || '';
+
+                var imageUrl = {
+                    get: function (imgName) {
+                        return Source.image + imgName;
+                    }
+                },
+                $dialog = dialog();
+                //歌曲详情vm，利用extend实现多态
+                var vmCurrData = avalon.define($.extend({}, songPlanModel, { $id: 'currData', Date: '' }));
+
+                //歌曲表单vm
+                var vmSong = avalon.define($.extend({}, songPlanModel, {
+                    SongSizeText: '',
+                    ImagePath: ''
+                }, localSong, {
                     $id: 'song',
-                    SongId: localSong.SongId || '',
-                    SongName: localSong.SongName || '',
-                    SongAlbum: localSong.SongAlbum || '',
-                    SongArtist: localSong.SongArtist || '',
-                    ReleaseDate: '',
-                    IName: localSong.IName || '',
-                    Duration: localSong.Duration || '',
-                    SongFileName: localSong.SongFileName || '',
-                    SongSize: localSong.SongSize || '',
-                    SongSizeText: localSong.SongSize ? _.parseBit(localSong.SongSize) : '',
+                    $skipArray: ['FileType', 'SongLikeCount'],
                     isUploadedFile: hasLocalSong,
+                    saveTolocalStorage: function (key, value) {
+                        if (value) database.val(key, value);
+                    },
                     reset: function () {
-                        vmSong.SongId = vmSong.SongName = vmSong.SongAlbum = vmSong.SongArtist = vmSong.ReleaseDate = vmSong.IName = vmSong.Duration = vmSong.SongFileName = '';
+                        $.extend(vmSong, songPlanModel, { SongSizeText: '' });
                         vmSong.isUploadedFile = false;
                     },
                     submit: function () {
@@ -239,6 +252,9 @@
                         });
 
                     },
+                    showSource: function () {
+                        _songImageDialog.show();
+                    },
                     //widget
                     $uploadImagesConfig: {
                         classFile: 'hidden-file',
@@ -250,33 +266,34 @@
                         classText: 'upload-text',
                         classProgress: 'upload-progress',
                         size: Source.maxSize,
-                        done: function (vm, data) {
+                        done: function (vm, data, error, e) {
+                            if (error) {
+                                console.log(error, e);
+                                return;
+                            }
                             if (data.code) {
                                 showMsg('服务器返回异常：' + data.msg, showMsg.ERROR, true);
                             } else {
                                 showMsg('上传成功', showMsg.OK);
-                                vmSong.SongFileName = data.msg;
+                                var fileName = data.msg;
                                 data = _.parseJSON(data.data);
-                                vmSong.SongName = data.Title;
-                                vmSong.SongAlbum = data.Album;
-                                vmSong.SongArtist = data.Artists;
-                                vmSong.ReleaseDate = '';
-                                //TODO 图片为默认
-                                vmSong.IName = '';
-                                vmSong.FileType = data.Type;
-                                vmSong.Duration = data.Length;
-                                vmSong.SongSize = data.Size;
-                                vmSong.SongSizeText = _.parseBit(data.Size);
-                                database.val('music', {
-                                    SongName: vmSong.SongName,
+                                var model = {
+                                    SongFileName: fileName,
+                                    SongName: data.Title,
                                     SongAlbum: data.Album,
                                     SongArtist: data.Artists,
-                                    ReleaseDate: data.Artists,
+                                    ReleaseDate: '',
+                                    //TODO 图片为默认
                                     IName: '',
                                     FileType: data.Type,
-                                    SongFileName: vmSong.SongFileName,
                                     Duration: data.Length,
-                                    SongSize: data.Size
+                                    SongSize: data.Size,
+                                    SongSizeText: _.parseBit(data.Size)
+                                };
+                                $.extend(vmSong, model);
+                                //本地存储
+                                _.each(model, function (key, value) {
+                                    database.val(key, value);
                                 });
                                 vmSong.isUploadedFile = true;
                             }
@@ -285,8 +302,30 @@
                         fail: function (vm, data) {
                             showMsg('上传失败：' + data.msg, showMsg.ERROR, true);
                         }
+
+                    }
+
+                }));
+
+                var _songImageDialog = $.source({
+                    loadUrl: Action.GetImagesList,//'/Back/Source/GetImagesList'
+                    path: Source.image,
+                    type: Source.songImageType,
+                    uploadUrl: Action.uploadImage,
+                    deleteUrl: Action.realDeleteImage,
+                    multiple: false,
+                    //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
+                    callback: function (data) {
+                        console.log(data);
+                        var imgSrc = imageUrl.get(data.IFileName);
+                        vmSong.IName = data.IFileName;
+                        vmSong.ImagePath = imgSrc;
+                        database.val('ImageId', data.ImageId).val('IName', data.IFileName).val('ImagePath', imgSrc);
                     }
                 });
+
+
+
                 var vmModel = avalon.define({
                     $id: 'model',
                     isAdd: hasLocalSong,
@@ -460,6 +499,7 @@
 
 
                 vmModel.load();
+                //console.dir(avalon.vmodels);
                 //setTimeout(function () {
 
                 //}, 300)

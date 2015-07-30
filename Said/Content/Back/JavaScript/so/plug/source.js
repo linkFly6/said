@@ -82,11 +82,11 @@
                 </div>\
             </div>\
         </div>',
-        templateItem = '<div class="source-thum" data-id="${id}">\
+        templateItem = '<div class="source-thum" data-id="${ImageId}">\
                 <div class="source-thum-con">\
-                    <img src="${loading}" alt="100%x180" data-src="${path}${img}" data-holder-rendered="true" />\
+                    <img src="${loading}" alt="100%x180" data-src="${path}${IFileName}" data-holder-rendered="true" />\
                 </div>\
-                <div class="source-img-info"><span class="source-img-name">${name}</span><a href="javascript:;" data-id="${id}" data-name="${name}" class="fa fa-times source-delete" title="删除"></a></div>\
+                <div class="source-img-info"><span class="source-img-name">${IName}</span><a href="javascript:;" data-id="${ImageId}" data-name="${IFileName}" class="fa fa-times source-delete" title="删除"></a></div>\
             </div>';
 
     var Source = function (doc, options) {
@@ -128,7 +128,7 @@
             ._initEvent($body);
 
 
-        this._fetch({ limit: this.options.limit, offset: offset, imgType: this.options.type }, function (data) {
+        this._fetch({ limit: this.options.limit, offset: offset, imageType: this.options.type }, function (data) {
             self._setCount(this.total = data.total);
             //this.$sum.html(data.total);
             if (data.total === 0) {//没有数据
@@ -222,7 +222,7 @@
                 if (scrollTop >= scrollHeight - windowHeight) {
                     //加载数据
                     isLoad = true;
-                    self._fetch({ limit: self.options.limit, offset: (self.options.offset += self.options.limit), imgType: self.options.type }).always(function (data) {
+                    self._fetch({ limit: self.options.limit, offset: (self.options.offset += self.options.limit), imageType: self.options.type }).always(function (data) {
                         if (data && data.total && self.datas.length >= data.total) {//所有数据全部加载完成
                             //isLoad = true;
                             $table.off('scroll');
@@ -243,14 +243,16 @@
     Source.prototype._initUpload = function ($elem, url) {
         if (!this.options.uploadUrl) return this;
         var self = this,
+            data = this.options.type,
             $elem = self.$elem.find('.so-upload-mask'),//蒙版
             $text = $elem.find('.so-upload-text'),//文本
             $progress = $elem.find('.so-upload-progress');//进度
         upload($elem.find('.hidden-file')[0], {
             url: url,
+            data: { imageType: data },
             callback: function (data) {
                 if (data.code === 0) {
-                    self._insert(data);
+                    self._insert(data.model);
                 } else {
                     self.errorDialog.text(data.msg).show();
                 }
@@ -303,7 +305,7 @@
     Source.prototype._searchIndexOf = function (datas, id) {
         var index = -1;
         datas.some(function (item, i) {
-            if (item.id === id) {
+            if (item.ImageId === id) {
                 index = i;
                 return true;
             }
@@ -344,7 +346,7 @@
     Source.prototype._get = function (ids) {
         ids = ids ? [ids] : this.ids;
         return this.datas.filter(function (item) {
-            return ~ids.indexOf(item.id);
+            return ~ids.indexOf(item.ImageId);
         })
     };
 
@@ -354,7 +356,6 @@
         data.path = this.options.path;
         this._setCount(++this.total);
         data.loading = this.options.imgLoading;
-        data.img = data.name;
         var $elem = $(so.format(templateItem, data));
         this._loadImg($elem.find('img'));
         this.$body.prepend($elem);
@@ -389,18 +390,6 @@
                 return;
             }
             //数据全部加载完成
-
-
-            //【【【【【【【【【【【【【【【【【【【【【【【【【【【【【【TODO 测试数据】】】】】】】】】】】】】】】】】】】】】】】】】】】】】】
-            //data.datas.unshift({
-            //    "id": "b0e1638b964e46c3b49da7584cc00083",
-            //    "name": "684520150121232506.jpg",
-            //    "img": "test.jpg",
-            //    "data": "684520150121232506.jpg",
-            //    "path": "/Source/Sys/Images/",
-            //    "loading": "/Content/Images/Said-Images-load.gif"
-            //});
-
             self._create(data.datas);
             self.datas = self.datas.concat(data.datas);
             if (self.datas.length >= data.total)
