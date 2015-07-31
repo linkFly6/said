@@ -46,7 +46,12 @@ namespace Said.Common
         {
             return CutImg(path, ratio, path);
         }
-
+        /// <summary>
+        /// 裁剪一张图片，并且指定比例
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="ratio"></param>
+        /// <returns></returns>
         public static bool CutImg(string path, double ratio)
         {
             return CutImg(path, ratio, path);
@@ -103,9 +108,57 @@ namespace Said.Common
             }
             return false;
         }
+
+        /// <summary>
+        /// 裁剪一张图片，按照指定的宽高
+        /// </summary>
+        /// <param name="path">图片路径</param>
+        /// <param name="width">宽度</param>
+        /// <param name="height">高度</param>
+        /// <returns>是否裁剪成功</returns>
+        public static bool CutImg(string path, int width, int height)
+        {
+            return CutImg(path, width, height, path);
+        }
+
+
+
+        /// <summary>
+        /// 裁剪一张图片，按照指定的宽高
+        /// </summary>
+        /// <param name="path">图片路径</param>
+        /// <param name="width">宽度</param>
+        /// <param name="height">高度</param>
+        /// <param name="savePath">保存的路径</param>
+        /// <returns>是否裁剪成功</returns>
+        public static bool CutImg(string path, int width, int height, string savePath)
+        {
+
+            if (FileCommon.Exists(path))
+            {
+                try
+                {
+                    Bitmap bitmap = new Bitmap(path);
+                    using (Bitmap image = ImageClass.MakeThumbnail(bitmap, width, height))
+                    {
+                        //释放原图片线程，因为有可能要覆盖原文件
+                        bitmap.Dispose();
+                        /*
+                         *  默认是按照System.Drawing.Imaging.ImageFormat.Bmp保存
+                         *  指定图片存储存储格式，默认是bmp（所以会把一张1mb的图片生成出8mb）                            
+                         */
+                        image.Save(savePath, GetImageFormat(Path.GetExtension(path)));
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
         #endregion
-
-
 
 
         #region MakeThumbnail（生成缩略图）
@@ -156,6 +209,12 @@ namespace Said.Common
         }
         #endregion
 
+
+        /// <summary>
+        /// 获取图片的格式
+        /// </summary>
+        /// <param name="extension"></param>
+        /// <returns></returns>
         private static ImageFormat GetImageFormat(string extension)
         {
             extension = extension.ToLower();

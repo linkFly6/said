@@ -17,6 +17,7 @@
         <li>上传的图片，最后会被裁剪为<span class="keywords">1.82</span>比例的图片</li>
         <li>上传的图片不允许超过<span class="keywords">1MB</span></li>
         <li>上传的音乐文件不允许超过<span class="keywords">6MB</span></li>
+        <li>上传的歌曲封面/图片会自动裁剪为200*200px</li>
         <li>上传图片的时候注意上传的分类！默认上传在<span class="keywords">其他</span>分类下</li>
     </ul>
 </div>
@@ -51,7 +52,7 @@
                     <div class="add-form" ms-visible="isUploadedFile">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="mask-hover">
+                                <a class="mask-hover" ms-attr-href="SongFileNamePath + SongFileName" target="_blank">
                                     <div class="mask-box" style="cursor:pointer;">
                                         <span class="song-mask-text">点击试听</span>
                                     </div>
@@ -60,7 +61,7 @@
                                             <img src="/Content/Back/Images/cd-default.png" style="height:200px;width:200px;">
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                             <div class="col-md-6">
                                 <div class="mask-hover" ms-click="showSource()">
@@ -91,7 +92,7 @@
 
                             <div class=" form-group input-group input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
                                 <span class="input-group-addon">发行日期</span>
-                                <input size="16" value="" placeholder="发行日期（请选择）" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" ms-change="saveTolocalStorage('ReleaseDate',ReleaseDate)" data-date-today-btn="true" ms-duplex="ReleaseDate" ms-dom="ReleaseDate" class="form-control" autocomplete="off" readonly />
+                                <input size="16" value="" placeholder="发行日期（请选择）" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-today-btn="true" ms-dom="ReleaseDate" class="form-control" autocomplete="off" readonly />
                                 <span class="add-on"><i class="icon-remove"></i></span>
                                 <span class="add-on"><i class="icon-calendar"></i></span>
                             </div>
@@ -101,7 +102,7 @@
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">时　　长</span>
-                                <input type="text" value="" placeholder="时长（自动生成）" ms-attr-value="Duration" disabled="disabled" class="form-control" autocomplete="off">
+                                <input type="text" value="" placeholder="时长（自动生成）" ms-attr-value="DurationText" disabled="disabled" class="form-control" autocomplete="off">
                             </div>
                             <div class="form-group input-group">
                                 <span class="input-group-addon">图片名称</span>
@@ -172,6 +173,7 @@
         },
             Source = {
                 image: '@ConfigInfo.SourceMusicImagePath',
+                songPath: '@ConfigInfo.SourceMusicPath',
                 maxSize: '@ConfigInfo.SizeMusic',
                 songImageType: '@((int)Said.Models.ImageType.Music)',
                 filters: ['mp3', 'ogg']
@@ -196,15 +198,17 @@
                     SongSize: '',
                     SongFileName: ''
                 };
-               
+
                 var database = _.Database('back.Music'),
                     hasLocalSong = !!database.val('SongFileName'),
                     localSong = {};
                 $.each(songPlanModel, function (key) {
                     localSong[key] = database.val(key) || '';
                 });
+                console.info(database.val('SongFileName'));
                 localSong['SongSizeText'] = database.val('SongSizeText') || '';
                 localSong['ImagePath'] = database.val('ImagePath') || '';
+                localSong['DurationText'] = database.val('DurationText') || '';
 
                 var imageUrl = {
                     get: function (imgName) {
@@ -218,7 +222,9 @@
                 //歌曲表单vm
                 var vmSong = avalon.define($.extend({}, songPlanModel, {
                     SongSizeText: '',
-                    ImagePath: ''
+                    DurationText: '',
+                    ImagePath: '',
+                    SongFileNamePath: Source.songPath
                 }, localSong, {
                     $id: 'song',
                     $skipArray: ['FileType', 'SongLikeCount'],
@@ -227,7 +233,9 @@
                         if (value) database.val(key, value);
                     },
                     reset: function () {
-                        $.extend(vmSong, songPlanModel, { SongSizeText: '' });
+                        $.extend(vmSong, songPlanModel, { SongSizeText: '', DurationText: '', ImagePath: '', SongFileNamePath: '', SongFileName: '', IName: '' });
+                        database.clear();
+                        console.info(database.val('SongFileName'));
                         vmSong.isUploadedFile = false;
                     },
                     submit: function () {
@@ -240,7 +248,6 @@
                             fileName: vmSong.SongFileName
                         }).done(function (result) {
                             if (result.code === 0) {
-                                database.clear();
                                 vmSong.reset();
                             } else {
                                 showMsg('服务器删除资源异常：' + result.msg, showMsg.ERROR, true);
@@ -286,7 +293,8 @@
                                     //TODO 图片为默认
                                     IName: '',
                                     FileType: data.Type,
-                                    Duration: data.Length,
+                                    Duration: _.praseSeconds(data.Length),
+                                    DurationText: data.Length,
                                     SongSize: data.Size,
                                     SongSizeText: _.parseBit(data.Size)
                                 };
@@ -302,7 +310,6 @@
                         fail: function (vm, data) {
                             showMsg('上传失败：' + data.msg, showMsg.ERROR, true);
                         }
-
                     }
 
                 }));
@@ -316,11 +323,16 @@
                     multiple: false,
                     //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
                     callback: function (data) {
-                        console.log(data);
-                        var imgSrc = imageUrl.get(data.IFileName);
-                        vmSong.IName = data.IFileName;
-                        vmSong.ImagePath = imgSrc;
-                        database.val('ImageId', data.ImageId).val('IName', data.IFileName).val('ImagePath', imgSrc);
+                        var imgSrc;
+                        if (data) {
+                            imgSrc = imageUrl.get(data.IFileName);
+                            vmSong.IName = data.IFileName;
+                            vmSong.ImagePath = imgSrc;
+                            database.val('ImageId', data.ImageId).val('IName', data.IFileName).val('ImagePath', imgSrc);
+                        } else {
+                            vmSong.IName = vmSong.ImagePath = '';
+                            database.val('ImageId', '').val('IName', '').val('ImagePath', '');
+                        }
                     }
                 });
 
@@ -490,12 +502,13 @@
 
                 avalon.scan();
                 //绑定date_input
-                $(vmSong.elem.ReleaseDate).datetimepicker({
+                var $dateInput = $(vmSong.elem.ReleaseDate).datetimepicker({
                     minView: 'month'
-                });
-
-                if (database.val('typeId')) {
-                }
+                }).on('changeDate', function (e) {
+                    database.val('ReleaseDate', vmSong.ReleaseDate = e.date.getTime());
+                }),
+                _releaseDateLocalValue = database.val('ReleaseDate');
+                if (_releaseDateLocalValue) $dateInput.val(_.dateFormat(_releaseDateLocalValue, 'yyyy-MM-dd'));
 
 
                 vmModel.load();

@@ -175,11 +175,11 @@ $source-box-padding: 10px;
     }
 
     .add-form {
-        .col-md-4 {
-            .mask-hover {
-                &:first-child {
-                    margin-bottom: 15px;
-                }
+        .mask-hover {
+            display: block;
+
+            &:first-child {
+                margin-bottom: 15px;
             }
         }
     }

@@ -381,10 +381,22 @@
 
 
     /*===========================================================================date模块===========================================================================*/
+    var _dateEnum = [2015, 1, 1, 0, 0, 0],
+        //new Date(year, month, day, hours, minutes, seconds) 兼容性最佳
+        _lockDate = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]),
+        regTime = /(0\d|2[0-3])?:?(0\d|[1-5]\d):(0\d|[1-5]\d)/;
     so.extend({
-        praseTime: function (value, type) {
-            //转换一个时间到秒，例如：00:04:59
-
+        praseSeconds: function (value) {
+            //转换一个时间到秒，例如：22:31:43
+            var date = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]),
+                res = regTime.test(value) && regTime.exec(value);
+            if (res) {//["22:31:43", "22", "31", "43"]
+                res[1] && date.setHours(res[1]);
+                res[2] && date.setMinutes(res[2]);
+                res[3] && date.setSeconds(res[3]);
+                return (date - _lockDate) / 1000;
+            }
+            return 0;
         },
         parseBit: function (value) {
             //转换一个字节单位到合适阅读的单位
@@ -731,6 +743,7 @@
         */
         clear: function () {
             var nameSpace = this.namespace;
+            //这里不能预编译，必须要完整匹配，如果是不完整匹配，则无法区分：Song、SongFile、SongFileName
             var name, reg = new RegExp('^' + nameSpace), res = Object.create(null);
             for (var i = 0, len = localStorage.length; i < len; i++) {
                 name = localStorage.key(i);

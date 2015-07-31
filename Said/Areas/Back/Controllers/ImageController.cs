@@ -173,7 +173,7 @@ namespace Said.Areas.Back.Controllers
             var isCurOk = true;
             if (type == ImageType.Music)//音乐需要特殊的裁剪
             {
-                isCurOk = ImageCommon.CutImg(result["path"]);
+                isCurOk = ImageCommon.CutImg(result["path"], 200, 200);
             }
             else
             {

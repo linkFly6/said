@@ -105,8 +105,10 @@
     padding-top: 0px;
     width: 500px;
     margin: 0 auto; }
-  .source-content .add-form .col-md-4 .mask-hover:first-child {
-    margin-bottom: 15px; }
+  .source-content .add-form .mask-hover {
+    display: block; }
+    .source-content .add-form .mask-hover:first-child {
+      margin-bottom: 15px; }
   .source-content .upload-file-box .btn {
     width: 200px; }
   .source-content .submit-container button {
