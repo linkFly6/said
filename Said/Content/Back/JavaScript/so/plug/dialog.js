@@ -143,6 +143,9 @@
             template = template.replace('${btns}', this.options.btns);
         template = so.format(template, this.options);
 
+        //对象是否当前显示
+        this.isOpen = false;
+
         this.options.className = dialogClassName + ' ' + (this.options.className ? this.options.className : '');
 
         if (isNode) {//Dialog(elem,options)
@@ -180,11 +183,6 @@
 
     };
 
-
-
-
-    //对象是否当前显示
-    Dialog.prototype.isOpen = false;
 
 
 

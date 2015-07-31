@@ -16,7 +16,7 @@ namespace Said.Common
         /// </summary>
         public string Title { get; set; }
         /// <summary>
-        /// 文件大小（带MB）
+        /// 文件大小
         /// </summary>
         public int Size { get; set; }
         /// <summary>
@@ -39,5 +39,6 @@ namespace Said.Common
         /// 比特率
         /// </summary>
         public string BitRate { get; set; }
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using PagedList;
 using Said.Application;
 using Said.Common;
+using Said.Helper;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -69,13 +70,21 @@ namespace Said.Areas.Back.Controllers
         #endregion
 
         #region 添加音乐（提交音乐表单）
-        public JsonResult Add(Song model)
+        /// <summary>
+        /// 添加歌曲
+        /// </summary>
+        /// <param name="song">歌曲对象</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult Add(Song model, string ReleaseDate)
         {
             string errorMsg = SongApplication.ValidateAndCorrectSubmit(model);
             if (errorMsg != null)
                 return ResponseResult(1, errorMsg);
             model.SongId = Guid.NewGuid().ToString().Replace("-", "");
             model.Date = DateTime.Now;
+            model.SongLikeCount = 0;
+            model.ReleaseDate = ConvertHelper.GetTime(ReleaseDate);
             return SongApplication.Add(model) > 0 ?
                 ResponseResult(model.SongId) :
                 ResponseResult(2, "插入到数据库失败");
@@ -155,6 +164,8 @@ namespace Said.Areas.Back.Controllers
             //TODO 这里需要检测有没有什么异常
             MusicInfo music = MusicCommon.GetFileInfo(filePath);
             music.Size = file.ContentLength;
+            music.Type = fileExt.Substring(1);
+            //【【【【【【【【【【TODO 这里检测如果没有时长，就根据位率计算时长！！！！ 】】】】】】】】】】】
 
 
             result.Add("code", "0");
@@ -167,7 +178,6 @@ namespace Said.Areas.Back.Controllers
 
         #endregion
         #endregion
-
 
         #region 删除音乐（物理删除）
         /// <summary>

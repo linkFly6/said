@@ -42,8 +42,25 @@ namespace Said.Application
             {
                 return "歌曲文件名不可为空（不可获取）";
             }
-            model.Image = ImageApplication.Find(model.ImageId);
-            if (model.Image == null)
+            if (model.Duration < 1)
+            {
+                return "歌曲时长不正确";
+            }
+            if (model.SongSize < 1)
+            {
+                return "歌曲大小不正确";
+            }
+            /*
+             *  Error：一个实体对象不能由多个 IEntityChangeTracker 实例引用。
+             *  不能给原Model赋值！！只能给ImageId属性赋值，如果给原Model赋值，因为不同的DbContext，导致EF认为这个Image是新增的，但其实是引用
+             *  
+             *  参考：
+             *  http://m.blog.csdn.net/blog/jerry_cool_2010/6922095
+             *  http://www.tuicool.com/articles/zEjEJn
+             *  http://q.cnblogs.com/q/43962/
+             */
+            //model.Image = ImageApplication.Find(model.ImageId);
+            if (ImageApplication.Find(model.ImageId) == null)
             {
                 return "歌曲不正确（不可获取）";
             }

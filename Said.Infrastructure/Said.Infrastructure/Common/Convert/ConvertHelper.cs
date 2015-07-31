@@ -142,5 +142,26 @@ namespace Said.Helper
         #endregion
 
 
+        /// <summary>
+        /// 时间戳转为C#格式时间
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
+        public static DateTime GetTime(string timeStamp)
+        {
+            var start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return start.AddMilliseconds(long.Parse(timeStamp));
+        }
+
+        /// <summary>
+        /// DateTime时间格式转换为Unix时间戳格式
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static int ConvertDateTimeInt(DateTime time)
+        {
+            DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
+            return (int)(time - startTime).TotalSeconds;
+        }
     }
 }

@@ -29,14 +29,14 @@ namespace Said.Models
         /// <summary>
         /// 歌曲Like数量
         /// </summary>
-        public string SongLikeCount { get; set; }
+        public int SongLikeCount { get; set; }
 
         /// <summary>
         /// 文件类型
         /// </summary>
         public string FileType { get; set; }
 
-        public string SongSize { get; set; }
+        public int SongSize { get; set; }
 
         /// <summary>
         /// 歌手

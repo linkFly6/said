@@ -379,6 +379,16 @@
         }
     });
 
+    ////获取歌曲文件时长
+    //var getMusicFileDuration = function (size, kbps) {//[文件大小（mb）, 位率（KBPS）]
+    //    var seconds = Math.round(size / kbps * 8);//歌曲时长 = 文件大小（mb）/ 位率（KBPS） * 8
+    //    var date = new Date(2015, 1, 1, 0, 0, 0);
+    //    date.setSeconds(seconds);
+    //    console.log('文件时长： ' + seconds + ' s');
+    //    console.log('时间（2015-01-01开始）', date);
+    //};
+    //getMusicFileDuration(3164.16, 128)
+
 
     /*===========================================================================date模块===========================================================================*/
     var _dateEnum = [2015, 1, 1, 0, 0, 0],
@@ -386,7 +396,7 @@
         _lockDate = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]),
         regTime = /(0\d|2[0-3])?:?(0\d|[1-5]\d):(0\d|[1-5]\d)/;
     so.extend({
-        praseSeconds: function (value) {
+        parseSeconds: function (value) {
             //转换一个时间到秒，例如：22:31:43
             var date = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]),
                 res = regTime.test(value) && regTime.exec(value);
@@ -743,11 +753,11 @@
         */
         clear: function () {
             var nameSpace = this.namespace;
-            //这里不能预编译，必须要完整匹配，如果是不完整匹配，则无法区分：Song、SongFile、SongFileName
             var name, reg = new RegExp('^' + nameSpace), res = Object.create(null);
-            for (var i = 0, len = localStorage.length; i < len; i++) {
+            for (var i = 0; i < localStorage.length; i++) {
                 name = localStorage.key(i);
                 if (reg.test(name)) {
+                    i--;//removeItem了之后，索引不正确，修正索引
                     res[name] = so.parseData(localStorage[name]);
                     localStorage.removeItem(name);
                 }

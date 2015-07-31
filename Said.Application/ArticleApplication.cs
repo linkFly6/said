@@ -78,7 +78,7 @@ namespace Said.Application
             else
             {
                 //开始矫正数据
-                model.SaidId = Guid.NewGuid().ToString();
+                model.SaidId = Guid.NewGuid().ToString().Replace("-", "");
                 //没有文件名或文件名不合法，则生成一个新的文件名
                 if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)
                     model.SName = FileCommon.CreateFileNameByTime();

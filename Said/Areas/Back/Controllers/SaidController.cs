@@ -74,7 +74,7 @@ namespace Said.Areas.Back.Controllers
             //应该有个tag表，保存tag，（只是）方便统计
 
             if (string.IsNullOrWhiteSpace(form["Classify.ClassifyId"]))//分类
-                return Json(new { code = 1, msg = "分类信息错误" });
+                return ResponseResult(1, "分类信息错误");
             //model.Classify = new Classify { ClassifyId = form["Classify.ClassifyId"].Trim() };
             model.ClassifyId = form["Classify.ClassifyId"].Trim();
             if (!string.IsNullOrWhiteSpace(form["Song.SSongId"]))//有歌曲ID则构建歌曲id
@@ -92,7 +92,7 @@ namespace Said.Areas.Back.Controllers
                 };
             }
             else
-                return Json(new { code = 1, msg = "歌曲信息错误" });
+                return ResponseResult(1, "歌曲信息错误");
             //验证，需要validateSubmit方法矫正歌曲等数据，如果没有id则生成一个id
             string vdResult = ArticleApplication.ValidateAndCorrectSubmit(model);
             if (vdResult == null)
@@ -101,12 +101,12 @@ namespace Said.Areas.Back.Controllers
                 //model.Classify = null;
                 //model.SongId = model.Song.SongId;
                 //model.Song = null;
-
-                ArticleApplication.Add(model);
-                return Json(new { code = 0, msg = model.SaidId });
+                return ArticleApplication.Add(model) > 0 ?
+                    ResponseResult(0, model.SaidId) :
+                    ResponseResult(2, "添加到数据库异常");
             }
             else
-                return Json(new { code = 1, msg = vdResult });
+                return ResponseResult(1, vdResult);
         }
 
         #endregion

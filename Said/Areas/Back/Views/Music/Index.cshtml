@@ -165,6 +165,7 @@
         var Action = {
             getList: '@Url.Action("GetMusicList", "Music")',
             realDelete: '@Url.Action("RealDeleteMusic", "Music")',
+            addSong: '@Url.Action("Add", "Music")',
             upload: '@Url.Action("Upload", "Music")',
             uploadImage: '@Url.Action("Upload", "Image")',
             realDeleteFile: '@Url.Action("RealDeleteFile", "Music")',
@@ -184,7 +185,7 @@
                 //_.Database('back.Music').clear();
 
                 //一个干净的歌曲模型，后面有歌曲详情vm和歌曲表单vm需要搀和它
-                var songPlanModel = {
+                var songPlainModel = {
                     SongId: '',
                     SongName: '',
                     SongLikeCount: '',
@@ -202,7 +203,7 @@
                 var database = _.Database('back.Music'),
                     hasLocalSong = !!database.val('SongFileName'),
                     localSong = {};
-                $.each(songPlanModel, function (key) {
+                $.each(songPlainModel, function (key) {
                     localSong[key] = database.val(key) || '';
                 });
                 console.info(database.val('SongFileName'));
@@ -217,10 +218,10 @@
                 },
                 $dialog = dialog();
                 //歌曲详情vm，利用extend实现多态
-                var vmCurrData = avalon.define($.extend({}, songPlanModel, { $id: 'currData', Date: '' }));
+                var vmCurrData = avalon.define($.extend({}, songPlainModel, { $id: 'currData', Date: '' }));
 
                 //歌曲表单vm
-                var vmSong = avalon.define($.extend({}, songPlanModel, {
+                var vmSong = avalon.define($.extend({}, songPlainModel, {
                     SongSizeText: '',
                     DurationText: '',
                     ImagePath: '',
@@ -233,12 +234,27 @@
                         if (value) database.val(key, value);
                     },
                     reset: function () {
-                        $.extend(vmSong, songPlanModel, { SongSizeText: '', DurationText: '', ImagePath: '', SongFileNamePath: '', SongFileName: '', IName: '' });
+                        $.extend(vmSong, songPlainModel, { SongSizeText: '', DurationText: '', ImagePath: '', SongFileNamePath: '', SongFileName: '', IName: '' });
                         database.clear();
                         console.info(database.val('SongFileName'));
                         vmSong.isUploadedFile = false;
                     },
                     submit: function () {
+                        var data = {};
+                        $.each(songPlainModel, function (key) {
+                            data[key] = vmSong[key];
+                        });
+                        said.ajax(Action.addSong, data).done(function (result) {
+                            if (result.code === 0) {
+                                showMsg('添加歌曲成功', showMsg.OK);
+
+                                //console.log(result.data);//歌曲id
+                            } else {
+                                showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                            }
+                        }).fail(function () {
+                            showMsg('网络连接异常', showMsg.ERROR, true);
+                        });
 
                     },
                     remove: function () {
@@ -293,7 +309,7 @@
                                     //TODO 图片为默认
                                     IName: '',
                                     FileType: data.Type,
-                                    Duration: _.praseSeconds(data.Length),
+                                    Duration: _.parseSeconds(data.Length),
                                     DurationText: data.Length,
                                     SongSize: data.Size,
                                     SongSizeText: _.parseBit(data.Size)
