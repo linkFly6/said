@@ -31,7 +31,7 @@ namespace Said.Common
             {
                 Album = dir.GetDetailsOf(item, 14),
                 Artists = dir.GetDetailsOf(item, 13),
-                BitRate = dir.GetDetailsOf(item, 28),
+                BitRate = Said.Helper.ConvertHelper.StringToInt(dir.GetDetailsOf(item, 28)),
                 Length = dir.GetDetailsOf(item, 27),
                 //Size = dir.GetDetailsOf(item, 1),
                 Title = dir.GetDetailsOf(item, 21),

@@ -157,15 +157,33 @@ namespace Said.Areas.Back.Controllers
                 result.Add("msg", "服务器异常");
                 return result;
             }
-            newFileName = FileCommon.CreateFileNameByTime() + fileExt;
-            filePath = dirPath + newFileName;
-            file.SaveAs(filePath);
 
             //TODO 这里需要检测有没有什么异常
             MusicInfo music = MusicCommon.GetFileInfo(filePath);
             music.Size = file.ContentLength;
             music.Type = fileExt.Substring(1);
-            //【【【【【【【【【【TODO 这里检测如果没有时长，就根据位率计算时长！！！！ 】】】】】】】】】】】
+            //【【【【【【【【【【TODO 这里检测如果没有时长,就根据位率计算时长！！！！ 】】】】】】】】】】】
+            if (string.IsNullOrEmpty(music.Length))
+            {
+                if (music.BitRate == 0)
+                {
+                    result.Add("code", "2");
+                    result.Add("msg", "文件异常（无法读取到正确的文件信息）");
+                    return result;
+                }
+                else
+                {
+                    //尝试转换
+                    //这里得到的是字节么？
+                    music.Length = (music.Size * 1024 / music.BitRate * 8).ToString();  //歌曲时长 = 文件大小（mb）/ 位率（KBPS） * 8
+                    System.Diagnostics.Debug.WriteLine(music.Length);
+                }
+            }
+            newFileName = FileCommon.CreateFileNameByTime() + fileExt;
+            filePath = dirPath + newFileName;
+            file.SaveAs(filePath);
+
+
 
 
             result.Add("code", "0");

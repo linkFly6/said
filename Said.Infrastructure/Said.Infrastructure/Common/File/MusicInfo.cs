@@ -38,7 +38,7 @@ namespace Said.Common
         /// <summary>
         /// 比特率
         /// </summary>
-        public string BitRate { get; set; }
+        public int BitRate { get; set; }
 
     }
 }

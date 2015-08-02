@@ -143,6 +143,26 @@ namespace Said.Helper
 
 
         /// <summary>
+        /// 将一个字符串转换成int类型，例如：test123，返回123
+        /// </summary>
+        /// <param name="number">要转换的字符串</param>
+        /// <returns>转换失败返回0</returns>
+        public static int StringToInt(string number)
+        {
+            int res = 0;
+            if (string.IsNullOrEmpty(number))
+                return res;
+            StringBuilder sb = new StringBuilder();
+            foreach (char str in number)
+            {
+                if (char.IsNumber(str)) sb.Append(str);
+            }
+            int.TryParse(sb.ToString(), out res);
+            return res;
+        }
+
+
+        /// <summary>
         /// 时间戳转为C#格式时间
         /// </summary>
         /// <param name="timeStamp"></param>
