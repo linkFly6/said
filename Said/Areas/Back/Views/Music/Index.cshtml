@@ -90,7 +90,7 @@
                                 <input type="text" value="" placeholder="艺术家" ms-duplex="SongArtist" class="form-control" ms-change="saveTolocalStorage('SongArtist',SongArtist)" autocomplete="off">
                             </div>
 
-                            <div class=" form-group input-group input-append date form_datetime" data-date="2013-02-21T15:25:00Z">
+                            <div class=" form-group input-group input-append date form_datetime" ms-class="has-error:!ReleaseDate" data-date="2013-02-21T15:25:00Z">
                                 <span class="input-group-addon">发行日期</span>
                                 <input size="16" value="" placeholder="发行日期（请选择）" data-date-format="yyyy-mm-dd" data-date-language="zh-CN" data-date-today-btn="true" ms-dom="ReleaseDate" class="form-control" autocomplete="off" readonly />
                                 <span class="add-on"><i class="icon-remove"></i></span>
@@ -206,7 +206,6 @@
                 $.each(songPlainModel, function (key) {
                     localSong[key] = database.val(key) || '';
                 });
-                console.info(database.val('SongFileName'));
                 localSong['SongSizeText'] = database.val('SongSizeText') || '';
                 localSong['ImagePath'] = database.val('ImagePath') || '';
                 localSong['DurationText'] = database.val('DurationText') || '';
@@ -236,10 +235,20 @@
                     reset: function () {
                         $.extend(vmSong, songPlainModel, { SongSizeText: '', DurationText: '', ImagePath: '', SongFileNamePath: '', SongFileName: '', IName: '' });
                         database.clear();
-                        console.info(database.val('SongFileName'));
                         vmSong.isUploadedFile = false;
                     },
+                    check: function () {
+                        var validateIsOk = true;
+                        $.each(songPlainModel, function (key, value) {
+                            if (key !== 'SongId' && key !== 'SongLikeCount' && !vmSong[key]) {
+                                showMsg('存在不正确的表单项，请仔细检查', showMsg.WARNING);
+                                return validateIsOk = false;
+                            }
+                        });
+                        return validateIsOk;
+                    },
                     submit: function () {
+                        if (!vmSong.check()) return;
                         var data = {};
                         $.each(songPlainModel, function (key) {
                             data[key] = vmSong[key];
@@ -255,7 +264,6 @@
                         }).fail(function () {
                             showMsg('网络连接异常', showMsg.ERROR, true);
                         });
-
                     },
                     remove: function () {
                         if (vmModel.isLoading) return;
@@ -344,6 +352,7 @@
                             imgSrc = imageUrl.get(data.IFileName);
                             vmSong.IName = data.IFileName;
                             vmSong.ImagePath = imgSrc;
+                            vmSong.ImageId = data.ImageId;
                             database.val('ImageId', data.ImageId).val('IName', data.IFileName).val('ImagePath', imgSrc);
                         } else {
                             vmSong.IName = vmSong.ImagePath = '';

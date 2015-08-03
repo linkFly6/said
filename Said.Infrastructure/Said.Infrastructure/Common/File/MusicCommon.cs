@@ -19,8 +19,10 @@ namespace Said.Common
         public static MusicInfo GetFileInfo(string filePath)
         {
             ShellClass sh = new ShellClass();
+          
             Folder dir = sh.NameSpace(Path.GetDirectoryName(filePath));
             FolderItem item = dir.ParseName(Path.GetFileName(filePath));
+
             //StringBuilder sb = new StringBuilder();
             //for (int i = -1; i < 87; i++)
             //{
