@@ -50,6 +50,20 @@ namespace Said.Areas.Back.Controllers
             return Json(new
             {
                 total = res.TotalItemCount,
+                datas = res.ToList<Song>()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 获取全部音乐
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetAllMusicList()
+        {
+            var res = SongApplication.Find().ToList<Song>();
+            return Json(new
+            {
+                total = res.Count,
                 datas = res
             }, JsonRequestBehavior.AllowGet);
         }

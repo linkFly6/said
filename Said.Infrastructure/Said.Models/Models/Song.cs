@@ -32,6 +32,11 @@ namespace Said.Models
         public int SongLikeCount { get; set; }
 
         /// <summary>
+        /// 被引用次数
+        /// </summary>
+        public int ReferenceCount { get; set; }
+
+        /// <summary>
         /// 文件类型
         /// </summary>
         public string FileType { get; set; }

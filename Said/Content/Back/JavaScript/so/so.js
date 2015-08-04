@@ -397,7 +397,7 @@
         regTime = /(0\d|2[0-3])?:?(0\d|[1-5]\d):(0\d|[1-5]\d)/;
     so.extend({
         parseSeconds: function (value) {
-            //转换一个时间到秒，例如：22:31:43
+            //转换一个时间到秒，例如：00:01:00 => 60
             var date = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]),
                 res = regTime.test(value) && regTime.exec(value);
             if (res) {//["22:31:43", "22", "31", "43"]
@@ -407,6 +407,12 @@
                 return (date - _lockDate) / 1000;
             }
             return 0;
+        },
+        //转换一个秒数到时间，例如：60 => 00:01:00
+        parseTime: function (value) {
+            var date = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]);
+            date.setSeconds(value);
+            return so.dateFormat(date, 'HH:mm:ss');
         },
         parseBit: function (value) {
             //转换一个字节单位到合适阅读的单位
