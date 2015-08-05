@@ -200,6 +200,26 @@ namespace Said.IServices
         }
 
         /// <summary>
+        /// 无条件查询全部，并按照指定的列顺序排列
+        /// </summary>
+        /// <param name="order">要排序的列</param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> GetAll<TOrder>(Expression<Func<T, TOrder>> order)
+        {
+            return dbset.OrderBy(order).ToList();
+        }
+
+        /// <summary>
+        /// 无条件查询全部，并按照指定的列倒序排列
+        /// </summary>
+        /// <param name="order">要排序的列（倒序）</param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> GetAllDesc<TOrder>(Expression<Func<T, TOrder>> order)
+        {
+            return dbset.OrderByDescending(order).ToList();
+        }
+
+        /// <summary>
         /// 根据long ID查询一条
         /// </summary>
         /// <param name="id">类型为long的ID</param>
@@ -226,6 +246,31 @@ namespace Said.IServices
         {
             return dbset.Where(where).ToList();
         }
+
+        /// <summary>
+        /// 根据条件查询，并按照指定的列顺序排列
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <param name="order">要排序的列（顺序）</param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> GetMany<TOrder>(Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order)
+        {
+            return dbset.Where(where).OrderBy(order).ToList();
+        }
+
+        /// <summary>
+        /// 根据条件查询，并按照指定的列倒序排列
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <param name="order">要排序的列（倒序）</param>
+        /// <returns></returns>
+        public virtual IEnumerable<T> GetManyDesc<TOrder>(Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order)
+        {
+            return dbset.Where(where).OrderByDescending(order).ToList();
+        }
+
+
+
         /// <summary>
         /// 查询一条
         /// </summary>
@@ -280,7 +325,7 @@ namespace Said.IServices
         {
             var results = dbset.OrderBy(order).Where(where).Select(selector).GetPage(page).ToList().Select(selectorToEntity);
             int total = dbset.Count(where);
-            
+
             return new StaticPagedList<T>(results, page.PageNumber, page.PageSize, total);
         }
 

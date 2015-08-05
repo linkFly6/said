@@ -4,6 +4,13 @@ $source-detail-bar: 250px;
 
 $source-box-padding: 10px;
 
+@mixin text-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
 @mixin box-border {
     padding: $source-box-padding;
 }
@@ -12,7 +19,9 @@ $source-box-padding: 10px;
     position: absolute;
 }
 
-@mixin img-info {
+@mixin img-data {
+    width: 200px;
+    height: 200px;
 }
 
 .source-content {
@@ -125,35 +134,46 @@ $source-box-padding: 10px;
             &:hover {
                 border-color: #4cae4c;
             }
+        }
 
-            .item-img {
-                width: 256px;
-                height: 140px;
-                background: url('/Content/Images/Said-Images-load.gif') center 0 no-repeat #f4f4f4;
-                background-size: cover;
+        .item-img {
+            width: 256px;
+            height: 140px;
+            background: url('/Content/Images/Said-Images-load.gif') center 0 no-repeat #f4f4f4;
+            background-size: cover;
+        }
+
+        .item-info {
+            color: #666;
+            overflow: hidden;
+            text-align: left;
+
+            .img-name, .item-delete {
+                line-height: 26px;
+                vertical-align: middle;
             }
 
-            .item-info {
+            .item-delete {
                 color: #666;
-                overflow: hidden;
-                text-align: left;
+                float: right;
+                font-size: 16px;
+                transition: all 0.4s ease-in-out 0s;
+                text-decoration: none;
+            }
 
-                .img-name, .item-delete {
-                    line-height: 26px;
-                    vertical-align: middle;
-                }
+            .item-delete:hover {
+                color: red;
+            }
+        }
 
-                .item-delete {
-                    color: #666;
-                    float: right;
-                    font-size: 16px;
-                    transition: all 0.4s ease-in-out 0s;
-                    text-decoration: none;
-                }
+        &.songBox {
+            .item-img {
+                @include img-data;
+            }
 
-                .item-delete:hover {
-                    color: red;
-                }
+            .img-name {
+                @include text-ellipsis;
+                width: 170px;
             }
         }
 
@@ -203,7 +223,13 @@ $source-box-padding: 10px;
     color: #52b12d;
 }
 
-
+.source-dialog {
+    .source-thum {
+        img {
+            @include img-data;
+        }
+    }
+}
 //图片详情
 .source-detail {
     position: absolute;

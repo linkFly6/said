@@ -60,10 +60,18 @@ namespace Said.Application
              *  http://q.cnblogs.com/q/43962/
              */
             //model.Image = ImageApplication.Find(model.ImageId);
-            if (ImageApplication.Find(model.ImageId) == null)
+            Image image = ImageApplication.Find(model.ImageId);
+            if (image == null)
             {
                 return "歌曲不正确（不可获取）";
             }
+            else
+            {
+                //更新引用
+                image.ReferenceCount += 1;
+                ImageApplication.Update(image);
+            }
+
             return null;
         }
 
@@ -143,6 +151,15 @@ namespace Said.Application
         public static IEnumerable<Song> Find()
         {
             return Context.GetAll();
+        }
+
+        /// <summary>
+        /// 无条件查询全部，并按照时间倒序排列
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Song> FindToList()
+        {
+            return Context.GetAllDesc(m => m.Date);
         }
 
         /// <summary>

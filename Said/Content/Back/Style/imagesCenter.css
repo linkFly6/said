@@ -76,26 +76,35 @@
       transition: border 0.2s ease-in-out 0s; }
       .source-content .source-body .source-item:hover {
         border-color: #4cae4c; }
-      .source-content .source-body .source-item .item-img {
-        width: 256px;
-        height: 140px;
-        background: url("/Content/Images/Said-Images-load.gif") center 0 no-repeat #f4f4f4;
-        background-size: cover; }
-      .source-content .source-body .source-item .item-info {
+    .source-content .source-body .item-img {
+      width: 256px;
+      height: 140px;
+      background: url("/Content/Images/Said-Images-load.gif") center 0 no-repeat #f4f4f4;
+      background-size: cover; }
+    .source-content .source-body .item-info {
+      color: #666;
+      overflow: hidden;
+      text-align: left; }
+      .source-content .source-body .item-info .img-name, .source-content .source-body .item-info .item-delete {
+        line-height: 26px;
+        vertical-align: middle; }
+      .source-content .source-body .item-info .item-delete {
         color: #666;
-        overflow: hidden;
-        text-align: left; }
-        .source-content .source-body .source-item .item-info .img-name, .source-content .source-body .source-item .item-info .item-delete {
-          line-height: 26px;
-          vertical-align: middle; }
-        .source-content .source-body .source-item .item-info .item-delete {
-          color: #666;
-          float: right;
-          font-size: 16px;
-          transition: all 0.4s ease-in-out 0s;
-          text-decoration: none; }
-        .source-content .source-body .source-item .item-info .item-delete:hover {
-          color: red; }
+        float: right;
+        font-size: 16px;
+        transition: all 0.4s ease-in-out 0s;
+        text-decoration: none; }
+      .source-content .source-body .item-info .item-delete:hover {
+        color: red; }
+    .source-content .source-body.songBox .item-img {
+      width: 200px;
+      height: 200px; }
+    .source-content .source-body.songBox .img-name {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: inline-block;
+      width: 170px; }
     .source-content .source-body .source-item.selected {
       background-color: #5cb85c;
       border-color: #4cae4c; }
@@ -118,6 +127,10 @@
 
 .keywords {
   color: #52b12d; }
+
+.source-dialog .source-thum img {
+  width: 200px;
+  height: 200px; }
 
 .source-detail {
   position: absolute;

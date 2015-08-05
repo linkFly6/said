@@ -60,7 +60,7 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult GetAllMusicList()
         {
-            var res = SongApplication.Find().ToList<Song>();
+            var res = SongApplication.FindToList().ToList<Song>();
             return Json(new
             {
                 total = res.Count,
@@ -226,7 +226,10 @@ namespace Said.Areas.Back.Controllers
             Song model = SongApplication.Find(id);
             if (model == null)
                 return ResponseResult(2, "没有找到音乐对象");
+            if (model.ReferenceCount > 0)
+                return ResponseResult(3, "歌曲被引用，无法删除");
             FileCommon.Remove(Server.MapPath(ConfigInfo.SourceMusicPath + model.SongFileName));
+            ImageApplication.MinusReferenceCount(model.ImageId);
             SongApplication.Delete(model);
             return ResponseResult();
         }

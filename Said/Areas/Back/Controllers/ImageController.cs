@@ -285,6 +285,8 @@ namespace Said.Areas.Back.Controllers
             Image image = ImageApplication.Find(id);
             if (image == null)
                 return ResponseResult(2, "没有找到图片");
+            if (image.ReferenceCount > 0)
+                return ResponseResult(3, "图片被引用，无法删除");
             image.IsDel = 1;
             string path = string.Empty;
             switch (image.Type)

@@ -60,6 +60,20 @@ namespace Said.IServices
 
 
         /// <summary>
+        /// 无条件查询全部，并按照指定的列顺序排列
+        /// </summary>
+        /// <param name="order">要排序的列</param>
+        /// <returns></returns>
+        IEnumerable<T> GetAll<TOrder>(Expression<Func<T, TOrder>> order);
+
+        /// <summary>
+        /// 无条件查询全部，并按照指定的列倒序排列
+        /// </summary>
+        /// <param name="order">要排序的列（倒序）</param>
+        /// <returns></returns>
+        IEnumerable<T> GetAllDesc<TOrder>(Expression<Func<T, TOrder>> order);
+
+        /// <summary>
         /// 根据long ID查询一条
         /// </summary>
         /// <param name="id">类型为long的ID</param>
@@ -101,6 +115,25 @@ namespace Said.IServices
         /// <returns></returns>
         IEnumerable<T> GetMany(Expression<Func<T, bool>> where);
 
+
+        /// <summary>
+        /// 根据条件查询，并按照指定的列顺序排列
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <param name="order">要排序的列（顺序）</param>
+        /// <returns></returns>
+        IEnumerable<T> GetMany<TOrder>(Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order);
+
+
+
+        /// <summary>
+        /// 根据条件查询，并按照指定的列倒序排列
+        /// </summary>
+        /// <param name="where">条件表达式</param>
+        /// <param name="order">要排序的列（倒序）</param>
+        /// <returns></returns>
+        IEnumerable<T> GetManyDesc<TOrder>(Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order);
+
         /// <summary>
         /// 查询一条
         /// </summary>
@@ -131,7 +164,7 @@ namespace Said.IServices
 
 
 
-                /// <summary>
+        /// <summary>
         /// 分页查询，允许查询模型的一部分数据
         /// </summary>
         /// <typeparam name="TOrder">排序对象</typeparam>
