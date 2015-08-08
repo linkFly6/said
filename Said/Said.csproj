@@ -184,6 +184,7 @@
     <Content Include="bin\zh-Hans\System.Web.WebPages.resources.dll" />
     <Content Include="Content\Back\Images\cd-default2.png" />
     <Content Include="Content\Back\Images\cd-default.png" />
+    <Content Include="Content\Back\Images\said-login-bg.jpg" />
     <Content Include="Content\Back\Images\showMsg\warning.png" />
     <Content Include="Content\Back\Images\showMsg\error.png" />
     <Content Include="Content\Back\Images\showMsg\ok.png" />
@@ -582,6 +583,7 @@
     <Content Include="Content\Back\Style\flat-ui.min.css" />
     <Content Include="Content\Back\Style\grid-table.css" />
     <Content Include="Content\Back\Style\imagesCenter.css" />
+    <Content Include="Content\Back\Style\login.css" />
     <Content Include="Content\Back\Style\said-said.css" />
     <Content Include="Content\Back\Style\index.css" />
     <Content Include="Content\Back\Style\saidCenter.css" />
@@ -686,7 +688,6 @@
     <Folder Include="Areas\Back\Models\" />
     <Folder Include="Content\Back\JavaScript\jquery\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
-    <Folder Include="Content\Style\sass\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="System\Log\" />
@@ -1064,6 +1065,7 @@
   <ItemGroup>
     <Content Include="Areas\Back\Views\Image\Index.cshtml" />
     <Content Include="Areas\Back\Views\Music\Index.cshtml" />
+    <Content Include="Areas\Back\Views\Home\Login.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1072,6 +1074,8 @@
     <Content Include="Content\Back\Style\sass\imagesCenter.scss" />
     <Content Include="Content\Back\Style\imagesCenter.css.map" />
     <Content Include="Content\Back\Style\sass\koala-config.json" />
+    <Content Include="Content\Style\sass\koala-config.json" />
+    <Content Include="Content\Back\Style\sass\login.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

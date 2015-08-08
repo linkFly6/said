@@ -1,0 +1,97 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Said - Login</title>
+    <link href="@Url.Content("~/Content/Back/Style/bootstrap.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/Style/font-awesome.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Style/Global.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/Style/default.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/Style/login.css")" r rel="stylesheet" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="/favicon.ico" />
+    <script src="@Url.Content("~/Content/Back/JavaScript/requirejs-2.1.15.js")"></script>
+    <script src="@Url.Content("~/Content/Back/JavaScript/main.js?v=1")"></script>
+</head>
+<body>
+    <section class="login-content">
+        <header class="login-header">
+            <div class="said-logo"></div>
+        </header>
+        <section class="login-box">
+            <div class="login-bar-bg"></div>
+            <div class="login-context">
+                <div class="login-form">
+                    <div class="login-input login-name">
+                        <input type="text" class="name-input" placeholder="用户名" id="username">
+                    </div>
+                    <div class="login-input login-pass">
+                        <input type="password" class="pass-input" placeholder="密码" id="password">
+                        <i class="fa fa-eye" id="showPass"></i>
+                    </div>
+                </div>
+                <div class="login-footer">
+                    <a href="javascript:;" class="login-btn" id="btn-login">登录</a>
+                </div>
+            </div>
+        </section>
+    </section>
+    <div class="login-msg" id="msg" style="display:none" title="双击关闭">
+        <span class="login-msg-txt">错误消息</span>
+        <div class="login-msg-bg"></div>
+    </div>
+    <script>
+        require(['jquery', 'so'], function ($, so) {
+            'use strict';
+            var $name = $('#username'),
+                $pass = $('#password'),
+                $btn = $('#btn-login'),
+                $msgBox = $('#msg'),
+                $msg = $msgBox.find('.login-msg-txt'),
+                $showPass = $('#showPass'),
+                $document = $(document),
+                isLock = false,
+                toggleMsg = {
+                    show: function (text) {
+                        $msg.text(text || '');
+                        $msgBox.stop().fadeIn(300);
+                    },
+                    hide: function () {
+                        $msgBox.stop().fadeOut(300);
+                    }
+                };
+            $msgBox.on('dblclick', function () {
+                toggleMsg.hide();
+            });
+
+            $showPass.on('mousedown', function () {
+                $pass.attr('type', 'text');
+            });
+            $document.on('mouseup', function () {
+                $pass.attr('type', 'password');
+            });
+            //输入框逻辑
+            $name.on('input', so.debounce(function () {
+                var value = $name.val().trim();
+                value ? toggleMsg.hide() : toggleMsg.show('请输入正确的用户名');
+            }, 300));
+            $pass.on('input', so.debounce(function () {
+                var value = $pass.val().trim();
+                value ? toggleMsg.hide() : toggleMsg.show('请输入正确的密码');
+            }, 300));
+
+            $btn.on('click', function () {
+                if (isLock) return;
+                //$btn.addClass('lock');
+                //isLock = true;
+
+            });
+        });
+    </script>
+</body>
+</html>

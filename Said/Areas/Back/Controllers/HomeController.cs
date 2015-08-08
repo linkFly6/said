@@ -18,6 +18,19 @@ namespace Said.Areas.Back.Controllers
         }
 
 
+        [HttpGet]
+        public ActionResult Login()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Login(string name, string pwd)
+        {
+            return ResponseResult();
+        }
+
 
         #region Logic
         /// <summary>

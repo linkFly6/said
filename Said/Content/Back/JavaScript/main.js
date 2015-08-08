@@ -1,6 +1,7 @@
 ﻿require.config({
     baseUrl: '/Content/Back/JavaScript',
     paths: {
+        'jquery': 'jQuery-2.1.1.min',
         'saidAdd': 'said/addSaid',
         'classify': 'said/classify',
         'avalon': 'avalon/avalon.mobile.min',
