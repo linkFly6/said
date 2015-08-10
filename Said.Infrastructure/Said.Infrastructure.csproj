@@ -82,10 +82,13 @@
     <Compile Include="Said.Infrastructure\Common\ModelCommon.cs" />
     <Compile Include="Said.Models\Data\Page.cs" />
     <Compile Include="Said.Models\Models\Address.cs" />
+    <Compile Include="Said.Models\Models\Admin.cs" />
+    <Compile Include="Said.Models\Models\AdminRecord.cs" />
     <Compile Include="Said.Models\Models\Blog.cs" />
     <Compile Include="Said.Models\Models\Classify.cs" />
     <Compile Include="Said.Models\Models\Article.cs" />
     <Compile Include="Said.Models\Models\Enum\ImageType.cs" />
+    <Compile Include="Said.Models\Models\Enum\OperationType.cs" />
     <Compile Include="Said.Models\Models\Image.cs" />
     <Compile Include="Said.Models\Models\Song.cs" />
     <Compile Include="Said.Models\Models\Tag.cs" />

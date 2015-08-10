@@ -64,6 +64,8 @@
     <Compile Include="Said.Data\DatabaseFactory.cs" />
     <Compile Include="Said.Data\Disposable.cs" />
     <Compile Include="Said.Data\SaidDbContext.cs" />
+    <Compile Include="Said.Service\AdminRecordService.cs" />
+    <Compile Include="Said.Service\AdminService.cs" />
     <Compile Include="Said.Service\ArticleService.cs" />
     <Compile Include="Said.Service\BaseService.cs" />
     <Compile Include="Said.Service\BlogService.cs" />

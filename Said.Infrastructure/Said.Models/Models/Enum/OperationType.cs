@@ -7,34 +7,30 @@ using System.Threading.Tasks;
 namespace Said.Models
 {
     /// <summary>
-    /// 地址类
+    /// 用户操作行为枚举（操作行为重要级）
     /// </summary>
-    public class Address
+    public enum OperationType
     {
-        public string IP { get; set; }
         /// <summary>
-        /// 国家
+        /// 查询数据
         /// </summary>
-        public string Country { get; set; }
+        Select = 0,
+        /// <summary>
+        /// 修改数据
+        /// </summary>
+        Update = 1,
+        /// <summary>
+        /// 登录
+        /// </summary>
+        Login = 2,
+        /// <summary>
+        /// 创建数据
+        /// </summary>
+        Create = 3,
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        Delete = 4
 
-        /// <summary>
-        /// 省份
-        /// </summary>
-        public string Province { get; set; }
-
-        /// <summary>
-        /// 城市
-        /// </summary>
-        public string City { get; set; }
-
-        /// <summary>
-        /// 区域
-        /// </summary>
-        public string District { get; set; }
-
-        /// <summary>
-        /// 运营商
-        /// </summary>
-        public string ISP { get; set; }
     }
 }

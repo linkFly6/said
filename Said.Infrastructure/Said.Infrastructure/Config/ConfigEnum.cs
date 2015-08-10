@@ -134,5 +134,14 @@ namespace Said.Config
         public const string SourceDataIP = "source.data.ip";
 
         #endregion
+
+
+        #region 后台允许访问的IP段
+        /// <summary>
+        /// 后台允许访问的IP段
+        /// </summary>
+        public const string IPRange = "IPRange";
+
+        #endregion
     }
 }

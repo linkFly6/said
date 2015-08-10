@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminApplication.cs" />
+    <Compile Include="AdminRecordApplication.cs" />
     <Compile Include="ArticleApplication.cs" />
     <Compile Include="BaseApplication.cs" />
     <Compile Include="BlogApplication.cs" />

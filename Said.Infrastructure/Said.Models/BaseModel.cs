@@ -18,6 +18,10 @@ namespace Said.Models
         public int IsDel { get; set; }
 
         /// <summary>
+        /// 关键日期
+        /// </summary>
+        public DateTime Date { get; set; }
+        /// <summary>
         /// 实体验证方法
         /// </summary>
         /// <param name="validationContext">验证上下文</param>

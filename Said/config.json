@@ -30,6 +30,8 @@
     "source.sys.icons.maxSize": "102400",
 
 
-    "source.data.ip": "/Source/Sys/Dat/IP.dat"
+    "source.data.ip": "/Source/Sys/Dat/IP.dat",
+
+    "IPRange": "172.0.0.1;192.168.1.1-192.168.1.2"
 
 }
