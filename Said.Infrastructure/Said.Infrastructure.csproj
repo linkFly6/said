@@ -76,6 +76,8 @@
     <Compile Include="Said.Infrastructure\Common\XML\XmlHelper.cs" />
     <Compile Include="Said.Infrastructure\Common\XML\XMLProcess.cs" />
     <Compile Include="Said.Infrastructure\Common\YZM\YZMHelper.cs" />
+    <Compile Include="Said.Infrastructure\Common\Cache\CacheHelper.cs" />
+    <Compile Include="Said.Infrastructure\Common\Cache\DataCache.cs" />
     <Compile Include="Said.Infrastructure\Config\ConfigEnum.cs" />
     <Compile Include="Said.Infrastructure\Config\ConfigTable.cs" />
     <Compile Include="Said.Models\BaseModel.cs" />

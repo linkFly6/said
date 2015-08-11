@@ -30,7 +30,11 @@ namespace Said.Models
         /// <summary>
         /// 删除数据
         /// </summary>
-        Delete = 4
+        Delete = 4,
+        /// <summary>
+        /// 不正常操作
+        /// </summary>
+        Warning = 5
 
     }
 }

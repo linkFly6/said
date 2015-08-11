@@ -13,7 +13,7 @@ namespace Said.Models
     public class AdminRecord : BaseModel
     {
         [Key]
-        public int AdminRecordId { get; set; }
+        public string AdminRecordId { get; set; }
 
         /// <summary>
         /// 行为描述
@@ -28,7 +28,7 @@ namespace Said.Models
         /// <summary>
         /// 回滚Sql
         /// </summary>
-        public long Rollback { get; set; }
+        public string Rollback { get; set; }
 
         /// <summary>
         /// 来源
@@ -58,7 +58,7 @@ namespace Said.Models
         public string UserAgent { get; set; }
 
         /// <summary>
-        /// 获取访问的完整URL : Request.Url.ToString()=>http://www.test.com/test/linkFly?id=5&name=kelli
+        /// 获取访问的完整URL :Request.Url.ToString() => http://www.test.com/test/linkFly?id=5&name=kelli
         /// </summary>
         public string Url { get; set; }
 

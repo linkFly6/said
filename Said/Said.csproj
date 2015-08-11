@@ -139,6 +139,7 @@
     <Compile Include="Common\JavaScriptCommon.cs" />
     <Compile Include="Common\LogCommon.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Filters\AdminFilterAttribute.cs" />
     <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SourceController.cs" />

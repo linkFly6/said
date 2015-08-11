@@ -22,22 +22,46 @@ namespace Said.Application
         }
         #endregion
 
+        #region 增删改
+        /// <summary>
+        /// 新增一条管理员操作记录
+        /// </summary>
+        /// <param name="model">管理员操作记录对象</param>
+        /// <returns>返回自增的AdminRecordId</returns>
+        public static int Add(AdminRecord model)
+        {
+            Context.Add(model);
+            return Context.Submit();
+        }
+        #endregion
+
         /// <summary>
         /// 根据ID获取一条记录
         /// </summary>
         /// <returns></returns>
-        public static AdminRecord Get()
+        public static AdminRecord Get(string recordId)
         {
-            return null;
+            return Context.Get(m => m.AdminRecordId == recordId);
         }
 
+
+
         /// <summary>
-        /// 根据用户获取多条记录
+        /// 根据用户ID获取最后一次登录操作
         /// </summary>
         /// <returns></returns>
-        public static AdminRecord Get(string adminId)
+        public static IEnumerable<AdminRecord> GetByAdminLastDay(int adminId)
         {
-            return null;
+            return Context.GetByAdminLastDay(adminId);
         }
+
+        ///// <summary>
+        ///// 根据用户获取多条记录
+        ///// </summary>
+        ///// <returns></returns>
+        //public static AdminRecord Get(string adminId)
+        //{
+        //    return null;
+        //}
     }
 }

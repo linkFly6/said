@@ -15,6 +15,7 @@ namespace Said.Controllers.Filters
     public class UserFilterAttribute : ActionFilterAttribute, IActionFilter
     {
 
+        #region 统计逻辑
         /// <summary>
         /// 线程锁
         /// </summary>
@@ -113,7 +114,7 @@ namespace Said.Controllers.Filters
             if (cookie == null || cookie.Values["id"] == null)//没有用户ID，创建
             {
                 cookie = new HttpCookie("user");
-                User user = new User { UserID = userId = Guid.NewGuid().ToString().Replace("-", ""), EMail = string.Empty, Name = string.Empty };
+                User user = new User { UserID = userId = Guid.NewGuid().ToString().Replace("-", ""), EMail = string.Empty, Name = string.Empty, Date = DateTime.Now };
                 if (UserApplication.Add(user) > 0)
                 {
                     cookie.Name = "user";
@@ -126,7 +127,8 @@ namespace Said.Controllers.Filters
                 userId = cookie.Values["id"];//【【【【【【【【【【【TODO： 这里要验证cookie的合法性】】】】】】】】】】
             }
             AddRecord(userId, context);
-        }
+        } 
+        #endregion
 
         /// <summary>
         /// 加载action前
