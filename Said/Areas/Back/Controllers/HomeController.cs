@@ -1,5 +1,6 @@
 ﻿using Said.Application;
 using Said.Common;
+using Said.Controllers.Attrbute;
 using Said.Helper;
 using Said.Models;
 using System;
@@ -21,7 +22,7 @@ namespace Said.Areas.Back.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet, NoFilter]
         public ActionResult Login()
         {
 
@@ -31,6 +32,7 @@ namespace Said.Areas.Back.Controllers
         [HttpPost]
         public JsonResult Login(string name, string pwd)
         {
+
             if (string.IsNullOrWhiteSpace(name))
             {
                 return ResponseResult(1, "没有输入用户名");

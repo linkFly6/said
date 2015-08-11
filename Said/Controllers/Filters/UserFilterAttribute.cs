@@ -65,7 +65,7 @@ namespace Said.Controllers.Filters
                 key = string.Empty;
             UserRecord record = new UserRecord
             {
-                AccessDate = DateTime.Now,
+                Date = DateTime.Now,
                 Browser = helper.GetBrowser(),
                 IP = helper.GetIP(),
                 Language = helper.GetLangage(),
@@ -127,7 +127,7 @@ namespace Said.Controllers.Filters
                 userId = cookie.Values["id"];//【【【【【【【【【【【TODO： 这里要验证cookie的合法性】】】】】】】】】】
             }
             AddRecord(userId, context);
-        } 
+        }
         #endregion
 
         /// <summary>

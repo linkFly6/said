@@ -35,13 +35,6 @@ namespace Said.Models
         /// </summary>
         public string SessionID { get; set; }
 
-        /// <summary>
-        /// 访问时间
-        /// </summary>
-        public DateTime AccessDate { get; set; }
-
-
-
         ///// <summary>
         ///// 用户回话ID，这里记录隶属的用户回话
         ///// </summary>

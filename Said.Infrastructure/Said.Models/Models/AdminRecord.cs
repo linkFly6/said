@@ -12,7 +12,6 @@ namespace Said.Models
     /// </summary>
     public class AdminRecord : BaseModel
     {
-        [Key]
         public string AdminRecordId { get; set; }
 
         /// <summary>
