@@ -20,6 +20,15 @@ $boxOpacity: 0.8;
     transition: $prototype ease-in-out 0.2s;
 }
 
+%focusInput {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    border-right-color: $inputBorderColor;
+    border-top-color: $inputBorderColor;
+    border-bottom-color: $inputBorderColor;
+    background-color: #ebebeb;
+    opacity: 1;
+}
+
 
 html {
     height: 100%;
@@ -78,19 +87,18 @@ body {
         opacity: $boxOpacity;
         @include transition();
         font-size: 15px;
+
+        &:focus, &:hover, &:active {
+            @extend %focusInput;
+        }
     }
 
     .login-input {
         padding: 15px;
 
-        &:focus, &:hover {
+        &:focus, &:hover, &:active {
             input {
-                box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-                border-right-color: $inputBorderColor;
-                border-top-color: $inputBorderColor;
-                border-bottom-color: $inputBorderColor;
-                background-color: #ebebeb;
-                opacity: 1;
+                @extend %focusInput;
             }
         }
     }

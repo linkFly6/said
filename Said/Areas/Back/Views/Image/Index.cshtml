@@ -161,7 +161,7 @@
         require(['jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload'], function ($, avalon, _, showMsg, dialog, upload) {
             $(function () {
                 'use strict';
-                var database = _.DataBase('back.Image');
+                var database = _.Database('back.Image');
                 var imageUrl = {
                     thumbnail: function (imgName, typeId) {
                         return (Source.thumbnail[typeId] || Source.thumbnail[0]) + imgName;

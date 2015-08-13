@@ -29,7 +29,7 @@ namespace Said.Areas.Back.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, NoFilter]
         public JsonResult Login(string name, string pwd)
         {
 
@@ -49,17 +49,17 @@ namespace Said.Areas.Back.Controllers
                 IP = HttpHelper.GetIP(System.Web.HttpContext.Current),
                 OperationType = OperationType.Login,
                 Rollback = string.Empty,
-                Url = Request.RawUrl,
+                Url = Request.Url.AbsoluteUri,
                 Address = string.Empty,
                 UserAgent = HttpContext.Request.UserAgent,
                 AdminRecordId = Guid.NewGuid().ToString().Replace("-", "")
             };
             if (HttpContext.Request.UrlReferrer != null)
             {
-                record.UrlReferrer = HttpContext.Request.UrlReferrer.AbsolutePath;
+                record.UrlReferrer = HttpContext.Request.UrlReferrer.AbsoluteUri;
                 record.ReferrerAuthority = HttpContext.Request.UrlReferrer.Authority;
             }
-
+            record.Address = GetAddressToString(record.IP);
 
             //判断白名单
             if (!IPRange.Check(record.IP))
@@ -75,14 +75,20 @@ namespace Said.Areas.Back.Controllers
             {
                 record.Description = string.Format("请求登录失败，输入的用户名:{0}，密码:{1}", name, pwd);
                 record.OperationType = OperationType.Warning;
+                AdminRecordApplication.Add(record);
                 return ResponseResult(3, "用户名或密码不正确");
             }
+            //record.AdminId = admin.AdminId;
             record.AdminId = admin.AdminId;
             record.Description = string.Format("管理员【{0}】登录", admin.Name);
 
-            return AdminRecordApplication.Add(record) > 0 ?
-                ResponseResult(record.AdminRecordId) ://成功返回登录记录
-                ResponseResult(5, "添加登录记录异常");
+            if (AdminRecordApplication.Add(record) > 0)
+            {
+                //放到缓存池
+                CacheHelper.SetCache(record.AdminRecordId, admin);
+                return ResponseResult(record.AdminRecordId);//成功返回登录记录
+            }
+            return ResponseResult(5, "添加登录记录异常");
         }
 
 
@@ -116,7 +122,22 @@ namespace Said.Areas.Back.Controllers
         }
         #endregion
 
-
+        #region Private
+        /// <summary>
+        /// 根据IP获取真实的地址
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <returns></returns>
+        private string GetAddressToString(string ip)
+        {
+            if (string.IsNullOrEmpty(ip))
+                return string.Empty;
+            string result = HttpHelper.GetAddress(ip);
+            if (string.IsNullOrEmpty(result) || !result.Contains("-"))
+                return string.Empty;
+            return result;
+        }
+        #endregion
 
     }
 }

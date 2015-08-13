@@ -30,6 +30,11 @@
         splice = Array.prototype.splice,
         push = Array.prototype.push,
         isArray = Array.isArray,
+
+        //耐压缩
+        escape = encodeURIComponent,
+        descape = decodeURIComponent,
+
         so = function (selector) {
             if (!(this instanceof so))
                 return new so(selector);
@@ -167,6 +172,7 @@
 
 
     /*===========================================================================基础模块===========================================================================*/
+
     so.extend({
         //基础函数
         isFunction: isFunction,
@@ -237,6 +243,19 @@
             });
             return res;
         },
+        //模拟String.prototype.startsWith - ECMAScript 2015(ES6) 规范
+        startsWith: function (subjectString, searchString, position) {
+            position = position || 0;
+            return subjectString.indexOf(searchString, position) === position;
+        },
+        endsWith: function (subjectString, searchString, position) {
+            if (position === undefined || position > subjectString.length) {
+                position = subjectString.length;
+            }
+            position -= searchString.length;
+            var lastIndex = subjectString.indexOf(searchString, position);
+            return !!~lastIndex && lastIndex === position;
+        },
         //扩展函数
         format: function (str, object) {
             /// <summary>
@@ -265,32 +284,114 @@
                 return object[key] !== undefined ? object[key] : match;
             });
         },
-        Parm: function (url) {
-            var Parm = function (name) {
-                /// <summary>
-                /// 1: PageState.parm(name) - parm是一个对象，标识是当前url的参数信息，提供动态参数和静态参数的访问
-                /// &#10; 1.1 - PageState.parm(name) - 动态获取当前url参数，它是实时的，当页面url利用pushState改变url的时候，它同样会更新相应的数据信息
-                /// &#10; 1.1 - PageState.parm[name] - 静态获取当前url参数，它获取的数据是静态的，在页面初始化的时候就会得到并且未来不会改变
-                /// </summary>
-                /// <param name="name" type="String">
-                /// 要获取的属性
-                /// </param>
-                /// <returns type="String" />
-                //通过函数访问则动态获取
-                url = window.location.search;
-                return (name != null && name !== '' && url.indexOf('?') !== -1
-                && (name = url.substr(1).match(new RegExp('(^|&)' + name + "=([^&]*)(&|$)"))) != null)
-                ? name[2] : '';
-            }, tmp;
-            //通过对象访问则静态获取
-            url.indexOf('?') !== -1 &&
-            url.substr(1).split('&').forEach(function (str) {
+        /**
+        * 编码一个对象，注意编码的对象如果有function也会被编码
+        * so.param(obj)
+        * so.param(obj, deep)
+        * @param {object} obj - 要编码的对象
+        * @param {boolean} [deep=true] - 是否深度编码（当一个对象包含子对象的时候，是否也编码这个子对象）
+        * @returns {String}
+        */
+        param: function (obj, deep) {
+            var res, name, value;
+            if (!isObject(obj)) return obj;
+            deep = deep == null ? true : deep;
+            res = [];
+            for (name in obj) {
+                value = obj[name];
+                if (deep && value && isPlainObject(value)) {
+                    //value是一个对象
+                    res.push(escape(name) + '=' + escape(so.param(value, deep)));
+
+                } else if (value != null) //当值是null/undefined的时候不会追加到参数中
+                    res.push(escape(name) + '=' + escape(value));
+            }
+            return res.join('&')/*.replace(/%20/g, '+')*/;//TODO需要测试后端是否支持这里的空格转+号
+        },
+        /**
+        * 获取url中的参数
+        * so.Search() - 动态获取当前url中的参数
+        * so.Search(url) - 动态获取指定url的参数
+        * @param {string} [url=window.location.search] - 要获取的url
+        * @returns {string}
+        */
+        search: function (url) {
+            //var search = function (url) {
+            if (!url) url = window.location.search;
+            url = ~url.indexOf('?') ? url.split('?')[1] : url;
+            url = descape(url);
+            var res = {},
+                tmp,
+                params = url.split('#')[0].split('&');
+            params.forEach(function (str) {
                 tmp = str.split('=');
-                Parm[tmp[0]] = decodeURIComponent(tmp[1]);
+                //%3D:=，是否支持深度解码
+                res[tmp[0]] = tmp[1];
             });
-            tmp = null;
-            return Parm;
-        }(window.location.search),
+            return res;
+            //};
+            //这里如果url有参数是name，那么贴到search就会报Function.prototype.name是只读属性的错误
+            //return so.extend(search, search(url));
+        },
+        /**
+        * 读取/设置cookie
+        * TODO 后续支持object的设置和array的读取？
+        * TODO 后续第三个参数支持为options，可以设置expires、path、domain、secure
+        * so.cookie() - 读取全部cookie
+        * so.cookie(name) - 读取cookie，读取的值会尝试自动转换
+        * so.cookie(name, value) - 设置永久有效cookie
+        * so.cookie(name, value, expiredays) - 设置cookie，并设置有效天数
+        * so.cookie(name, value, expiredays, path) - 设置包含有效路径的cookie
+        * so.cookie(name, value, expiredays, path, domain) - 设置包含域的cookie
+        * @param {string} name - 读取/设置的cookie名称
+        * @param {string} value - 设置的cookie值
+        * @param {double} expiredays - 过期时间（天）
+        * @returns {so|string}
+        */
+        cookie: function (name, value, expiredays, path, domain) {
+            if (value != null) {//set
+                var exdate = new Date;
+                if (expiredays != null) {
+                    exdate.setTime(exdate.getTime() + expiredays * 8.64e7);
+                    //目前UTC已经取代GMT作为新的世界时间标准，使用toGMTString()和toUTCString()两种方法返回字符串的格式和内容均相同
+                } else {
+                    //默认设个10年的
+                    exdate.setFullYear(exdate.getFullYear() + 10);
+                }
+                expiredays = ';expires=' + exdate.toUTCString();
+                if (isObject(value) || isArray(value))
+                    value = JSON.stringify(value);
+                path = path || '/';
+                domain = domain || document.domain;
+                document.cookie = [name, "=", escape(value), expiredays, ";path=", path, ";domain=", domain].join('');
+                return this;
+            }
+            //get
+            var result = name ? null : {},
+                cookies = document.cookie ? document.cookie.split('; ') : [],
+                i = 0,
+                length = cookies.length,
+                parts,
+                key,
+                cookie;
+            for (; i < length; i++) {
+                parts = cookies[i].split('=');
+                key = descape(parts.shift());
+                cookie = descape(parts.join('='));
+                if (key && key === name) return so.parseData(cookie);
+                if (!name && cookie) result[key] = cookie;
+            }
+            return result == null ? '' : result;
+            //return so.parseData(descape(getSubString(document.cookie, name + '=', ';')));
+        },
+        /**
+        * so.cookie(name) - 移除一个cookie
+        * @param {string} name - 移除的cookie名称
+        * @returns {so}
+        */
+        removeCookie: function (name) {
+            return so.cookie(name, '', -1);
+        },
         getWindow: function (node) {
             var doc = node.ownerDocument || node;
             return doc.defaultView || doc.parentWindow;
@@ -704,7 +805,7 @@
         * @param {string} key - key
         * @param {object} value - 值
         * @param {object} obj - 将一个对象存储到数据中心
-        * @returns {Service}
+        * @returns {so}
         */
         val: function (key, value) {
             if (isObject(key)) {//如果是object

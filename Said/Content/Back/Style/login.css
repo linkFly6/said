@@ -1,5 +1,13 @@
 @charset "UTF-8";
 /*公用样式*/
+.login-context input:focus, .login-context input:hover, .login-context input:active, .login-context .login-input:focus input, .login-context .login-input:hover input, .login-context .login-input:active input {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  border-right-color: #999;
+  border-top-color: #999;
+  border-bottom-color: #999;
+  background-color: #ebebeb;
+  opacity: 1; }
+
 html {
   height: 100%; }
 
@@ -51,13 +59,6 @@ body {
     font-size: 15px; }
   .login-context .login-input {
     padding: 15px; }
-    .login-context .login-input:focus input, .login-context .login-input:hover input {
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-      border-right-color: #999;
-      border-top-color: #999;
-      border-bottom-color: #999;
-      background-color: #ebebeb;
-      opacity: 1; }
   .login-context .login-pass {
     position: relative; }
   .login-context .fa-eye {

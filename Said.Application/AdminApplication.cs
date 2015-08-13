@@ -32,5 +32,15 @@ namespace Said.Application
         {
             return Context.Get(m => m.Name.ToLower() == name.ToLower() && m.Password == password);
         }
+
+        /// <summary>
+        /// 根据ID获取用户
+        /// </summary>
+        /// <param name="adminId"></param>
+        /// <returns></returns>
+        public static Admin Get(string adminId)
+        {
+            return Context.Get(m => m.AdminId == adminId);
+        }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Said.Controllers.Filters;
+﻿using Said.Application;
+using Said.Controllers.Filters;
+using Said.Helper;
+using Said.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +21,25 @@ namespace Said.Areas.Back.Controllers
 
         }
 
+
+        /// <summary>
+        /// 获取当前登录管理员的管理员信息
+        /// </summary>
+        /// <returns></returns>
+        protected Admin GetAdmin()
+        {
+            HttpCookie recordCookie = Request.Cookies["sh"];
+            Admin admin = CacheHelper.GetCache(recordCookie.Value) as Admin;
+            if (admin == null)
+            {
+                //从数据库中查询
+                AdminRecord record = AdminRecordApplication.Get(recordCookie.Value);
+                if (record == null) return null;
+                admin = record.Admin;
+                CacheHelper.SetCache(recordCookie.Value, admin);
+            }
+            return admin;
+        }
 
 
         #region Other

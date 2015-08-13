@@ -37,15 +37,16 @@ namespace Said.Controllers.Filters
             if (string.IsNullOrEmpty(recordId))
             {
                 //跳转到登录页
-                filterContext.Result = new RedirectResult(string.Format("/Back/Home/Login?re={0}", System.Web.HttpUtility.UrlEncode(context.Request.RawUrl)));
+                filterContext.Result = new RedirectResult(string.Format("/Back/Home/Login?re={0}", System.Web.HttpUtility.UrlEncode(context.Request.Url.AbsoluteUri)));
                 return;
             }
             //没有记录 && 从数据库读不到记录
             if (CacheHelper.GetCache(recordId) == null)
             {
-                if (AdminRecordApplication.Get(recordId) != null)
+                AdminRecord record = AdminRecordApplication.Get(recordId);
+                if (record != null)
                 {
-                    CacheHelper.SetCache(recordId, true);
+                    CacheHelper.SetCache(recordId, record.Admin);
                 }
                 else
                 {
@@ -54,7 +55,7 @@ namespace Said.Controllers.Filters
                      *  跳转到登录页,RedirectResult参考这篇：http://www.cnblogs.com/artech/archive/2012/08/16/action-result-04.html
                      *  RedirectResult是暂时重定向，搜索引擎不会收录
                      */
-                    filterContext.Result = new RedirectResult(string.Format("/Back/Home/Login?re={0}", System.Web.HttpUtility.UrlEncode(context.Request.RawUrl)));
+                    filterContext.Result = new RedirectResult(string.Format("/Back/Home/Login?re={0}", System.Web.HttpUtility.UrlEncode(context.Request.Url.AbsoluteUri)));
                 }
             }
 

@@ -50,7 +50,7 @@ namespace Said.Application
         /// 根据用户ID获取最后一次登录操作
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<AdminRecord> GetByAdminLastDay(int adminId)
+        public static IEnumerable<AdminRecord> GetByAdminLastDay(string adminId)
         {
             return Context.GetByAdminLastDay(adminId);
         }

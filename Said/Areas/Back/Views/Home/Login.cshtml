@@ -28,10 +28,10 @@
             <div class="login-context">
                 <div class="login-form">
                     <div class="login-input login-name">
-                        <input type="text" class="name-input" placeholder="用户名" id="username">
+                        <input type="text" class="name-input" placeholder="用户名" id="username" maxlength="20">
                     </div>
                     <div class="login-input login-pass">
-                        <input type="password" class="pass-input" placeholder="密码" id="password">
+                        <input type="password" class="pass-input" placeholder="密码" id="password" maxlength="20">
                         <i class="fa fa-eye" id="showPass"></i>
                     </div>
                 </div>
@@ -55,6 +55,7 @@
                 $msg = $msgBox.find('.login-msg-txt'),
                 $showPass = $('#showPass'),
                 $document = $(document),
+                redirectUrl = so.search().re || '/Back/Home/Index',
                 isLock = false,
                 toggleMsg = {
                     show: function (text) {
@@ -64,6 +65,9 @@
                     hide: function () {
                         $msgBox.stop().fadeOut(300);
                     }
+                },
+                enterSubmit = function (e) {
+                    if (e.keyCode === 13) $btn.trigger('click');
                 };
             $msgBox.on('dblclick', function () {
                 toggleMsg.hide();
@@ -79,18 +83,57 @@
             $name.on('input', so.debounce(function () {
                 var value = $name.val().trim();
                 value ? toggleMsg.hide() : toggleMsg.show('请输入正确的用户名');
-            }, 300));
+            }, 300)).on('keydown', enterSubmit)
             $pass.on('input', so.debounce(function () {
                 var value = $pass.val().trim();
                 value ? toggleMsg.hide() : toggleMsg.show('请输入正确的密码');
-            }, 300));
+            }, 300)).on('keydown', enterSubmit);
 
             $btn.on('click', function () {
                 if (isLock) return;
+                var name = $name.val().trim(),
+                    password = $pass.val().trim();
+                if (!name) {
+                    toggleMsg.show('请输入用户名');
+                    $name.focus();
+                    return false;
+                }
+                if (!password) {
+                    toggleMsg.show('请输入密码');
+                    $pass.focus();
+                    return false;
+                }
+                $.ajax({
+                    url: '/Back/Home/Login',
+                    type: 'post',
+                    dataType: "json",
+                    data: { name: name, pwd: password }
+                }).done(function (data) {
+                    if (data.code) {
+                        toggleMsg.show(data.msg)
+                        return;
+                    } else {
+                        //写到cookie
+                        //data.data
+                        so.cookie('sh', data.data).cookie('am', name);
+                        if (redirectUrl) window.location.replace(redirectUrl);
+                    }
+                }).fail(function (e) {
+                    console.log(e);
+                });
+                return false;
                 //$btn.addClass('lock');
                 //isLock = true;
 
             });
+            $(function () {
+                var name = so.cookie('am');
+                if (name) {
+                    $name.val(name);
+                    $pass.focus();
+                } else
+                    $name.focus();
+            })
         });
     </script>
 </body>

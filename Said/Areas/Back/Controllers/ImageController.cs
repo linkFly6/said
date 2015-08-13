@@ -35,6 +35,7 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult GetImagesList(int limit, int offset, string imgType = null)
         {
+            Admin admin = GetAdmin();
             var page = new Page
             {
                 PageNumber = offset / limit + 1,

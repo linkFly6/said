@@ -16,7 +16,7 @@ namespace Said.Service
     /// </summary>
     public interface IAdminRecordService : IService<AdminRecord>
     {
-        IEnumerable<AdminRecord> GetByAdminLastDay(int adminId);
+        IEnumerable<AdminRecord> GetByAdminLastDay(string adminId);
     }
     #endregion
 
@@ -38,7 +38,7 @@ namespace Said.Service
         /// 根据用户ID获取最后一次登录操作
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<AdminRecord> GetByAdminLastDay(int adminId)
+        public IEnumerable<AdminRecord> GetByAdminLastDay(string adminId)
         {
             //TODO 检测正确性
             var query = from m in base.Context.AdminRecord

@@ -64,7 +64,7 @@ namespace Said.Models
         /// <summary>
         /// 管理员ID
         /// </summary>
-        public int AdminId { get; set; }
+        public string AdminId { get; set; }
 
         /// <summary>
         /// 管理员对象
