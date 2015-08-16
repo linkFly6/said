@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAA,SAAU;EACN,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,MAAM;EAGV,4BAAU;IACN,aAAa,EAAE,IAAI",
+"sources": ["sass/pageConfig.scss"],
+"names": [],
+"file": "pageConfig.css"
+}

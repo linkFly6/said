@@ -132,6 +132,7 @@
     <Compile Include="Areas\Back\Controllers\ImageController.cs" />
     <Compile Include="Areas\Back\Controllers\MusicController.cs" />
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
+    <Compile Include="Areas\Back\Controllers\SiteController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
     <Compile Include="Common\ImageCommon.cs" />
@@ -1069,6 +1070,7 @@
     <Content Include="Areas\Back\Views\Image\Index.cshtml" />
     <Content Include="Areas\Back\Views\Music\Index.cshtml" />
     <Content Include="Areas\Back\Views\Home\Login.cshtml" />
+    <Content Include="Areas\Back\Views\Site\PageConfig.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

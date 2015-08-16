@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "站点配置 - 配置Said的每一个细节";
+    Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+}
+
+<div class="page-header">
+    <h3>站点配置&nbsp;<small>-&nbsp;配置Said的每一个细节</small><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></h3>
+</div>
+<ol class="breadcrumb">
+    <li><a href="/Back">Home</a></li>
+    <li>配置中心</li>
+    <li>站点配置</li>
+</ol>
+<div id="said-help" class="said-mask-content said-watermark">
+    <ul>
+        <li>Said生成的缩略图不能有<span class="keywords">透明背景</span>（因为缩略图最终生成是jpg格式的）</li>
+        <li>上传的图片，最后会被裁剪为<span class="keywords">1.82</span>比例的图片</li>
+        <li>上传的图片不允许超过<span class="keywords">1MB</span></li>
+        <li>上传的音乐文件不允许超过<span class="keywords">6MB</span></li>
+        <li>上传的歌曲封面/图片会自动裁剪为200*200px</li>
+    </ul>
+</div>
+<div class="form-box" style="display:none;">
+    <div class="row">
+        <div class="form-group mask-hover">
+            <div style="cursor:pointer;" class="mask-box">
+                <span class="song-mask-text">选择图片</span>
+            </div>
+            <div class="mask-content">
+                <div class="thumbnail">
+                    <img style=" height:200px;width:200px;" src="/Content/Back/Images/cd-default2.png">
+                </div>
+            </div>
+        </div>
+        <div class="form-group input-group">
+            <span class="input-group-addon">链&#12288;&#12288;接</span>
+            <input type="text" autocomplete="off" class="form-control" placeholder="歌曲名称" required="" value="">
+        </div>
+        <div class="tab-box" data-example-id="togglable-tabs">
+            <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">纯文本</a>
+                </li>
+                <li role="presentation">
+                    <a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">HTML</a>
+                </li>
+                <li role="presentation">
+                    <a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1" aria-expanded="false">预览</a>
+                </li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab">
+                    <p>这是预览内容</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bs-table" style="">
+    <div class="navbar-form navbar-left table-tool" id="classToolbar">
+        <div class="data-form">
+            <input readonly="" autocomplete="off" class="form-control" ms-dom="ReleaseDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
+            <button class="btn btn-success" ms-dom="loadIcon" ms-widget="popup,loadIcon">&#12288;新增&#12288;</button>
+        </div>
+    </div>
+    <table data-toolbar="#classToolbar" id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server"></table>
+</div>
+
+@section Css{
+    <link href="@Url.Content("~/Content/Back/Style/pageConfig.css")" rel="stylesheet" />
+    <link href="~/Content/Back/JavaScript/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
+}
+
+
+@section FootJs{
+    <script>
+        require(['bsTable'], function () {
+            $('#btTable').bootstrapTable({
+                columns: [
+                 {
+                     field: 'STitle',
+                     title: '名&nbsp;&nbsp;&nbsp;称',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         console.log(row); //row可以访问到数据
+                         //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
+                         return ['<a target="_black" href="@Url.Action("Edit", "Said", new { id = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
+                     }
+                 },
+                 {
+                     field: 'SSummary',
+                     title: '描&nbsp;&nbsp;&nbsp;述',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'Song.SongName',
+                     title: '歌&nbsp;&nbsp;&nbsp;曲',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'SPV',
+                     title: '浏&nbsp;&nbsp;&nbsp;览',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'SDate',
+                     title: '发布时间',
+                     sortable: true,
+                     valign: 'middle',
+                     formatter: function (value, row, index) {
+                         return so.dateFormat(value);
+                     }
+                 },
+                 {
+                     field: 'Classify.CName',
+                     title: '分&nbsp;&nbsp;&nbsp;类',
+                     sortable: true,
+                     valign: 'middle',
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'STag',
+                     title: '标&nbsp;&nbsp;&nbsp;签',
+                     valign: 'middle',
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'SaidId',
+                     title: '操&nbsp;&nbsp;&nbsp;作',
+                     formatter: function (value, row, index) {
+                         return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
+                     }
+                 }
+
+                ],
+
+            }).on('dbl-click-row.bs.table', function (e, row, $element) {
+            })
+        });
+    </script>
+}
