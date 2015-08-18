@@ -20,58 +20,57 @@
         <li>上传的歌曲封面/图片会自动裁剪为200*200px</li>
     </ul>
 </div>
-<div class="form-box" style="display:none;">
-    <div class="row">
-        <div class="form-group mask-hover">
-            <div style="cursor:pointer;" class="mask-box">
-                <span class="song-mask-text">选择图片</span>
-            </div>
-            <div class="mask-content">
-                <div class="thumbnail">
-                    <img style=" height:200px;width:200px;" src="/Content/Back/Images/cd-default2.png">
+<div ms-controller="vmPage">
+    <div class="form-box" ms-visible="isShowForm">
+        <div class="row">
+            <div class="form-group mask-hover">
+                <div style="cursor:pointer;" class="mask-box">
+                    <span class="song-mask-text">选择图片</span>
                 </div>
-            </div>
-        </div>
-        <div class="form-group input-group">
-            <span class="input-group-addon">链&#12288;&#12288;接</span>
-            <input type="text" autocomplete="off" class="form-control" placeholder="歌曲名称" required="" value="">
-        </div>
-        <div class="tab-box" data-example-id="togglable-tabs">
-            <ul id="myTabs" class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">纯文本</a>
-                </li>
-                <li role="presentation">
-                    <a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">HTML</a>
-                </li>
-                <li role="presentation">
-                    <a href="#dropdown1" role="tab" id="dropdown1-tab" data-toggle="tab" aria-controls="dropdown1" aria-expanded="false">预览</a>
-                </li>
-            </ul>
-            <div id="myTabContent" class="tab-content">
-                <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-                    <textarea class="form-control" rows="3"></textarea>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
-                    <textarea class="form-control" rows="3"></textarea>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="dropdown1" aria-labelledby="dropdown1-tab">
-                    <p>这是预览内容</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="bs-table" style="">
-    <div class="navbar-form navbar-left table-tool" id="classToolbar">
-        <div class="data-form">
-            <input readonly="" autocomplete="off" class="form-control" ms-dom="ReleaseDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
-            <button class="btn btn-success" ms-dom="loadIcon" ms-widget="popup,loadIcon">&#12288;新增&#12288;</button>
-        </div>
-    </div>
-    <table data-toolbar="#classToolbar" id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server"></table>
-</div>
+                <div class="mask-content" style="background-image:url(/Source/Said/Thumbnail/007020150419145607.jpg)">
 
+                </div>
+            </div>
+            <div class="form-group input-group">
+                <span class="input-group-addon">备&#12288;&#12288;注</span>
+                <input type="text" autocomplete="off" class="form-control" placeholder="备注（便于检索）" required="" value="">
+            </div>
+            <div class="form-group input-group">
+                <span class="input-group-addon">链&#12288;&#12288;接</span>
+                <input type="text" autocomplete="off" class="form-control" placeholder="点击后跳转的链接" required="" value="">
+            </div>
+            <div class="tab-box">
+                <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#modelHTML" role="tab" data-toggle="tab" aria-controls="modelHTML" aria-expanded="false" title="支持换行自动生成和HTML生成">HTML</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#modelValue" role="tab" data-toggle="tab" aria-controls="modelValue" aria-expanded="false">预览</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="modelHTML" aria-labelledby="modelHTML-tab">
+                        <textarea class="form-control" rows="3" ms-duplex="modelHTML" ms-change="changeModelHTML(modelHTML)"></textarea>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="modelValue" aria-labelledby="modelValue-tab">{{modelValue|html}}</div>
+                </div>
+                <div class="textCenter form-submit">
+                    <button class="btn btn-info" type="button">&#12288;&#12288;&#12288;添加&#12288;&#12288;&#12288;</button>
+                    <button class="btn btn-default" type="button" ms-click="toggleShowStatus(false)">&#12288;&#12288;&#12288;取消&#12288;&#12288;&#12288;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bs-table" ms-visible="!isShowForm">
+        <div class="navbar-form navbar-left table-tool" id="custom-bar">
+            <div class="data-form">
+                <input readonly="" autocomplete="off" class="form-control" ms-dom="ReleaseDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
+                <button class="btn btn-success" ms-click="toggleShowStatus(true)">&#12288;新增&#12288;</button>
+            </div>
+        </div>
+        <table data-toolbar="#custom-bar" id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server"></table>
+    </div>
+</div>
 @section Css{
     <link href="@Url.Content("~/Content/Back/Style/pageConfig.css")" rel="stylesheet" />
     <link href="~/Content/Back/JavaScript/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
@@ -80,12 +79,45 @@
 
 @section FootJs{
     <script>
-        require(['bsTable'], function () {
+        require(['jquery', 'so', 'bsTable'], function ($, so) {
+            var database = so.Database('back.pageConfig'),
+                //缩略图模型
+                model = {
+
+                };
+            var vmPage = avalon.define({
+                $id: 'vmPage',
+
+                //textarea模型
+                modelHTML: '',//HTML
+                modelValue: '',//转换后的文本
+                changeModelHTML: function (html) {
+                    if (/</.test(html)) {//如果检测到了HTML，则使用HTML模式 TODO提升准确性，例如<<test>>这样的
+                        vmPage.modelValue = html;
+                    } else {
+                        //否则默认文本处理
+                        var texts = html.split('\n');
+                        vmPage.modelValue = texts.map(function (text) {
+                            return '<p>' + text + '</p>';
+                        }).join('');
+                    }
+
+                },
+                isShowForm: database.val('isShowForm'),
+                toggleShowStatus: function (isShowForm) {
+                    vmPage.isShowForm = isShowForm;
+                    database.val('isShowForm', isShowForm);
+                }
+            });
+
+
+            avalon.scan();
+
             $('#btTable').bootstrapTable({
                 columns: [
                  {
                      field: 'STitle',
-                     title: '名&nbsp;&nbsp;&nbsp;称',
+                     title: '名&#12288;&#12288;称',
                      valign: 'middle',
                      sortable: true,
                      formatter: function (value, row, index) {
@@ -95,17 +127,8 @@
                      }
                  },
                  {
-                     field: 'SSummary',
-                     title: '描&nbsp;&nbsp;&nbsp;述',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
                      field: 'Song.SongName',
-                     title: '歌&nbsp;&nbsp;&nbsp;曲',
+                     title: '备&#12288;&#12288;注',
                      valign: 'middle',
                      sortable: true,
                      formatter: function (value, row, index) {
@@ -114,7 +137,7 @@
                  },
                  {
                      field: 'SPV',
-                     title: '浏&nbsp;&nbsp;&nbsp;览',
+                     title: '日&#12288;&#12288;期',
                      valign: 'middle',
                      sortable: true,
                      formatter: function (value, row, index) {
@@ -123,7 +146,7 @@
                  },
                  {
                      field: 'SDate',
-                     title: '发布时间',
+                     title: '链&#12288;&#12288;接',
                      sortable: true,
                      valign: 'middle',
                      formatter: function (value, row, index) {
@@ -132,7 +155,7 @@
                  },
                  {
                      field: 'Classify.CName',
-                     title: '分&nbsp;&nbsp;&nbsp;类',
+                     title: '文字背景',
                      sortable: true,
                      valign: 'middle',
                      formatter: function (value, row, index) {
@@ -140,22 +163,14 @@
                      }
                  },
                  {
-                     field: 'STag',
-                     title: '标&nbsp;&nbsp;&nbsp;签',
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
                      field: 'SaidId',
-                     title: '操&nbsp;&nbsp;&nbsp;作',
+                     title: '操&#12288;&#12288;作',
                      formatter: function (value, row, index) {
                          return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
                      }
                  }
 
-                ],
+                ]
 
             }).on('dbl-click-row.bs.table', function (e, row, $element) {
             })

@@ -588,6 +588,7 @@
     <Content Include="Content\Back\Style\grid-table.css" />
     <Content Include="Content\Back\Style\imagesCenter.css" />
     <Content Include="Content\Back\Style\login.css" />
+    <Content Include="Content\Back\Style\pageConfig.css" />
     <Content Include="Content\Back\Style\said-said.css" />
     <Content Include="Content\Back\Style\index.css" />
     <Content Include="Content\Back\Style\saidCenter.css" />
@@ -1081,6 +1082,8 @@
     <Content Include="Content\Back\Style\sass\koala-config.json" />
     <Content Include="Content\Style\sass\koala-config.json" />
     <Content Include="Content\Back\Style\sass\login.scss" />
+    <Content Include="Content\Back\Style\sass\pageConfig.scss" />
+    <Content Include="Content\Back\Style\pageConfig.css.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
