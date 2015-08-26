@@ -17,14 +17,14 @@
 .banner-title { font-size: 35px; line-height: 80px; }
 .banner-content p { font-size: 18px; line-height: 35px; }
 .said-banner-white .banner-title, .said-banner-white .banner-content { text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6); }
-.said-banner-white { color: #fff; }
+.said-banner-white, .said-banner-white .banner-title, .said-banner-white .banner-content { color: #fff; }
 
 
 /*page*/
 .said-blog-page { text-align: center; padding-top: 15px; }
-.page-index { background-color: #dfdfdf; color: #666; border-radius: 3px; padding: 5px 10px; margin-left: 5px; transition: none!important; }
-span.page-index { background-color: #75b4f4!important; color: #FAFAFA; }
-.page-pre, .page-next { padding: 5px 10px; background-color: #dfdfdf; color: #666; position: relative; border-radius: 2px 3px 3px 2px; transition: none!important; }
+.page-index { background-color: #dfdfdf; color: #666; border-radius: 3px; padding: 5px 10px; margin-left: 5px; transition: none !important; }
+span.page-index { background-color: #75b4f4 !important; color: #FAFAFA; }
+.page-pre, .page-next { padding: 5px 10px; background-color: #dfdfdf; color: #666; position: relative; border-radius: 2px 3px 3px 2px; transition: none !important; }
     .page-pre:after, .page-next:after { border: 13px solid transparent; border-right-color: #dfdfdf; position: absolute; content: ''; left: -26px; }
 .page-next { border-radius: 3px 2px 2px 3px; margin-left: 5px; }
     .page-next:after { left: 61px; border: 13px solid transparent; border-left-color: #dfdfdf; }

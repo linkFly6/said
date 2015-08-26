@@ -364,36 +364,6 @@
 
 
 <script type="text/javascript">
-    require.config({
-        baseUrl: '/Content/Back/JavaScript',
-        paths: {
-            'saidAdd': 'said/addSaid',
-            'avalon': 'avalon/avalon.mobile.min',
-            'groupInput': 'avalon/plug/groupInput',
-            'upload': 'avalon/plug/upload',
-            'showMsg': 'so/plug/showMsg',
-            'dialog': 'so/plug/dialog',
-            'source': 'so/plug/source',
-            'markdown': 'showdown/showdown',
-            'showDownThemeGithub': 'showdown/extensions/github'
-        },
-        packages: [
-        {
-            name: 'so',
-            location: 'so',
-            main: 'so'
-        },
-        {
-            name: 'said',
-            location: 'said',
-            main: 'said'
-        }],
-        shim: {
-            avalon: { exports: "avalon" },
-            'showDownThemeGithub': ['markdown']//依赖showdown
-        }
-    });
-
     var Action = {
         song: '/Source/SaidSong',
         imagesSourceCenter: '@Url.Action("UploadBlogImg", "Source")',

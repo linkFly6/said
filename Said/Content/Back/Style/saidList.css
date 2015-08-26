@@ -11,7 +11,7 @@
 .said-blog-context { margin-left: 60%; padding: 0 20px 0 40px; display: flex; }
 .said-box { margin: auto; }
 .blog-title { max-height: 101px; overflow: hidden; }
-    .blog-title a { display: block; font-size: 2em; color: #666; line-height: 1.2; font-weight: 200; text-align: center; }
+    .blog-title a { display: block; font-size: 3em; color: #666; line-height: 1.2; font-weight: 200; text-align: center; }
         .blog-title a:hover { color: #43b4ef; }
 .blog-content { overflow: hidden; position: relative; }
     .blog-content:hover .blog-img { transition: top 0.2s ease-in-out 0s; }
