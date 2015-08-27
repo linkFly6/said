@@ -31,9 +31,9 @@ namespace Said.Areas.Back.Controllers
         /// </summary>
         /// <param name="limit">分页大小</param>
         /// <param name="offset">获取数据项的起点</param>
-        /// <param name="imgType">为空或为-1表示查询全部图片，否则查询指定类别的</param>
+        /// <param name="imageType">为空或为-1表示查询全部图片，否则查询指定类别的</param>
         /// <returns></returns>
-        public JsonResult GetImagesList(int limit, int offset, string imgType = null)
+        public JsonResult GetImagesList(int limit, int offset, string imageType = null)//$.source()使用的imageType，如果有地方使用imgType而造成了问题，请注意$.source()
         {
             Admin admin = GetAdmin();
             var page = new Page
@@ -42,17 +42,17 @@ namespace Said.Areas.Back.Controllers
                 PageSize = limit
             };
             IPagedList<Image> res = null;
-            if (string.IsNullOrEmpty(imgType) || imgType == "-1")
+            if (string.IsNullOrEmpty(imageType) || imageType == "-1")
             {
                 res = ImageApplication.FindToList(page);
             }
             else
             {
-                ImageType imageType;
-                if (Enum.TryParse<ImageType>(imgType, out imageType))
+                ImageType imgType;
+                if (Enum.TryParse<ImageType>(imageType, out imgType))
                 {
                     //转换成功，查询类别
-                    res = ImageApplication.FindToList(page, imageType);
+                    res = ImageApplication.FindToList(page, imgType);
                 }
                 else
                     res = ImageApplication.FindToList(page);//转换失败，查询全部

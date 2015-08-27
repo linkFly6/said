@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Said.Common;
+@{
     ViewBag.Title = "站点配置 - 配置Said的每一个细节";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
 }
@@ -23,22 +24,21 @@
 <div ms-controller="vmPage">
     <div class="form-box" ms-visible="isShowForm">
         <div class="row">
-            <div class="form-group mask-hover">
+            <div class="form-group mask-hover" ms-click="showImagesBox">
                 <div style="cursor:pointer;" class="mask-box">
                     <span class="song-mask-text">选择图片</span>
                 </div>
-                <div class="mask-content" style="background-image:url(/Source/Said/Thumbnail/007020150419145607.jpg)">
-
-                </div>
+                <div class="mask-content" ms-css-background-image="url({{selectImagePath? selectImagePath : '/Source/Said/Thumbnail/007020150419145607.jpg'}})"></div>
             </div>
             <div class="form-group input-group">
                 <span class="input-group-addon">备&#12288;&#12288;注</span>
-                <input type="text" autocomplete="off" class="form-control" placeholder="备注（便于检索）" required="" value="">
+                <input type="text" autocomplete="off" class="form-control" placeholder="备注（便于检索）" ms-duplex="Description" />
             </div>
-            <div class="form-group input-group">
+            <div class="form-group input-group" ms-class="has-error:!Link">
                 <span class="input-group-addon">链&#12288;&#12288;接</span>
-                <input type="text" autocomplete="off" class="form-control" placeholder="点击后跳转的链接" required="" value="">
+                <input type="text" autocomplete="off" class="form-control" placeholder="点击后跳转的链接" ms-duplex="Link" />
             </div>
+
             <div class="tab-box">
                 <ul id="myTabs" class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
@@ -46,6 +46,15 @@
                     </li>
                     <li role="presentation">
                         <a href="#modelValue" role="tab" data-toggle="tab" aria-controls="modelValue" aria-expanded="false">预览</a>
+                    </li>
+                    <li>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ThemeText||'白色'}} <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:;" title="请选择文字显示主题（配合图片）" ms-click="selectTheme(0)">白色</a></li>
+                                <li><a href="javascript:;" title="请选择文字显示主题（配合图片）" ms-click="selectTheme(1)">暗色</a></li>
+                            </ul>
+                        </div>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -55,7 +64,7 @@
                     <div role="tabpanel" class="tab-pane fade" id="modelValue" aria-labelledby="modelValue-tab">{{modelValue|html}}</div>
                 </div>
                 <div class="textCenter form-submit">
-                    <button class="btn btn-info" type="button">&#12288;&#12288;&#12288;添加&#12288;&#12288;&#12288;</button>
+                    <button class="btn btn-info" type="button" ms-click="submit">&#12288;&#12288;&#12288;添加&#12288;&#12288;&#12288;</button>
                     <button class="btn btn-default" type="button" ms-click="toggleShowStatus(false)">&#12288;&#12288;&#12288;取消&#12288;&#12288;&#12288;</button>
                 </div>
             </div>
@@ -79,15 +88,37 @@
 
 @section FootJs{
     <script>
-        require(['jquery', 'so', 'bsTable'], function ($, so) {
+        var Action = {
+            GetImagesList: '@Url.Action("GetImagesList", "Image")',
+            uploadImage: '@Url.Action("Upload", "Image")',
+            realDeleteImage: '@Url.Action("RealDeleteImage","Image")',
+        }, Source = {
+            image: '@ConfigInfo.SourceSystemPath',
+            maxSize: '@ConfigInfo.SizeSystem',
+            imageType: '@((int)Said.Models.ImageType.System)',
+            filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
+        },
+            globalTheme = ['白色', '暗色'];
+
+        require(['jquery', 'so', 'showMsg', 'bsTable', 'source'], function ($, so, showMsg) {
             var database = so.Database('back.pageConfig'),
                 //缩略图模型
                 model = {
-
+                    Theme: '',//主题
+                    modelHTML: '',//滚动图文本源码/HTML
+                    modelValue: '',//转换后的文本/HTML
+                    Link: '',//链接
+                    Description: ''//描述
                 };
             var vmPage = avalon.define({
                 $id: 'vmPage',
-
+                ThemeText: globalTheme[database.val('Theme') || 0],
+                Theme: database.val('Theme') || 0,
+                selectTheme: function (index) {
+                    vmPage.ThemeText = globalTheme[index];
+                    vmPage.Theme = index;
+                    database.val('Theme', index);
+                },
                 //textarea模型
                 modelHTML: '',//HTML
                 modelValue: '',//转换后的文本
@@ -101,17 +132,62 @@
                             return '<p>' + text + '</p>';
                         }).join('');
                     }
-
                 },
                 isShowForm: database.val('isShowForm'),
                 toggleShowStatus: function (isShowForm) {
                     vmPage.isShowForm = isShowForm;
                     database.val('isShowForm', isShowForm);
-                }
+                },
+
+
+                //选择图片
+                selectImagePath: '',
+                selectImageObject: null,
+                showImagesBox: function () {
+                    _ImageDialog.show();
+                },
+
+                Description: database.val('Description') || '',
+                Link: database.val('Link') || '',
+                submit: function () {
+                    if (!vmPage.Link.trim() || !vmPage.modelValue.trim()) {
+                        showMsg('请输入正确的备注或文本', showMsg.WARNING, 2000);
+                        return;
+                    }
+                    //尽可能多保存数据
+                    database.val('Description', vmPage.Description).val('Link', vmPage.Link);
+                    if (vmPage.selectImageObject == null) {
+                        showMsg('请选择一张赏心悦目的背景图', showMsg.WARNING, 2000);
+                        return;
+                    }
+                    //TODO 要把图片对象也保存到本地
+
+                },
+                $skipArray: ['selectImageObject']
             });
 
 
             avalon.scan();
+
+            var _ImageDialog = $.source({
+                loadUrl: Action.GetImagesList,//'/Back/Source/GetImagesList'
+                path: Source.image,
+                type: Source.imageType,
+                uploadUrl: Action.uploadImage,
+                deleteUrl: Action.realDeleteImage,
+                multiple: false,
+                size: Source.maxSize,
+                //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
+                callback: function (data) {
+                    if (data) {
+                        vmPage.selectImagePath = Source.image + data.IFileName;
+                        vmPage.selectImageObject = data;
+                    } else {
+                        vmPage.selectImagePath = '';
+                        vmPage.selectImageObject = null;
+                    }
+                }
+            });
 
             $('#btTable').bootstrapTable({
                 columns: [
@@ -126,49 +202,49 @@
                          return ['<a target="_black" href="@Url.Action("Edit", "Said", new { id = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
                      }
                  },
-                 {
-                     field: 'Song.SongName',
-                     title: '备&#12288;&#12288;注',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'SPV',
-                     title: '日&#12288;&#12288;期',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'SDate',
-                     title: '链&#12288;&#12288;接',
-                     sortable: true,
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return so.dateFormat(value);
-                     }
-                 },
-                 {
-                     field: 'Classify.CName',
-                     title: '文字背景',
-                     sortable: true,
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'SaidId',
-                     title: '操&#12288;&#12288;作',
-                     formatter: function (value, row, index) {
-                         return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
-                     }
+             {
+                 field: 'Song.SongName',
+                 title: '备&#12288;&#12288;注',
+                 valign: 'middle',
+                 sortable: true,
+                 formatter: function (value, row, index) {
+                     return value;
                  }
+             },
+             {
+                 field: 'SPV',
+                 title: '日&#12288;&#12288;期',
+                 valign: 'middle',
+                 sortable: true,
+                 formatter: function (value, row, index) {
+                     return value;
+                 }
+             },
+             {
+                 field: 'SDate',
+                 title: '链&#12288;&#12288;接',
+                 sortable: true,
+                 valign: 'middle',
+                 formatter: function (value, row, index) {
+                     return so.dateFormat(value);
+                 }
+             },
+             {
+                 field: 'Classify.CName',
+                 title: '文字背景',
+                 sortable: true,
+                 valign: 'middle',
+                 formatter: function (value, row, index) {
+                     return value;
+                 }
+             },
+             {
+                 field: 'SaidId',
+                 title: '操&#12288;&#12288;作',
+                 formatter: function (value, row, index) {
+                     return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
+                 }
+             }
 
                 ]
 
