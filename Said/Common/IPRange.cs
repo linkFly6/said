@@ -63,9 +63,10 @@ namespace Said.Common
         public static bool Check(string ip)
         {
 
-            if (ip == "::1") return true;
+            if (ip == "::1" || ip == "127.0.0.1") return true;
+            //TODO 这里会报很多错误，需要检查！
             uint numberIP = BitConverter.ToUInt32(IPAddress.Parse(ip).GetAddressBytes(), 0);
-            foreach (uint[] item in ips)
+            foreach (uint[] item in IPs)
             {
                 if (item.Length > 1 && item[0] <= numberIP && numberIP <= item[1])
                     return true;

@@ -8,6 +8,9 @@ using System.Web;
 
 namespace Said.Common
 {
+    /// <summary>
+    /// Url编码/解码帮助类
+    /// </summary>
     public class UrlCommon
     {
         /// <summary>
@@ -28,6 +31,18 @@ namespace Said.Common
                     item.SetValue(model, HttpUtility.UrlDecode(temp.ToString()));
             }
             return model;
+        }
+
+
+        /// <summary>
+        /// 解码一个字符串
+        /// </summary>
+        /// <param name="str">要解码的字符串</param>
+        /// <returns>解码后的字符串</returns>
+        public static string Decode(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return str;
+            return HttpUtility.UrlDecode(str);
         }
     }
 }

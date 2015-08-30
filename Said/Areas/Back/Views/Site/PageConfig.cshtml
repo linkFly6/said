@@ -14,7 +14,7 @@
 </ol>
 <div id="said-help" class="said-mask-content said-watermark">
     <ul>
-        <li>Said生成的缩略图不能有<span class="keywords">透明背景</span>（因为缩略图最终生成是jpg格式的）</li>
+        <li>Banner的<span class="keywords">源码</span>支持HTML（含有&gt;的）和自动生成HTML源码（不含有&gt;，自动识别换行）</li>
         <li>上传的图片，最后会被裁剪为<span class="keywords">1.82</span>比例的图片</li>
         <li>上传的图片不允许超过<span class="keywords">1MB</span></li>
         <li>上传的音乐文件不允许超过<span class="keywords">6MB</span></li>
@@ -42,12 +42,12 @@
             <div class="tab-box">
                 <ul id="myTabs" class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#modelHTML" role="tab" data-toggle="tab" aria-controls="modelHTML" aria-expanded="false" title="支持换行自动生成和HTML生成">HTML</a>
+                        <a href="#modelHTML" role="tab" data-toggle="tab" aria-controls="modelHTML" aria-expanded="false" title="支持换行自动生成和HTML生成">源码</a>
                     </li>
                     <li role="presentation">
                         <a href="#modelValue" role="tab" data-toggle="tab" aria-controls="modelValue" aria-expanded="false">预览</a>
                     </li>
-                    <li>
+                    <li class="teb-select">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ThemeText||'白色'}} <span class="caret"></span></button>
                             <ul class="dropdown-menu">
@@ -59,13 +59,13 @@
                 </ul>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="modelHTML" aria-labelledby="modelHTML-tab">
-                        <textarea class="form-control" rows="3" ms-duplex="modelHTML" ms-change="changeModelHTML(modelHTML)"></textarea>
+                        <textarea class="form-control" rows="3" ms-duplex="SourceCode" ms-change="changeModelHTML(SourceCode)"></textarea>
                     </div>
-                    <div role="tabpanel" class="tab-pane fade" id="modelValue" aria-labelledby="modelValue-tab">{{modelValue|html}}</div>
+                    <div role="tabpanel" class="tab-pane fade" id="modelValue" aria-labelledby="modelValue-tab">{{HTML|html}}</div>
                 </div>
                 <div class="textCenter form-submit">
-                    <button class="btn btn-info" type="button" ms-click="submit">&#12288;&#12288;&#12288;添加&#12288;&#12288;&#12288;</button>
-                    <button class="btn btn-default" type="button" ms-click="toggleShowStatus(false)">&#12288;&#12288;&#12288;取消&#12288;&#12288;&#12288;</button>
+                    <button class="btn btn-info" type="button" ms-click="submit" ms-attr-disabled="lock">&#12288;&#12288;&#12288;添加&#12288;&#12288;&#12288;</button>
+                    <button class="btn btn-default" type="button" ms-click="toggleShowStatus(false)" ms-attr-disabled="lock">&#12288;&#12288;&#12288;取消&#12288;&#12288;&#12288;</button>
                 </div>
             </div>
         </div>
@@ -89,6 +89,7 @@
 @section FootJs{
     <script>
         var Action = {
+            AddBanner: '@Url.Action("AddBanner", "Site")',
             GetImagesList: '@Url.Action("GetImagesList", "Image")',
             uploadImage: '@Url.Action("Upload", "Image")',
             realDeleteImage: '@Url.Action("RealDeleteImage","Image")',
@@ -98,15 +99,15 @@
             imageType: '@((int)Said.Models.ImageType.System)',
             filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
         },
-            globalTheme = ['白色', '暗色'];
+        globalTheme = ['白色', '暗色'];
 
         require(['jquery', 'so', 'showMsg', 'bsTable', 'source'], function ($, so, showMsg) {
             var database = so.Database('back.pageConfig'),
                 //缩略图模型
                 model = {
                     Theme: '',//主题
-                    modelHTML: '',//滚动图文本源码/HTML
-                    modelValue: '',//转换后的文本/HTML
+                    SourceCode: '',//滚动图文本源码/HTML
+                    HTML: '',//转换后的文本/HTML
                     Link: '',//链接
                     Description: ''//描述
                 };
@@ -114,21 +115,22 @@
                 $id: 'vmPage',
                 ThemeText: globalTheme[database.val('Theme') || 0],
                 Theme: database.val('Theme') || 0,
+
                 selectTheme: function (index) {
                     vmPage.ThemeText = globalTheme[index];
                     vmPage.Theme = index;
                     database.val('Theme', index);
                 },
                 //textarea模型
-                modelHTML: '',//HTML
-                modelValue: '',//转换后的文本
+                SourceCode: database.val('SourceCode') || '',//HTML
+                HTML: '',//转换后的文本
                 changeModelHTML: function (html) {
                     if (/</.test(html)) {//如果检测到了HTML，则使用HTML模式 TODO提升准确性，例如<<test>>这样的
-                        vmPage.modelValue = html;
+                        vmPage.HTML = html;
                     } else {
                         //否则默认文本处理
                         var texts = html.split('\n');
-                        vmPage.modelValue = texts.map(function (text) {
+                        vmPage.HTML = texts.map(function (text) {
                             return '<p>' + text + '</p>';
                         }).join('');
                     }
@@ -141,31 +143,72 @@
 
 
                 //选择图片
-                selectImagePath: '',
-                selectImageObject: null,
+                selectImagePath: database.val('selectImagePath'),
+                selectImageObject: database.val('selectImageObject'),
                 showImagesBox: function () {
                     _ImageDialog.show();
                 },
 
                 Description: database.val('Description') || '',
                 Link: database.val('Link') || '',
+
+                lock: false,
                 submit: function () {
-                    if (!vmPage.Link.trim() || !vmPage.modelValue.trim()) {
-                        showMsg('请输入正确的备注或文本', showMsg.WARNING, 2000);
+                    if (vmPage.lock) return;
+                    //尽可能多保存数据
+                    database.val('Description', vmPage.Description);
+                    if (!vmPage.Link.trim()) {
+                        showMsg('请输入正确的链接', showMsg.WARNING, 2000);
                         return;
                     }
-                    //尽可能多保存数据
-                    database.val('Description', vmPage.Description).val('Link', vmPage.Link);
+                    database.val('Link', vmPage.Link);
+                    if (!vmPage.HTML.trim()) {
+                        showMsg('请输入正确的文本', showMsg.WARNING, 2000);
+                        return;
+                    }
+                    database.val('SourceCode', vmPage.SourceCode);
                     if (vmPage.selectImageObject == null) {
                         showMsg('请选择一张赏心悦目的背景图', showMsg.WARNING, 2000);
                         return;
                     }
-                    //TODO 要把图片对象也保存到本地
-
+                    database.val('selectImagePath', vmPage.selectImagePath);
+                    database.val('selectImageObject', vmPage.selectImageObject);
+                    vmPage.lock = true;
+                    var data = so.extend({}, model);
+                    so.each(model, function (key, value) {
+                        //vm.$model挂在着vm对象的原型，只是读取不经过双向监听处理，性能更加
+                        data[key] = vmPage.$model[key];
+                    });
+                    data.HTML = encodeURIComponent(data.HTML);
+                    window.said.ajax(Action.AddBanner, data)
+                        .done(function (result) {
+                            if (result.code === 0) {
+                                $btTable.bootstrapTable('append', [result.data]);
+                            } else {
+                                showMsg('服务器新增Banner异常：' + result.msg, showMsg.ERROR, true);
+                            }
+                            vmPage.lock = false;
+                        })
+                        .fail(function () {
+                            showMsg('网络连接异常', showMsg.ERROR, true);
+                        })
+                        .always(function () {
+                            vmPage.lock = false;
+                        });
+                },
+                reset: function () {
+                    vmPage.Description = vmPage.HTML = vmPage.SourceCode = vmPage.Link = '';
+                    vmPage.ThemeText = globalTheme[0];
+                    vmPage.Theme = 0;
+                    vmPage.isShowForm = false;
+                    vmPage.lock = false;
                 },
                 $skipArray: ['selectImageObject']
             });
 
+            if (vmPage.SourceCode) {
+                vmPage.changeModelHTML(vmPage.SourceCode);
+            }
 
             avalon.scan();
 
@@ -189,54 +232,53 @@
                 }
             });
 
-            $('#btTable').bootstrapTable({
+
+
+            var $btTable = $('#btTable').bootstrapTable({
                 columns: [
                  {
-                     field: 'STitle',
-                     title: '名&#12288;&#12288;称',
+                     field: 'Date',
+                     title: '日&#12288;&#12288;期',
                      valign: 'middle',
                      sortable: true,
                      formatter: function (value, row, index) {
                          console.log(row); //row可以访问到数据
                          //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
-                         return ['<a target="_black" href="@Url.Action("Edit", "Said", new { id = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
+                         return [so.dateFormat(value, 'yyyy-MM-dd HH:mm')].join('');
                      }
                  },
              {
-                 field: 'Song.SongName',
-                 title: '备&#12288;&#12288;注',
+                 field: 'Theme',
+                 title: '主&#12288;&#12288;题',
                  valign: 'middle',
                  sortable: true,
                  formatter: function (value, row, index) {
-                     return value;
+                     return globalTheme[value];
                  }
              },
              {
-                 field: 'SPV',
-                 title: '日&#12288;&#12288;期',
+                 field: 'SourceCode',
+                 title: '文&#12288;&#12288;本',
                  valign: 'middle',
-                 sortable: true,
-                 formatter: function (value, row, index) {
-                     return value;
-                 }
+                 sortable: true
              },
              {
-                 field: 'SDate',
-                 title: '链&#12288;&#12288;接',
+                 field: 'HTML',
+                 title: '显&#12288;&#12288;示',
                  sortable: true,
-                 valign: 'middle',
-                 formatter: function (value, row, index) {
-                     return so.dateFormat(value);
-                 }
+                 valign: 'middle'
              },
+              {
+                  field: 'Link',
+                  title: '链&#12288;&#12288;接',
+                  sortable: true,
+                  valign: 'middle'
+              },
              {
-                 field: 'Classify.CName',
-                 title: '文字背景',
+                 field: 'Description',
+                 title: '描&#12288;&#12288;述',
                  sortable: true,
-                 valign: 'middle',
-                 formatter: function (value, row, index) {
-                     return value;
-                 }
+                 valign: 'middle'
              },
              {
                  field: 'SaidId',
@@ -249,6 +291,7 @@
                 ]
 
             }).on('dbl-click-row.bs.table', function (e, row, $element) {
+
             })
         });
     </script>

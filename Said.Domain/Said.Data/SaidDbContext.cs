@@ -45,6 +45,7 @@ namespace Said.Domain.Said.Data
         public DbSet<Image> Image { get; set; }
         public DbSet<Admin> Admin { get; set; }
         public DbSet<AdminRecord> AdminRecord { get; set; }
+        public DbSet<Banner> Banner { get; set; }
         #endregion
     }
 }

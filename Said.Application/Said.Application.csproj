@@ -47,6 +47,7 @@
     <Compile Include="AdminApplication.cs" />
     <Compile Include="AdminRecordApplication.cs" />
     <Compile Include="ArticleApplication.cs" />
+    <Compile Include="BannerApplication.cs" />
     <Compile Include="BaseApplication.cs" />
     <Compile Include="BlogApplication.cs" />
     <Compile Include="ClassifyApplication.cs" />
