@@ -419,6 +419,18 @@
         },
         now: Date.now || function () {
             return +new Date;
+        },
+        //将HTML编码
+        escapeHTML: function (text) {
+            if (typeof text == 'string') {
+                return text
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+            return text;
         }
     });
 

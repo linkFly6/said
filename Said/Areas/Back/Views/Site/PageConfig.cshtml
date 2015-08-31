@@ -1,7 +1,9 @@
 ﻿@using Said.Common;
+@using Said.Models
 @{
     ViewBag.Title = "站点配置 - 配置Said的每一个细节";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+    IList<Banner> Models = ViewData["models"] as IList<Banner>;
 }
 
 <div class="page-header">
@@ -15,10 +17,8 @@
 <div id="said-help" class="said-mask-content said-watermark">
     <ul>
         <li>Banner的<span class="keywords">源码</span>支持HTML（含有&gt;的）和自动生成HTML源码（不含有&gt;，自动识别换行）</li>
-        <li>上传的图片，最后会被裁剪为<span class="keywords">1.82</span>比例的图片</li>
-        <li>上传的图片不允许超过<span class="keywords">1MB</span></li>
-        <li>上传的音乐文件不允许超过<span class="keywords">6MB</span></li>
-        <li>上传的歌曲封面/图片会自动裁剪为200*200px</li>
+        <li>多填写<span class="keywords">备注</span>信息，方便以后进行检索</li>
+        <li>首页只会显示<span class="keywords">前5条</span>Banner</li>
     </ul>
 </div>
 <div ms-controller="vmPage">
@@ -77,7 +77,7 @@
                 <button class="btn btn-success" ms-click="toggleShowStatus(true)">&#12288;新增&#12288;</button>
             </div>
         </div>
-        <table data-toolbar="#custom-bar" id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server"></table>
+        <table data-toolbar="#custom-bar" id="btTable" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
     </div>
 </div>
 @section Css{
@@ -88,11 +88,22 @@
 
 @section FootJs{
     <script>
+        var PageDatas = [];
+        @if (Models != null)
+        {
+            foreach (var item in Models)
+            {
+                Write(new HtmlString(string.Format("PageDatas.push({0});", JavaScriptCommon.Serialize(item))));
+            }
+        }
+    </script>
+    <script>
         var Action = {
             AddBanner: '@Url.Action("AddBanner", "Site")',
             GetImagesList: '@Url.Action("GetImagesList", "Image")',
             uploadImage: '@Url.Action("Upload", "Image")',
             realDeleteImage: '@Url.Action("RealDeleteImage","Image")',
+            RemoveBanner: '@Url.Action("RemoveBanner","Site")'
         }, Source = {
             image: '@ConfigInfo.SourceSystemPath',
             maxSize: '@ConfigInfo.SizeSystem',
@@ -101,7 +112,10 @@
         },
         globalTheme = ['白色', '暗色'];
 
-        require(['jquery', 'so', 'showMsg', 'bsTable', 'source'], function ($, so, showMsg) {
+
+
+
+        require(['jquery', 'so', 'showMsg', 'dialog', 'bsTable', 'source'], function ($, so, showMsg, dialog) {
             var database = so.Database('back.pageConfig'),
                 //缩略图模型
                 model = {
@@ -183,6 +197,8 @@
                     window.said.ajax(Action.AddBanner, data)
                         .done(function (result) {
                             if (result.code === 0) {
+                                database.clear();
+                                vmPage.reset();
                                 $btTable.bootstrapTable('append', [result.data]);
                             } else {
                                 showMsg('服务器新增Banner异常：' + result.msg, showMsg.ERROR, true);
@@ -202,6 +218,30 @@
                     vmPage.Theme = 0;
                     vmPage.isShowForm = false;
                     vmPage.lock = false;
+                },
+                remove: function (id, callback) {
+                    if (!id) return;
+                    $.ajax(Action.RemoveBanner, {
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id })
+                    })
+                    .done(function (result) {
+                        if (result.code === 0) {
+                            $classifyTable.bootstrapTable('remove', {
+                                field: 'BannerId',
+                                values: [id]
+                            });
+                            showMsg('删除Banner成功', showMsg.OK);
+                        } else {
+                            showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                        }
+                    })
+                    .fail(function () {
+                        showMsg('网络连接异常', showMsg.ERROR);
+                    })
+                    .always(callback);
                 },
                 $skipArray: ['selectImageObject']
             });
@@ -236,6 +276,7 @@
 
             var $btTable = $('#btTable').bootstrapTable({
                 columns: [
+                 { field: 'BannerId', title: 'ID', visible: false, },
                  {
                      field: 'Date',
                      title: '日&#12288;&#12288;期',
@@ -259,40 +300,35 @@
              {
                  field: 'SourceCode',
                  title: '文&#12288;&#12288;本',
-                 valign: 'middle',
-                 sortable: true
-             },
-             {
-                 field: 'HTML',
-                 title: '显&#12288;&#12288;示',
-                 sortable: true,
                  valign: 'middle'
              },
               {
                   field: 'Link',
                   title: '链&#12288;&#12288;接',
-                  sortable: true,
                   valign: 'middle'
               },
              {
                  field: 'Description',
                  title: '描&#12288;&#12288;述',
-                 sortable: true,
                  valign: 'middle'
              },
              {
                  field: 'SaidId',
                  title: '操&#12288;&#12288;作',
                  formatter: function (value, row, index) {
-                     return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
+                     return ['<a href="javascript:;" title="删除" class="btn btn-danger fa fa-trash-o data-delete" data-id="', row.BannerId, '" data-index="', index, '"></a>'].join('');
                  }
-             }
-
-                ]
-
-            }).on('dbl-click-row.bs.table', function (e, row, $element) {
-
-            })
+             }],
+                data: PageDatas
+            }).on('click', '.data-delete', function (e) {
+                var data = this.dataset, $this = $(this);
+                dialog('您确定要删除该Bannner么？').on(function () {
+                    $this.attr('disabled', 'disabled').html('删除中');
+                    vmPage.RemoveBanner(data.id, function () {
+                        $this.length && $this.removeAttr('disabled');
+                    });
+                }).show();
+            });
         });
     </script>
 }

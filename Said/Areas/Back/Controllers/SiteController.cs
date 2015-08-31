@@ -24,6 +24,8 @@ namespace Said.Areas.Back.Controllers
 
         public ActionResult PageConfig()
         {
+            ViewData["models"] = BannerApplication.GetAll();
+
             return View();
         }
 
@@ -47,6 +49,25 @@ namespace Said.Areas.Back.Controllers
             model.Date = DateTime.Now;
             return BannerApplication.Add(model) > 0 ?
                 ResponseResult(model) : ResponseResult(6, "添加到数据库异常");
+        }
+
+
+        /// <summary>
+        /// 删除一条Banner
+        /// </summary>
+        /// <param name="id">要删除的bannerId</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult AddBanner(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+                return ResponseResult(1, "要删除的数据标志不正确");
+            if (BannerApplication.Delete(id) > 0)
+            {
+                return ResponseResult();
+            }
+            else
+                return ResponseResult(2, "服务器删除异常");
         }
         #endregion
     }

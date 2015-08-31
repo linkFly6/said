@@ -11,6 +11,7 @@ namespace Said.Application
 {
     public class BannerApplication
     {
+        //不要使用service，因为它可能没有被初始化
         private static IBannerService service;
         public static IBannerService Context
         {
@@ -25,16 +26,27 @@ namespace Said.Application
         public static int Add(Banner model)
         {
             Context.Add(model);
-            return service.Submit();
+            return Context.Submit();
         }
 
         /// <summary>
         /// 获取指定数量的横幅（日期倒序）
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Banner> GetTop(int count)
+        public static IEnumerable<Banner> GetTop(int count)
         {
-            return service.GetTop(count);
+            return Context.GetTop(count);
+        }
+
+        /// <summary>
+        /// 删除一个Banner
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static int Delete(string id)
+        {
+            Context.Delete(m => m.BannerId == id);
+            return Context.Submit();
         }
 
 
@@ -42,9 +54,9 @@ namespace Said.Application
         /// 获取所有的横幅对象（日期倒序）
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Banner> GetAll()
+        public static IEnumerable<Banner> GetAll()
         {
-            return service.GetAllDesc(m => m.Date);
+            return Context.GetAllDesc(m => m.Date);
         }
 
         /// <summary>
