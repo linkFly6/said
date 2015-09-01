@@ -116,6 +116,9 @@
 
 
         require(['jquery', 'so', 'showMsg', 'dialog', 'bsTable', 'source'], function ($, so, showMsg, dialog) {
+            //【【【【TODO 忘记把图片传上去啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊！】】】】】】
+
+
             var database = so.Database('back.pageConfig'),
                 //缩略图模型
                 model = {
@@ -229,7 +232,7 @@
                     })
                     .done(function (result) {
                         if (result.code === 0) {
-                            $classifyTable.bootstrapTable('remove', {
+                            $btTable.bootstrapTable('remove', {
                                 field: 'BannerId',
                                 values: [id]
                             });
@@ -324,7 +327,7 @@
                 var data = this.dataset, $this = $(this);
                 dialog('您确定要删除该Bannner么？').on(function () {
                     $this.attr('disabled', 'disabled').html('删除中');
-                    vmPage.RemoveBanner(data.id, function () {
+                    vmPage.remove(data.id, function () {
                         $this.length && $this.removeAttr('disabled');
                     });
                 }).show();

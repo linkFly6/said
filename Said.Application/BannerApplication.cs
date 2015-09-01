@@ -51,6 +51,30 @@ namespace Said.Application
 
 
         /// <summary>
+        /// 删除一个Banner
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int Delete(Banner model)
+        {
+            Context.Delete(model);
+            return Context.Submit();
+        }
+
+        /// <summary>
+        /// 获取一个Banner对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Banner Get(string id)
+        {
+            return Context.Get(m => m.BannerId == id);
+        }
+
+
+
+
+        /// <summary>
         /// 获取所有的横幅对象（日期倒序）
         /// </summary>
         /// <returns></returns>

@@ -58,12 +58,24 @@ namespace Said.Areas.Back.Controllers
         /// <param name="id">要删除的bannerId</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult AddBanner(string id)
+        public JsonResult RemoveBanner(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "要删除的数据标志不正确");
-            if (BannerApplication.Delete(id) > 0)
+            var model = BannerApplication.Get(id);
+            if (model != null && BannerApplication.Delete(model) > 0)
             {
+                LogCommon.Log(string.Format(
+                    @"管理员删除了一条Banner：
+                      BannerId = {0},
+                      创建日期 = {1},
+                      描述 = {2},
+                      HTML = {3},
+                      链接 = {4},
+                      源码 = {5},
+                      主题 = {6}
+                    ", model.BannerId, model.Date, model.Description, model.HTML, model.Link, model.SourceCode, model.Theme));
+
                 return ResponseResult();
             }
             else
