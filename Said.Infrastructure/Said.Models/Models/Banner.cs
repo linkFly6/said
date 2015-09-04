@@ -37,6 +37,16 @@ namespace Said.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// 图片Id
+        /// </summary>
+        public string ImageId { get; set; }
+
+        /// <summary>
+        /// 图片
+        /// </summary>
+        public virtual Image Image { get; set; }
+
+        /// <summary>
         /// 链接
         /// </summary>
         public string Link { get; set; }

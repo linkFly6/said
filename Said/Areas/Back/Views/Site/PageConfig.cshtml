@@ -73,7 +73,7 @@
     <div class="bs-table" ms-visible="!isShowForm">
         <div class="navbar-form navbar-left table-tool" id="custom-bar">
             <div class="data-form">
-                <input readonly="" autocomplete="off" class="form-control" ms-dom="ReleaseDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
+                <input readonly="" autocomplete="off" class="form-control" ms-dom="queryDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
                 <button class="btn btn-success" ms-click="toggleShowStatus(true)">&#12288;新增&#12288;</button>
             </div>
         </div>
@@ -82,7 +82,8 @@
 </div>
 @section Css{
     <link href="@Url.Content("~/Content/Back/Style/pageConfig.css")" rel="stylesheet" />
-    <link href="~/Content/Back/JavaScript/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/JavaScript/bootstrap/bootstrap-table/bootstrap-table.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/Style/bootstrap-datetimepicker.css")" rel="stylesheet" />
 }
 
 
@@ -115,9 +116,7 @@
 
 
 
-        require(['jquery', 'so', 'showMsg', 'dialog', 'bsTable', 'source'], function ($, so, showMsg, dialog) {
-            //【【【【TODO 忘记把图片传上去啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊！】】】】】】
-
+        require(['jquery', 'so', 'showMsg', 'dialog', 'bsTable', 'source', 'bs-datetimepicker'], function ($, so, showMsg, dialog) {
 
             var database = so.Database('back.pageConfig'),
                 //缩略图模型
@@ -126,7 +125,8 @@
                     SourceCode: '',//滚动图文本源码/HTML
                     HTML: '',//转换后的文本/HTML
                     Link: '',//链接
-                    Description: ''//描述
+                    Description: '',//描述
+                    ImageId: ''
                 };
             var vmPage = avalon.define({
                 $id: 'vmPage',
@@ -194,15 +194,15 @@
                     var data = so.extend({}, model);
                     so.each(model, function (key, value) {
                         //vm.$model挂在着vm对象的原型，只是读取不经过双向监听处理，性能更加
-                        data[key] = vmPage.$model[key];
+                        data[key] = encodeURIComponent(vmPage.$model[key] || '');
                     });
-                    data.HTML = encodeURIComponent(data.HTML);
+                    data['ImageId'] = vmPage.selectImageObject['ImageId'];
                     window.said.ajax(Action.AddBanner, data)
                         .done(function (result) {
                             if (result.code === 0) {
                                 database.clear();
                                 vmPage.reset();
-                                $btTable.bootstrapTable('append', [result.data]);
+                                $btTable.bootstrapTable('insertRow', [result.data]);
                             } else {
                                 showMsg('服务器新增Banner异常：' + result.msg, showMsg.ERROR, true);
                             }
@@ -254,7 +254,25 @@
             }
 
             avalon.scan();
+            //获取与国际通用UTC时间的分钟差（北京 = -480m = 8h）
+            var timezoneOffset = new Date().getTimezoneOffset();//datatimepicker组件使用的国际通用UTC时间，和北京时间相差8个小时，所以要修正时间差，获取
+            var dateInput = $(vmPage.elem.queryDate).datetimepicker({
+                minView: 'month',//bootstrap-datetimepicker:#1677
+                endDate: new Date
+            }).on('changeDate', function (e) {
+                var selectDate = so.parseDate(e.date.getTime());//因为要修正时间，但是不能直接修改组件内置对象的时间，所以copy一个副本
+                //修正UTC时间（分钟）差
+                selectDate.setMinutes(timezoneOffset);
+                //重置时间到23:59:59
+                selectDate.setHours(23, 59, 59, 0);
+                var data = PageDatas.filter(function (data) {
+                    return so.parseDate(data.Date).getTime() <= selectDate.getTime();
+                });
+                $btTable.bootstrapTable('load', data);
+            });
 
+
+            //初始化图片选择框
             var _ImageDialog = $.source({
                 loadUrl: Action.GetImagesList,//'/Back/Source/GetImagesList'
                 path: Source.image,
@@ -286,7 +304,7 @@
                      valign: 'middle',
                      sortable: true,
                      formatter: function (value, row, index) {
-                         console.log(row); //row可以访问到数据
+                         //console.log(row); //row可以访问到数据
                          //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
                          return [so.dateFormat(value, 'yyyy-MM-dd HH:mm')].join('');
                      }
@@ -303,7 +321,10 @@
              {
                  field: 'SourceCode',
                  title: '文&#12288;&#12288;本',
-                 valign: 'middle'
+                 valign: 'middle',
+                 formatter: function (value) {
+                     return so.escapeHTML(value);
+                 }
              },
               {
                   field: 'Link',

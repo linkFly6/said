@@ -419,20 +419,39 @@
         },
         now: Date.now || function () {
             return +new Date;
-        },
-        //将HTML编码
-        escapeHTML: function (text) {
-            if (typeof text == 'string') {
-                return text
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#039;");
-            }
-            return text;
         }
+
     });
+
+    //将HTML编码
+    //so.escapeHTML = function (text) {
+    //    if (typeof text == 'string') {
+    //        return text
+    //            .replace(/&/g, "&amp;")
+    //            .replace(/</g, "&lt;")
+    //            .replace(/>/g, "&gt;")
+    //            .replace(/"/g, "&quot;")
+    //            .replace(/'/g, "&#039;");
+    //    }
+    //    return text;
+    //}
+    var rsurrogate = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g,
+        rnoalphanumeric = /([^\#-~| |!])/g;
+    so.escapeHTML = function (str) {
+        //将字符串经过 str 转义得到适合在页面中显示的内容, 例如替换 < 为 &lt  => 摘自avalon
+        return String(str).
+                replace(/&/g, '&amp;').
+                replace(rsurrogate, function (value) {
+                    var hi = value.charCodeAt(0)
+                    var low = value.charCodeAt(1)
+                    return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';'
+                }).
+                replace(rnoalphanumeric, function (value) {
+                    return '&#' + value.charCodeAt(0) + ';'
+                }).
+                replace(/</g, '&lt;').
+                replace(/>/g, '&gt;')
+    }
 
     /*parseHTML*/
     var rtagName = /<([\w:]+)/,

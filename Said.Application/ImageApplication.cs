@@ -48,6 +48,21 @@ namespace Said.Application
             return service.Submit();
         }
 
+        /// <summary>
+        /// 增加一次图片引用
+        /// </summary>
+        /// <param name="id">要操作的图片ID</param>
+        /// <returns></returns>
+        public static int AddReferenceCount(string id)
+        {
+            Image model = Context.GetById(id);
+            if (model == null || model.ReferenceCount <= 0)
+                return -1;
+            model.ReferenceCount += 1;
+            Context.Update(model);
+            return service.Submit();
+        }
+
 
         /// <summary>
         /// 修改图片

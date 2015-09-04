@@ -111,7 +111,14 @@ namespace Said.Application
             }
             if (string.IsNullOrWhiteSpace(model.SourceCode) || string.IsNullOrWhiteSpace(model.HTML))
                 return "Banner文本源码不允许为空";
-            model.Date = DateTime.Now;
+            if (string.IsNullOrWhiteSpace(model.ImageId))
+            {
+                return "Banner图片不正确";
+            }
+            if (ImageApplication.Find(model.ImageId) == null)
+            {
+                return "没有找到正确的Banner图片";
+            }
             return string.Empty;
         }
         #endregion

@@ -14,9 +14,9 @@
         'source': 'so/plug/source',
         'markdown': ['showdown/showdown'],
         'showDownThemeGithub': 'showdown/extensions/github',
-        'bsTable': ['../Plug/bootstrap-table/bootstrap-table'],
+        'bsTable': ['bootstrap/bootstrap-table/bootstrap-table'],
         'popup': ['avalon/plug/popup'],
-        'bsTable-cn': ['../Plug/bootstrap-table/bootstrap-table-zh-CN'],
+        'bsTable-cn': ['bootstrap/bootstrap-table/bootstrap-table-zh-CN'],
         'bs-datetimepicker': ['bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker']
     },
     packages: [

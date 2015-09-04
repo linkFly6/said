@@ -41,14 +41,27 @@ namespace Said.Areas.Back.Controllers
         [HttpPost]
         public JsonResult AddBanner(Banner model)
         {
+            if (model == null)
+            {
+                return ResponseResult(1, "参数不正确");
+            }
+            model = model.DecodeModel() as Banner;
             string errorMsg = BannerApplication.ValidateAndCorrectSubmit(model);
             if (!string.IsNullOrEmpty(errorMsg))
                 return ResponseResult(1, errorMsg);
             model.HTML = UrlCommon.Decode(model.HTML);
             model.BannerId = SaidCommon.GUID;
             model.Date = DateTime.Now;
-            return BannerApplication.Add(model) > 0 ?
-                ResponseResult(model) : ResponseResult(6, "添加到数据库异常");
+            if (BannerApplication.Add(model) > 0)
+            {
+                ImageApplication.AddReferenceCount(model.ImageId);
+                return ResponseResult(model);
+            }
+            else
+            {
+                return ResponseResult(6, "添加到数据库异常");
+            }
+
         }
 
 
