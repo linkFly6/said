@@ -25,7 +25,6 @@ namespace Said.Areas.Back.Controllers
         public ActionResult PageConfig()
         {
             ViewData["models"] = BannerApplication.GetAll();
-
             return View();
         }
 
