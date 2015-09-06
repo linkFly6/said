@@ -17,7 +17,8 @@
         'bsTable': ['bootstrap/bootstrap-table/bootstrap-table'],
         'popup': ['avalon/plug/popup'],
         'bsTable-cn': ['bootstrap/bootstrap-table/bootstrap-table-zh-CN'],
-        'bs-datetimepicker': ['bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker']
+        'bs-datetimepicker': ['bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker'],
+        'echarts': 'echarts-2.1.8/src/echarts-all.min'
     },
     packages: [
             {
@@ -30,11 +31,11 @@
                 location: 'said',
                 main: 'said'
             },
-            {
-                name: 'echarts',
-                location: 'echarts-2.1.8/src',
-                main: 'echarts'
-            },
+            //{
+            //    name: 'echarts',
+            //    location: 'echarts-2.1.8/src',
+            //    main: 'echarts'
+            //},
             {
                 name: 'zrender',
                 //location: 'http://ecomfe.github.io/zrender/src',
@@ -45,7 +46,10 @@
     shim: {
         'showDownThemeGithub': ['markdown'],//依赖showdown
         'bsTable-cn': ['bsTable'],
-        'bs-datetimepicker': ['jquery']
+        'bs-datetimepicker': ['jquery'],
+        'echarts': {
+            exports: 'echarts'
+        }
     }
 
 });
