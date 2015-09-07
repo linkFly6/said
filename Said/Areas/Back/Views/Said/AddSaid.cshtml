@@ -435,9 +435,9 @@
 
 <script type="text/javascript">
     var Action = {
-        uploadSaidImg: '@Url.Action("UploadSaidImage", "Source")',
+        uploadSaidImg: '@Url.Action("Upload", "Image")',
         uploadMusicUrl: '@Url.Action("UploadSongImage", "Source")',
-        getMusicImg: '@Url.Action("GetImagesList", "Source")',
+        getMusicImg: '@Url.Action("GetImagesList", "Image")',
         musicImg: '@Url.Action("UploadMusicImg", "Source")',
         deleteImage: '@Url.Action("DeleteImage","Source")',
         music: '@Url.Action("UploadMusic", "Source")',
@@ -741,7 +741,7 @@
             //upload
 
             var _summaryDialog = $.source({
-                loadUrl: '/Back/Source/GetImagesList',
+                loadUrl: '/Back/Image/GetImagesList',
                 path: Source.summaryImg,
                 type: Source.saidImageType,
                 uploadUrl: Action.uploadSaidImg,
@@ -750,8 +750,8 @@
                 //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
                 callback: function (data) {
                     vmUpload.data = data;
-                    var imgSrc = Source.summaryImg + data.name;
-                    vmUpload.img = data.name;
+                    var imgSrc = Source.summaryImg + data.IName;
+                    vmUpload.img = data.IName;
                     vmUpload.imgSrc = imgSrc;
                     database.val('sImg', data).val('summary.imgSrc', imgSrc);
                 }
@@ -786,9 +786,8 @@
     });
 
     require(['jquery'], function ($) {
-        return;
         //form提交
-        submitBtn.addEventListener('click', function () {
+        $('#submit').on('click', function () {
             //console.log(formValidate);
             save();
             if (changeState()) return false;
@@ -853,8 +852,8 @@
                     //上传||suggestion选择了图片后，编辑了歌曲
                     data.append('Song.SongImg', songData.img);
                 }
-                addSaid.DataBase.clear();
-                return;
+                //addSaid.DataBase.clear();
+                //return;
                 addSaid.ajax(data, Action.form, function (data, xhr) {
                     if (data.code === 0) {
                         dialog('添加Said成功', '喜大普奔，添加Said成功。');

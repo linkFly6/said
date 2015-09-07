@@ -411,7 +411,7 @@
     if (DataCenter.files.length)
         DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
     //console.log(DataCenter.files);
-    require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'source', 'markdown', 'showDownThemeGithub', 'groupInput', 'upload'], function ($, so, Search, avalon, showMsg, source, showdown) {
+    require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'source', 'markdown', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function ($, so, Search, avalon, showMsg, source, showdown) {
         $(function () {
             var previewTemplent = document.getElementById('tplOpen').innerHTML.replace(/replaceScript/g, 'script'),
                 //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取

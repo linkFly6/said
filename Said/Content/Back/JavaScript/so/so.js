@@ -362,7 +362,7 @@
                 if (isObject(value) || isArray(value))
                     value = JSON.stringify(value);
                 path = path || '/';
-                domain = domain || document.domain;
+                domain = domain == null ? document.domain : domain;
                 document.cookie = [name, "=", escape(value), expiredays, ";path=", path, ";domain=", domain].join('');
                 return this;
             }

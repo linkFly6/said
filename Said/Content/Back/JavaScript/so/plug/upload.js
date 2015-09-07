@@ -106,6 +106,7 @@
                         if (xhr.status === 200) {
                             try {
                                 var data = JSON.parse(xhr.responseText);
+                                //注意这里的callback可能会抛出异常，这里会被捕捉到
                                 callback && callback.call(elem, data, file);
                                 upload && upload.call(elem, 0);
                             } catch (e) {

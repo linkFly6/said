@@ -22,10 +22,9 @@
 </div>
 @section Css{
     <link href="~/Content/Back/Style/saidCenter.css" rel="stylesheet" />
-    <link href="~/Content/Back/JavaScript/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/JavaScript/bootstrap/bootstrap-table/bootstrap-table.min.css")" rel="stylesheet" />
 }
 @section FootJs{
-    <script src="@Url.Content("~/Content/Back/JavaScript/bootstrap-table/bootstrap-table.js")"></script>
     <script>
         var Action = {
             article: '@Url.Action("Said", "Home")',
@@ -37,21 +36,6 @@
             form: '@Url.Action("AddSaid", "Back")'
         };
         $(function () {
-            require.config({
-                packages: [
-                {
-                    name: 'echarts',
-                    location: 'echarts-2.1.8/src',
-                    main: 'echarts'
-                },
-                {
-                    name: 'zrender',
-                    //location: 'http://ecomfe.github.io/zrender/src',
-                    location: 'zrender-master/src',
-                    main: 'zrender'
-                }
-                ]
-            });
             var option = {
                 title: {
                     text: '2014-11-15',
@@ -103,14 +87,11 @@
                     }
                 ]
             };
-            require(['echarts', 'echarts/chart/line'], function (ec) {
+            require(['echarts'], function (ec) {
                 var myChart = ec.init(document.getElementById('userChart'));
                 myChart.setOption(option);
             });
-
-
-            (function (window, undefined) {
-                var $ = window.jQuery;
+            require(['jquery', 'so', 'bsTable'], function ($, so) {
                 $('#btTable').bootstrapTable({
                     columns: [
                      {
@@ -189,9 +170,9 @@
 
                 }).on('dbl-click-row.bs.table', function (e, row, $element) {
                 })
+            });
 
-                //解决ecahrt的bug
-            })(window);
+
         });
 
 

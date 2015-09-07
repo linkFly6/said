@@ -74,11 +74,9 @@
 </div>
 @section Css{
     <link href="@Url.Content("~/Content/Back/Style/classify.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/JavaScript/bootstrap/bootstrap-table/bootstrap-table.min.css")" rel="stylesheet" />
 }
 @section FootJs{
-    @*<script src="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table.js")"></script>*@
-    @*<script src="@Url.Content("~/Content/Back/Plug/bootstrap-table/bootstrap-table-zh-CN.js")"></script>*@
     <script src="~/Content/Back/JavaScript/so/plug/showMsg.js"></script>
     <script type="text/javascript">
         var PageDatas = {
@@ -121,7 +119,7 @@
                     Write(new HtmlString(string.Format("PageDatas.imgs.push('{0}');", item)));
                 }
             }
-        require(['so', 'jquery', 'avalon', 'dialog', 'upload', 'classify', 'popup', 'bsTable-cn', 'showMsg'], function (so, $, avalon, dialog) {
+        require(['so', 'jquery', 'avalon', 'dialog', 'upload', 'classify', 'popup', 'bsTable', 'showMsg'], function (so, $, avalon, dialog) {
             $(function () {
                 'use strict';
                 /*

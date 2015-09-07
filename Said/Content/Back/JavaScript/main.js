@@ -36,12 +36,12 @@
             //    location: 'echarts-2.1.8/src',
             //    main: 'echarts'
             //},
-            {
-                name: 'zrender',
-                //location: 'http://ecomfe.github.io/zrender/src',
-                location: 'zrender-master/src',
-                main: 'zrender'
-            }
+            //{
+            //    name: 'zrender',
+            //    //location: 'http://ecomfe.github.io/zrender/src',
+            //    location: 'zrender-master/src',
+            //    main: 'zrender'
+            //}
     ],
     shim: {
         'showDownThemeGithub': ['markdown'],//依赖showdown
