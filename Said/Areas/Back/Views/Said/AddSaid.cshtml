@@ -92,7 +92,6 @@
                                         @Html.TextBoxFor(Model => Model.Song.SongName, new Dictionary<string, object>() {
                                             { "class", "form-control music-input" },
                                             { "autocomplete", "off" },
-                                            {"ms-attr-disabled","songId"},
                                             { "ms-duplex", "songName" },
                                             { "placeholder", "歌曲名称" },
                                             { "required", "" }
@@ -104,7 +103,7 @@
                                     @Html.TextBoxFor(Model => Model.Song.SongAlbum, new Dictionary<string, object>(){
                                         { "class","form-control music-input"},
                                         { "placeholder", "歌曲专辑"},
-                                        {"ms-attr-disabled","songId"},
+                                        {"disabled","disabled"},
                                         { "ms-duplex", "songAlbum" },
                                         { "autocomplete", "off"}
                                      })
@@ -114,7 +113,7 @@
                                     @Html.TextBoxFor(Model => Model.Song.SongArtist, new Dictionary<string, object>(){
                                         { "class","form-control music-input"},
                                         { "placeholder", "艺术家"},
-                                        {"ms-attr-disabled","songId"},
+                                        {"disabled","disabled"},
                                         { "ms-duplex", "songArtist" },
                                         { "autocomplete", "off"}
                                     })
@@ -151,9 +150,10 @@
                     <div class="panel-heading">描述</div>
                     <div class="panel-body">
                         <div class="col-md-4">
-                            <div class="music-img">
+                            <div class="summay-img">
                                 <div class="thumbnail">
-                                    <img ms-attr-src="imgSrc ? imgSrc :'../../Content/Images/test-said-img.jpg'" />
+                                    <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '../../Content/Images/UEDImg/demo-img6.jpg') + ')'"></div>
+                                    @*<img ms-attr-src="imgSrc ? imgSrc :'../../Content/Images/test-said-img.jpg'" />*@
                                 </div>
                             </div>
                         </div>
@@ -269,7 +269,7 @@
 @section FootJs{
 
     <script id="tplOpen" type="text/template">
-        <!DOCTYPE HTML>
+        <!DOCTYPE html>
         <html xmlns="http://www.w3.org/1999/xhtml">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

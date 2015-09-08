@@ -43,9 +43,7 @@
   height: 210px;
   overflow: hidden;
   position: relative;
-  border-radius: 4px; }
-
-.music-img {
+  border-radius: 4px;
   display: block;
   margin: 0 auto;
   overflow: hidden; }
@@ -61,6 +59,12 @@
     cursor: pointer; }
   .music-img .song-mask-text {
     font-size: 22px; }
+
+.summay-img .summay-img-item {
+  background-position: center 0;
+  background-size: cover;
+  width: 219px;
+  height: 200px; }
 
 /*said-article*/
 .said-article {

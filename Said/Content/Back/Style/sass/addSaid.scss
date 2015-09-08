@@ -46,14 +46,6 @@
     margin: 10px 0;
 }
 
-.music-img {
-    width: 210px;
-    height: 210px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 4px;
-}
-
 @mixin inlineBlock() {
     display: block;
     margin: 0 auto;
@@ -61,6 +53,11 @@
 }
 
 .music-img {
+    width: 210px;
+    height: 210px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 4px;
     @include inlineBlock();
 
     img {
@@ -75,8 +72,19 @@
         cursor: pointer;
     }
 
+
+
     .song-mask-text {
         font-size: 22px;
+    }
+}
+
+.summay-img {
+    .summay-img-item {
+        background-position: center 0;
+        background-size: cover;
+        width: 219px;
+        height: 200px;
     }
 }
 
