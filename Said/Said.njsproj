@@ -31,24 +31,42 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="routes\back\base.js" />
+    <Compile Include="routes\back\blog\blogs.js" />
+    <Compile Include="routes\base.js" />
     <Compile Include="routes\index.js" />
     <Compile Include="routes\users.js" />
     <Compile Include="bin\www" />
     <Content Include="package.json" />
     <Content Include="public\stylesheets\style.styl" />
     <Content Include="README.md" />
-    <Content Include="views\index.jade" />
-    <Content Include="views\layout.jade" />
-    <Content Include="views\error.jade" />
+    <Content Include="views\error.html" />
+    <Content Include="views\index.html" />
+    <Content Include="views\layout.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="privete\" />
+    <Folder Include="privete\sass\" />
+    <Folder Include="privete\sass\back\" />
     <Folder Include="public\" />
+    <Folder Include="public\back\images\" />
+    <Folder Include="public\back\javascripts\" />
+    <Folder Include="public\back\stylesheets\" />
     <Folder Include="public\images\" />
     <Folder Include="public\javascripts\" />
+    <Folder Include="public\back\" />
     <Folder Include="public\stylesheets\" />
     <Folder Include="routes\" />
+    <Folder Include="routes\back\" />
+    <Folder Include="routes\back\home\" />
+    <Folder Include="routes\back\blog\" />
+    <Folder Include="routes\back\music\" />
+    <Folder Include="routes\back\image\" />
+    <Folder Include="routes\back\site\" />
+    <Folder Include="routes\back\said\" />
     <Folder Include="views\" />
+    <Folder Include="views\back\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
