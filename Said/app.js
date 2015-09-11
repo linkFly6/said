@@ -23,7 +23,6 @@ hbs.registerHelper('RenderSection', function (name, context) {
     if (!block) {
         block = blocks[name] = [];
     }
-    
     block.push(context.fn(this)); // for older versions of handlebars, use block.push(context(this));
 });
 
@@ -79,5 +78,6 @@ app.use(function (err, req, res, next) {
     });
 });
 
+app.use(express.static(__dirname + '/public'));
 
 module.exports = app;

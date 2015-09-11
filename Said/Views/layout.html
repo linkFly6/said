@@ -1,12 +1,10 @@
 ﻿<!DOCTYPE html>
-
 <html>
 <head>
-    {{{RenderSection "meta"}}}
     <meta name="keywords" content="linkFly,Said,听说,blog,日志,博客,javascript,C#,Sql,nodeJS,music,音乐" />
     <meta name="author" content="linkFly" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>{{title}}</title>
+    <title>{{#if title}}{{title}}{{else}}Said{{/if}}</title>
     <link href="/Content//Style/Global.css?v=1.0" rel="stylesheet">
     <link href="/Content/Style/font-awesome.min.css?v=1.0" rel="stylesheet">
     <link href="/Content/Style/layout.css?v=1.0" rel="stylesheet">
@@ -86,6 +84,5 @@
     {{/if}}
     <script src="/Content/JavaScript/jQuery-2.1.1.js?v=1.0"></script>
     <script src="/Content/Back/JavaScript/so/so.js?v=1.0"></script>
-    {{{RenderSection "footer"}}}
 </body>
 </html>
