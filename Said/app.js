@@ -14,11 +14,16 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
+//app.engine('html', hbs.__express);
+
 app.engine('html', hbs.__express);
+//注册全局属性
+hbs.localsAsTemplateData(app);
+app.locals.version = "1.0";
 
 var blocks = {};
 
-hbs.registerHelper('RenderSection', function (name, context) {
+hbs.registerHelper('section', function (name, context) {
     var block = blocks[name];
     if (!block) {
         block = blocks[name] = [];
@@ -26,7 +31,7 @@ hbs.registerHelper('RenderSection', function (name, context) {
     block.push(context.fn(this)); // for older versions of handlebars, use block.push(context(this));
 });
 
-hbs.registerHelper('section', function (name) {
+hbs.registerHelper('RenderSection', function (name) {
     var val = (blocks[name] || []).join('\n');
     
     // clear the block
@@ -40,12 +45,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('stylus').middleware(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(require('stylus').middleware(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/resource', express.static(path.join(__dirname, 'resource')));
+//app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 routes(app);
 back(app);
+
 
 // error handlers
 
@@ -60,6 +69,7 @@ if (app.get('env') === 'development') {
         });
     });
 }
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -78,6 +88,6 @@ app.use(function (err, req, res, next) {
     });
 });
 
-app.use(express.static(__dirname + '/public'));
+
 
 module.exports = app;

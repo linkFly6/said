@@ -1,0 +1,2 @@
+G:\Github\Said\Said\obj\Debug\Said.njsprojResolveAssemblyReference.cache
+G:\Github\Said\Said\bin\Microsoft.NodejsTools.WebRole.dll

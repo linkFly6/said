@@ -5,14 +5,13 @@
     <meta name="author" content="linkFly" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>{{#if title}}{{title}}{{else}}Said{{/if}}</title>
-    <link href="/Content//Style/Global.css?v=1.0" rel="stylesheet">
-    <link href="/Content/Style/font-awesome.min.css?v=1.0" rel="stylesheet">
-    <link href="/Content/Style/layout.css?v=1.0" rel="stylesheet">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="/favicon.ico" />
-    <script src="Content/Back/JavaScript/requirejs-2.1.15.js?v=1.0"></script>
-    <script src="Content/Back/JavaScript/main.js?v=1.0"></script>
+    <link href="/public/stylesheets/Global.css?v={{{@version}}}" rel="stylesheet">
+    <link href="/public/stylesheets/font-awesome.min.css?v={{{@version}}}" rel="stylesheet">
+    <link href="/public/stylesheets/layout.css?v={{{@version}}}" rel="stylesheet">
+    <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="/public/favicon.ico" />
+    <script src="/public/javascripts/requirejs-2.1.15.js?v={{{@version}}}"></script>
     {{{RenderSection "head"}}}
 </head>
 <body>
@@ -82,7 +81,6 @@
 
         </footer>
     {{/if}}
-    <script src="/Content/JavaScript/jQuery-2.1.1.js?v=1.0"></script>
-    <script src="/Content/Back/JavaScript/so/so.js?v=1.0"></script>
+    <script src="/public/javascripts/jQuery-2.1.1.js?v={{{@version}}}"></script>
 </body>
 </html>
