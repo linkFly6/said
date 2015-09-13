@@ -31,6 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app.js" />
+    <Compile Include="models\base.js" />
+    <Compile Include="models\database.js" />
+    <Compile Include="models\tag.js" />
     <Compile Include="public\back\javascripts\avalon\avalon.mobile.js" />
     <Compile Include="public\back\javascripts\avalon\avalon.mobile.min.js" />
     <Compile Include="public\back\javascripts\avalon\plug\autoComplete.js" />
@@ -76,6 +79,7 @@
     <Compile Include="routes\back\blog\blogs.js" />
     <Compile Include="routes\base.js" />
     <Compile Include="routes\index.js" />
+    <Compile Include="routes\tag.js" />
     <Compile Include="routes\users.js" />
     <Compile Include="bin\www" />
     <Content Include="public\favicon.ico" />
@@ -148,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\" />
+    <Folder Include="models\" />
     <Folder Include="resource\" />
     <Folder Include="privete\" />
     <Folder Include="privete\sass\" />
