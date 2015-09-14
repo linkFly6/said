@@ -1,4 +1,4 @@
-﻿exports.BaseSchema = function () {
-
+﻿exports.BaseSchema = {
+    isDelete: Number
 };
 

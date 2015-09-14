@@ -1,8 +1,9 @@
 ﻿var mongoose = require('mongoose');
 var db = mongoose.connect('localhost', 'said');
-db.on('error', function (error) {
-    console.log(error);
-});
+//TODO 这里为什么不能捕捉error
+//db.on('error', function (error) {
+//    console.log(error);
+//});
 
 var tagSchema = new mongoose.Schema({
     tagName: String,
@@ -14,7 +15,7 @@ var tagSchema = new mongoose.Schema({
 });
 
 exports.tagSchema = tagSchema;
-exports.tagModel = mongoose.model('Tag', userSchema);
+exports.tagModel = mongoose.model('Tag', tagSchema);
 
 //process.on('SIGINT', function () {
 //    mongoose.connection.close(function () {

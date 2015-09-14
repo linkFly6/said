@@ -1,10 +1,9 @@
 ﻿//Said主站
-var routes = require('./index');
+var index = require('./index');
 var users = require('./users');
 
 module.exports = function (app) {
-    app.use('/', routes);
+    app.use('/', index);
     app.use('/users', users);
-    require('./tag')();
-
+    app.use('/tags', require('./tag'));
 }
