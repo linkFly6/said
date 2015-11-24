@@ -1,8 +1,6 @@
 ﻿//Said后台
-var blogs = require('./blog/blogs');
+var blogs = require('./blogs');
 
 module.exports = function (app) {
-    app.get('/back/', function () { 
-        
-    });
+    app.use('/back', blogs);
 }
