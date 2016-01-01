@@ -82,6 +82,7 @@
     <Compile Include="public\javascripts\main.js" />
     <Compile Include="public\javascripts\requirejs-2.1.15.js" />
     <Compile Include="routes\back\base.js" />
+    <Compile Include="routes\back\saids.js" />
     <Compile Include="routes\back\blogs.js" />
     <Compile Include="routes\base.js" />
     <Compile Include="routes\home\blogs.js" />
@@ -158,6 +159,7 @@
     <Content Include="resource\sys\images\Horseshoe-Bend-US.jpg" />
     <Content Include="resource\sys\images\TuscanyItaly.jpg" />
     <Content Include="resource\sys\images\TuscanyItaly1.jpg" />
+    <Content Include="views\back\addSaid.html" />
     <Content Include="views\back\blogs.html" />
     <Content Include="views\back\layout.html" />
     <Content Include="views\home\blogs.html" />
