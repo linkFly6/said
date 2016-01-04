@@ -1,0 +1,405 @@
+﻿@mixin prefixer($property,$value) {
+    /*公用样式*/
+    -webkit-#{$property}: $value; /* Chrome all / Safari all */
+    -moz-#{$property}: $value; /* Firefox all */
+    -ms-#{$property}: $value; /* IE 10+ */
+    -o-#{$property}: $value;
+    #{$property}: $value;
+}
+
+
+/*public*/
+.banner-arrow, .module-mask, .said-banner-footer, .music-artist {
+    transition: opacity 0.3s ease-in-out 0s;
+    opacity: 0;
+}
+
+.index-background:hover .said-banner-footer, .index-background:hover .banner-arrow, .said-item:hover .music-artist {
+    opacity: 1;
+}
+/*arrow*/
+.banner-arrow {
+    background: url(/Content/Images/ico_sliding.png) no-repeat;
+    position: absolute;
+    z-index: 4;
+    display: block;
+    width: 72px;
+    height: 72px;
+    top: 47%;
+}
+
+.index-background {
+    overflow: hidden;
+    width: 100%;
+    height: 700px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+
+    .index-banner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .banner-item {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        text-align: center;
+        background-position: center bottom;
+        background-size: 2110px 800px;
+        opacity: 0;
+        z-index: 1;
+
+        %whiteColor {
+            color: #fff;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+        }
+        /*&.active {
+            opacity: 1;
+        }*/
+        &.banner-white {
+            .banner-title {
+
+                @extend %whiteColor;
+            }
+
+            .banner-text {
+                @extend %whiteColor;
+            }
+        }
+    }
+
+    .banner-item-box {
+        margin: 0 auto;
+        padding-top: 180px;
+        text-align: center;
+        width: 960px;
+        height: 380px;
+    }
+
+    %defaultsColor {
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+    }
+
+    .banner-content {
+        padding: 20px 0;
+        background: rgba(0, 0, 0, 0) url("/Content/Images/index_focus_bg.png") repeat-y scroll 180px 0;
+    }
+
+    .banner-title {
+        font-size: 35px;
+        line-height: 80px;
+        @extend %defaultsColor;
+
+        img {
+            @include prefixer(user-select,none)
+        }
+    }
+
+    .banner-text {
+
+        @extend %defaultsColor;
+    }
+}
+
+
+.arrow-left {
+    left: 25px;
+
+    &:hover {
+        background-position: 0 -144px;
+    }
+}
+
+.arrow-right {
+    right: 25px;
+    background-position: 0 -72px;
+
+    &:hover {
+        background-position: 0 -216px;
+    }
+}
+
+
+/*ring*/
+.said-banner-footer {
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    /*padding-top: 70px;*/
+    top: -90px;
+    cursor: default;
+}
+
+.said-banner-ring {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    text-indent: -9999px;
+    border-radius: 50%;
+    margin-left: 8px;
+    background-color: #CCC;
+    opacity: 0.8;
+    box-shadow: 0 0px 2px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease-in-out 0s;
+    cursor: pointer;
+}
+
+.said-banner-ring {
+    &:first-child {
+        margin-left: 0;
+    }
+
+    &.active {
+        cursor: default;
+    }
+
+    &.active, &:hover {
+        background-color: #028cd3;
+        opacity: 1;
+        box-shadow: 0 0px 2px rgba(255, 255, 255, 0.3);
+    }
+}
+
+
+.said-content {
+    a {
+        color: #08c;
+        cursor: pointer;
+    }
+}
+
+.said-module {
+    padding: 80px 0 0;
+
+    &:first-child {
+        padding: 25px 0;
+    }
+}
+
+.module-title {
+    text-align: center;
+    padding: 10px;
+
+    h1 {
+        font-size: 35px;
+        font-weight: 200;
+        letter-spacing: 1px;
+        line-height: 1.2;
+    }
+
+    .fa-quote-right {
+        padding-left: 1em;
+    }
+
+    p {
+        font-size: 18px;
+        line-height: 2;
+        padding: 10px;
+    }
+}
+
+.module-title .fa-quote-left, .module-title .fa-quote-right {
+    font-size: 10px;
+    vertical-align: middle;
+    padding-right: 1em;
+    color: #777;
+}
+
+.module-content .said-item, .module-content .blog-item {
+    width: 33.3333%;
+    float: left;
+    padding: 10px;
+    position: relative;
+}
+
+.module-content .said-item {
+    width: 50%;
+}
+
+.module-content li:hover .module-mask, .said-main-img:hover .module-mask {
+    opacity: 0.7;
+}
+
+.module-mask {
+    background: linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)) repeat scroll 0 0 #222;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+
+    &::after {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+}
+
+
+
+.module-summary {
+    color: #fff;
+    text-align: justify;
+    padding: 10px;
+    text-indent: 2em;
+    width: 100%;
+    margin: auto;
+}
+
+.module-img-con {
+    width: 100%;
+    position: relative;
+    height: 280px;
+    background-size: 547px 300px;
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+}
+
+.said-img {
+    background-position: center;
+    background-size: 1094px 600px;
+    height: 320px;
+}
+
+a.module-item-title, .said-main-title {
+    font-size: 25px;
+    line-height: 2;
+    color: #444;
+    display: block;
+    text-align: center;
+}
+
+a.module-item-title:hover {
+    color: #08c;
+}
+
+/*blog*/
+.module-more-link {
+    font-family: "PingHei","Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+
+/*   
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);   
+*/
+.blog-info {
+    text-align: center;
+}
+
+.blog-date {
+    color: #999;
+    display: block;
+    text-align: center;
+}
+
+
+/*said*/
+.said-item .module-summary {
+    padding: 20px;
+}
+/*.said-item:hover .music-img { transform: rotate(360deg); }*/
+.said-main {
+    padding: 10px;
+}
+
+.said-main-img {
+    display: block;
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.said-main-context {
+    margin: auto;
+    text-align: center;
+}
+
+.said-main-title, .said-main-summary {
+    display: inline-block;
+    color: #fff;
+    vertical-align: middle;
+    min-width: 150px;
+    max-width: 400px;
+    padding-right: 50px;
+    text-align: justify;
+}
+
+.said-main-summary {
+    padding: 0 0 0 50px;
+    border-left: 1px solid #e2e2e2;
+    max-height: 300px;
+    overflow: hidden;
+    text-indent: 2em;
+}
+
+.said-main-title {
+    transition: color 0.2s ease-in-out 0s;
+}
+
+.said-music {
+    position: relative;
+    margin: 0 auto;
+}
+
+%musicImg {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+
+.music-img {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    transition: transform 1s ease-in-out 0s;
+    @extend %musicImg;
+
+    img {
+        display: block;
+        @extend %musicImg;
+    }
+}
+
+.music-info {
+    padding: 20px 0 20px 130px;
+    line-height: 2;
+    overflow: hidden;
+}
+
+.music-ring {
+    position: absolute;
+    width: 25%;
+    height: 25%;
+    top: 38%;
+    left: 38%;
+    background-color: #FFF;
+    border-radius: 50%;
+}
+
+.music-artist {
+    font-size: 18px;
+    color: #999;
+    padding-right: 130px;
+}
+
+.said-date {
+    position: absolute;
+    color: #999;
+    bottom: 20px;
+    right: 0;
+}

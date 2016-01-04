@@ -1,0 +1,136 @@
+@charset "UTF-8";
+/*公用样式*/
+.login-context input:focus, .login-context input:hover, .login-context input:active, .login-context .login-input:focus input, .login-context .login-input:hover input, .login-context .login-input:active input {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  border-right-color: #999;
+  border-top-color: #999;
+  border-bottom-color: #999;
+  background-color: #ebebeb;
+  opacity: 1; }
+
+html {
+  height: 100%; }
+
+body {
+  background: #fafafa url("/Content/Back/Images/said-login-bg.jpg") no-repeat;
+  background-size: cover;
+  position: relative;
+  padding-top: 100px;
+  background-position: center center;
+  height: 100%; }
+
+.login-content {
+  margin: 0 auto;
+  width: 400px; }
+
+.login-header {
+  padding-bottom: 20px; }
+
+.said-logo {
+  background: url("/Content/Images/said-logo.png") no-repeat;
+  height: 100px;
+  width: 100px;
+  /*border: 1px solid #fff;*/
+  margin: 0 auto; }
+
+.login-box {
+  position: relative; }
+
+.login-bar-bg {
+  opacity: 0.8;
+  background-color: #fff;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1; }
+
+.login-context {
+  z-index: 2;
+  position: relative;
+  padding: 5px 5px 20px; }
+  .login-context input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #b2b2b2;
+    border-left: 2px solid #428bca;
+    background-color: transparent;
+    opacity: 0.8;
+    transition: background-color ease-in-out 0.2s;
+    font-size: 15px; }
+  .login-context .login-input {
+    padding: 15px; }
+  .login-context .login-pass {
+    position: relative; }
+  .login-context .fa-eye {
+    position: absolute;
+    right: 22px;
+    top: 32px;
+    cursor: pointer;
+    color: #999;
+    transition: color ease-in-out 0.2s; }
+    .login-context .fa-eye:hover {
+      color: #000; }
+  .login-context .pass-input {
+    padding-right: 25px; }
+    .login-context .pass-input::-ms-clear {
+      display: none; }
+    .login-context .pass-input::-ms-reveal {
+      display: none; }
+  .login-context .login-footer {
+    width: 100%; }
+  .login-context .login-btn {
+    background-color: #428bca;
+    border-color: #357ebd;
+    color: #fff;
+    width: 200px;
+    font-size: 18px;
+    line-height: 1.33;
+    display: block;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin: 0 auto;
+    text-align: center;
+    opacity: 0.8; }
+    .login-context .login-btn:hover, .login-context .login-btn:focus, .login-context .login-btn:active {
+      background-color: #3071a9;
+      border-color: #285e8e; }
+    .login-context .login-btn:active {
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125); }
+    .login-context .login-btn[disabled]:hover, .login-context .login-btn[disabled]:focus, .login-context .login-btn[disabled]:active, .login-context .login-btn.lock {
+      background-color: #337ab7;
+      border-color: #2e6da4;
+      box-shadow: none;
+      cursor: not-allowed; }
+
+.login-msg {
+  border: 1px solid #696969;
+  height: 50px;
+  line-height: 50px;
+  margin: 0 auto;
+  margin-top: 50px;
+  text-align: center;
+  max-width: 60%;
+  position: relative;
+  background-color: transparent; }
+  .login-msg .login-msg-bg {
+    -webkit-filter: blur(2px);
+    /* Chrome, Opera */
+    -moz-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    top: 0;
+    left: 0;
+    background-color: #262626;
+    position: absolute;
+    z-index: 1; }
+  .login-msg .login-msg-txt {
+    font-size: 1.32em;
+    color: #fff;
+    position: relative;
+    z-index: 2; }
+
+/*# sourceMappingURL=login.css.map */

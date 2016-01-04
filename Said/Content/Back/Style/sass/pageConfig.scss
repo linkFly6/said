@@ -1,0 +1,26 @@
+﻿.form-box {
+    width: 500px;
+    margin: 0 auto;
+
+    .tab-box {
+        .nav-tabs {
+            margin-bottom: 15px;
+        }
+    }
+
+    .mask-content {
+        height: 200px;
+        background: #f4f4f4 no-repeat center center;
+        background-size: 600px auto;
+    }
+
+    .form-submit {
+        padding: 15px 0;
+    }
+
+    .teb-select {
+        .btn-group {
+            margin: 5px 0 0 6px;
+        }
+    }
+}

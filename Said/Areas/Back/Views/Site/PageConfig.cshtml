@@ -1,0 +1,358 @@
+﻿@using Said.Common;
+@using Said.Models
+@{
+    ViewBag.Title = "站点配置 - 配置Said的每一个细节";
+    Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+    IList<Banner> Models = ViewData["models"] as IList<Banner>;
+}
+
+<div class="page-header">
+    <h3>站点配置&nbsp;<small>-&nbsp;配置Said的每一个细节</small><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></h3>
+</div>
+<ol class="breadcrumb">
+    <li><a href="/Back">Home</a></li>
+    <li>配置中心</li>
+    <li>站点配置</li>
+</ol>
+<div id="said-help" class="said-mask-content said-watermark">
+    <ul>
+        <li>Banner的<span class="keywords">源码</span>支持HTML（含有&gt;的）和自动生成HTML源码（不含有&gt;，自动识别换行）</li>
+        <li>多填写<span class="keywords">备注</span>信息，方便以后进行检索</li>
+        <li>首页只会显示<span class="keywords">前5条</span>Banner</li>
+    </ul>
+</div>
+<div ms-controller="vmPage">
+    <div class="form-box" ms-visible="isShowForm">
+        <div class="row">
+            <div class="form-group mask-hover" ms-click="showImagesBox">
+                <div style="cursor:pointer;" class="mask-box">
+                    <span class="song-mask-text">选择图片</span>
+                </div>
+                <div class="mask-content" ms-css-background-image="url({{selectImagePath? selectImagePath : '/Source/Said/Thumbnail/007020150419145607.jpg'}})"></div>
+            </div>
+            <div class="form-group input-group">
+                <span class="input-group-addon">备&#12288;&#12288;注</span>
+                <input type="text" autocomplete="off" class="form-control" placeholder="备注（便于检索）" ms-duplex="Description" />
+            </div>
+            <div class="form-group input-group" ms-class="has-error:!Link">
+                <span class="input-group-addon">链&#12288;&#12288;接</span>
+                <input type="text" autocomplete="off" class="form-control" placeholder="点击后跳转的链接" ms-duplex="Link" />
+            </div>
+
+            <div class="tab-box">
+                <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#modelHTML" role="tab" data-toggle="tab" aria-controls="modelHTML" aria-expanded="false" title="支持换行自动生成和HTML生成">源码</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#modelValue" role="tab" data-toggle="tab" aria-controls="modelValue" aria-expanded="false">预览</a>
+                    </li>
+                    <li class="teb-select">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ThemeText||'白色'}} <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="javascript:;" title="请选择文字显示主题（配合图片）" ms-click="selectTheme(0)">白色</a></li>
+                                <li><a href="javascript:;" title="请选择文字显示主题（配合图片）" ms-click="selectTheme(1)">暗色</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="modelHTML" aria-labelledby="modelHTML-tab">
+                        <textarea class="form-control" rows="3" ms-duplex="SourceCode" ms-change="changeModelHTML(SourceCode)"></textarea>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="modelValue" aria-labelledby="modelValue-tab">{{HTML|html}}</div>
+                </div>
+                <div class="textCenter form-submit">
+                    <button class="btn btn-info" type="button" ms-click="submit" ms-attr-disabled="lock">&#12288;&#12288;&#12288;添加&#12288;&#12288;&#12288;</button>
+                    <button class="btn btn-default" type="button" ms-click="toggleShowStatus(false)" ms-attr-disabled="lock">&#12288;&#12288;&#12288;取消&#12288;&#12288;&#12288;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bs-table" ms-visible="!isShowForm">
+        <div class="navbar-form navbar-left table-tool" id="custom-bar">
+            <div class="data-form">
+                <input readonly="" autocomplete="off" class="form-control" ms-dom="queryDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
+                <button class="btn btn-success" ms-click="toggleShowStatus(true)">&#12288;新增&#12288;</button>
+            </div>
+        </div>
+        <table data-toolbar="#custom-bar" id="btTable" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
+    </div>
+</div>
+@section Css{
+    <link href="@Url.Content("~/Content/Back/Style/pageConfig.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/JavaScript/bootstrap/bootstrap-table/bootstrap-table.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Back/Style/bootstrap-datetimepicker.css")" rel="stylesheet" />
+}
+
+
+@section FootJs{
+    <script>
+        var PageDatas = [];
+        @if (Models != null)
+        {
+            foreach (var item in Models)
+            {
+                Write(new HtmlString(string.Format("PageDatas.push({0});", JavaScriptCommon.Serialize(item))));
+            }
+        }
+    </script>
+    <script>
+        var Action = {
+            AddBanner: '@Url.Action("AddBanner", "Site")',
+            GetImagesList: '@Url.Action("GetImagesList", "Image")',
+            uploadImage: '@Url.Action("Upload", "Image")',
+            realDeleteImage: '@Url.Action("RealDeleteImage","Image")',
+            RemoveBanner: '@Url.Action("RemoveBanner","Site")'
+        }, Source = {
+            image: '@ConfigInfo.SourceSystemPath',
+            maxSize: '@ConfigInfo.SizeSystem',
+            imageType: '@((int)Said.Models.ImageType.System)',
+            filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
+        },
+        globalTheme = ['白色', '暗色'];
+
+
+
+
+        require(['jquery', 'so', 'showMsg', 'dialog', 'bsTable', 'source', 'bs-datetimepicker'], function ($, so, showMsg, dialog) {
+
+            var database = so.Database('back.pageConfig'),
+                //缩略图模型
+                model = {
+                    Theme: '',//主题
+                    SourceCode: '',//滚动图文本源码/HTML
+                    HTML: '',//转换后的文本/HTML
+                    Link: '',//链接
+                    Description: '',//描述
+                    ImageId: ''
+                };
+            var vmPage = avalon.define({
+                $id: 'vmPage',
+                ThemeText: globalTheme[database.val('Theme') || 0],
+                Theme: database.val('Theme') || 0,
+
+                selectTheme: function (index) {
+                    vmPage.ThemeText = globalTheme[index];
+                    vmPage.Theme = index;
+                    database.val('Theme', index);
+                },
+                //textarea模型
+                SourceCode: database.val('SourceCode') || '',//HTML
+                HTML: '',//转换后的文本
+                changeModelHTML: function (html) {
+                    if (/</.test(html)) {//如果检测到了HTML，则使用HTML模式 TODO提升准确性，例如<<test>>这样的
+                        vmPage.HTML = html;
+                    } else {
+                        //否则默认文本处理
+                        var texts = html.split('\n');
+                        vmPage.HTML = texts.map(function (text) {
+                            return '<p>' + text + '</p>';
+                        }).join('');
+                    }
+                },
+                isShowForm: database.val('isShowForm'),
+                toggleShowStatus: function (isShowForm) {
+                    vmPage.isShowForm = isShowForm;
+                    database.val('isShowForm', isShowForm);
+                },
+
+
+                //选择图片
+                selectImagePath: database.val('selectImagePath'),
+                selectImageObject: database.val('selectImageObject'),
+                showImagesBox: function () {
+                    _ImageDialog.show();
+                },
+
+                Description: database.val('Description') || '',
+                Link: database.val('Link') || '',
+
+                lock: false,
+                submit: function () {
+                    if (vmPage.lock) return;
+                    //尽可能多保存数据
+                    database.val('Description', vmPage.Description);
+                    if (!vmPage.Link.trim()) {
+                        showMsg('请输入正确的链接', showMsg.WARNING, 2000);
+                        return;
+                    }
+                    database.val('Link', vmPage.Link);
+                    if (!vmPage.HTML.trim()) {
+                        showMsg('请输入正确的文本', showMsg.WARNING, 2000);
+                        return;
+                    }
+                    database.val('SourceCode', vmPage.SourceCode);
+                    if (vmPage.selectImageObject == null) {
+                        showMsg('请选择一张赏心悦目的背景图', showMsg.WARNING, 2000);
+                        return;
+                    }
+                    database.val('selectImagePath', vmPage.selectImagePath);
+                    database.val('selectImageObject', vmPage.selectImageObject);
+                    vmPage.lock = true;
+                    var data = so.extend({}, model);
+                    so.each(model, function (key, value) {
+                        //vm.$model挂在着vm对象的原型，只是读取不经过双向监听处理，性能更加
+                        data[key] = encodeURIComponent(vmPage.$model[key] || '');
+                    });
+                    data['ImageId'] = vmPage.selectImageObject['ImageId'];
+                    window.said.ajax(Action.AddBanner, data)
+                        .done(function (result) {
+                            if (result.code === 0) {
+                                database.clear();
+                                vmPage.reset();
+                                $btTable.bootstrapTable('insertRow', [result.data]);
+                            } else {
+                                showMsg('服务器新增Banner异常：' + result.msg, showMsg.ERROR, true);
+                            }
+                            vmPage.lock = false;
+                        })
+                        .fail(function () {
+                            showMsg('网络连接异常', showMsg.ERROR, true);
+                        })
+                        .always(function () {
+                            vmPage.lock = false;
+                        });
+                },
+                reset: function () {
+                    vmPage.Description = vmPage.HTML = vmPage.SourceCode = vmPage.Link = '';
+                    vmPage.ThemeText = globalTheme[0];
+                    vmPage.Theme = 0;
+                    vmPage.isShowForm = false;
+                    vmPage.lock = false;
+                },
+                remove: function (id, callback) {
+                    if (!id) return;
+                    $.ajax(Action.RemoveBanner, {
+                        type: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ id: id })
+                    })
+                    .done(function (result) {
+                        if (result.code === 0) {
+                            $btTable.bootstrapTable('remove', {
+                                field: 'BannerId',
+                                values: [id]
+                            });
+                            showMsg('删除Banner成功', showMsg.OK);
+                        } else {
+                            showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                        }
+                    })
+                    .fail(function () {
+                        showMsg('网络连接异常', showMsg.ERROR);
+                    })
+                    .always(callback);
+                },
+                $skipArray: ['selectImageObject']
+            });
+
+            if (vmPage.SourceCode) {
+                vmPage.changeModelHTML(vmPage.SourceCode);
+            }
+
+            avalon.scan();
+            //获取与国际通用UTC时间的分钟差（北京 = -480m = 8h）
+            var timezoneOffset = new Date().getTimezoneOffset();//datatimepicker组件使用的国际通用UTC时间，和北京时间相差8个小时，所以要修正时间差，获取
+            var dateInput = $(vmPage.elem.queryDate).datetimepicker({
+                minView: 'month',//bootstrap-datetimepicker:#1677
+                endDate: new Date
+            }).on('changeDate', function (e) {
+                var selectDate = so.parseDate(e.date.getTime());//因为要修正时间，但是不能直接修改组件内置对象的时间，所以copy一个副本
+                //修正UTC时间（分钟）差
+                selectDate.setMinutes(timezoneOffset);
+                //重置时间到23:59:59
+                selectDate.setHours(23, 59, 59, 0);
+                var data = PageDatas.filter(function (data) {
+                    return so.parseDate(data.Date).getTime() <= selectDate.getTime();
+                });
+                $btTable.bootstrapTable('load', data);
+            });
+
+
+            //初始化图片选择框
+            var _ImageDialog = $.source({
+                loadUrl: Action.GetImagesList,//'/Back/Source/GetImagesList'
+                path: Source.image,
+                type: Source.imageType,
+                uploadUrl: Action.uploadImage,
+                deleteUrl: Action.realDeleteImage,
+                multiple: false,
+                size: Source.maxSize,
+                //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
+                callback: function (data) {
+                    if (data) {
+                        vmPage.selectImagePath = Source.image + data.IFileName;
+                        vmPage.selectImageObject = data;
+                    } else {
+                        vmPage.selectImagePath = '';
+                        vmPage.selectImageObject = null;
+                    }
+                }
+            });
+
+
+
+            var $btTable = $('#btTable').bootstrapTable({
+                columns: [
+                 { field: 'BannerId', title: 'ID', visible: false, },
+                 {
+                     field: 'Date',
+                     title: '日&#12288;&#12288;期',
+                     valign: 'middle',
+                     sortable: true,
+                     formatter: function (value, row, index) {
+                         //console.log(row); //row可以访问到数据
+                         //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
+                         return [so.dateFormat(value, 'yyyy-MM-dd HH:mm')].join('');
+                     }
+                 },
+             {
+                 field: 'Theme',
+                 title: '主&#12288;&#12288;题',
+                 valign: 'middle',
+                 sortable: true,
+                 formatter: function (value, row, index) {
+                     return globalTheme[value];
+                 }
+             },
+             {
+                 field: 'SourceCode',
+                 title: '文&#12288;&#12288;本',
+                 valign: 'middle',
+                 formatter: function (value) {
+                     return so.escapeHTML(value);
+                 }
+             },
+              {
+                  field: 'Link',
+                  title: '链&#12288;&#12288;接',
+                  valign: 'middle'
+              },
+             {
+                 field: 'Description',
+                 title: '描&#12288;&#12288;述',
+                 valign: 'middle'
+             },
+             {
+                 field: 'SaidId',
+                 title: '操&#12288;&#12288;作',
+                 formatter: function (value, row, index) {
+                     return ['<a href="javascript:;" title="删除" class="btn btn-danger fa fa-trash-o data-delete" data-id="', row.BannerId, '" data-index="', index, '"></a>'].join('');
+                 }
+             }],
+                data: PageDatas
+            }).on('click', '.data-delete', function (e) {
+                var data = this.dataset, $this = $(this);
+                dialog('您确定要删除该Bannner么？').on(function () {
+                    $this.attr('disabled', 'disabled').html('删除中');
+                    vmPage.remove(data.id, function () {
+                        $this.length && $this.removeAttr('disabled');
+                    });
+                }).show();
+            });
+        });
+    </script>
+}

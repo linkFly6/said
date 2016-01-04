@@ -1,4 +1,0 @@
-﻿exports.BaseSchema = {
-    isDelete: Number
-};
-

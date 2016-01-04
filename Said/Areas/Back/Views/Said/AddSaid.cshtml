@@ -1,0 +1,577 @@
+﻿@using Said.Common;
+@model Said.Models.Article
+@{
+    ViewBag.Title = "添加Said";
+    Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+    //var ClassifysList = ViewData["ClassifysList"] as IList<Said.Models.Classify>;
+    var SongsList = ViewData["SongsList"] as IList<Said.Models.Song>;
+    var AllFileNames = ViewData["FileNames"] as IList<string>;
+}
+<div class="page-header">
+    <h3>添加Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></h3>
+</div>
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Siad管理</a></li>
+    <li class="active">添加Said</li>
+</ol>
+<div id="said-help" class="said-mask-content said-watermark">
+    <ul>
+        <li>Said生成的缩略图不能有<span class="keywords">透明背景</span>（因为缩略图最终生成是jpg格式的）</li>
+        <li>上传的图片，最后会被裁剪为<span class="keywords">1.82</span>比例的图片</li>
+        <li>上传的图片不允许超过<span class="keywords">1MB</span></li>
+        <li>上传的音乐文件不允许超过<span class="keywords">6MB</span></li>
+        <li>选择正确的上传路径！默认上传的图片都会放到<span class="keywords">其他</span>下</li>
+    </ul>
+</div>
+<div class="main-context">
+    @using (Html.BeginForm("AddSaid", "Said", FormMethod.Post, new Dictionary<string, object>(){
+        { "spellcheck", "spellcheck" },
+        { "name", "saidForm" },
+        { "novalidate", "novalidate" },
+        { "ms-controller", "said" },
+        { "OnSubmit", "return false;" }}))
+    {
+        <div class="said-article">
+            <div class="said-title-con">
+                @Html.TextBoxFor(Model => Model.STitle, new Dictionary<string, object>() {
+                    { "ms-duplex", "sTitle" },
+                    { "class", "said-title" },
+                    { "ms-class", "said-error:!sTitle.length" },
+                    { "ms-change", "saveTolocalStorage('sTitle',sTitle)" },
+                    { "autocomplete", "off" },
+                    { "placeholder", "文章标题" },
+                    { "required", "" },
+           })
+            </div>
+            <div class="said-context-content">
+                <!-- said-error-->
+                @Html.TextAreaFor(Model => Model.SContext, new Dictionary<string, object>() {
+                   { "class", "said-context" },
+                   { "autocomplete", "off" },
+                   { "ms-duplex", "sContext" },
+                   { "ms-change", "saveTolocalStorage('sContext',sContext)" },
+                   { "placeholder", "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！" },
+                   { "required", "" },
+           })
+            </div>
+        </div>
+        <div class="row said-view-container">
+            <div class="col-md-6">
+                <div class="panel panel-default relative-container">
+                    <div class="panel-heading">歌曲</div>
+                    <div class="panel-body" ms-controller="song">
+                        <div class="afterClear">
+                            <div class="col-md-4">
+                                <div class="music-img">
+                                    <div class="thumbnail">
+                                        <img ms-attr-src="imgSrc? imgSrc:'/Content/Back/Images/cd-default.png'" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="music-info col-md-8">
+                                <div class="input-group">
+                                    <span class="input-group-addon">歌曲</span>
+                                    @*<div class="queryInputBar">*@
+                                    @Html.TextBoxFor(Model => Model.Song.SongName, new Dictionary<string, object>() {
+                                            { "class", "classify-input" },
+                                            { "autocomplete", "off" },
+                                            { "ms-duplex", "songName" },
+                                            { "placeholder", "歌曲名称" },
+                                            { "required", "" },
+                                            { "ms-widget", "groupInput" }
+                                        })
+                                    @*</div>*@
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">专辑</span>
+                                    @Html.TextBoxFor(Model => Model.Song.SongAlbum, new Dictionary<string, object>(){
+                                        { "class","form-control music-input"},
+                                        { "placeholder", "歌曲专辑"},
+                                        {"disabled","disabled"},
+                                        { "ms-duplex", "songAlbum" },
+                                        { "autocomplete", "off"}
+                                     })
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon">歌手</span>
+                                    @Html.TextBoxFor(Model => Model.Song.SongArtist, new Dictionary<string, object>(){
+                                        { "class","form-control music-input"},
+                                        { "placeholder", "艺术家"},
+                                        {"disabled","disabled"},
+                                        { "ms-duplex", "songArtist" },
+                                        { "autocomplete", "off"}
+                                    })
+                                </div>
+                                <div class="input-group" data-ng-class="has-error">
+                                    <span class="input-group-addon">文件</span>
+                                    @Html.TextBoxFor(Model => Model.Song.SongFileName, new Dictionary<string, object>() {
+                                        { "class", "form-control music-input" },
+                                        { "autocomplete", "off" },
+                                        {"disabled","disabled"},
+                                        { "ms-attr-value", "songFileName" },
+                                        { "placeholder", "文件名（自动生成）" },
+                                    })
+                                </div>
+                                @*<div class="songOp-btn">
+                                        <button type="button" class="btn btn-danger songBtn" ms-click="remove()" title="移除歌曲信息">移除</button>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default relative-container" ms-controller="uploadController">
+                    <div style="z-index: 2;" class="addSaid-mask" ms-visible="!imgSrc" ms-click="dialog()">
+                        <span class="so-upload-text">选择文章缩略图</span>
+                    </div>
+                    @*<div ms-widget="upload,uploadImages"></div>*@
+                    <div class="panel-heading">描述</div>
+                    <div class="panel-body">
+                        <div class="col-md-4">
+                            <div class="summay-img">
+                                <div class="thumbnail">
+                                    <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '../../Content/Images/UEDImg/demo-img6.jpg') + ')'"></div>
+                                    @*<img ms-attr-src="imgSrc ? imgSrc :'../../Content/Images/test-said-img.jpg'" />*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(Model => Model.SSummary, new Dictionary<string, object>() {
+                                    { "class", "said-dis" },
+                                    { "autocomplete", "off" },
+                                    { "placeholder", "简介[支持HTML]" },
+                                    { "required", "" },
+                                    { "data-validate", "" },
+                                    { "ms-duplex", "sSummary" },
+                                    { "ms-change", "saveTolocalStorage('sSummary',sSummary)" }
+                            })
+                            <div class="songOp-btn song-up-content">
+                                <button type="button" class="btn btn-danger songBtn" ms-click="clear()">移除图片</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    @*<div class="panel-heading">附加信息</div>
+                        <div class="panel-body">
+                            <div class="input-group" ms-controller="tagController">
+                                <span class="input-group-addon">标签</span>
+                                @Html.TextBoxFor(m => m.STag, new Dictionary<string, object>() {
+                                    { "class", "tag-input" },
+                                    { "ms-change", "saveTolocalStorage('bTag',bTag)" },
+                                    { "ms-widget", "groupInput" },
+                                    { "placeholder", "标签，支持[tab]分隔" },
+                                    { "autocomplete", "off" }
+                                })
+                            </div>
+                            <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
+                                <span class="input-group-addon">分类</span>
+                                <div class="queryInputBar">
+                                    @Html.TextBoxFor(m => m.Classify.CName, new Dictionary<string, object>() {
+                                        { "class", "classify-input" },
+                                        { "ms-duplex", "classify" },
+                                        { "placeholder", "分类名称" },
+                                        { "autocomplete", "off" },
+                                        { "ms-widget", "groupInput" }
+                                })
+                                </div>
+                            </div>
+                        </div>*@
+                    <div class="panel-heading panel-subTitle">可选信息</div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">文件</span>
+                            @Html.TextBoxFor(Model => Model.SName, new Dictionary<string, object>() {
+                                    { "class", "form-control" },
+                                    { "ms-duplex", "sName" },
+                                    { "ms-input", "checkFileName(this,sName)" },
+                                    { "autocomplete", "off" },
+                                    { "placeholder", "文章发布的（文件）名称,为空自动生成" },
+                                    { "data-toggle", "tooltip" },
+                                    { "data-placement", "top" },
+                                    { "data-title", "该文件名已经存在" },
+                                    { "data-animation", "false" }
+                       })
+                        </div>
+                        <div class="form-group">
+                            <label>JavaScript</label>
+                            @Html.TextAreaFor(Model => Model.SScript, new Dictionary<string, object>() {
+                                { "class", "form-control" },
+                                { "placeholder", "自定义JavaScript" },
+                                { "ms-change", "saveTolocalStorage('sScript',sScript)" },
+                                { "ms-duplex", "sScript" }
+                            })
+                        </div>
+                        <div class="form-group">
+                            <label>CSS</label>
+                            @Html.TextAreaFor(Model => Model.SCSS, new Dictionary<string, object>() {
+                                { "class", "form-control" },
+                                { "placeholder", "自定义CSS" },
+                                { "ms-change", "saveTolocalStorage('sCSS',sCSS)" },
+                                { "ms-duplex", "bCSS" }
+                            })
+                        </div>
+                        <div class="checkbox said-checkbox">
+                            <label>
+                                @*@Html.CheckBoxFor(Model => Model.SReprint, new { @type = "checkbox" })如果是直接提交表单，则可以直接采用checkbox控件，会生成两个input，具体请查阅：http://www.cnblogs.com/freeliver54/archive/2013/05/10/3070384.html*@
+                                @Html.CheckBoxFor(m => m.SReprint, new Dictionary<string, object>() {
+                                { "ms-duplex-checked", "sReprint" },
+                                { "ms-change", "saveTolocalStorage('sReprint',sReprint)" }
+                           })是否转载
+                            </label>
+                            <label>
+                                @Html.CheckBoxFor(m => m.SIsTop, new Dictionary<string, object>() {
+                                { "ms-duplex-checked", "sIsTop" },
+                                { "ms-change", "saveTolocalStorage('sIsTop',sIsTop)" }
+                            })是否置顶
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="submit-container">
+            <button class="btn btn-lg btn-success longBtn" type="button" ms-click="submit(false)">发&nbsp;&nbsp;&nbsp;&nbsp;布</button>
+            <button class="btn btn-lg longBtn" type="button" ms-click="submit(true)">存为草稿</button>
+            <!--data-ng-class="{'submit-lock':!saidForm.$valid}"-->
+        </div>
+    }
+</div>
+@section Css{
+    <link href="@Url.Content("~/Content/Back/Style/addSaid.css")" rel="stylesheet" />
+}
+@*@section HeadJs{
+        <script src="@Url.Content("")"></script>
+    }*@
+@section FootJs{
+
+    <script type="text/javascript">
+        var Action = {
+            uploadSaidImg: '@Url.Action("Upload", "Image")',
+            uploadMusicUrl: '@Url.Action("UploadSongImage", "Source")',
+            getMusicImg: '@Url.Action("GetImagesList", "Image")',
+            musicImg: '@Url.Action("UploadMusicImg", "Source")',
+            deleteImage: '@Url.Action("DeleteImage","Source")',
+            music: '@Url.Action("UploadMusic", "Source")',
+            existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
+            existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
+            form: '@Url.Action("AddSaid", "Said")'
+        },
+        Source = {
+            song: '@ConfigInfo.SourceMusicPath',
+            songImg: '@ConfigInfo.SourceMusicImagePath',
+            summaryImg: '@ConfigInfo.SourceSaidPath',
+            songType: '@((int)Said.Models.ImageType.Music)',
+            saidImageType: '@((int)Said.Models.ImageType.Said)'
+        },
+        DataCenter = {
+            songs: [
+                //{
+                //    name: 'Yellow',
+                //    query: 'Yellow - Coldplay',
+                //    data: {
+                //        id: '106f168f-10f1-4459-918d-f811bc8a7fa6',
+                //        name: 'Yellow',
+                //        album: 'Yellow',
+                //        artist: 'Coldplay',
+                //        fileName: '302320154702223701.mp3',
+                //        img: '098920153702223601.jpg'//注意这个路径应该只是个图片名称
+                //    }
+                //}
+            ],
+            //MIME参考：http://www.w3school.com.cn/media/media_mimeref.asp
+            imgFilters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],
+            musicFilters: ['mp3', 'ogg'],
+            files: []
+        };
+
+
+        @{
+            if (SongsList != null) {
+                foreach (Said.Models.Song item in SongsList)
+                {
+                    Write(new HtmlString(string.Format("DataCenter.songs.push({{ name: \"{0}\", query: \"{0}{1}\", data: {{ id: \"{2}\", name: \"{0}\", album:\"{3}\", artist:\"{1}\", fileName: \"{4}\", img: \"{5}\" }}}});",
+                        item.SongName,item.SongArtist,item.SongId,item.SongAlbum,item.SongFileName,item.Image.IFileName
+                        )));
+                }
+            }
+            if(AllFileNames!=null){
+                foreach (string fileName in AllFileNames)
+	            {
+                    Write(new HtmlString(string.Format("DataCenter.files.push('{0}');",fileName)));
+	            }
+            }
+        }
+
+
+        require(['said', 'jquery', 'so', 'avalon', 'source', 'dialog', 'sweetalert', 'markdown', 'upload', 'avalonUpload', 'showDownThemeGithub', 'groupInput'], function (said, $, so, avalon, source, dialog, sweetalert, showdown) {
+            'use strict';
+            $(function () {
+                var slice = Array.prototype.slice;
+
+                var showdown = window.Showdown,
+                    converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
+                    database = new so.Database('back.addSaid'),
+                    checkEmptyValue = function (key, title, summary) {
+                        if (!vmSaid[key]) {
+                            sweetalert(title, summary, "warning");
+                            return false;
+                        }
+                        return true;
+                    },
+                    encode = function (value) {
+                        return encodeURIComponent(value);
+                    },
+                    errorHash = {
+                        'sTitle': ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],
+                        'sContext': ['(｡☉౪ ⊙｡)  文章正文不正确', '大哥你连正文都木有发表了文章谁看啊...赶紧检查一下  '],
+                        'sImg': [' (≖ ‿ ≖)✧ 文章插图不正确', 'Said规定所有的文章必须要有灵犀又生动的插图哟...赶紧挑张图片让文章更加的精彩'],
+                        'sSummary': [' (￣▽￣)~* 文章描述不正确', '文章描述是一定要有的，没有文章描述诱惑，别人也许就不会读文章了'],
+                    };
+
+
+                var vmSaid = avalon.define({
+                    $id: 'said',
+                    sTitle: database.val('sTitle'),
+                    sTag: database.val('sTag'),
+                    sSummary: database.val('sSummary'),
+                    sReprint: database.val('sReprint'),
+                    sScript: database.val('sScript'),
+                    sIsTop: database.val('sIsTop'),
+                    sCSS: database.val('sCSS'),
+                    sContext: database.val('sContext'),
+                    sImg: database.val('sImg'),
+                    sName: database.val('sName'),
+                    classify: database.val('classify'),
+                    checkFile: false,
+                    submitState: false,
+                    $skipArray: ['sTag'],
+                    //保存到本地数据库
+                    saveTolocalStorage: function (name, value) {
+                        database.val(name, value);
+                    },
+                    checkFileName: function () {
+                        //考虑性能，DOM缓存
+                        var $cache, key = 'bName';
+                        return function (elem, value) {
+                            !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
+                            vmSaid.checkFile = !!(value && ~DataCenter.files.indexOf(value.toLowerCase()));
+                            $cache.tooltip(vmSaid.checkFile ? 'show' : 'hide');
+                            vmSaid.checkFile ?
+                                database.remove(key) : database.val(key, value);
+                        }
+                    }(),
+                    check: function () {
+                        var temp;
+                        return ['sTitle', 'sContext', 'sImg', 'sSummary'].every(function (key) {
+                            temp = errorHash[key];
+                            return checkEmptyValue(key, temp[0], temp[1]);
+                        });
+                    },
+                    reset: function () {
+                        database.clear();
+                        setTimeout(function () {
+                            window.location.href = '/Back/Said';
+                        }, 1000);
+                    },
+                    submit: function (isPrivate) {
+                        //锁定按钮状态
+                        if (vmSaid.submitState) return;
+                        if (!(vmSaid.submitState = vmSaid.check())) return;
+                        if (!vmSong.songId) {
+                            sweetalert('没有歌曲id', '请选择正确的歌曲信息', "warning");
+                            return;
+                        }
+                        if (!vmSaid.sImg) {
+                            sweetalert('没有文章缩略图', '请上传正确的文章缩略图', "warning");
+                            return;
+                        }
+                        //said.dialog(converter.makeHtml(vmSaid.sContext));
+                        vmSaid.submitState = true;
+
+                        var sSummary = vmSaid.sSummary.split('\n').map(function (item) {
+                            return '<p>' + item + '</p>';
+                        }).join('');
+
+                        said.ajax(Action.form, {
+                            'STitle': encode(vmSaid.sTitle),
+                            'SSummary': encode(sSummary),
+                            'SHTML': encode(converter.makeHtml(vmSaid.sContext)),
+                            'SReprint': encode(vmSaid.sReprint || false),
+                            'SScript': encode(vmSaid.sScript),
+                            'SIsTop': encode(vmSaid.sIsTop || false),
+                            'SCSS': encode(vmSaid.sCSS),
+                            'SongId': encode(vmSong.songId),
+                            'SContext': encode(vmSaid.sContext),
+                            'ImageId': encode(vmSaid.sImg),
+                            'IsPrivate': isPrivate ? 1 : 0,//是否私有
+                            'SName': encode(vmSaid.sName),
+                        }).done(function (data) {
+                            if (!data.code) {//done
+                                sweetalert({
+                                    title: '添加（修改）成功',
+                                    text: so.format('喜大普奔，添加文章《${0}》成功', vmSaid.sTitle),
+                                    type: "success"
+
+                                }, function () {
+                                    //vmSaid.reset();
+                                });
+                            } else {
+                                sweetalert({
+                                    title: "数据异常",
+                                    text: so.format('添加(提交)异常，异常代码 - ${1}${0}', data.msg.split(',').map(function (msg) {
+                                        return '<p>' + msg + '</p>';
+                                    }).join(''), data.code),
+                                    html: true,
+                                    type: "error"
+                                });
+                            }
+
+                        }).fail(function (data) {
+                            sweetalert("服务器异常", so.format('添加(提交)异常，异常代码：${0}（${1}）', data.status, data.statusText), "error");
+                        }).always(function () {
+                            vmSaid.submitState = false;
+                        });
+
+                    }
+                });
+
+
+                var localSongData = [];
+                if (database.val('song.id')) {
+                    var songId = database.val('song.id');
+                    so.each(DataCenter.songs, function (item) {
+                        if (item.data.id === songId) {
+                            localSongData.push(item);
+                        }
+                    });
+                }
+
+                var vmSong = avalon.define({
+                    $id: 'song',
+                    songId: '',
+                    songArtist: '',
+                    songAlbum: '',
+                    songFileName: '',
+                    songName: '',
+                    songImg: '',
+                    imgSrc: '',
+                    groupInput: {
+                        datas: DataCenter.songs,
+                        zIndex: 4,
+                        custom: false,
+                        values: localSongData,
+                        callback: function (value) {
+                            //选择了歌曲
+                            if (value && value.data) {
+                                var songData = value.data;
+                                //找到了歌曲信息
+                                database.val('song.id', songData.id);
+                                vmSong.songId = songData.id;
+                                vmSong.songArtist = songData.artist;
+                                vmSong.songAlbum = songData.album;
+                                vmSong.songFileName = songData.fileName;
+                                vmSong.songImg = songData.img;
+                                vmSong.imgSrc = Source.songImg + songData.img;
+                            } else {
+                                database.val('song.id', '');
+                                vmSong.songId = vmSong.songArtist = vmSong.songAlbum = vmSong.songFileName = vmSong.songImg = vmSong.imgSrc = '';
+                            }
+                        }
+                    }
+                });
+
+                if (localSongData.length) {
+                    vmSong.songId = localSongData[0].data.id;
+                    vmSong.songArtist = localSongData[0].data.artist;
+                    vmSong.songName = localSongData[0].data.name;
+                    vmSong.songAlbum = localSongData[0].data.album;
+                    vmSong.songFileName = localSongData[0].data.fileName;
+                    vmSong.songImg = localSongData[0].data.img;
+                    vmSong.imgSrc = Source.songImg + localSongData[0].data.img;
+                }
+
+
+
+                ////tag
+                //avalon.define({
+                //    $id: 'tagController',
+                //    //tags: DataCenter.tags,
+                //    groupInput: {
+                //        datas: DataCenter.tags,
+                //        multiple: true,
+                //        zIndex: 4,
+                //        callback: function (values) {
+                //            //console.log(values);
+                //            vmSaid.bTag = values;
+                //            database.val('bTag', values);
+                //        },
+                //        values: vmSaid.bTag
+                //    }
+                //});
+                ////classify
+                //avalon.define({
+                //    $id: 'classifyController',
+                //    groupInput: {
+                //        datas: DataCenter.classifyList,
+                //        zIndex: 3,
+                //        custom: false,
+                //        callback: function (value) {
+                //            database.val('classify', value);
+                //        }
+                //        //classContaier: 'queryInputBar'
+                //    }
+                //});
+
+                //upload
+
+                var _summaryDialog = $.source({
+                    loadUrl: '/Back/Image/GetImagesList',
+                    path: Source.summaryImg,
+                    type: Source.saidImageType,
+                    uploadUrl: Action.uploadSaidImg,
+                    deleteUrl: '/Back/Source/RealDeleteImage',//这个是物理删除，测试用这个
+                    multiple: false,
+                    //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
+                    callback: function (data) {
+                        vmUpload.data = data;
+                        var imgSrc = Source.summaryImg + data.IName;
+                        vmUpload.img = data.IName;
+                        vmUpload.imgSrc = imgSrc;
+                        vmSaid.sImg = data.ImageId;
+                        database.val('sImg', data.ImageId).val('summary.imgSrc', imgSrc);
+                    }
+                });
+                var vmUpload = avalon.define({
+                    $id: 'uploadController',
+                    imgSrc: database.val('summary.imgSrc'),
+                    $skipArray: ['img'],
+                    dialog: function (id) {
+                        _summaryDialog.show();
+                    },
+                    clear: function () {
+                        database.remove('sImg')
+                        database.remove('summary.imgSrc');
+                        vmSaid.sImg = null;
+                        vmUpload.imgSrc = vmUpload.img = '';
+                    }
+                });
+
+
+                //console.log(vmUpload);
+
+
+
+
+                //var vmSaid = avalon.define('blog', function (vm) {
+                //    vm.BTitle = '';
+                //});
+                avalon.scan();
+                //console.dir(avalon.vmodels);
+            });
+        });
+    </script>
+}

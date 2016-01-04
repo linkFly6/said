@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "项目 - 工匠的心";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+<div class="said-background" style="background-image: url(/Content/Images/bg/project_bg.jpg)">
+    <div class="said-banner-bar">
+        <ul class="said-banner">
+            <li class="said-banner-item">
+                <h3 class="banner-title">工匠的心 精益求精</h3>
+                <div class="banner-content">
+                    <p>不变只是愿望， 变化才是永恒</p>
+                    <p>1000行代码， 1000个思想</p>
+                    <p>非淡泊无以明志， 非宁静无以致远</p>
+                    <p>以我所学， 做以极致</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<section id="content">
+    <div class="p-box">
+        <section class="p-item p-said">
+            <div class="item-box afterClear">
+                <div class="p-logo">
+                    <figure class="p-logo-bg " style="background-image: url('/Content/Images/bg/said-web-bg.png'); "></figure>
+                    <ul title="兼容性">
+                        <li class="p-support"></li>
+                    </ul>
+                </div>
+                <div class="p-info ">
+                    <h3>听说</h3>
+                    <div class="p-summary">
+                        <p>我泡上一首歌</p>
+                        <p>和你闲聊一些事情，一些见解</p>
+                        <p>我听闻的，现在，将是你的听闻</p>
+                        <p>Said并不神秘，她开源她的一切</p>
+                        <p>我铸成了她，而你...</p>
+                        <p>可以让她更完美</p>
+                    </div>
+                    <div class="p-github">
+                        <a href="javascript:;" class="said-btn said-btn-default">在Github查看</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
+@section Css{
+    <link href="@Url.Content("~/Content/Style/projects.css")" rel="stylesheet" />
+}
+
+@section FootJs{
+
+}

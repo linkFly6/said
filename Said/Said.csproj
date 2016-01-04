@@ -1,0 +1,615 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{42AB1F38-E2DE-4C8E-98CC-FF885AC4B85C}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Said</RootNamespace>
+    <AssemblyName>Said</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Areas\Back\BackAreaRegistration.cs" />
+    <Compile Include="Areas\Back\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Back\Controllers\BlogController.cs" />
+    <Compile Include="Areas\Back\Controllers\ClassifyController.cs" />
+    <Compile Include="Areas\Back\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Back\Controllers\ImageController.cs" />
+    <Compile Include="Areas\Back\Controllers\MusicController.cs" />
+    <Compile Include="Areas\Back\Controllers\SaidController.cs" />
+    <Compile Include="Areas\Back\Controllers\SiteController.cs" />
+    <Compile Include="Areas\Back\Controllers\SourceController.cs" />
+    <Compile Include="Common\ConfigInfo.cs" />
+    <Compile Include="Common\ImageCommon.cs" />
+    <Compile Include="Common\IPRange.cs" />
+    <Compile Include="Common\JavaScriptCommon.cs" />
+    <Compile Include="Common\LogCommon.cs" />
+    <Compile Include="Common\SaidCommon.cs" />
+    <Compile Include="Controllers\Attrbute\NoFilter.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\Filters\AdminFilterAttribute.cs" />
+    <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\SaidController.cs" />
+    <Compile Include="Controllers\SourceController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
+    <Content Include="bin\Said.dll" />
+    <Content Include="bin\Said.pdb" />
+    <Content Include="bin\System.Net.Http.Formatting.dll" />
+    <Content Include="bin\System.Net.Http.Formatting.xml" />
+    <Content Include="bin\System.Web.Helpers.dll" />
+    <Content Include="bin\System.Web.Helpers.xml" />
+    <Content Include="bin\System.Web.Http.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.dll" />
+    <Content Include="bin\System.Web.Http.WebHost.xml" />
+    <Content Include="bin\System.Web.Http.xml" />
+    <Content Include="bin\System.Web.Mvc.dll" />
+    <Content Include="bin\System.Web.Mvc.xml" />
+    <Content Include="bin\System.Web.Razor.dll" />
+    <Content Include="bin\System.Web.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.Deployment.dll" />
+    <Content Include="bin\System.Web.WebPages.Deployment.xml" />
+    <Content Include="bin\System.Web.WebPages.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.dll" />
+    <Content Include="bin\System.Web.WebPages.Razor.xml" />
+    <Content Include="bin\System.Web.WebPages.xml" />
+    <Content Include="bin\zh-Hans\System.Net.Http.Formatting.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.Helpers.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.Http.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.Http.WebHost.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.Mvc.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.Razor.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.WebPages.Deployment.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.WebPages.Razor.resources.dll" />
+    <Content Include="bin\zh-Hans\System.Web.WebPages.resources.dll" />
+    <Content Include="Content\Back\Images\cd-default2.png" />
+    <Content Include="Content\Back\Images\cd-default.png" />
+    <Content Include="Content\Back\Images\said-login-bg.jpg" />
+    <Content Include="Content\Back\Images\showMsg\warning.png" />
+    <Content Include="Content\Back\Images\showMsg\error.png" />
+    <Content Include="Content\Back\Images\showMsg\ok.png" />
+    <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.js" />
+    <Content Include="Content\Back\JavaScript\avalon\avalon.mobile.min.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\autoComplete.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\groupInput.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\imgInput.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\popup.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\selectResource.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\sourceImages.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\template\imgInput.html" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\template\sourceImages.html" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\uploadBox.js" />
+    <Content Include="Content\Back\JavaScript\avalon\plug\template\popup.html" />
+    <Content Include="Content\Back\JavaScript\backbone\backbone.js" />
+    <Content Include="Content\Back\JavaScript\bootgrid.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-table\bootstrap-table-zh-CN.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-table\bootstrap-table.css" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-table\bootstrap-table.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-table\bootstrap-table.min.css" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-table\bootstrap-table.min.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-table\test.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap.min.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-datetimepicker\bootstrap-datetimepicker.js" />
+    <Content Include="Content\Back\JavaScript\bootstrap\bootstrap-datetimepicker\bootstrap-datetimepicker.min.js" />
+    <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\echarts-all.js" />
+    <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\echarts-all.min.js" />
+    <Content Include="Content\Back\JavaScript\flat-ui.js" />
+    <Content Include="Content\Back\JavaScript\flat-ui.min.js" />
+    <Content Include="Content\Back\JavaScript\knockout\knockout.debug.js" />
+    <Content Include="Content\Back\JavaScript\knockout\knockout.js" />
+    <Content Include="Content\Back\JavaScript\said\classify.js" />
+    <Content Include="Content\Back\JavaScript\said\globalBack.js" />
+    <Content Include="Content\Back\JavaScript\jQuery-2.1.1.js" />
+    <Content Include="Content\Back\JavaScript\jQuery-2.1.1.min.js" />
+    <Content Include="Content\Back\JavaScript\main.js" />
+    <Content Include="Content\Back\JavaScript\npm.js" />
+    <Content Include="Content\Back\JavaScript\requirejs-2.1.15.js" />
+    <Content Include="Content\Back\JavaScript\said\addSaid.js" />
+    <Content Include="Content\Back\JavaScript\said\FuckAngular.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\github.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\prettify.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\table.js" />
+    <Content Include="Content\Back\JavaScript\showdown\extensions\twitter.js" />
+    <Content Include="Content\Back\JavaScript\showdown\showdown.js" />
+    <Content Include="Content\Back\JavaScript\showdown\showdown.min.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\css\popup.css" />
+    <Content Include="Content\Back\JavaScript\so\plug\css\showMsg.css" />
+    <Content Include="Content\Back\JavaScript\so\plug\dialog.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\model.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\popup.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\search.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\showMsg.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\source.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\template\DemoDialog.html" />
+    <Content Include="Content\Back\JavaScript\so\plug\template\Dialog.html" />
+    <Content Include="Content\Back\JavaScript\so\plug\upload.js" />
+    <Content Include="Content\Back\JavaScript\so\plug\validate.js" />
+    <Content Include="Content\Back\JavaScript\so\so.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shBrushCSharp.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shBrushCss.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shBrushJScript.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shBrushSql.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shBrushXml.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shCore.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\scripts\shLegacy.js" />
+    <Content Include="Content\Back\JavaScript\syntaxhighlighter\styles\shCoreDefault.css" />
+    <Content Include="Content\Back\JavaScript\underscore.js" />
+    <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Back\Fonts\glyphicons\flat-ui-icons-regular.svg" />
+    <Content Include="Content\Back\Fonts\lato\lato-black.svg" />
+    <Content Include="Content\Back\Fonts\lato\lato-bold.svg" />
+    <Content Include="Content\Back\Fonts\lato\lato-bolditalic.svg" />
+    <Content Include="Content\Back\Fonts\lato\lato-italic.svg" />
+    <Content Include="Content\Back\Fonts\lato\lato-light.svg" />
+    <Content Include="Content\Back\Fonts\lato\lato-regular.svg" />
+    <Content Include="Content\Back\Style\addSaid.css" />
+    <Content Include="Content\Back\Style\bootstrap-datetimepicker.css" />
+    <Content Include="Content\Back\Style\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\Back\Style\bootstrap-theme.css" />
+    <Content Include="Content\Back\Style\bootstrap-theme.min.css" />
+    <Content Include="Content\Back\Style\bootstrap.css" />
+    <Content Include="Content\Back\Style\bootstrap.min.css" />
+    <Content Include="Content\Back\Style\classify.css" />
+    <Content Include="Content\Back\Style\default.css" />
+    <Content Include="Content\Back\Style\flat-ui.min.css" />
+    <Content Include="Content\Back\Style\grid-table.css" />
+    <Content Include="Content\Back\Style\imagesCenter.css" />
+    <Content Include="Content\Back\Style\login.css" />
+    <Content Include="Content\Back\Style\pageConfig.css" />
+    <Content Include="Content\Back\Style\said-said.css" />
+    <Content Include="Content\Back\Style\index.css" />
+    <Content Include="Content\Back\Style\saidCenter.css" />
+    <Content Include="Content\Back\Style\saidList.css" />
+    <Content Include="Content\Font\fontawesome-webfont.svg" />
+    <Content Include="Content\Images\bg\project_bg.jpg" />
+    <Content Include="Content\Images\bg\said-web-bg.png" />
+    <Content Include="Content\Images\code-bg.jpg" />
+    <Content Include="Content\Images\github.png" />
+    <Content Include="Content\Images\header-bg.jpg" />
+    <Content Include="Content\Images\bg\saidbg.jpg" />
+    <Content Include="Content\Images\icon-common.png" />
+    <Content Include="Content\Images\icon-player.png" />
+    <Content Include="Content\Images\icons\default.png" />
+    <Content Include="Content\Images\icons\icon-CSS3.gif" />
+    <Content Include="Content\Images\icons\icon-HTML5.gif" />
+    <Content Include="Content\Images\icons\icon-jQuery.gif" />
+    <Content Include="Content\Images\icons\icon-JS.gif" />
+    <Content Include="Content\Images\icons\icon-Require.gif" />
+    <Content Include="Content\Images\icons\icon-VS.gif" />
+    <Content Include="Content\Images\ico_sliding.png" />
+    <Content Include="Content\Images\img-failed.png" />
+    <Content Include="Content\Images\index_focus_bg.png" />
+    <Content Include="Content\Images\nav-close.png" />
+    <Content Include="Content\Images\nav-icon_search.png" />
+    <Content Include="Content\Images\night-sky.jpg" />
+    <Content Include="Content\Images\not-blog.gif" />
+    <Content Include="Content\Images\o_bg-clouds.png" />
+    <Content Include="Content\Images\said-banner.jpg" />
+    <Content Include="Content\Images\Said-Images-load.gif" />
+    <Content Include="Content\Images\said-public.png" />
+    <Content Include="Content\Images\said-logo.png" />
+    <Content Include="Content\Images\said-logo2.png" />
+    <Content Include="Content\Images\said-watermark-2.png" />
+    <Content Include="Content\Images\said-watermark.png" />
+    <Content Include="Content\Images\sidebar-bg.jpg" />
+    <Content Include="Content\Images\test-said-img.jpg" />
+    <Content Include="Content\Images\testImg-Paramore.Ps.jpg" />
+    <Content Include="Content\Images\said-backgournd.jpg" />
+    <Content Include="Content\Images\Said.png" />
+    <Content Include="Content\Images\said-backgournd.jpg" />
+    <Content Include="Content\Images\Said.png" />
+    <Content Include="Content\Images\sidebar-bg.jpg" />
+    <Content Include="Content\Images\test-said-img.jpg" />
+    <Content Include="Content\Images\testImg-Paramore.Ps.jpg" />
+    <Content Include="Content\Images\tiny.gif" />
+    <Content Include="Content\Images\UEDImg\0150427135119.jpg" />
+    <Content Include="Content\Images\UEDImg\1164878.jpg" />
+    <Content Include="Content\Images\UEDImg\20150514110936.jpg" />
+    <Content Include="Content\Images\UEDImg\28576941_1391673826_ncZU.jpg" />
+    <Content Include="Content\Images\UEDImg\35a85edf8db1cb136cd67398dd54564e93584bf9.jpg" />
+    <Content Include="Content\Images\UEDImg\360wallpaper.jpg" />
+    <Content Include="Content\Images\UEDImg\5623.jpg" />
+    <Content Include="Content\Images\bg\6033.jpg" />
+    <Content Include="Content\Images\bg\6036.jpg" />
+    <Content Include="Content\Images\UEDImg\8f366562-afce-4f15-baf3-3bccdcf51aa6.jpg" />
+    <Content Include="Content\Images\UEDImg\demo-img4.jpg" />
+    <Content Include="Content\Images\UEDImg\demo-img5.jpg" />
+    <Content Include="Content\Images\UEDImg\demo-img6.jpg" />
+    <Content Include="Content\Images\UEDImg\demoImg.jpg" />
+    <Content Include="Content\Images\UEDImg\demoImg2.jpg" />
+    <Content Include="Content\Images\UEDImg\demoImg3.jpg" />
+    <Content Include="Content\Images\UEDImg\HanaleiTaro_ZH-CN9644686871_1366x768.jpg" />
+    <Content Include="Content\Images\UEDImg\saidBg.jpg" />
+    <Content Include="Content\Images\UEDImg\MacWinLinux.png" />
+    <Content Include="Content\Images\UEDImg\MacWinLinux2.png" />
+    <Content Include="Content\Images\UEDImg\Paris-France.jpg" />
+    <Content Include="Content\Images\bg\Reine-Norway.jpg" />
+    <Content Include="Content\Images\bg\said-banner.jpg" />
+    <Content Include="Content\Images\UEDImg\SutjezkaNP_ZH-CN10008358917_1366x768.jpg" />
+    <Content Include="Content\Images\UEDImg\test.png" />
+    <Content Include="Content\Images\UEDImg\Tuscany-Italy3.jpg" />
+    <Content Include="Content\Images\UEDImg\TuscanyItaly1.jpg" />
+    <Content Include="Content\Images\UEDImg\TuscanyItaly.jpg" />
+    <Content Include="Content\Images\bg\20150521092620.jpg" />
+    <Content Include="Content\Images\UEDImg\20140730222859.jpg" />
+    <Content Include="Content\Images\UEDImg\Venice-Italy3.jpg" />
+    <Content Include="Content\Images\UEDImg\X.js.png" />
+    <Content Include="Content\Images\work_tool_001.png" />
+    <Content Include="Content\JavaScript\jquery-1.11.1.js" />
+    <Content Include="Content\JavaScript\jquery-2.1.1.js" />
+    <Content Include="Content\JavaScript\require.config.js" />
+    <Content Include="Content\JavaScript\said.js" />
+    <Content Include="Content\JavaScript\said\global.js" />
+    <Content Include="Content\Style\blog.css" />
+    <Content Include="Content\Style\font-awesome.min.css" />
+    <Content Include="Content\Style\Global.css" />
+    <Content Include="Content\Style\index.css" />
+    <Content Include="Content\Style\layout.css" />
+    <Content Include="Content\Style\projects.css" />
+    <Content Include="Content\Style\saiddetail.css" />
+    <Content Include="Content\Style\saidList.css" />
+    <Content Include="Content\Widget\sweetalert\sweetalert-dev.js" />
+    <Content Include="Content\Widget\sweetalert\sweetalert.css" />
+    <Content Include="Content\Widget\sweetalert\sweetalert.min.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Source\Sys\Images\Icons\default.png" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Back\Models\" />
+    <Folder Include="Content\Back\JavaScript\jquery\" />
+    <Folder Include="Content\Back\JavaScript\said\plug\" />
+    <Folder Include="Data\" />
+    <Folder Include="Models\" />
+    <Folder Include="System\Log\" />
+    <Folder Include="User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LayoutHome.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\glyphicons\flat-ui-icons-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\glyphicons\flat-ui-icons-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\glyphicons\flat-ui-icons-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\glyphicons\selection.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-black.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-black.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-black.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-bold.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-bold.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-bold.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-bolditalic.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-bolditalic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-bolditalic.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-italic.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-italic.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-italic.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-light.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-light.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-light.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\lato\lato-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.eot" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Back\Fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Said.Application\Said.Application.csproj">
+      <Project>{4533ac8b-3c7b-4d9b-96dc-3eb5195d4a66}</Project>
+      <Name>Said.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Said.Infrastructure\Said.Infrastructure.csproj">
+      <Project>{4d0befc8-41d0-43f7-9e61-5524893cd06d}</Project>
+      <Name>Said.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Shared\_LayoutBack.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Said\AddSaid.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Said\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Said\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Classify\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Blog\AddBlog.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Blog\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Blog\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Font\fontawesome-webfont.eot" />
+    <Content Include="Content\Font\fontawesome-webfont.ttf" />
+    <Content Include="Content\Font\fontawesome-webfont.woff" />
+    <Content Include="Content\Font\fontawesome-webfont.woff2" />
+    <Content Include="Content\Font\FontAwesome.otf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Source\Sys\Dat\IP.dat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Upload.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Path.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Back\Views\Image\Index.cshtml" />
+    <Content Include="Areas\Back\Views\Music\Index.cshtml" />
+    <Content Include="Areas\Back\Views\Home\Login.cshtml" />
+    <Content Include="Areas\Back\Views\Site\PageConfig.cshtml" />
+    <None Include="config.json" />
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\Back\Style\sass\imagesCenter.scss" />
+    <Content Include="Content\Back\Style\imagesCenter.css.map" />
+    <Content Include="Content\Back\Style\sass\koala-config.json" />
+    <Content Include="Content\Style\sass\koala-config.json" />
+    <Content Include="Content\Back\Style\sass\login.scss" />
+    <Content Include="Content\Back\Style\sass\pageConfig.scss" />
+    <Content Include="Content\Back\Style\pageConfig.css.map" />
+    <Content Include="Content\Back\Style\sass\addSaid.scss" />
+    <Content Include="Content\Back\Style\addSaid.css.map" />
+    <Content Include="Views\Said\Article.cshtml" />
+    <Content Include="Content\Style\sass\saidlist.scss" />
+    <Content Include="Views\Said\Index.cshtml" />
+    <Content Include="Content\Style\sass\saiddetail.scss" />
+    <Content Include="Content\Style\sass\index.scss" />
+    <Content Include="Content\Style\sass\projects.scss" />
+    <Content Include="Views\Projects\Index.cshtml" />
+    <Content Include="Content\Style\index.css.map" />
+    <Content Include="Content\Style\projects.css.map" />
+    <Content Include="Content\Style\saiddetail.css.map" />
+    <Content Include="Content\Style\saidList.css.map" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:3061/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
