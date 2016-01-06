@@ -22,5 +22,13 @@ namespace Said.Controllers
         }
 
 
+        /// <summary>
+        /// 404
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult NotFound()
+        {
+            return View();
+        }
     }
 }

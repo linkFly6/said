@@ -16,7 +16,6 @@
 
     .p-said {
         /*width: 960px;*/
-
         .p-logo {
             /*width: 60%;*/
         }
@@ -62,6 +61,9 @@
     .p-github {
         /*position: absolute;
         right: 400px;*/
+        a {
+            color: #333;
+        }
     }
 
     .p-support {

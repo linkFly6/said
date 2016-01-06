@@ -77,66 +77,69 @@
             </ul>*@
         <div class="said-blog-page">
             @{
-                if (PageIndex != 1)
+                if (MaxPage > 0)
                 {
-                    <a class="page-pre page-disabled" href="@(@PageIndex-1)">上一页</a>
-                }
-                if (MaxPage > 5 && PageIndex > 5)
-                {
-                    <a class="page-index" href="/Said/1"></a>
-                    <span class="page-break">...</span>
-                }
-                //当前页码小于5条 => 前5页
-                if (MaxPage <= 5 || PageIndex < 5)
-                {
-                    for (int i = 1; i <= MaxPage; i++)
+                    if (PageIndex != 1)
                     {
-                        if (i == PageIndex)
+                        <a class="page-pre page-disabled" href="@(PageIndex-1)">上一页</a>
+                    }
+                    if (MaxPage > 5 && PageIndex > 5)
+                    {
+                        <a class="page-index" href="/Said/1"></a>
+                        <span class="page-break">...</span>
+                    }
+                    //当前页码小于5条 => 前5页
+                    if (MaxPage <= 5 || PageIndex < 5)
+                    {
+                        for (int i = 1; i <= MaxPage; i++)
                         {
-                            <span class="page-index">@i</span>
-                        }
-                        else
-                        {
-                            <a class="page-index" href="/Said/@i">@i</a>
+                            if (i == PageIndex)
+                            {
+                                <span class="page-index">@i</span>
+                            }
+                            else
+                            {
+                                <a class="page-index" href="/Said/@i">@i</a>
+                            }
                         }
                     }
-                }
-                else if (MaxPage - Page > 5)//当前页码大于5条，并且当前总页数和页码差大于5
-                {
-                    for (int i = Page - 2; i <= Page + 2; i++)
+                    else if (MaxPage - Page > 5)//当前页码大于5条，并且当前总页数和页码差大于5
                     {
-                        if (i == PageIndex)
+                        for (int i = Page - 2; i <= Page + 2; i++)
                         {
-                            <span class="page-index">@i</span>
-                        }
-                        else
-                        {
-                            <a class="page-index" href="/Said/@i">@i</a>
+                            if (i == PageIndex)
+                            {
+                                <span class="page-index">@i</span>
+                            }
+                            else
+                            {
+                                <a class="page-index" href="/Said/@i">@i</a>
+                            }
                         }
                     }
-                }
-                else//当前页码已经到最后5页
-                {
-                    for (int i = MaxPage - 4; i <= MaxPage; i++)
+                    else//当前页码已经到最后5页
                     {
-                        if (i == PageIndex)
+                        for (int i = MaxPage - 4; i <= MaxPage; i++)
                         {
-                            <span class="page-index">@i</span>
-                        }
-                        else
-                        {
-                            <a class="page-index" href="/Said/@i">@i</a>
+                            if (i == PageIndex)
+                            {
+                                <span class="page-index">@i</span>
+                            }
+                            else
+                            {
+                                <a class="page-index" href="/Said/@i">@i</a>
+                            }
                         }
                     }
-                }
-                if (MaxPage - PageIndex > 5)
-                {
-                    <span class="page-break">...</span>
-                    <a class="page-index" href="/Said/@MaxPage"></a>
-                }
-                if (PageIndex != MaxPage)
-                {
-                    <a class="page-next" href="/Said/@(PageIndex + 1)">下一页</a>
+                    if (MaxPage - PageIndex > 5)
+                    {
+                        <span class="page-break">...</span>
+                        <a class="page-index" href="/Said/@MaxPage"></a>
+                    }
+                    if (PageIndex != MaxPage)
+                    {
+                        <a class="page-next" href="/Said/@(PageIndex + 1)">下一页</a>
+                    }
                 }
             }
         </div>

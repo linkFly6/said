@@ -289,6 +289,7 @@
     <Content Include="Content\Back\Style\saidCenter.css" />
     <Content Include="Content\Back\Style\saidList.css" />
     <Content Include="Content\Font\fontawesome-webfont.svg" />
+    <Content Include="Content\Images\bg\notFound.jpeg" />
     <Content Include="Content\Images\bg\project_bg.jpg" />
     <Content Include="Content\Images\bg\said-web-bg.png" />
     <Content Include="Content\Images\code-bg.jpg" />
@@ -577,6 +578,8 @@
     <Content Include="Content\Style\projects.css.map" />
     <Content Include="Content\Style\saiddetail.css.map" />
     <Content Include="Content\Style\saidList.css.map" />
+    <Content Include="Views\Home\NotFound.cshtml" />
+    <Content Include="Content\Style\sass\notFound.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
