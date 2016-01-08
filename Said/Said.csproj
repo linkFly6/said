@@ -292,6 +292,8 @@
     <Content Include="Content\Images\bg\notFound.jpeg" />
     <Content Include="Content\Images\bg\project_bg.jpg" />
     <Content Include="Content\Images\bg\said-web-bg.png" />
+    <Content Include="Content\Images\bg\project-X.png" />
+    <Content Include="Content\Images\bg\project-promise.png" />
     <Content Include="Content\Images\code-bg.jpg" />
     <Content Include="Content\Images\github.png" />
     <Content Include="Content\Images\header-bg.jpg" />
@@ -374,6 +376,7 @@
     <Content Include="Content\Style\Global.css" />
     <Content Include="Content\Style\index.css" />
     <Content Include="Content\Style\layout.css" />
+    <Content Include="Content\Style\notFound.css" />
     <Content Include="Content\Style\projects.css" />
     <Content Include="Content\Style\saiddetail.css" />
     <Content Include="Content\Style\saidList.css" />
@@ -580,6 +583,8 @@
     <Content Include="Content\Style\saidList.css.map" />
     <Content Include="Views\Home\NotFound.cshtml" />
     <Content Include="Content\Style\sass\notFound.scss" />
+    <Content Include="Content\Style\notFound.css.map" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

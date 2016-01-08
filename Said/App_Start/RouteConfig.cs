@@ -28,7 +28,7 @@ namespace Said
             routes.MapRoute(
                 name: "about",
                 url: "{code}",
-                defaults: new { controller = "Other", action = "About" },
+                defaults: new { controller = "Home", action = "About" },
                 constraints: new { code = @"about(.html)?" }, //匹配：http://www.tasaid.com/about 和 http://www.tasaid.com/about.html
                 namespaces: new string[] { "Said.Controllers" }
             );
