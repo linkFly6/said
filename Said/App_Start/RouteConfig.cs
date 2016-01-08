@@ -26,6 +26,13 @@ namespace Said
                 namespaces: new string[] { "Said.Controllers" }
             );
             routes.MapRoute(
+                name: "about",
+                url: "{code}",
+                defaults: new { controller = "Other", action = "About" },
+                constraints: new { code = @"about(.html)?" }, //匹配：http://www.tasaid.com/about 和 http://www.tasaid.com/about.html
+                namespaces: new string[] { "Said.Controllers" }
+            );
+            routes.MapRoute(
                 name: "said",
                 url: "said/{pageIndex}",
                defaults: new { controller = "Said", action = "Index", pageIndex = UrlParameter.Optional },

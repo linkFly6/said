@@ -97,7 +97,7 @@ html, body {
         border-radius: 6px;
         color: #fff;
         opacity: 0.6;
-        @include prefixer(transition,all 0.6s ease-in 0s);
+        @include prefixer(transition,all 0.4s ease-in 0s);
         &:hover {
             opacity: 1;
             box-shadow: 0 1px 20px white;

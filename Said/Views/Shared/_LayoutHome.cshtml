@@ -13,9 +13,11 @@
         }
         else
         {
-            <meta name="keywords" content="linkFly,Said,听说,blog,日志,博客,javascript,C#,Sql,nodeJS,music,音乐" />
+            <meta name="keywords" content="linkFly,Said,听说,tingshuo,blog,日志,博客,javascript,C#,Sql,nodeJS,music,音乐" />
+            <meta name="description" content="听说，博客、音乐和技术分享、linkFly的个人博客，linkFly的音乐分享" />
         }
     }
+    <meta http-equiv="description" content="听说 - linkFly" />
     <meta name="author" content="linkFly" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     @*<meta http-equiv-"x-ua-compatible" content="IE =9" />*@
@@ -42,6 +44,10 @@
     }
 </head>
 <body>
+    <h1 class="seo">
+        <img src="/Content/Images/said-logo.png" alt="听说 - linkFly">
+        一首歌，一个故事，一些技术文章，一些项目——欢迎听说我的故事。
+    </h1>
     @{
         if (ViewBag.overridePage == true)
         {
@@ -57,11 +63,11 @@
                     <nav id="nav">
                         <ul id="nav-flip">
                             <li class="@(NavigatorIndex ==0 ? "nav-active" : "")"><a href="/">首页</a></li>
-                            <li class="@(NavigatorIndex ==1 ? "nav-active" : "")"><a href="javascript:void(0);">blog</a></li>
-                            <li class="@(NavigatorIndex ==2 ? "nav-active" : "")"><a href="/Said">听说</a></li>
-                            <li class="@(NavigatorIndex ==3 ? "nav-active" : "")"><a href="/Projects">项目</a></li>
+                            @*<li class="@(NavigatorIndex ==1 ? "nav-active" : "")"><a href="javascript:void(0);">blog</a></li>*@
+                            <li class="@(NavigatorIndex ==2 ? "nav-active" : "")"><a href="/said">听说</a></li>
+                            <li class="@(NavigatorIndex ==3 ? "nav-active" : "")"><a href="/projects">项目</a></li>
                             <li class="@(NavigatorIndex ==4 ? "nav-active" : "")"><a href="javascript:void(0);">实验室</a></li>
-                            <li class="@(NavigatorIndex ==5 ? "nav-active" : "")"><a href="javascript:void(0);">关于</a></li>
+                            <li class="@(NavigatorIndex ==5 ? "nav-active" : "")"><a href="/about">关于</a></li>
                         </ul>
                         @*<div id="said-search-con" style="width: 50px;">
                                 <div id="said-search">
@@ -114,7 +120,7 @@
                             <dd>linkFly6#live.com（#替换成@@）</dd>
                         </dl>
                         <!--页脚替换到当前时间-->
-                        <div class="footer-copyright">©2014&nbsp;linkFly&nbsp;-&nbsp;Said:听说&nbsp;&nbsp;京ICP备13014059号</div>
+                        <div class="footer-copyright">©2016&nbsp;linkFly&nbsp;-&nbsp;Said:听说</div>
                     </section>
 
                 </footer>
