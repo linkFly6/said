@@ -163,23 +163,30 @@
                         </li>
                     </ul>
                 </li>
-                <li class="complex">
-                    <a href="javascript:;">
-                        <i class="fa fa-pie-chart"></i>
-                        <span class="title">统计中心</span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li><a href="javascript:;">访问概况</a></li>
-                        <li><a href="javascript:;">时段分析</a></li>
-                        <li><a href="javascript:;">回复统计</a></li>
-                    </ul>
-                </li>
                 <li class="complex @(controllerName == "Site" ? "active open" : "")">
                     <a href="javascript:;">
                         <i class="fa fa-cogs"></i>
-                        <span class="title">配置中心</span>
+                        <span class="title">站点中心</span>
                     </a>
                     <ul class="sub-menu">
+                        <li class="@(actionName == "SiteRecord" && controllerName == "Site" ? "active" : "")">
+                            <a href="@Url.Action("SiteRecord", "Site")">
+                                <i class="fa fa-pie-chart"></i>
+                                <span class="title">访问概况</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <i class="fa fa-line-chart"></i>
+                                <span class="title">时段分析</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <i class="fa fa-tty"></i>
+                                <span class="title">回复统计</span>
+                            </a>
+                        </li>
                         <li class="@(actionName == "PageConfig" && controllerName == "Site" ? "active" : "")">
                             <a href="@Url.Action("PageConfig", "Site")">
                                 <i class="fa fa-th-large"></i>
@@ -224,6 +231,9 @@
     <script src="@Url.Content("~/Content/Back/JavaScript/avalon/avalon.mobile.js")"></script>
     <script src="@Url.Content("~/Content/Back/JavaScript/said/globalBack.js")"></script>
     <script src="@Url.Content("~/Content/Back/JavaScript/bootstrap.min.js")"></script>
+    <script>
+        var dateNow = '@Said.SaidCommon.GetTimeStamp()';
+    </script>
     @{
         if (IsSectionDefined("FootJs"))
         {

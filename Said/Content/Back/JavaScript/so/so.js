@@ -528,6 +528,7 @@
         _lockDate = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]),
         regTime = /(0\d|2[0-3])?:?(0\d|[1-5]\d):(0\d|[1-5]\d)/;
     so.extend({
+        padNumber: padNumber,
         parseSeconds: function (value) {
             //转换一个时间到秒，例如：00:01:00 => 60
             var date = new Date(_dateEnum[0], _dateEnum[1], _dateEnum[2], _dateEnum[3], _dateEnum[4], _dateEnum[5]),

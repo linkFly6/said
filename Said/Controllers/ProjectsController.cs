@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Said.Controllers.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,7 +7,8 @@ using System.Web.Mvc;
 
 namespace Said.Controllers
 {
-    public class ProjectsController : Controller
+    [UserFilterAttribute]
+    public class ProjectsController : BaseController
     {
         //
         // GET: /Projects/

@@ -174,6 +174,33 @@ namespace Said.Helper
         }
 
         /// <summary>
+        /// 时间戳转为C#格式时间
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <param name="dateTimeKind">确定时间转换方案</param>
+        /// <returns></returns>
+        public static DateTime GetTime(string timeStamp, DateTimeKind dateTimeKind)
+        {
+            var start = new DateTime(1970, 1, 1, 0, 0, 0, dateTimeKind);
+            return start.AddMilliseconds(long.Parse(timeStamp));
+        }
+
+        /// <summary>
+        /// 根据字符串转时间戳
+        /// </summary>
+        /// <param name="dateString">要转换的字符串</param>
+        /// <returns></returns>
+        public static DateTime GetTimeByString(string dateString)
+        {
+            string[] strs = dateString.Split('-');
+            return new DateTime(int.Parse(strs[0]), int.Parse(strs[1]), int.Parse(strs[2]),
+                strs.Length > 3 ? int.Parse(strs[3]) : 0,
+                strs.Length > 4 ? int.Parse(strs[4]) : 0,
+                strs.Length > 5 ? int.Parse(strs[5]) : 0);
+        }
+
+
+        /// <summary>
         /// DateTime时间格式转换为Unix时间戳格式
         /// </summary>
         /// <param name="time"></param>

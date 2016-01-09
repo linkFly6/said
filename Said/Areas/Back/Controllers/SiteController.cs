@@ -1,6 +1,9 @@
-﻿using Said.Application;
+﻿using PagedList;
+using Said.Application;
 using Said.Common;
+using Said.Helper;
 using Said.Models;
+using Said.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +30,20 @@ namespace Said.Areas.Back.Controllers
             ViewData["models"] = BannerApplication.GetAll();
             return View();
         }
+
+        /// <summary>
+        /// 访问概况
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SiteRecord()
+        {
+
+            return View();
+        }
+
+
+
+
 
         #endregion
 
@@ -93,6 +110,60 @@ namespace Said.Areas.Back.Controllers
             else
                 return ResponseResult(2, "服务器删除异常");
         }
-        #endregion
+
+
+        /// <summary>
+        /// 获取站点访问用户记录
+        /// </summary>
+        /// <param name="limit">当前请求的数据起点</param>
+        /// <param name="offset">页面请求数据个数</param>
+        /// <param name="startDate">可略：要查询记录的开始时间</param>
+        /// <param name="endDate">可略：要查询记录的结束时间</param>
+        /// <returns></returns>
+        public JsonResult GetRecord(int limit, int offset/*, string search = null, string sort = null, string order = null*/)
+        {
+
+            var page = new Page
+            {
+                PageNumber = offset / limit + 1,
+                PageSize = limit
+            };
+            IPagedList<UserRecord> res = null;
+            //处理更多的参数，因为Action不允许重载：DateTime startDate, DateTime endDate
+            if (string.IsNullOrWhiteSpace(Request["startDate"]) || string.IsNullOrWhiteSpace(Request["endDate"]))
+            {
+                res = UserRecordApplication.Find(page);
+            }
+            else
+            {
+                try
+                {
+                    //浏览器传过来的时间戳和本地的时间戳可能存在不对应的情况，正确的做法应该是把时间统一到UTC时间
+                    DateTime startDate = ConvertHelper.GetTimeByString(Request["startDate"].Trim());
+                    DateTime endDate = ConvertHelper.GetTimeByString(Request["endDate"].Trim());
+                    endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 999);
+                    res = UserRecordApplication.Find(page, startDate, endDate);
+                }
+                catch (Exception e)
+                {
+                    LogCommon.Log(string.Format("不正确的请求Url：{0}", Request.RawUrl), e);
+                    return Json(new
+                    {
+                        total = 0,
+                        msg = "请求的参数带有日期筛选，但是日期并不正确"
+                    });
+                }
+            }
+
+            return Json(new
+            {
+                //hasNextPage = res.HasNextPage,
+                //hasPreviousPage = res.HasPreviousPage,
+                total = res.TotalItemCount,
+                rows = res.ToList<UserRecord>()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
     }
+        #endregion
 }
