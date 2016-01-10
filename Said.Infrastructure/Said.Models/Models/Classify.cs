@@ -28,11 +28,6 @@ namespace Said.Models
         public string CIcon { get; set; }
 
         /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime Date { get; set; }
-
-        /// <summary>
         /// 类型下最后一次更新的文章ID
         /// </summary>
         public string CLastBlogId { get; set; }

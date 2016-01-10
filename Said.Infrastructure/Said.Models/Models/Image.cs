@@ -31,11 +31,6 @@ namespace Said.Models
         public int ISize { get; set; }
 
         /// <summary>
-        /// 上传日期
-        /// </summary>
-        public DateTime Date { get; set; }
-
-        /// <summary>
         /// 图片类型
         /// </summary>
         public ImageType Type { get; set; }

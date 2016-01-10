@@ -496,6 +496,10 @@
       <Project>{4533ac8b-3c7b-4d9b-96dc-3eb5195d4a66}</Project>
       <Name>Said.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Said.Domain\Said.Domain.csproj">
+      <Project>{e011658e-41e9-47a9-a27e-a20d0859bd05}</Project>
+      <Name>Said.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Said.Infrastructure\Said.Infrastructure.csproj">
       <Project>{4d0befc8-41d0-43f7-9e61-5524893cd06d}</Project>
       <Name>Said.Infrastructure</Name>

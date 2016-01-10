@@ -418,7 +418,7 @@
                     newDatas = createData(function (date) {
                         return so.padNumber(date.getMinutes()) + ':' + so.padNumber(date.getSeconds());
                     });
-                } else if (timeSpan < 864e5) {//1天内
+                } else if (timeSpan < 1728e5) {//24小时内
                     title = so.format('${0}小时内访客（${1} - ${2}）', parseInt(timeSpan / 36e5), so.dateFormat(firstDate, 'yyyy-MM-dd HH:00'), so.dateFormat(lastDate, 'yyyy-MM-dd HH:00'));
                     newDatas = createData(function (date) {
                         return so.dateFormat(date, 'dd日HH:mm');
