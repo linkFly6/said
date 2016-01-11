@@ -202,6 +202,16 @@
                      field: 'Query',
                      title: '参&nbsp;&nbsp;&nbsp;数',
                      valign: 'middle',
+                     visible: false,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
+                     field: 'UrlReferrer',
+                     title: '来源',
+                     valign: 'middle',
+                     //sortable: true,
                      formatter: function (value, row, index) {
                          return value;
                      }
@@ -209,24 +219,6 @@
                  {
                      field: 'Key',
                      title: '统计标识',
-                     valign: 'middle',
-                     //sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'UrlReferrer',
-                     title: '来&nbsp;&nbsp;&nbsp;源',
-                     valign: 'middle',
-                     //sortable: true,
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'ReferrerAuthority',
-                     title: '来源明细',
                      valign: 'middle',
                      //sortable: true,
                      formatter: function (value, row, index) {
@@ -242,37 +234,28 @@
                      }
                  },
                  {
+                     field: 'IP',
+                     title: 'IP',
+                     valign: 'middle',
+                     visible: false,
+                     formatter: function (value, row, index) {
+                         return value;
+                     }
+                 },
+                 {
                      field: 'Country',
-                     title: '国&nbsp;&nbsp;&nbsp;家',
+                     title: '国家-省份-城市',
                      valign: 'middle',
                      //sortable: true,
                      formatter: function (value, row, index) {
-                         return value;
+                         return value + (row.Province ? ' - ' + row.Province : '') + (row.City ? ' - ' + row.City : '');
                      }
                  },
                  {
-                     field: 'Province',
-                     title: '省&nbsp;&nbsp;&nbsp;份',
-                     //sortable: true,
+                     field: 'UserAgent',
+                     title: 'UA',
                      valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'City',
-                     title: '城&nbsp;&nbsp;&nbsp;市',
-                     //sortable: true,
-                     valign: 'middle',
-                     formatter: function (value, row, index) {
-                         return value;
-                     }
-                 },
-                 {
-                     field: 'Browser',
-                     title: '浏览器',
-                     valign: 'middle',
-                     //sortable: true,
+                     visible: false,
                      formatter: function (value, row, index) {
                          return value;
                      }
@@ -284,7 +267,7 @@
                      //sortable: true,
                      visible: false,
                      formatter: function (value, row, index) {
-                         return value;
+                         return value + ' - ' + row.Browser;
                      }
                  },
                  {

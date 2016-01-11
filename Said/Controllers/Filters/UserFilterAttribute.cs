@@ -72,18 +72,18 @@ namespace Said.Controllers.Filters
                 Key = key,//【【【【【【【【【【【【TODO 这个key是点击参数里的】】】】】】】】】】】】】
                 OS = helper.GetClientOS(),
                 SessionID = context.Session.SessionID,
-                Query = context.Request.Url.Query,
+                Query = HttpUtility.UrlDecode(context.Request.Url.Query),
                 SpiderName = helper.GetSpiderBot(),
                 UserID = userId,
                 UserAgent = context.Request.UserAgent,
                 UrlReferrer = string.Empty,
                 ReferrerAuthority = string.Empty,
-                LocalPath = context.Request.Url.LocalPath,
+                LocalPath = context.Request.Url.OriginalString,
                 IsFile = context.Request.Url.IsFile
             };
             if (context.Request.UrlReferrer != null)
             {
-                record.UrlReferrer = context.Request.UrlReferrer.AbsolutePath;
+                record.UrlReferrer = context.Request.UrlReferrer.OriginalString;
                 record.ReferrerAuthority = context.Request.UrlReferrer.Authority;
             }
 
