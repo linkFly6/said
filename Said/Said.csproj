@@ -289,8 +289,11 @@
     <Content Include="Content\Back\Style\saidCenter.css" />
     <Content Include="Content\Back\Style\saidList.css" />
     <Content Include="Content\Font\fontawesome-webfont.svg" />
+    <Content Include="Content\Images\bg\notFound.jpeg" />
     <Content Include="Content\Images\bg\project_bg.jpg" />
     <Content Include="Content\Images\bg\said-web-bg.png" />
+    <Content Include="Content\Images\bg\project-X.png" />
+    <Content Include="Content\Images\bg\project-promise.png" />
     <Content Include="Content\Images\code-bg.jpg" />
     <Content Include="Content\Images\github.png" />
     <Content Include="Content\Images\header-bg.jpg" />
@@ -373,6 +376,7 @@
     <Content Include="Content\Style\Global.css" />
     <Content Include="Content\Style\index.css" />
     <Content Include="Content\Style\layout.css" />
+    <Content Include="Content\Style\notFound.css" />
     <Content Include="Content\Style\projects.css" />
     <Content Include="Content\Style\saiddetail.css" />
     <Content Include="Content\Style\saidList.css" />
@@ -492,6 +496,10 @@
       <Project>{4533ac8b-3c7b-4d9b-96dc-3eb5195d4a66}</Project>
       <Name>Said.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Said.Domain\Said.Domain.csproj">
+      <Project>{e011658e-41e9-47a9-a27e-a20d0859bd05}</Project>
+      <Name>Said.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Said.Infrastructure\Said.Infrastructure.csproj">
       <Project>{4d0befc8-41d0-43f7-9e61-5524893cd06d}</Project>
       <Name>Said.Infrastructure</Name>
@@ -552,6 +560,7 @@
     <Content Include="Areas\Back\Views\Music\Index.cshtml" />
     <Content Include="Areas\Back\Views\Home\Login.cshtml" />
     <Content Include="Areas\Back\Views\Site\PageConfig.cshtml" />
+    <Content Include="Areas\Back\Views\Site\SiteRecord.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -577,6 +586,10 @@
     <Content Include="Content\Style\projects.css.map" />
     <Content Include="Content\Style\saiddetail.css.map" />
     <Content Include="Content\Style\saidList.css.map" />
+    <Content Include="Views\Home\NotFound.cshtml" />
+    <Content Include="Content\Style\sass\notFound.scss" />
+    <Content Include="Content\Style\notFound.css.map" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

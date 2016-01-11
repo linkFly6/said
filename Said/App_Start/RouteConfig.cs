@@ -19,6 +19,20 @@ namespace Said
                namespaces: new string[] { "Said.Controllers" }
             );
             routes.MapRoute(
+                name: "saidNotFound",
+                url: "{code}",
+                defaults: new { controller = "Home", action = "NotFound" },
+                constraints: new { code = @"404(.html)?" }, //匹配：http://www.tasaid.com/404 和 http://www.tasaid.com/404.html
+                namespaces: new string[] { "Said.Controllers" }
+            );
+            routes.MapRoute(
+                name: "about",
+                url: "{code}",
+                defaults: new { controller = "Home", action = "About" },
+                constraints: new { code = @"about(.html)?" }, //匹配：http://www.tasaid.com/about 和 http://www.tasaid.com/about.html
+                namespaces: new string[] { "Said.Controllers" }
+            );
+            routes.MapRoute(
                 name: "said",
                 url: "said/{pageIndex}",
                defaults: new { controller = "Said", action = "Index", pageIndex = UrlParameter.Optional },

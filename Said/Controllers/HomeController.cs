@@ -22,5 +22,24 @@ namespace Said.Controllers
         }
 
 
+        /// <summary>
+        /// 404
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult NotFound()
+        {
+            return View();
+        }
+
+
+        /// <summary>
+        /// 404
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult About()
+        {
+            ViewData["NavigatorIndex"] = 5;
+            return View();
+        }
     }
 }

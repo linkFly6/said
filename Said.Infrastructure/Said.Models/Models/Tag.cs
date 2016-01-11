@@ -20,11 +20,6 @@ namespace Said.Models
         public string TagName { get; set; }
 
         /// <summary>
-        /// 创建时间
-        /// </summary>
-        public DateTime Date { get; set; }
-
-        /// <summary>
         /// 引用个数
         /// </summary>
         public int Count { get; set; }

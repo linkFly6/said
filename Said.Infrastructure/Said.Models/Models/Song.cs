@@ -52,10 +52,6 @@ namespace Said.Models
         /// </summary>
         public string SongAlbum { get; set; }
 
-        /// <summary>
-        /// 创建日期
-        /// </summary>
-        public DateTime Date { get; set; }
 
         /// <summary>
         /// 发布日期
