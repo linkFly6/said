@@ -263,6 +263,13 @@ $playerBar: #dbdbdb;
     position: relative;
     bottom: -1px;
     height: 40px;
+
+    .licenses-box {
+        position: absolute;
+        left: 10px;
+        top: 8px;
+        
+    }
 }
 
 .blog-comment-txt {
