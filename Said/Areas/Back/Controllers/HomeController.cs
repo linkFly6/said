@@ -62,14 +62,14 @@ namespace Said.Areas.Back.Controllers
             record.Address = GetAddressToString(record.IP);
 
             //判断白名单
-            if (!IPRange.Check(record.IP))
-            {
-                //将这次记录打入数据库
-                record.Description = string.Format("异常IP（白名单约束）正在登录，输入的用户名:{0}，密码:{1}", name, pwd);
-                record.OperationType = OperationType.Warning;
-                AdminRecordApplication.Add(record);
-                return ResponseResult(6, "登录异常");
-            }
+            //if (!IPRange.Check(record.IP))
+            //{
+            //    //将这次记录打入数据库
+            //    record.Description = string.Format("异常IP（白名单约束）正在登录，输入的用户名:{0}，密码:{1}", name, pwd);
+            //    record.OperationType = OperationType.Warning;
+            //    AdminRecordApplication.Add(record);
+            //    return ResponseResult(6, "登录异常");
+            //}
             Admin admin = AdminApplication.Get(name, newPwd);
             if (admin == null)
             {
