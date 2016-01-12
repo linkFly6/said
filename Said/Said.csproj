@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -289,6 +290,9 @@
     <Content Include="Content\Back\Style\saidCenter.css" />
     <Content Include="Content\Back\Style\saidList.css" />
     <Content Include="Content\Font\fontawesome-webfont.svg" />
+    <Content Include="Content\Images\bg\about_mcr.jpg" />
+    <Content Include="Content\Images\bg\coldplay_about.jpg" />
+    <Content Include="Content\Images\bg\paperman_about.jpg" />
     <Content Include="Content\Images\bg\notFound.jpeg" />
     <Content Include="Content\Images\bg\project_bg.jpg" />
     <Content Include="Content\Images\bg\said-web-bg.png" />
@@ -371,6 +375,7 @@
     <Content Include="Content\JavaScript\require.config.js" />
     <Content Include="Content\JavaScript\said.js" />
     <Content Include="Content\JavaScript\said\global.js" />
+    <Content Include="Content\Style\about.css" />
     <Content Include="Content\Style\blog.css" />
     <Content Include="Content\Style\font-awesome.min.css" />
     <Content Include="Content\Style\Global.css" />
@@ -590,6 +595,8 @@
     <Content Include="Content\Style\sass\notFound.scss" />
     <Content Include="Content\Style\notFound.css.map" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Content\Style\sass\about.scss" />
+    <Content Include="Content\Style\about.css.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
