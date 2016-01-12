@@ -12,12 +12,18 @@ namespace Said
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            //wap - 
+
+            //routes.Add("wapRoute", new Route("m.tasaid.com", "", new { }));
+
+            //said-article
             routes.MapRoute(
                 name: "saidDetail",
                 url: "said/{id}.html",//参见http://blog.csdn.net/leftfist/article/details/9969797
                defaults: new { controller = "Said", action = "Article", id = UrlParameter.Optional },
                namespaces: new string[] { "Said.Controllers" }
             );
+            //notFound
             routes.MapRoute(
                 name: "saidNotFound",
                 url: "{code}",
@@ -25,6 +31,8 @@ namespace Said
                 constraints: new { code = @"404(.html)?" }, //匹配：http://www.tasaid.com/404 和 http://www.tasaid.com/404.html
                 namespaces: new string[] { "Said.Controllers" }
             );
+
+            //about
             routes.MapRoute(
                 name: "about",
                 url: "{code}",
@@ -32,6 +40,8 @@ namespace Said
                 constraints: new { code = @"about(.html)?" }, //匹配：http://www.tasaid.com/about 和 http://www.tasaid.com/about.html
                 namespaces: new string[] { "Said.Controllers" }
             );
+
+            //said
             routes.MapRoute(
                 name: "said",
                 url: "said/{pageIndex}",
@@ -46,6 +56,8 @@ namespace Said
                namespaces: new string[] { "Said.Areas.Back.Controllers" }
             );
 
+
+            //defaults
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

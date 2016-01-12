@@ -135,6 +135,8 @@
     <Compile Include="Areas\Back\Controllers\SaidController.cs" />
     <Compile Include="Areas\Back\Controllers\SiteController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
+    <Compile Include="Areas\Wap\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Wap\WapAreaRegistration.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
     <Compile Include="Common\ImageCommon.cs" />
     <Compile Include="Common\IPRange.cs" />
@@ -314,6 +316,7 @@
     <Content Include="Content\Images\ico_sliding.png" />
     <Content Include="Content\Images\img-failed.png" />
     <Content Include="Content\Images\index_focus_bg.png" />
+    <Content Include="Content\Images\licenses-cc4.png" />
     <Content Include="Content\Images\nav-close.png" />
     <Content Include="Content\Images\nav-icon_search.png" />
     <Content Include="Content\Images\night-sky.jpg" />
@@ -385,6 +388,7 @@
     <Content Include="Content\Style\projects.css" />
     <Content Include="Content\Style\saiddetail.css" />
     <Content Include="Content\Style\saidList.css" />
+    <Content Include="Content\wap\style\layout.css" />
     <Content Include="Content\Widget\sweetalert\sweetalert-dev.js" />
     <Content Include="Content\Widget\sweetalert\sweetalert.css" />
     <Content Include="Content\Widget\sweetalert\sweetalert.min.js" />
@@ -405,6 +409,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
+    <Folder Include="Areas\Wap\Models\" />
     <Folder Include="Content\Back\JavaScript\jquery\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
     <Folder Include="Data\" />
@@ -566,6 +571,9 @@
     <Content Include="Areas\Back\Views\Home\Login.cshtml" />
     <Content Include="Areas\Back\Views\Site\PageConfig.cshtml" />
     <Content Include="Areas\Back\Views\Site\SiteRecord.cshtml" />
+    <Content Include="Areas\Wap\Views\Web.config" />
+    <Content Include="Areas\Wap\Views\Shared\_LayoutWap.cshtml" />
+    <Content Include="Areas\Wap\Views\Home\Index.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -597,6 +605,10 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Content\Style\sass\about.scss" />
     <Content Include="Content\Style\about.css.map" />
+    <Content Include="Content\wap\style\sass\layout.scss" />
+    <Content Include="Content\wap\style\layout.css.map" />
+    <Content Include="Content\Back\Style\login.css.map" />
+    <Content Include="Content\wap\javascript\require.config.js" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

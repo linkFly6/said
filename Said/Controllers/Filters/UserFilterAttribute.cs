@@ -78,12 +78,12 @@ namespace Said.Controllers.Filters
                 UserAgent = context.Request.UserAgent,
                 UrlReferrer = string.Empty,
                 ReferrerAuthority = string.Empty,
-                LocalPath = context.Request.Url.OriginalString,
+                LocalPath = context.Request.Url.AbsoluteUri,//绝对uri，参考：http://www.cnblogs.com/kissdodog/archive/2013/04/22/3034898.html
                 IsFile = context.Request.Url.IsFile
             };
             if (context.Request.UrlReferrer != null)
             {
-                record.UrlReferrer = context.Request.UrlReferrer.OriginalString;
+                record.UrlReferrer = context.Request.UrlReferrer.AbsoluteUri;
                 record.ReferrerAuthority = context.Request.UrlReferrer.Authority;
             }
 
