@@ -1,6 +1,48 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "听说 - 世界很大，风住过这里";
     Layout = "~/Areas/Wap/Views/Shared/_LayoutWap.cshtml";
 }
+@section Css{
+    <link href="@Url.Content("~/Content/wap/style/index.css?v=1.0")" rel="stylesheet">
+}
+<div class="banner">
+    <div class="banner-bg" style="background-image:url(/Content/Images/bg/20150521092620.jpg);">
+        <div class="banner-content">
+            <h1>世界很大，风住过这里</h1>
+            <p>听说</p>
+            <p>这里发生过太多的事情</p>
+        </div>
+    </div>
+</div>
+<section class="said-box">
+    <a class="said-item displaybox" href="javascript:;">
+        <div class="item-bg" style="background-image:url(/Content/Images/bg/Reine-Norway.jpg)"></div>
+        <div class="item-context">
+            <ul class="item-txt">
+                <li><h2>冬天该很好，你若尚在场</h2></li>
+                <li class="item-more">
+                    <span class="fa fa-heart-o" title="like"><i>0</i></span>
+                    <time>一天前</time>
+                </li>
+            </ul>
+        </div>
+    </a>
+    <a class="said-item displaybox" href="javascript:;">
+        <div class="item-bg" style="background-image:url(/Content/Images/bg/Reine-Norway.jpg)"></div>
+        <div class="item-context">
+            <ul class="item-txt">
+                <li><h2>冬天该很好，你若尚在场</h2></li>
+                <li class="item-more">
+                    <span class="fa fa-heart-o" title="like"><i>0</i></span>
+                    <time>2016-01-03 01:22</time>
+                </li>
+            </ul>
+        </div>
+    </a>
+</section>
 
-<h2>Index</h2>
+@section FootJs{
+    <script>
+    </script>
+
+}

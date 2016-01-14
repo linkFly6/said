@@ -17,3 +17,12 @@ h1, h2, h3, h4, h5, h6 {
     color: inherit;
     font-family: inherit;
 }
+
+.displaybox {
+    display: flex-box;
+    display: -webkit-box;
+    display: flex;
+}
+/*grid for bootstrap-v4.0.0-alpha.2*/
+
+

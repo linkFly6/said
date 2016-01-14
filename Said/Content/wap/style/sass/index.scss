@@ -1,0 +1,77 @@
+﻿@mixin prefixer($property,$value) {
+    /*公用样式*/
+    -webkit-#{$property}: $value; /* Chrome all / Safari all */
+    #{$property}: $value;
+}
+
+.banner-content {
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+}
+
+.said-box {
+    padding: 10px;
+}
+
+.said-item {
+    color: #666;
+    padding: 10px 0;
+    border-bottom: 1px solid #CCC;
+    text-decoration: none;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .item-bg {
+        width: 150px;
+        height: 80px;
+        background: none center center no-repeat;
+        background-size: 200% auto;
+    }
+
+    .item-context {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .item-txt {
+        padding-left: 10px;
+        /*left: 0;
+        top: 50%;
+        position: absolute;
+        width: 100%;
+        @include prefixer(transform,translate(0,-50%));
+        @include prefixer(transform,translate3D(0,-50%,0));*/
+    }
+
+
+    h2 {
+        font-size: 1em;
+    }
+
+    i {
+        font-style: initial;
+        padding: 1px 5px;
+    }
+
+    .fa-heart-o::before, .fa-heart::before {
+        color: red;
+    }
+
+    .item-more {
+        position: absolute;
+        right: 10px;
+        bottom: 0;
+        font-size: 12px;
+        color: #AAA;
+
+        span {
+        }
+
+        time {
+            padding-left: 5px;
+        }
+    }
+}

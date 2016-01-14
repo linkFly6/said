@@ -1,0 +1,61 @@
+﻿@mixin prefixer($property,$value) {
+    /*公用样式*/
+    -webkit-#{$property}: $value; /* Chrome all / Safari all */
+    #{$property}: $value;
+}
+
+.navbar {
+    .nav-container {
+    }
+
+    .logo {
+        font-size: 1em;
+        height: 48px;
+        text-align: center;
+        background: url('/Content/Images/said-logo2.png') no-repeat center center;
+        background-size: auto 32px;
+        overflow: hidden;
+    }
+
+    .home {
+        line-height: 2.35;
+        text-decoration: none;
+        display: inline-block;
+        width: 100px;
+        height: 100%;
+        text-indent: -9999em;
+    }
+}
+
+.banner {
+    position: relative;
+
+    .banner-bg {
+        width: 100%;
+        background: none center bottom no-repeat;
+        background-size: 120% auto;
+        height: 160px;
+        overflow: hidden;
+        -webkit-filter: brightness(.8);
+        filter: brightness(.8);
+
+        .banner-content {
+            left: 50%;
+            top: 50%;
+            position: absolute;
+            text-align: center;
+            z-index: 4;
+            @include prefixer(transform,translate(-50%,-50%));
+            @include prefixer(transform,translate3D(-50%,-50%,0));
+
+            h1 {
+                font-size: 1em;
+                font-weight: 500;
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+    }
+}

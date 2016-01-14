@@ -17,7 +17,7 @@ namespace Said.Areas.Wap
             context.MapRoute(
                 "Wap_default",
                 "Wap/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
