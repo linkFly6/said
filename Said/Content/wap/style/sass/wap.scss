@@ -56,7 +56,6 @@ body {
         z-index: 4;
         @include prefixer(transform,translate(-50%,-50%));
         @include prefixer(transform,translate3D(-50%,-50%,0));
-
         h1 {
             font-size: 1em;
             font-weight: 500;
