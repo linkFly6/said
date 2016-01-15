@@ -1,0 +1,52 @@
+﻿@model Said.Models.Article
+@{
+    ViewBag.Title = Model.STitle + " - 听说";
+    Layout = "~/Areas/Wap/Views/Shared/_LayoutWap.cshtml";
+    string SourceSaidImage = Said.Common.ConfigInfo.SourceSaidPath;
+    string SourceMusicImage = Said.Common.ConfigInfo.SourceMusicImagePath;
+    string SourceMusicDir = Said.Common.ConfigInfo.SourceMusicPath;
+    bool userLike = (bool)ViewData["userLike"];
+}
+<div class="banner">
+    <div class="banner-bg" style="background-image:url(/Content/Images/bg/20150521092620.jpg);"></div>
+    <div class="banner-content">
+        <h1>世界很大，风住过这里</h1>
+        <p>听说</p>
+        <p>这里发生过太多的事情</p>
+    </div>
+</div>
+<section id="content">
+    <article class="music-content" id="said-content">
+        <h1 class="blog-title">@Model.STitle</h1>
+        <section class="blog-content">@(new HtmlString(Model.SHTML))</section>
+    </article>
+    <section class="blog-more-info">
+        <div class="blog-more-head">
+            <div class="displaybox">
+                <div class="info-date"><time>@Model.Date.ToString("yyyy/MM/dd HH:mm")</time></div>
+                <div class="info-like">
+                    <a href="javascript:;" class="@(userLike?"likeIt":string.Empty)" data-like="@(userLike?"true":"false")" title="我喜欢" id="said-like">
+                        <!--fa-heart--><i class="fa fa-heart-o"></i><span class="like-sum" id="likeCount">@Model.Likes</span>
+                    </a>
+                </div>
+            </div>
+            <ul class="blog-info">
+                <li><a href="/Said" class="blog-info-more">查看更多我的文章</a></li>
+                <li><a class="licenses licenses-cc" href="http://creativecommons.org/licenses/by/3.0/cn/">CC BY 3.0 CN</a></li>
+                <li><a class="licenses-link" href="http://creativecommons.org/licenses/by/3.0/cn/">本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.5 China Mainland License）授权</a></li>
+            </ul>
+        </div>
+        <section class="music-song"></section>
+        <audio id="said-player" style="display:none;" autoplay="autoplay"></audio>
+    </section>
+</section>
+
+@section Css{
+    <link href="@Url.Content("~/Content/wap/style/article.css?v=1.0")" rel="stylesheet" />
+}
+
+@section FootJs{
+    <script>
+
+    </script>
+}

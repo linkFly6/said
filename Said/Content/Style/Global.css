@@ -150,4 +150,4 @@ input:focus { box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102
 
 /*licenses*/
 .licenses { width: 91px; display: inline-block; height: 31px; overflow: hidden; text-indent: -9999em; }
-.licenses-cc { background: url('../Images/licenses-cc4.png') no-repeat; }
+.licenses-cc { background: url('/Content/Images/licenses-cc4.png') no-repeat; }

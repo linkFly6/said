@@ -9,13 +9,21 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
     padding: 0;
     border: 0;
     list-style: none;
+}
+
+body {
     -webkit-font-smoothing: antialiased;
+    font-family: 'lucida grande','lucida sans unicode',lucida,helvetica,'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei',sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: inherit;
     color: inherit;
     font-family: inherit;
+}
+
+a {
+    text-decoration: none;
 }
 
 .displaybox {

@@ -48,7 +48,7 @@
         <header class="navbar navbar-default">
             <div class="nav-container">
                 <div class="logo">
-                    <a href="javascript:;" class="home">听说</a>
+                    <a href="/" class="home">听说</a>
                 </div>
             </div>
         </header>
@@ -56,7 +56,17 @@
             @RenderBody()
         </section>
     </section>
-    <footer></footer>
+    <footer class="footer">
+        <div class="f-link">
+            <a href="/" class="f-home">首页</a>
+            <a href="/wap/about" class="f-about">关于</a>
+        </div>
+        <div class="logo-box">
+            <div class="logo">
+                <a href="/" class="home">听说</a>
+            </div>
+        </div>
+    </footer>
     <script src="@Url.Content("~/Content/Back/JavaScript/jQuery-2.1.1.js?v=1.0")"></script>
     <script src="@Url.Content("~/Content/Back/JavaScript/so/so.js")"></script>
     <script>

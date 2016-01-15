@@ -4,18 +4,19 @@
     #{$property}: $value;
 }
 
-.navbar {
-    .nav-container {
-    }
+body {
+    background-color: #f1f1f1;
+}
 
-    .logo {
-        font-size: 1em;
-        height: 48px;
-        text-align: center;
-        background: url('/Content/Images/said-logo2.png') no-repeat center center;
-        background-size: auto 32px;
-        overflow: hidden;
-    }
+.logo {
+    font-size: 1em;
+    height: 48px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+    background: url('/Content/Images/said-logo2.png') no-repeat center center;
+    background-size: auto 32px;
+    overflow: hidden;
 
     .home {
         line-height: 2.35;
@@ -24,6 +25,12 @@
         width: 100px;
         height: 100%;
         text-indent: -9999em;
+    }
+}
+
+.navbar {
+    .nav-container {
+        text-align: center;
     }
 }
 
@@ -36,26 +43,69 @@
         background-size: 120% auto;
         height: 160px;
         overflow: hidden;
-        -webkit-filter: brightness(.8);
-        filter: brightness(.8);
+        @include prefixer(filter,brightness(.8));
+    }
 
-        .banner-content {
-            left: 50%;
-            top: 50%;
-            position: absolute;
-            text-align: center;
-            z-index: 4;
-            @include prefixer(transform,translate(-50%,-50%));
-            @include prefixer(transform,translate3D(-50%,-50%,0));
+    .banner-content {
+        color: #fff;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        text-align: center;
+        z-index: 4;
+        @include prefixer(transform,translate(-50%,-50%));
+        @include prefixer(transform,translate3D(-50%,-50%,0));
 
-            h1 {
-                font-size: 1em;
-                font-weight: 500;
-            }
+        h1 {
+            font-size: 1em;
+            font-weight: 500;
+        }
 
-            p {
-                font-size: 14px;
-            }
+        p {
+            font-size: 14px;
         }
     }
+}
+
+/*footer*/
+.footer {
+    background-color: #fafafa;
+    padding-top: 15px;
+
+    .logo-box {
+        text-align: center;
+    }
+}
+
+.f-link {
+    text-align: center;
+    padding: 10px 0;
+
+    a {
+        font-size: 13px;
+        color: #555;
+    }
+
+    .f-home {
+        padding-right: 18px;
+    }
+
+    .f-about {
+        padding-left: 18px;
+        border-left: 1px solid #dadada;
+    }
+}
+
+/*licenses*/
+.licenses {
+    width: 91px;
+    display: inline-block;
+    height: 31px;
+    overflow: hidden;
+    text-indent: -9999em;
+}
+
+.licenses-cc {
+    background: url('/Content/Images/licenses-cc4.png') no-repeat;
 }

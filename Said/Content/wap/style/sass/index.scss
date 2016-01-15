@@ -4,11 +4,6 @@
     #{$property}: $value;
 }
 
-.banner-content {
-    color: #fff;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
-}
-
 .said-box {
     padding: 10px;
 }
@@ -16,7 +11,8 @@
 .said-item {
     color: #666;
     padding: 10px 0;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #e8e8e8;
+    /*border-bottom: 1px solid #fff;*/
     text-decoration: none;
 
     &:last-child {
@@ -24,10 +20,11 @@
     }
 
     .item-bg {
-        width: 150px;
+        width: 200px;
         height: 80px;
         background: none center center no-repeat;
-        background-size: 200% auto;
+        background-size: 150% auto;
+        @include prefixer(filter,brightness(.8));
     }
 
     .item-context {

@@ -1,5 +1,7 @@
-﻿using Said.Controllers;
+﻿using Said.Application;
+using Said.Controllers;
 using Said.Controllers.Filters;
+using Said.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace Said.Areas.Wap.Controllers
 
         public ActionResult Index()
         {
+            ViewData["articleList"] = ArticleApplication.GetByTop(10).ToList<Article>();
             return View();
         }
     }

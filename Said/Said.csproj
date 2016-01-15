@@ -136,6 +136,7 @@
     <Compile Include="Areas\Back\Controllers\SiteController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Areas\Wap\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Wap\Controllers\SaidController.cs" />
     <Compile Include="Areas\Wap\WapAreaRegistration.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
     <Compile Include="Common\ImageCommon.cs" />
@@ -388,7 +389,10 @@
     <Content Include="Content\Style\projects.css" />
     <Content Include="Content\Style\saiddetail.css" />
     <Content Include="Content\Style\saidList.css" />
+    <Content Include="Content\wap\style\article.css" />
+    <Content Include="Content\wap\style\index.css" />
     <Content Include="Content\wap\style\layout.css" />
+    <Content Include="Content\wap\style\wap.css" />
     <Content Include="Content\Widget\sweetalert\sweetalert-dev.js" />
     <Content Include="Content\Widget\sweetalert\sweetalert.css" />
     <Content Include="Content\Widget\sweetalert\sweetalert.min.js" />
@@ -574,6 +578,7 @@
     <Content Include="Areas\Wap\Views\Web.config" />
     <Content Include="Areas\Wap\Views\Shared\_LayoutWap.cshtml" />
     <Content Include="Areas\Wap\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Wap\Views\Said\Article.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -609,6 +614,13 @@
     <Content Include="Content\wap\style\layout.css.map" />
     <Content Include="Content\Back\Style\login.css.map" />
     <Content Include="Content\wap\javascript\require.config.js" />
+    <Content Include="Content\wap\style\sass\wap.scss" />
+    <Content Include="Content\wap\style\sass\koala-config.json" />
+    <Content Include="Content\wap\style\wap.css.map" />
+    <Content Include="Content\wap\style\sass\index.scss" />
+    <Content Include="Content\wap\style\index.css.map" />
+    <Content Include="Content\wap\style\sass\article.scss" />
+    <Content Include="Content\wap\style\article.css.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

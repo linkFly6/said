@@ -1,0 +1,84 @@
+﻿.music-content {
+    padding: 0 15px 55px;
+
+    .blog-title {
+        padding: 20px 0;
+        word-break: break-word;
+        font-size: 32px;
+        color: #2f2f2f;
+        border-bottom: 1px solid #e8e8e8;
+    }
+
+    .blog-content {
+        padding: 20px 0;
+        font-size: 17px;
+        line-height: 1.5em;
+        font-weight: 100;
+        color: #555;
+
+        p {
+            margin: 0 0 20px 0;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        blockquote {
+            margin: 0 0 25px 0;
+            padding: 20px;
+            font-weight: 100;
+            word-break: break-all;
+            border-left: 4px solid #999;
+            background-color: #f6f6f6;
+        }
+    }
+}
+
+.blog-more-info {
+    border-top: 1px solid #e8e8e8;
+    padding: 15px;
+}
+
+.blog-more-head {
+    font-size: 13px;
+
+    .displaybox {
+        padding: 10px 0;
+    }
+
+    .info-date, .info-like {
+        -webkit-flex: 1;
+        flex: 1;
+    }
+
+    .info-date {
+    }
+
+    .info-like {
+        text-align: right;
+
+        a {
+            color: red;
+        }
+    }
+
+    .like-sum {
+        padding: 0 5px;
+    }
+}
+
+
+.blog-info {
+    text-align: center;
+
+    a {
+        color: #28a1c5;
+    }
+
+    li {
+        &:first-child {
+            padding: 10px 0;
+        }
+
+        padding: 5px 0;
+    }
+}
