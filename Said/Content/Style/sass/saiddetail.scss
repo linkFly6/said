@@ -240,18 +240,36 @@ $playerBar: #dbdbdb;
 
 .blog-content {
     padding: 45px;
-}
-
-.blog-content * {
+    font-family: "lucida grande","lucida sans unicode",lucida,helvetica,"Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+    /*padding: 10px;*/
     font-size: 16px;
-    padding: 10px;
-    text-indent: 2em;
     text-align: justify;
     word-wrap: break-word;
     word-break: normal;
-    line-height: 30px;
+    font-weight: 300;
+    color: #333;
+    line-height: 1.5em;
     letter-spacing: 1px;
+
+    p {
+        margin: 0 0 20px 0;
+    }
+
+    blockquote {
+        margin: 0 0 25px 0;
+        padding: 20px;
+        font-weight: 300;
+        word-break: break-all;
+        border-left: 4px solid #999;
+        background-color: #fafafa;
+
+        p {
+            margin: 0;
+        }
+    }
 }
+
+
 /*footer&more*/
 .blog-more-info {
     padding-bottom: 50px;
@@ -268,7 +286,6 @@ $playerBar: #dbdbdb;
         position: absolute;
         left: 10px;
         top: 8px;
-        
     }
 }
 

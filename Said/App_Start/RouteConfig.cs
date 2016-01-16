@@ -11,6 +11,8 @@ namespace Said
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            //最终发布后，一些URL规则可以直接被IIS URLRewrite重写掉
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             //wap - 
             routes.MapRoute(

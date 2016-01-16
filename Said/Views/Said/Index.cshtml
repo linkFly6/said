@@ -79,7 +79,7 @@
             @{
                 if (MaxPage > 0)
                 {
-                    if (PageIndex != 1)
+                    if (PageIndex != 1 && MaxPage > 1)
                     {
                         <a class="page-pre page-disabled" href="@(PageIndex-1)">上一页</a>
                     }
@@ -136,7 +136,7 @@
                         <span class="page-break">...</span>
                         <a class="page-index" href="/Said/@MaxPage"></a>
                     }
-                    if (PageIndex != MaxPage)
+                    if (PageIndex != MaxPage && MaxPage > 1)
                     {
                         <a class="page-next" href="/Said/@(PageIndex + 1)">下一页</a>
                     }

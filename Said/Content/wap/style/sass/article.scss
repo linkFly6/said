@@ -1,5 +1,13 @@
-﻿.music-content {
+﻿.content {
+    a {
+        color: #28a1c5;
+    }
+}
+
+.music-content {
     padding: 0 15px 55px;
+
+
 
     .blog-title {
         padding: 20px 0;
@@ -10,13 +18,16 @@
     }
 
     .blog-content {
-        padding: 20px 0;
-        font-size: 17px;
-        line-height: 1.5em;
-        font-weight: 100;
         color: #555;
+        word-wrap: break-word;
+        padding-top: 25px;
 
         p {
+            /*padding: 20px 0;*/
+            font-size: 17px;
+            line-height: 1.5em;
+            font-weight: 300;
+            color: #555;
             margin: 0 0 20px 0;
             word-break: break-word;
             white-space: pre-wrap;
@@ -25,16 +36,19 @@
         blockquote {
             margin: 0 0 25px 0;
             padding: 20px;
-            font-weight: 100;
+            font-weight: 300;
             word-break: break-all;
             border-left: 4px solid #999;
             background-color: #f6f6f6;
+
+            p {
+                margin: 0;
+            }
         }
     }
 }
 
 .blog-more-info {
-    border-top: 1px solid #e8e8e8;
     padding: 15px;
 }
 
@@ -49,10 +63,8 @@
         -webkit-flex: 1;
         flex: 1;
     }
-
-    .info-date {
-    }
-
+    /*.info-date {
+    }*/
     .info-like {
         text-align: right;
 
@@ -70,9 +82,7 @@
 .blog-info {
     text-align: center;
 
-    a {
-        color: #28a1c5;
-    }
+
 
     li {
         &:first-child {
@@ -80,5 +90,47 @@
         }
 
         padding: 5px 0;
+    }
+}
+
+.music-player {
+    position: relative;
+    padding: 10px 15px;
+    border: 1px solid red;
+
+    .player {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 45px;
+        padding-top: 12px;
+
+        .play-btn {
+            color: #999;
+        }
+    }
+
+    .info {
+        padding-right: 45px;
+        overflow: hidden;
+
+        h3 {
+            font-size: 16px;
+            line-height: 18px;
+            font-weight: normal;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+
+        .link {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 12px;
+            line-height: 1.5;
+        }
     }
 }
