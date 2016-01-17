@@ -96,6 +96,17 @@ namespace Said.Application
             return Context.GetById(id);
         }
 
+
+
+        /// <summary>
+        /// 查询全部文章
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Article> Find()
+        {
+            return Context.GetManyDesc(m => m.IsDel == 0, m => m.Date);
+        }
+
         /// <summary>
         /// 查找Said的文件名
         /// </summary>

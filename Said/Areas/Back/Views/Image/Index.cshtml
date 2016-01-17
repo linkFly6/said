@@ -139,26 +139,7 @@
             Lab: 6,
             Other: 7
         };
-        require.config({
-            baseUrl: '/Content/Back/JavaScript',
-            paths: {
-                'showMsg': 'so/plug/showMsg',
-                'avalonUpload': 'avalon/plug/uploadBox',
-                'dialog': 'so/plug/dialog'
-            },
-            packages: [
-            {
-                name: 'so',
-                location: 'so',
-                main: 'so'
-            },
-            {
-                name: 'said',
-                location: 'said',
-                main: 'said'
-            }]
-        });
-        require(['said', 'jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload'], function (said, $, avalon, _, showMsg, dialog, upload) {
+        require(['said', 'jquery', 'avalon', 'so', 'sweetalert', 'dialog', 'avalonUpload'], function (said, $, avalon, _, sweetalert, dialog, upload) {
             $(function () {
                 'use strict';
                 var database = _.Database('back.Image');
@@ -169,8 +150,7 @@
                     get: function (imgName, typeId) {
                         return (Source.image[typeId] || Source.image[0]) + imgName;
                     }
-                },
-                $dialog = dialog();
+                };
                 var vmCurrData = avalon.define({
                     $id: 'currData',
                     ImageId: '',
@@ -179,7 +159,7 @@
                     Date: '',
                     ISize: '',
                     Type: '',
-                    ReferenceCount: '',
+                    ReferenceCount: ''
                 });
 
                 var vmModel = avalon.define({
@@ -204,23 +184,34 @@
                         vmModel.multiple = !vmModel.multiple;
                     },
                     deleteImage: function (e, item, i) {
-                        $dialog.text('您确定要永久删除图片【<span class="said-red said-bold"> ' + item.IName + ' </span>】么？').on(function () {
+                        sweetalert({
+                            title: '确定删除？',
+                            text: '您确定要永久删除图片【<span class="said-red said-bold"> ' + item.IName + ' </span>】么？',
+                            html: true,
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: '确认删除',
+                            closeOnConfirm: false,
+                            cancelButtonText: '取消',
+                            //配置正在加载
+                            showLoaderOnConfirm: true
+                        }, function () {
                             said.ajax(Action.realDeleteImage, {
                                 id: item.ImageId
                             }).done(function (result) {
                                 if (result.code === 0) {
-                                    showMsg('删除图片成功', showMsg.OK);
+                                    sweetalert('删除图片成功');
                                     vmModel.datas.splice(i, 1);
                                     //更新缓存池
                                     var index = vmModel.offset + i;
                                     if (vmModel.caches[index]) vmModel.caches.splice(index, 1);
                                 } else {
-                                    showMsg('服务器删除图片异常：' + result.msg, showMsg.ERROR, true);
+                                    sweetalert('删除异常', '服务器返回异常：' + result.msg, 'error');
                                 }
                             }).fail(function () {
-                                showMsg('网络连接异常', showMsg.ERROR, true);
+                                sweetalert('删除异常', '网络连接异常', 'error');
                             });
-                        }).show();
+                        });
                         e.stopPropagation();
                     },
                     convertSize: function (size) {//byte
@@ -338,7 +329,11 @@
                             self.skipPage(self.pageIndex, self.sumPage);
                         }).fail(function () {
                             vmModel.isLoading = false;
-                            showMsg('加载数据异常', showMsg.ERROR, 2000);
+                            sweetalert({
+                                'type': 'warning',
+                                text: '加载数据异常'
+                            })
+                            //showMsg('加载数据异常', showMsg.ERROR, 2000);
                         });
                     },
 
@@ -360,9 +355,9 @@
                         },
                         done: function (vm, data) {
                             if (data.code) {
-                                showMsg('服务器返回异常：' + data.msg, showMsg.ERROR, true);
+                                sweetalert('上传异常', '服务器返回异常：' + data.msg, 'error');
                             } else {
-                                showMsg('上传成功', showMsg.OK);
+                                sweetalert('上传成功');
                                 data.model.img = _.imgLoad.DEFAULTS.load;
                                 _.imgLoad({
                                     src: imageUrl.thumbnail(data.model.IFileName, data.model.Type),
@@ -383,7 +378,7 @@
                             return true;
                         },
                         fail: function (vm, data) {
-                            showMsg('上传失败：' + data.msg, showMsg.ERROR, true);
+                            sweetalert('上传异常', '异常信息：' + data.msg, 'error');
                         }
                     }
                 });

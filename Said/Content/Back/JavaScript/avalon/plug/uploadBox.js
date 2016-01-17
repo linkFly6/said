@@ -69,6 +69,9 @@
                         data.append(name, value);
                     })
                 }
+                if ($.isFunction(config.selected))
+                    config.selected(file);
+
                 //上传的文件名，默认为"uploadFile",server可以通过Request.Files["uploadFile"]来获取上传的文件
                 data.append(config.name, file /*file.slice(0)//如果需要支持断点续传的话*/, encodeURIComponent(name));//文件
 
@@ -91,7 +94,7 @@
                                 //上传完成
                                 vm.visible = !!(error ? done(vm, xhr, { code: 3, msg: '服务器返回的并不是可解析的结果' }, error) : done(vm, data));
                             }
-                            
+
                         } else {
                             fail(vm, { code: 4, msg: '服务器返回异常' }, xhr);
                         }
@@ -139,8 +142,9 @@
         size: 1048576,//默认1mb，<=0表示允许无限
         filters: '*',//默认允许上传所有文件，为数组的话则限定上传的数组后缀
         //['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/],//默认是图片
-        done: noop,
-        fail: noop,
+        done: noop,//上传成功
+        fail: noop,//上传失败
+        selected: noop,//选择了文件（已经验证过了正确性）
         zIndex: 3
     };
     return widget;

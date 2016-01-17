@@ -1,14 +1,16 @@
-﻿@{
+﻿@using Said.Models;
+@{
     ViewBag.Title = "Said管理中心";
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
+    IList<Article> Articles = ViewData["articles"] as IList<Article>;
 }
 
-<div class="page-header">
-    <h3>添加Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small></h3>
-</div>
+@*<div class="page-header">
+        <h3>添加Said&nbsp;&nbsp;<small>&gt;添加一篇Said</small></h3>
+    </div>*@
 <ol class="breadcrumb">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Siad管理</a></li>
+    <li><a href="/Back">Home</a></li>
+    <li>Siad管理</li>
     <li class="active">添加Said</li>
 </ol>
 <div class="main-context">
@@ -17,7 +19,7 @@
         </div>
     </div>
     <div class="bs-table">
-        <table id="btTable" class="table table-hover table-striped" data-url="/Said/GetSaidList" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-side-pagination="server"></table>
+        <table id="btTable" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
     </div>
 </div>
 @section Css{
@@ -26,6 +28,66 @@
 }
 @section FootJs{
     <script>
+        var articlesDatas = [];
+
+        @if (Articles != null)
+        {
+
+            foreach (var item in Articles)
+            {
+
+                Write(new HtmlString(string.Format(@"articlesDatas.push({{
+                        SaidId: '{0}',
+                        STitle: '{1}',
+                        STag: '{2}',
+                        SSummary: '{3}',
+                        SPV: '{4}',
+                        SName: '{5}',
+                        SIsTop: '{6}',
+                        SComment: '{7}',
+                        SClick: '{8}',
+                        IsPrivate: '{9}',
+                        Password: '{10}',
+                        Likes: '{11}',
+                        SHTML:'{12}',
+                        Date:'{13}',
+                        Song: {{
+                            'SongName':'{14}',
+                            'SongId':'{15}',
+                            'SongArtist':'{16}',
+                            'SongAlbum':'{17}',
+                            'SongFileName':'{18}'
+                        }}
+                        }});",
+                        item.SaidId,
+                        item.STitle,
+                        item.STag,
+                        HttpUtility.HtmlEncode(item.SSummary.Replace("\n", " ")),
+                        item.SPV,
+                        item.SName,
+                        item.SIsTop,
+                        item.SComment,
+                        item.SClick,
+                        item.IsPrivate,
+                        item.Password,
+                        item.Likes,
+                        HttpUtility.HtmlEncode(item.SHTML.Replace("\n", " ")),
+                        item.Date.ToString("yyyy-MM-dd HH:mm:ss"),
+                        item.Song.SongName,
+                        item.Song.SongId,
+                        item.Song.SongArtist,
+                        item.Song.SongAlbum,
+                        item.Song.SongFileName
+                        )));
+
+
+            }
+        }
+        //console.info(articlesDatas);
+    </script>
+    <script>
+
+
         var Action = {
             article: '@Url.Action("Said", "Home")',
             img: '@Url.Action("UploadSaidImg", "Source")',
@@ -94,6 +156,7 @@
             require(['jquery', 'so', 'bsTable'], function ($, so) {
                 $('#btTable').bootstrapTable({
                     columns: [
+                     //{ field: 'SaidId', title: 'ID', visible: true },
                      {
                          field: 'STitle',
                          title: '名&nbsp;&nbsp;&nbsp;称',
@@ -102,23 +165,22 @@
                          formatter: function (value, row, index) {
                              console.log(row); //row可以访问到数据
                              //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
-                             return ['<a target="_black" href="@Url.Action("Edit", "Said", new { id = Url.Encode("b5166390-4dfb-4469-9994-0b5709f803c1") })">', value, '</a>'].join('');
+                             return ['<a target="_black" href="/Back/Said/Edit/', encodeURIComponent(row.SaidId), '">', value, '</a>'].join('');
                          }
                      },
-                     {
-                         field: 'SSummary',
-                         title: '描&nbsp;&nbsp;&nbsp;述',
-                         valign: 'middle',
-                         sortable: true,
-                         formatter: function (value, row, index) {
-                             return value;
-                         }
-                     },
+                     //{
+                     //    field: 'SSummary',
+                     //    title: '描&nbsp;&nbsp;&nbsp;述',
+                     //    valign: 'middle',
+                     //    sortable: true,
+                     //    formatter: function (value, row, index) {
+                     //        return value;
+                     //    }
+                     //},
                      {
                          field: 'Song.SongName',
                          title: '歌&nbsp;&nbsp;&nbsp;曲',
                          valign: 'middle',
-                         sortable: true,
                          formatter: function (value, row, index) {
                              return value;
                          }
@@ -133,17 +195,8 @@
                          }
                      },
                      {
-                         field: 'SDate',
+                         field: 'Date',
                          title: '发布时间',
-                         sortable: true,
-                         valign: 'middle',
-                         formatter: function (value, row, index) {
-                             return so.dateFormat(value);
-                         }
-                     },
-                     {
-                         field: 'Classify.CName',
-                         title: '分&nbsp;&nbsp;&nbsp;类',
                          sortable: true,
                          valign: 'middle',
                          formatter: function (value, row, index) {
@@ -165,9 +218,10 @@
                              return ['<a class="btn btn-default btn-sm" data-id="', value, '">编辑</a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default btn-sm" data="', value, '">删除</a>'].join('');
                          }
                      }
-
                     ],
-
+                    pageSize: 20,
+                    pageList: [20, 50, 100, 150, 200, 400, 600, 1000],
+                    data: articlesDatas
                 }).on('dbl-click-row.bs.table', function (e, row, $element) {
                 })
             });

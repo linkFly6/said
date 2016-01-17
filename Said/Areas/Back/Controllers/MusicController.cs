@@ -98,7 +98,7 @@ namespace Said.Areas.Back.Controllers
                 return ResponseResult(1, errorMsg);
             if (string.IsNullOrWhiteSpace(ReleaseDate))
                 return ResponseResult(1, "歌曲发行日期不正确");
-            model.SongId = Guid.NewGuid().ToString().Replace("-", "");
+            model.SongId = SaidCommon.GUID;
             model.Date = DateTime.Now;
             model.SongLikeCount = 0;
             model.ReleaseDate = ConvertHelper.GetTime(ReleaseDate);

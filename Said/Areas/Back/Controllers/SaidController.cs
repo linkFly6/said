@@ -17,6 +17,8 @@ namespace Said.Areas.Back.Controllers
 
         public ActionResult Index()
         {
+            //TODO 注意检测贪婪查询
+            ViewData["articles"] = ArticleApplication.Find().ToList();
             return View();
         }
 

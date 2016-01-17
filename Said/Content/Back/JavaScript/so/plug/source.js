@@ -1,4 +1,4 @@
-﻿define(['jquery', 'so', 'underscore', 'upload', 'dialog'], function ($, so, _, upload, dialog) {
+﻿define(['jquery', 'so', 'underscore', 'dialog', 'upload', 'sweetalert'], function ($, so, _, dialog, upload, sweetalert) {
     'use strict';
     var noop = function () { },
         //push = Array.prototype.push,
@@ -142,8 +142,6 @@
 
     Source.prototype._initEvent = function ($body) {
         var self = this,
-            deleteDialog = dialog(),
-            errorDialog = self.errorDialog,
             cache = null,
             selectHandle = self.options.multiple ?
             function () { //多选
@@ -175,12 +173,20 @@
         $body.on('click.source', '.source-thum', selectHandle)
              .on('click.source', '.source-delete', function () {//删除
                  var elem = this;
-                 deleteDialog.text('您确定要删除图片[<span style="color:red;padding:0 0.5em;">' + this.dataset.name + '</span>]么？').on(function () {
+                 sweetalert({
+                     title: '确定删除？',
+                     text: '您确定要删除图片[<span style="color:red;padding:0 0.5em;">' + this.dataset.name + '</span>]么？',
+                     html: true,
+                     showCancelButton: true,
+                     confirmButtonColor: "#DD6B55",
+                     confirmButtonText: '确认删除',
+                     closeOnConfirm: false,
+                     cancelButtonText: '取消',
+                     //配置正在加载
+                     showLoaderOnConfirm: true
+                 }, function () {
                      var id = elem.dataset.id,
                          index = self._searchIndexOf(self.datas, id);
-                     ~index && self.datas.splice(index, 1);
-                     $(elem.parentNode.parentNode).remove();
-                     self._setCount(--self.total);
                      $.ajax({
                          url: self.options.deleteUrl,
                          contentType: 'application/json',
@@ -189,12 +195,18 @@
                          data: JSON.stringify({ id: id })
                      }).done(function (data) {
                          if (data.code !== 0)
-                             errorDialog.text('删除图片失败，服务器返回消息：' + data.msg).show();
+                             sweetalert('删除图片失败', '服务器返回消息：' + data.msg, 'error');
+                         else {
+                             ~index && self.datas.splice(index, 1);
+                             $(elem.parentNode.parentNode).remove();
+                             self._setCount(--self.total);
+                             sweetalert('删除图片成功！');
+                         }
+
                      }).fail(function (res) {
-                         errorDialog.text('删除图片失败：网络连接异常').show();
+                         sweetalert('删除图片失败', '网络连接异常', 'error');
                      });
-                     //self.options.remove(id);
-                 }).show();
+                 })
                  return false;
              });
         return this;
@@ -254,11 +266,11 @@
                 if (data.code === 0) {
                     self._insert(data.model);
                 } else {
-                    self.errorDialog.text(data.msg).show();
+                    sweetalert('上传失败', '异常信息：' + data.msg, 'error');
                 }
             },
             fail: function (error) {
-                self.errorDialog.text(error.msg).show();
+                sweetalert('上传失败', '异常信息：' + error.msg, 'error');
             },
             progress: function (value) {
                 $progress.css('width', value + '%');

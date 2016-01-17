@@ -22,6 +22,9 @@
 </div>
 <div class="main-context">
     <div class="source-content" ms-controller="model">
+        <audio height="0" width="0" style="height:0;width:0;" ms-dom="player">
+            @*<source src="file.mp3" type="audio/mp3" />*@
+        </audio>
         <div class="source-head">
             <div class="toolbar-left form-inline">
                 <button class="btn btn-default btn-sm" ms-click="toggleForm(isAdd)">{{isAdd?'取消添加':'添加音乐'}}</button>
@@ -157,6 +160,7 @@
             <li class="text-center"><a ms-href="SongFileNamePath + SongFileName" target="_blank" class="btn btn-default">点击试听</a></li>
         </ul>
     </div>
+
 </div>
 @section Css{
     <link href="@Url.Content("~/Content/Back/Style/imagesCenter.css")" rel="stylesheet" />
@@ -186,7 +190,7 @@
                     return Source.image + imgName;
                 }
             }
-        require(['said', 'jquery', 'avalon', 'so', 'showMsg', 'dialog', 'avalonUpload', 'bs-datetimepicker', 'source'], function (said, $, avalon, _, showMsg, dialog, upload) {
+        require(['said', 'jquery', 'avalon', 'so', 'sweetalert', /*'dialog',*/ 'avalonUpload', 'bs-datetimepicker', 'source'], function (said, $, avalon, _, sweetalert, /*dialog,*/ upload) {
             $(function () {
                 'use strict';
                 //_.Database('back.Music').clear();
@@ -232,7 +236,6 @@
                 localSong['ImagePath'] = database.val('ImagePath') || '';
                 localSong['DurationText'] = database.val('DurationText') || '';
 
-                var $dialog = dialog();
                 //歌曲详情vm，利用extend实现多态
                 var vmCurrData = avalon.define($.extend({}, songPlainModel, { $id: 'currData', Date: '', SongFileNamePath: Source.songPath }));
 
@@ -259,7 +262,7 @@
                         var validateIsOk = true;
                         $.each(songPlainModel, function (key, value) {
                             if (key !== 'SongId' && key !== 'SongLikeCount' && key !== 'ReferenceCount' && !vmSong[key]) {
-                                showMsg('存在不正确的表单项，请仔细检查', showMsg.WARNING);
+                                sweetalert('存在不正确的表单项', '存在不正确的表单项，请仔细检查未填项', 'warning');
                                 return validateIsOk = false;
                             }
                         });
@@ -273,7 +276,7 @@
                         });
                         said.ajax(Action.addSong, data).done(function (result) {
                             if (result.code === 0) {
-                                showMsg('添加歌曲成功', showMsg.OK);
+                                sweetalert('添加歌曲成功', '喜大普奔，添加歌曲成功！', 'success');
                                 //检查这里
                                 vmModel.addModel(_.extend(true, data, {
                                     SongId: result.data,
@@ -283,10 +286,10 @@
                                 }));
                                 vmSong.reset();
                             } else {
-                                showMsg('服务器返回异常：' + result.msg, showMsg.ERROR, true);
+                                sweetalert('服务器返回异常', '错误信息：' + result.msg, 'error');
                             }
                         }).fail(function () {
-                            showMsg('网络连接异常', showMsg.ERROR, true);
+                            sweetalert('网络连接异常', '向服务器发送添加歌曲请求异常', 'error');
                         });
                     },
                     //删除歌曲文件
@@ -299,12 +302,12 @@
                             if (result.code === 0) {
                                 vmSong.reset();
                             } else {
-                                showMsg('服务器删除资源异常：' + result.msg, showMsg.ERROR, true);
+                                sweetalert('服务器删除资源异常', '返回信息：' + result.msg, 'error');
                             }
                             vmModel.isLoading = false;
                         }).fail(function (data) {
                             vmModel.isLoading = false;
-                            showMsg('网络连接异常', showMsg.ERROR, true);
+                            sweetalert('网络连接异常', '向服务器发送删除歌曲请求异常', 'error');
                         });
 
                     },
@@ -322,15 +325,22 @@
                         classText: 'upload-text',
                         classProgress: 'upload-progress',
                         size: Source.maxSize,
+                        //选择了文件
+                        selected: function (file) {
+                            //创建本地url
+                            var url = URL.createObjectURL(file);
+                            //拿到歌曲时长
+                            $player.attr('src', url);
+                        },
                         done: function (vm, data, error, e) {
                             if (error) {
-                                showMsg('上传失败：' + error.msg, showMsg.ERROR, true);
+                                sweetalert('上传失败', '错误信息：' + error.msg, 'error');
                                 return;
                             }
                             if (data.code) {
-                                showMsg('服务器返回异常：' + data.msg, showMsg.ERROR, true);
+                                sweetalert('服务器返回异常', '异常信息：' + data.msg, 'error');
                             } else {
-                                showMsg('上传成功', showMsg.OK);
+                                sweetalert('上传成功', '喜大普奔，上传音乐文件成功！', 'success');
                                 var fileName = data.msg;
                                 data = _.parseJSON(data.data);
                                 var model = {
@@ -342,8 +352,8 @@
                                     //TODO 图片为默认
                                     IName: '',
                                     FileType: data.Type,
-                                    Duration: _.parseSeconds(data.Length),
-                                    DurationText: data.Length,
+                                    Duration: parseInt($player[0].duration),
+                                    DurationText: _.parseTime($player[0].duration),
                                     SongSize: data.Size,
                                     SongSizeText: _.parseBit(data.Size)
                                 };
@@ -357,7 +367,7 @@
                             return true;
                         },
                         fail: function (vm, data) {
-                            showMsg('上传失败：' + data.msg, showMsg.ERROR, true);
+                            sweetalert('上传失败', '错误消息：' + data.msg, 'error');
                         }
                     }
 
@@ -418,30 +428,39 @@
                         vmModel.isAdd = !isAdd;
                     },
                     deleteModel: function (e, item, i) {
-                        $dialog.text('您确定要永久删除歌曲【<span class="said-red said-bold"> ' + item.SongName + ' </span>】么？').on(function () {
-                            e.stopPropagation();
+                        sweetalert({
+                            title: '确定删除？',
+                            text: '您确定要永久删除歌曲【<span class="said-red said-bold"> ' + item.SongName + ' </span>】么？',
+                            html: true,
+                            showCancelButton: true,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: '确认删除',
+                            closeOnConfirm: false,
+                            cancelButtonText: '取消',
+                            //配置正在加载
+                            showLoaderOnConfirm: true
+                        }, function () {
                             if (item.ReferenceCount > 0) {
-                                showMsg('删除歌曲异常：歌曲正在被引用，禁止删除！', showMsg.WARNING, true);
+                                sweetalert('删除歌曲异常', '歌曲正在被引用，禁止删除！', 'warning');
                                 return;
                             }
                             said.ajax(Action.realDelete, {
                                 id: item.SongId
                             }).done(function (result) {
                                 if (result.code === 0) {
-                                    showMsg('删除歌曲成功', showMsg.OK);
+                                    sweetalert('删除歌曲成功', '删除歌曲成功', 'success');
                                     vmModel.datas.splice(i, 1);
                                     //更新缓存池
                                     var index = vmModel.offset + i;
                                     if (vmModel.caches[index]) vmModel.caches.splice(index, 1);
                                     vmModel.resetActive();
                                 } else {
-                                    showMsg('服务器删除歌曲异常：' + result.msg, showMsg.ERROR, true);
+                                    sweetalert('服务器删除歌曲异常', '错误信息：' + result.msg, 'error');
                                 }
                             }).fail(function () {
-                                showMsg('网络连接异常', showMsg.ERROR, true);
+                                sweetalert('网络连接异常', '向服务器发送删除请求发生异常', 'error');
                             });
-                        }).show();
-
+                        });
                     },
                     addModel: function (item) {
                         item.img = _.imgLoad.DEFAULTS.load;
@@ -546,7 +565,7 @@
                             self.skipPage(self.pageIndex, self.sumPage);
                         }).fail(function () {
                             vmModel.isLoading = false;
-                            showMsg('加载数据异常', showMsg.ERROR, 2000);
+                            sweetalert('加载数据异常', '加载数据异常', 'warning');
                         });
                     },
                     load: function (pageIndex, keywords) {
@@ -565,7 +584,7 @@
                             vmModel.datas = vmModel.caches.slice(self.offset, self.offset + self.limit);
                             self.skipPage(self.pageIndex, self.sumPage);
                         } else {
-                            showMsg('加载数据异常（缓存池里没有数据）', showMsg.ERROR, 2000);
+                            sweetalert('加载数据异常', '缓存池里没有数据', 'warning');
                         }
                         vmModel.isLoading = false;
                     }
@@ -584,6 +603,10 @@
                 }),
                 _releaseDateLocalValue = database.val('ReleaseDate');
                 if (_releaseDateLocalValue) $dateInput.val(_.dateFormat(_releaseDateLocalValue, 'yyyy-MM-dd'));
+
+
+                //隐藏的音乐播放器，由它来获取时长
+                var $player = $(vmModel.elem.player);
 
 
                 vmModel.loadAll();
