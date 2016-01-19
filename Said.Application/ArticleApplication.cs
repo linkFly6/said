@@ -167,5 +167,33 @@ namespace Said.Application
             return Context.GetPageDesc(page, m => m.STitle.Contains(keywords) || m.SContext.Contains(keywords), m => m.Date);
         }
         #endregion
+
+
+        #region 删除
+        /// <summary>
+        /// 逻辑删除一篇Said
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static int Delete(Article model)
+        {
+            model.IsDel = 1;
+            Context.Update(model);
+            return Context.Submit();
+        }
+
+
+        /// <summary>
+        /// 无力删除一篇Said（不可恢复）
+        /// </summary>
+        /// <param name="id">要删除的文章id</param>
+        /// <returns></returns>
+        public static int RealDelete(string id)
+        {
+            Context.Delete(m => m.SaidId == id);
+            return Context.Submit();
+        }
+
+        #endregion
     }
 }

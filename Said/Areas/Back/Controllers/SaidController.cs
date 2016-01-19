@@ -133,5 +133,22 @@ namespace Said.Areas.Back.Controllers
         }
         #endregion
 
+
+        #region 逻辑删除一篇Said
+        /// <summary>
+        /// 删除一篇文章
+        /// </summary>
+        /// <param name="id">文章id</param>
+        /// <returns></returns>
+        public JsonResult Delete(string id)
+        {
+            Article model = ArticleApplication.Find(id);
+            if (model == null)
+                return ResponseResult(1, "要删除的文章不存在（数据库未检索到该文章ID）");
+            return ArticleApplication.Delete(model) > 0 ?
+                ResponseResult()
+                : ResponseResult(2, "从数据库中删除文章失败");
+        }
+        #endregion
     }
 }
