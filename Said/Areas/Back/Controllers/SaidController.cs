@@ -47,7 +47,17 @@ namespace Said.Areas.Back.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            return View(ArticleApplication.Find(id));
+            var model = ArticleApplication.Find(id);
+            if (model == null)
+            {
+                return RedirectToAction("Index", new
+                {
+                    formUrl = Request.Url.AbsoluteUri
+                });
+            }
+            ViewData["SongsList"] = SongApplication.FindAllByDesc().ToList<Song>();
+            ViewData["FileNames"] = ArticleApplication.FindAllFileNames().ToList<string>();
+            return View(model);
         }
         #endregion
 

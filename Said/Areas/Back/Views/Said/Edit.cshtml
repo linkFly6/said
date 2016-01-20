@@ -36,11 +36,14 @@
                     { "ms-duplex", "sTitle" },
                     { "class", "said-title" },
                     { "ms-class", "said-error:!sTitle.length" },
-                    { "ms-change", "saveTolocalStorage('sTitle',sTitle)" },
                     { "autocomplete", "off" },
                     { "placeholder", "文章标题" },
                     { "required", "" },
-           })
+                })
+                @Html.HiddenFor(m => m.STitle, new Dictionary<string, object>() {
+                    { "id", "sTitle-hidden" },
+                    { "ms-dom", "sTitle-h" }
+                })
             </div>
             <div class="said-context-content">
                 <!-- said-error-->
@@ -48,16 +51,23 @@
                    { "class", "said-context" },
                    { "autocomplete", "off" },
                    { "ms-duplex", "sContext" },
-                   { "ms-change", "saveTolocalStorage('sContext',sContext)" },
                    { "placeholder", "这中间有个said的水印图啊，在bootstrap见过一个【缩略语】的排版，非常奈斯啊啊！！！！" },
-                   { "required", "" },
+                   { "required", "" }
            })
+                @Html.HiddenFor(m => m.SContext, new Dictionary<string, object>() {
+                    { "id", "sContext-hidden" },
+                    { "ms-dom", "sContext-h" }
+                })
             </div>
         </div>
         <div class="row said-view-container">
             <div class="col-md-6">
                 <div class="panel panel-default relative-container">
                     <div class="panel-heading">歌曲</div>
+                    @Html.HiddenFor(m => m.Song.SongId, new Dictionary<string, object>() {
+                                        { "id", "SongId-hidden" },
+                                        { "ms-dom", "SongId-h" }
+                                    })
                     <div class="panel-body" ms-controller="song">
                         <div class="afterClear">
                             <div class="col-md-4">
@@ -118,6 +128,18 @@
                         </div>
                     </div>
                 </div>
+                @Html.HiddenFor(m => m.ImageId, new Dictionary<string, object>() {
+                                        { "id", "ImageId-hidden" },
+                                        { "ms-dom", "ImageId-h" }
+                                    })
+                @Html.HiddenFor(m => m.Image.IFileName, new Dictionary<string, object>() {
+                                        { "id", "IFileName-hidden" },
+                                        { "ms-dom", "IFileName-h" }
+                                    })
+                @Html.HiddenFor(m => m.SSummary, new Dictionary<string, object>() {
+                                        { "id", "SSummary-hidden" },
+                                        { "ms-dom", "sSummary-h" }
+                                    })
                 <div class="panel panel-default relative-container" ms-controller="uploadController">
                     <div style="z-index: 2;" class="addSaid-mask" ms-visible="!imgSrc" ms-click="dialog()">
                         <span class="so-upload-text">选择文章缩略图</span>
@@ -129,7 +151,6 @@
                             <div class="summay-img">
                                 <div class="thumbnail">
                                     <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '../../Content/Images/UEDImg/demo-img6.jpg') + ')'"></div>
-                                    @*<img ms-attr-src="imgSrc ? imgSrc :'../../Content/Images/test-said-img.jpg'" />*@
                                 </div>
                             </div>
                         </div>
@@ -140,8 +161,7 @@
                                     { "placeholder", "简介[支持HTML]" },
                                     { "required", "" },
                                     { "data-validate", "" },
-                                    { "ms-duplex", "sSummary" },
-                                    { "ms-change", "saveTolocalStorage('sSummary',sSummary)" }
+                                    { "ms-duplex", "sSummary" }
                             })
                             <div class="songOp-btn song-up-content">
                                 <button type="button" class="btn btn-danger songBtn" ms-click="clear()">移除图片</button>
@@ -153,31 +173,6 @@
             </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    @*<div class="panel-heading">附加信息</div>
-                        <div class="panel-body">
-                            <div class="input-group" ms-controller="tagController">
-                                <span class="input-group-addon">标签</span>
-                                @Html.TextBoxFor(m => m.STag, new Dictionary<string, object>() {
-                                    { "class", "tag-input" },
-                                    { "ms-change", "saveTolocalStorage('bTag',bTag)" },
-                                    { "ms-widget", "groupInput" },
-                                    { "placeholder", "标签，支持[tab]分隔" },
-                                    { "autocomplete", "off" }
-                                })
-                            </div>
-                            <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
-                                <span class="input-group-addon">分类</span>
-                                <div class="queryInputBar">
-                                    @Html.TextBoxFor(m => m.Classify.CName, new Dictionary<string, object>() {
-                                        { "class", "classify-input" },
-                                        { "ms-duplex", "classify" },
-                                        { "placeholder", "分类名称" },
-                                        { "autocomplete", "off" },
-                                        { "ms-widget", "groupInput" }
-                                })
-                                </div>
-                            </div>
-                        </div>*@
                     <div class="panel-heading panel-subTitle">可选信息</div>
                     <div class="panel-body">
                         <div class="input-group">
@@ -193,38 +188,54 @@
                                     { "data-title", "该文件名已经存在" },
                                     { "data-animation", "false" }
                        })
+                            @Html.HiddenFor(m => m.SName, new Dictionary<string, object>() {
+                                        { "id", "sName-hidden" },
+                                        { "ms-dom", "sName-h" }
+                                    })
                         </div>
                         <div class="form-group">
                             <label>JavaScript</label>
                             @Html.TextAreaFor(m => m.SScript, new Dictionary<string, object>() {
                                 { "class", "form-control" },
                                 { "placeholder", "自定义JavaScript" },
-                                { "ms-change", "saveTolocalStorage('sScript',sScript)" },
                                 { "ms-duplex", "sScript" }
                             })
+                            @Html.HiddenFor(m => m.SScript, new Dictionary<string, object>() {
+                                        { "id", "sScript-hidden" },
+                                        { "ms-dom", "sScript-h" }
+                                    })
                         </div>
                         <div class="form-group">
                             <label>CSS</label>
                             @Html.TextAreaFor(m => m.SCSS, new Dictionary<string, object>() {
                                 { "class", "form-control" },
                                 { "placeholder", "自定义CSS" },
-                                { "ms-change", "saveTolocalStorage('sCSS',sCSS)" },
-                                { "ms-duplex", "bCSS" }
+                                { "ms-duplex", "sCSS" }
                             })
+                            @Html.HiddenFor(m => m.SCSS, new Dictionary<string, object>() {
+                                        { "id", "sCSS-hidden" },
+                                        { "ms-dom", "sCSS-h" }
+                                    })
                         </div>
                         <div class="checkbox said-checkbox">
                             <label>
                                 @*@Html.CheckBoxFor(Model => Model.SReprint, new { @type = "checkbox" })如果是直接提交表单，则可以直接采用checkbox控件，会生成两个input，具体请查阅：http://www.cnblogs.com/freeliver54/archive/2013/05/10/3070384.html*@
                                 @Html.CheckBoxFor(m => m.SReprint, new Dictionary<string, object>() {
-                                { "ms-duplex-checked", "sReprint" },
-                                { "ms-change", "saveTolocalStorage('sReprint',sReprint)" }
+                                { "ms-duplex-checked", "sReprint" }
                            })是否转载
+                                @Html.HiddenFor(m => m.SReprint, new Dictionary<string, object>() {
+                                        { "id", "sReprint-hidden" },
+                                        { "ms-dom", "sReprint-h" }
+                                    })
                             </label>
                             <label>
                                 @Html.CheckBoxFor(m => m.SIsTop, new Dictionary<string, object>() {
-                                { "ms-duplex-checked", "sIsTop" },
-                                { "ms-change", "saveTolocalStorage('sIsTop',sIsTop)" }
+                                { "ms-duplex-checked", "sIsTop" }
                             })是否置顶
+                                @Html.HiddenFor(m => m.SIsTop, new Dictionary<string, object>() {
+                                        { "id", "sIsTop-hidden" },
+                                        { "ms-dom", "sIsTop-h" }
+                                    })
                             </label>
                         </div>
                     </div>
@@ -256,7 +267,7 @@
             music: '@Url.Action("UploadMusic", "Source")',
             existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
             existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
-            form: '@Url.Action("AddSaid", "Said")'
+            form: '@Url.Action("Edit", "Said")'
         },
         Source = {
             song: '@ConfigInfo.SourceMusicPath',
@@ -286,7 +297,6 @@
             files: []
         };
 
-
         @{
             if (SongsList != null) {
                 foreach (Said.Models.Song item in SongsList)
@@ -303,16 +313,16 @@
 	            }
             }
         }
-
-
         require(['said', 'jquery', 'so', 'avalon', 'source', 'dialog', 'sweetalert', 'markdown', 'upload', 'avalonUpload', 'showDownThemeGithub', 'groupInput'], function (said, $, so, avalon, source, dialog, sweetalert, showdown) {
             'use strict';
             $(function () {
-                var slice = Array.prototype.slice;
-
+                var slice = Array.prototype.slice,
+                    oldFileName = '@Model.SName';
+                DataCenter.files = DataCenter.files.filter(function (existFileName) {
+                    return existFileName != oldFileName;
+                })
                 var showdown = window.Showdown,
                     converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
-                    database = new so.Database('back.addSaid'),
                     checkEmptyValue = function (key, title, summary) {
                         if (!vmSaid[key]) {
                             sweetalert(title, summary, "warning");
@@ -321,7 +331,7 @@
                         return true;
                     },
                     encode = function (value) {
-                        return encodeURIComponent(value);
+                        return encodeURIComponent(value || '');
                     },
                     errorHash = {
                         'sTitle': ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],
@@ -331,26 +341,24 @@
                     };
 
 
+
                 var vmSaid = avalon.define({
                     $id: 'said',
-                    sTitle: database.val('sTitle'),
-                    sTag: database.val('sTag'),
-                    sSummary: database.val('sSummary'),
-                    sReprint: database.val('sReprint'),
-                    sScript: database.val('sScript'),
-                    sIsTop: database.val('sIsTop'),
-                    sCSS: database.val('sCSS'),
-                    sContext: database.val('sContext'),
-                    sImg: database.val('sImg'),
-                    sName: database.val('sName'),
-                    classify: database.val('classify'),
+                    saidId: '@Model.SaidId',
+                    sTitle: '',
+                    sTag: '',
+                    sSummary: '',
+                    sReprint: '',
+                    sScript: '',
+                    sIsTop: '',
+                    sCSS: '',
+                    sContext: '',
+                    sImg: '',
+                    sName: '',
+                    classify: '',
                     checkFile: false,
                     submitState: false,
                     $skipArray: ['sTag'],
-                    //保存到本地数据库
-                    saveTolocalStorage: function (name, value) {
-                        database.val(name, value);
-                    },
                     checkFileName: function () {
                         //考虑性能，DOM缓存
                         var $cache, key = 'bName';
@@ -358,8 +366,6 @@
                             !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
                             vmSaid.checkFile = !!(value && ~DataCenter.files.indexOf(value.toLowerCase()));
                             $cache.tooltip(vmSaid.checkFile ? 'show' : 'hide');
-                            vmSaid.checkFile ?
-                                database.remove(key) : database.val(key, value);
                         }
                     }(),
                     check: function () {
@@ -370,7 +376,6 @@
                         });
                     },
                     reset: function () {
-                        database.clear();
                         setTimeout(function () {
                             window.location.href = '/Back/Said';
                         }, 1000);
@@ -395,6 +400,7 @@
                         }).join('');
 
                         said.ajax(Action.form, {
+                            'SaidId': vmSaid.saidId,
                             'STitle': encode(vmSaid.sTitle),
                             'SSummary': encode(sSummary),
                             'SHTML': encode(converter.makeHtml(vmSaid.sContext)),
@@ -410,8 +416,8 @@
                         }).done(function (data) {
                             if (!data.code) {//done
                                 sweetalert({
-                                    title: '添加（修改）成功',
-                                    text: so.format('喜大普奔，添加文章《${0}》成功', vmSaid.sTitle),
+                                    title: '修改成功',
+                                    text: so.format('喜大普奔，修改文章《${0}》成功', vmSaid.sTitle),
                                     type: "success"
 
                                 }, function () {
@@ -420,7 +426,7 @@
                             } else {
                                 sweetalert({
                                     title: "数据异常",
-                                    text: so.format('添加(提交)异常，异常代码 - ${1}${0}', data.msg.split(',').map(function (msg) {
+                                    text: so.format('修改异常，异常代码 - ${1}${0}', data.msg.split(',').map(function (msg) {
                                         return '<p>' + msg + '</p>';
                                     }).join(''), data.code),
                                     html: true,
@@ -429,7 +435,7 @@
                             }
 
                         }).fail(function (data) {
-                            sweetalert("服务器异常", so.format('添加(提交)异常，异常代码：${0}（${1}）', data.status, data.statusText), "error");
+                            sweetalert("服务器异常", so.format('修改异常，异常代码：${0}（${1}）', data.status, data.statusText), "error");
                         }).always(function () {
                             vmSaid.submitState = false;
                         });
@@ -438,15 +444,7 @@
                 });
 
 
-                var localSongData = [];
-                if (database.val('song.id')) {
-                    var songId = database.val('song.id');
-                    so.each(DataCenter.songs, function (item) {
-                        if (item.data.id === songId) {
-                            localSongData.push(item);
-                        }
-                    });
-                }
+
 
                 var vmSong = avalon.define({
                     $id: 'song',
@@ -467,7 +465,6 @@
                             if (value && value.data) {
                                 var songData = value.data;
                                 //找到了歌曲信息
-                                database.val('song.id', songData.id);
                                 vmSong.songId = songData.id;
                                 vmSong.songArtist = songData.artist;
                                 vmSong.songAlbum = songData.album;
@@ -475,54 +472,14 @@
                                 vmSong.songImg = songData.img;
                                 vmSong.imgSrc = Source.songImg + songData.img;
                             } else {
-                                database.val('song.id', '');
+                                //database.val('song.id', '');
                                 vmSong.songId = vmSong.songArtist = vmSong.songAlbum = vmSong.songFileName = vmSong.songImg = vmSong.imgSrc = '';
                             }
                         }
                     }
                 });
 
-                if (localSongData.length) {
-                    vmSong.songId = localSongData[0].data.id;
-                    vmSong.songArtist = localSongData[0].data.artist;
-                    vmSong.songName = localSongData[0].data.name;
-                    vmSong.songAlbum = localSongData[0].data.album;
-                    vmSong.songFileName = localSongData[0].data.fileName;
-                    vmSong.songImg = localSongData[0].data.img;
-                    vmSong.imgSrc = Source.songImg + localSongData[0].data.img;
-                }
 
-
-
-                ////tag
-                //avalon.define({
-                //    $id: 'tagController',
-                //    //tags: DataCenter.tags,
-                //    groupInput: {
-                //        datas: DataCenter.tags,
-                //        multiple: true,
-                //        zIndex: 4,
-                //        callback: function (values) {
-                //            //console.log(values);
-                //            vmSaid.bTag = values;
-                //            database.val('bTag', values);
-                //        },
-                //        values: vmSaid.bTag
-                //    }
-                //});
-                ////classify
-                //avalon.define({
-                //    $id: 'classifyController',
-                //    groupInput: {
-                //        datas: DataCenter.classifyList,
-                //        zIndex: 3,
-                //        custom: false,
-                //        callback: function (value) {
-                //            database.val('classify', value);
-                //        }
-                //        //classContaier: 'queryInputBar'
-                //    }
-                //});
 
                 //upload
 
@@ -540,35 +497,67 @@
                         vmUpload.img = data.IName;
                         vmUpload.imgSrc = imgSrc;
                         vmSaid.sImg = data.ImageId;
-                        database.val('sImg', data.ImageId).val('summary.imgSrc', imgSrc);
+                        //database.val('sImg', data.ImageId).val('summary.imgSrc', imgSrc);
                     }
                 });
                 var vmUpload = avalon.define({
                     $id: 'uploadController',
-                    imgSrc: database.val('summary.imgSrc'),
+                    imgSrc: '',
                     $skipArray: ['img'],
                     dialog: function (id) {
                         _summaryDialog.show();
                     },
                     clear: function () {
-                        database.remove('sImg')
-                        database.remove('summary.imgSrc');
+                        //database.remove('sImg')
+                        //database.remove('summary.imgSrc');
                         vmSaid.sImg = null;
                         vmUpload.imgSrc = vmUpload.img = '';
                     }
                 });
 
-
-                //console.log(vmUpload);
-
-
-
-
-                //var vmSaid = avalon.define('blog', function (vm) {
-                //    vm.BTitle = '';
-                //});
                 avalon.scan();
-                //console.dir(avalon.vmodels);
+
+                //var temp = Object.keys(vmSaid.elem).map(function (key, value) {
+                //    return key.split('-')[0];
+                //});
+                //console.log(temp);
+
+                //还原要编辑的数据
+                ["sTitle", "sContext", "sSummary", "sName", "sScript", "sCSS", "sReprint", "sIsTop"].forEach(function (propertiePrefixName) {
+                    var elem = vmSaid.elem[propertiePrefixName + '-h'];
+                    if (elem && elem.value.length)
+                        vmSaid[propertiePrefixName] = (propertiePrefixName == 'sIsTop' || propertiePrefixName == 'sReprint') ? elem.value === 'True' ? true : false : elem.value;
+                });
+
+
+                //图片单独处理
+                //["ImageId", "IFileName"];
+                if (vmSaid.elem['ImageId-h']) {
+                    var imgSrc = Source.summaryImg + vmSaid.elem['IFileName-h'].value;
+                    vmUpload.img = vmSaid.elem['IFileName-h'].value;
+                    vmUpload.imgSrc = imgSrc;
+                    vmSaid.sImg = vmSaid.elem['ImageId-h'].value;
+                }
+
+                //歌曲单独处理
+                var localSongData = [];
+                if (vmSaid.elem["SongId-h"]) {
+                    var songId = vmSaid.elem["SongId-h"].value;
+                    so.each(DataCenter.songs, function (item) {
+                        if (item.data.id === songId) {
+                            localSongData.push(item);
+                        }
+                    });
+                }
+                if (localSongData.length) {
+                    vmSong.songId = localSongData[0].data.id;
+                    vmSong.songArtist = localSongData[0].data.artist;
+                    vmSong.songName = localSongData[0].data.name;
+                    vmSong.songAlbum = localSongData[0].data.album;
+                    vmSong.songFileName = localSongData[0].data.fileName;
+                    vmSong.songImg = localSongData[0].data.img;
+                    vmSong.imgSrc = Source.songImg + localSongData[0].data.img;
+                }
             });
         });
     </script>

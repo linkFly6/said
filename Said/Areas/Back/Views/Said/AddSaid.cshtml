@@ -211,7 +211,7 @@
                                 { "class", "form-control" },
                                 { "placeholder", "自定义CSS" },
                                 { "ms-change", "saveTolocalStorage('sCSS',sCSS)" },
-                                { "ms-duplex", "bCSS" }
+                                { "ms-duplex", "sCSS" }
                             })
                         </div>
                         <div class="checkbox said-checkbox">
@@ -323,7 +323,7 @@
                         return true;
                     },
                     encode = function (value) {
-                        return encodeURIComponent(value);
+                        return encodeURIComponent(value || '');
                     },
                     errorHash = {
                         'sTitle': ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],
@@ -392,13 +392,15 @@
                         //said.dialog(converter.makeHtml(vmSaid.sContext));
                         vmSaid.submitState = true;
 
+                        //生成HTML
                         var sSummary = vmSaid.sSummary.split('\n').map(function (item) {
                             return '<p>' + item + '</p>';
                         }).join('');
 
                         said.ajax(Action.form, {
                             'STitle': encode(vmSaid.sTitle),
-                            'SSummary': encode(sSummary),
+                            'SSummary': encode(vmSaid.sSummary),
+                            'SSummaryTrim': encode(sSummary),
                             'SHTML': encode(converter.makeHtml(vmSaid.sContext)),
                             'SReprint': encode(vmSaid.sReprint || false),
                             'SScript': encode(vmSaid.sScript),
@@ -412,7 +414,7 @@
                         }).done(function (data) {
                             if (!data.code) {//done
                                 sweetalert({
-                                    title: '添加（修改）成功',
+                                    title: '添加成功',
                                     text: so.format('喜大普奔，添加文章《${0}》成功', vmSaid.sTitle),
                                     type: "success"
 
@@ -422,7 +424,7 @@
                             } else {
                                 sweetalert({
                                     title: "数据异常",
-                                    text: so.format('添加(提交)异常，异常代码 - ${1}${0}', data.msg.split(',').map(function (msg) {
+                                    text: so.format('添加异常，异常代码 - ${1}${0}', data.msg.split(',').map(function (msg) {
                                         return '<p>' + msg + '</p>';
                                     }).join(''), data.code),
                                     html: true,
@@ -431,7 +433,7 @@
                             }
 
                         }).fail(function (data) {
-                            sweetalert("服务器异常", so.format('添加(提交)异常，异常代码：${0}（${1}）', data.status, data.statusText), "error");
+                            sweetalert("服务器异常", so.format('添加异常，异常代码：${0}（${1}）', data.status, data.statusText), "error");
                         }).always(function () {
                             vmSaid.submitState = false;
                         });

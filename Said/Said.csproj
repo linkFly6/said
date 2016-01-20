@@ -621,6 +621,9 @@
     <Content Include="Content\wap\style\index.css.map" />
     <Content Include="Content\wap\style\sass\article.scss" />
     <Content Include="Content\wap\style\article.css.map" />
+    <Content Include="Content\Back\Style\sass\saidCenter.scss" />
+    <Content Include="Content\Back\Style\saidCenter.css.map" />
+    <Content Include="Content\Back\JavaScript\test.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
