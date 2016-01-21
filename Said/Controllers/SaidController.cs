@@ -38,7 +38,7 @@ namespace Said.Controllers
             };
             IPagedList<Article> list = ArticleApplication.FindByDateDesc(page);
             ViewData["total"] = list.TotalItemCount;
-            ViewData["articles"] = list.ToList<Article>();
+            ViewData["articles"] = list.ToList();
             ViewData["pageIndex"] = index;
             ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
             return View();

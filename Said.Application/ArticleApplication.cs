@@ -73,11 +73,30 @@ namespace Said.Application
                 str.Length--;//StringBuilder的length可以用于裁剪字符串？
             else
             {
-                //开始矫正数据
-                model.SaidId = Guid.NewGuid().ToString().Replace("-", "");
-                //没有文件名或文件名不合法，则生成一个新的文件名
-                if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)
-                    model.SName = FileCommon.CreateFileNameByTime();
+                if (string.IsNullOrEmpty(model.SaidId))
+                {
+                    //新增
+                    if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)    //没有文件名或文件名不合法，则生成一个新的文件名
+                        model.SName = FileCommon.CreateFileNameByTime();
+                }
+                else {
+                    //编辑
+                    if (string.IsNullOrWhiteSpace(model.SName))
+                    {
+                        model.SName = FileCommon.CreateFileNameByTime();
+                    }
+                    else {
+                        //从数据库中检索是否存在
+                        var SaidIdLists = ArticleApplication.FindSaidIdByFileName(model.SName).ToList();
+                        //文件名重复
+                        if (SaidIdLists.Count > 1 && SaidIdLists.IndexOf(model.SaidId) > -1)
+                        {
+                            model.SName = FileCommon.CreateFileNameByTime();
+                        }
+
+                    }
+
+                }
 
             }
 
@@ -116,6 +135,18 @@ namespace Said.Application
         {
             return Context.Get(m => m.SName == fileName);
         }
+
+        /// <summary>
+        /// 根据文章文件名称，获取该文件名称对应的SaidId（列表），用于检索文件重名业务
+        /// </summary>
+        /// <param name="fileName">要检索的文件名称</param>
+        /// <returns>返回SaidID列表</returns>
+        public static IEnumerable<string> FindSaidIdByFileName(string fileName)
+        {
+            return Context.GetSaidIdByFileName(fileName);
+        }
+
+
 
         /// <summary>
         /// 查找所有Said的文件名称（用于防止重名的业务）

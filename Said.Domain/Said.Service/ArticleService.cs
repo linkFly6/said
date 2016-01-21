@@ -46,6 +46,14 @@ namespace Said.Service
         /// <returns></returns>
         IEnumerable<Article> GetByTop(int top);
 
+
+                /// <summary>
+        /// 根据文章文件名称，获取该文件名称对应的SaidId（列表）
+        /// </summary>
+        /// <param name="filename">要检索的文件名称</param>
+        /// <returns></returns>
+        IEnumerable<string> GetSaidIdByFileName(string fileName);
+
     }
     /// <summary>
     /// 听说（文章）服务
@@ -104,6 +112,18 @@ namespace Said.Service
         }
 
 
+
+        /// <summary>
+        /// 根据文章文件名称，获取该文件名称对应的SaidId（列表）
+        /// </summary>
+        /// <param name="filename">要检索的文件名称</param>
+        /// <returns></returns>
+        public IEnumerable<string> GetSaidIdByFileName(string filename)
+        {
+            return from m in base.Context.Article
+                   where m.SName == filename
+                   select m.SaidId;
+        }
 
 
 

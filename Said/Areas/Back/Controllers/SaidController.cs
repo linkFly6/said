@@ -75,6 +75,7 @@ namespace Said.Areas.Back.Controllers
                 SContext = form["SContext"],
                 SHTML = form["SHTML"],
                 SSummary = form["SSummary"],
+                SSummaryTrim = form["SSummaryTrim"],
                 //SImg = form["ImageId"],
                 //STag = form["STag"],
                 SReprint = bool.Parse(form["SReprint"]),
@@ -106,6 +107,7 @@ namespace Said.Areas.Back.Controllers
                 //model.Classify = null;
                 //model.SongId = model.Song.SongId;
                 //model.Song = null;
+                model.SaidId = SaidCommon.GUID;
                 return ArticleApplication.Add(model) > 0 ?
                     ResponseResult(0, model.SaidId) :
                     ResponseResult(2, "添加到数据库异常");
@@ -115,6 +117,76 @@ namespace Said.Areas.Back.Controllers
         }
 
         #endregion
+
+        #region 编辑一篇文章
+        [HttpPost]
+        public JsonResult EditSaid(FormCollection form)
+        {
+            string saidId = form["SaidId"];
+            if (string.IsNullOrWhiteSpace(saidId))
+                return ResponseResult(-1, "要编辑的文章ID不正确（无法获取）");
+            Article model = ArticleApplication.Find(saidId);
+            if (model == null)
+                return ResponseResult(-2, "没有从数据库中检索到要编辑的文章ID");
+            Article newModel = new Article
+            {
+                STitle = form["STitle"],
+                SContext = form["SContext"],
+                SHTML = form["SHTML"],
+                SSummary = form["SSummary"],
+                SSummaryTrim = form["SSummaryTrim"],
+                ImageId = form["ImageId"],
+                SReprint = bool.Parse(form["SReprint"]),
+                SName = form["SName"],
+                SJS = form["SScript"],
+                SCSS = form["SCSS"],
+                SIsTop = bool.Parse(form["SIsTop"])
+            };
+
+            newModel = newModel.DecodeModel() as Article;
+            //验证上传的服务器参数
+            if (!string.IsNullOrWhiteSpace(form["SongId"]))//有歌曲ID则构建歌曲id
+                newModel.SongId = form["SongId"].Trim();
+            else
+                return ResponseResult(1, "歌曲信息错误");
+
+            if (!string.IsNullOrWhiteSpace(form["ImageId"]))
+                newModel.ImageId = form["ImageId"].Trim();
+            else
+                return ResponseResult(1, "缩略图信息错误");
+            if (newModel.SName == "null" || newModel.SName.Trim() == "null")
+                newModel.SName = string.Empty;
+
+            //对应模型ID
+            newModel.SaidId = model.SaidId;
+            //验证
+            ArticleApplication.ValidateAndCorrectSubmit(newModel);
+            string vdResult = ArticleApplication.ValidateAndCorrectSubmit(model);
+            if (vdResult == null)
+            {
+                //对齐对象
+                model.STitle = newModel.STitle;
+                model.SContext = newModel.SContext;
+                model.SSummary = newModel.SSummary;
+                model.SSummaryTrim = newModel.SSummaryTrim;
+                //====>   TODO 这里要验证Song是否已经修正到了正确的ID 引用
+                model.SongId = newModel.SongId;
+                model.Song = null;
+                model.ImageId = newModel.ImageId;
+                model.Image = null;
+                model.SName = newModel.SName;
+                model.SJS = newModel.SJS;
+                model.SCSS = newModel.SCSS;
+                model.SIsTop = newModel.SIsTop;
+                model.SReprint = newModel.SReprint;
+            }
+            return ArticleApplication.Update(model) > 1 ?
+                ResponseResult() :
+                ResponseResult(2, "更新到数据库异常");
+        }
+
+        #endregion
+
 
         /// <summary>
         /// 分页获取said列表
