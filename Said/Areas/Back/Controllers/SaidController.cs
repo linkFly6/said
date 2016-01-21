@@ -180,7 +180,7 @@ namespace Said.Areas.Back.Controllers
                 model.SIsTop = newModel.SIsTop;
                 model.SReprint = newModel.SReprint;
             }
-            return ArticleApplication.Update(model) > 1 ?
+            return ArticleApplication.Update(model) > 0 ?
                 ResponseResult() :
                 ResponseResult(2, "更新到数据库异常");
         }
