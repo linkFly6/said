@@ -40,6 +40,22 @@ namespace Said.Service
 
 
         /// <summary>
+        /// 有条件查询全部文章（贪婪查询）
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <param name="order">排序规则</param>
+        /// <returns></returns>
+        IEnumerable<Article> FindByWhereDateDesc<T>(Expression<Func<Article, bool>> where, Expression<Func<Article, T>> order);
+
+
+        /// <summary>
+        /// 无条件查询全部文章（贪婪查询）
+        /// </summary>
+        /// <param name="order">排序规则</param>
+        /// <returns></returns>
+        IEnumerable<Article> FindAll<T>(Expression<Func<Article, T>> order);
+
+        /// <summary>
         /// 贪婪获取指定个数的文章列表
         /// </summary>
         /// <param name="top">要获取的个数</param>
@@ -47,7 +63,7 @@ namespace Said.Service
         IEnumerable<Article> GetByTop(int top);
 
 
-                /// <summary>
+        /// <summary>
         /// 根据文章文件名称，获取该文件名称对应的SaidId（列表）
         /// </summary>
         /// <param name="filename">要检索的文件名称</param>
@@ -147,6 +163,27 @@ namespace Said.Service
         public IEnumerable<Article> GetByTop(int top)
         {
             return Context.Article.Include("Image").OrderByDescending(m => m.Date).Take(top);
+        }
+
+        /// <summary>
+        /// 有条件查询全部文章（贪婪查询）
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <param name="order">排序规则</param>
+        /// <returns></returns>
+        public IEnumerable<Article> FindByWhereDateDesc<T>(Expression<Func<Article, bool>> where, Expression<Func<Article, T>> order)
+        {
+            return Context.Article.Include("Image").Include("Song.Image").OrderByDescending(order).Where(where);
+        }
+
+        /// <summary>
+        /// 无条件查询全部文章（贪婪查询）
+        /// </summary>
+        /// <param name="order">排序规则</param>
+        /// <returns></returns>
+        public IEnumerable<Article> FindAll<T>(Expression<Func<Article, T>> order)
+        {
+            return Context.Article.Include("Image").Include("Song.Image").OrderByDescending(order);
         }
     }
 }

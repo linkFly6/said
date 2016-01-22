@@ -200,7 +200,7 @@
                              ~index && self.datas.splice(index, 1);
                              $(elem.parentNode.parentNode).remove();
                              self._setCount(--self.total);
-                             sweetalert('删除图片成功！');
+                             sweetalert('删除成功', '删除图片成功！', 'success');
                          }
 
                      }).fail(function (res) {

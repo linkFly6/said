@@ -126,6 +126,25 @@ namespace Said.Application
             return Context.GetManyDesc(m => m.IsDel == 0, m => m.Date);
         }
 
+
+        /// <summary>
+        /// 查询全部文章（贪婪查询）
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Article> FindAll()
+        {
+            return Context.FindByWhereDateDesc(m => m.IsDel == 0, m => m.Date);
+        }
+
+        /// <summary>
+        /// 查询全部文章（贪婪查询）
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Article> FindAllByDateDesc()
+        {
+            return Context.FindAll(m => m.Date);
+        }
+
         /// <summary>
         /// 查找Said的文件名
         /// </summary>

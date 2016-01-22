@@ -200,7 +200,7 @@
                                 id: item.ImageId
                             }).done(function (result) {
                                 if (result.code === 0) {
-                                    sweetalert('删除图片成功');
+                                    sweetalert('删除成功', '删除图片成功', 'success');
                                     vmModel.datas.splice(i, 1);
                                     //更新缓存池
                                     var index = vmModel.offset + i;

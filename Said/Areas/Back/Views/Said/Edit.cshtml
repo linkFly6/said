@@ -267,7 +267,7 @@
             music: '@Url.Action("UploadMusic", "Source")',
             existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
             existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
-            form: '@Url.Action("Edit", "Said")'
+            form: '@Url.Action("EditSaid", "Said")'
         },
         Source = {
             song: '@ConfigInfo.SourceMusicPath',
@@ -331,7 +331,7 @@
                         return true;
                     },
                     encode = function (value) {
-                        return encodeURIComponent(value || '');
+                        return encodeURIComponent(value == null ? '' : value);
                     },
                     errorHash = {
                         'sTitle': ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],
@@ -402,7 +402,8 @@
                         said.ajax(Action.form, {
                             'SaidId': vmSaid.saidId,
                             'STitle': encode(vmSaid.sTitle),
-                            'SSummary': encode(sSummary),
+                            'SSummary': encode(vmSaid.sSummary),
+                            'SSummaryTrim': encode(sSummary),
                             'SHTML': encode(converter.makeHtml(vmSaid.sContext)),
                             'SReprint': encode(vmSaid.sReprint || false),
                             'SScript': encode(vmSaid.sScript),

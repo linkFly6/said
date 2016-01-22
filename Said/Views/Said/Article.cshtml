@@ -58,7 +58,7 @@
                     <span>评论(0)</span>
                 </div>*@
             <div class="licenses-box">
-                <a class="licenses licenses-cc" target="_blank" href="http://creativecommons.org/licenses/by/3.0/cn/" title="本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.5 China Mainland License）授权">CC BY 3.0 CN</a>
+                <a class="licenses licenses-cc" target="_blank" href="http://creativecommons.org/licenses/by/3.0/cn/" title="本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权">CC BY 3.0 CN</a>
             </div>
             <ul class="blog-info">
                 <li class="blog-info-date"><time>@Model.Date.ToString("yyyy/MM/dd HH:mm")</time></li>
@@ -123,11 +123,10 @@
                         $stopBtn.hide();
                     }
                 },
-                //timeupdate函数更新时间太快，函数节流处理
-                updateProgress = so.throttle(function (currentTime) {
+                updateProgress = function (currentTime) {
                     $progress.css('width', currentTime / maxDuration * 100 + '%');
                     $duration.html(so.parseTime(currentTime > maxDuration ? maxDuration : currentTime, 'mm:ss'));
-                }, 800);
+                };
 
             //停止
             $stopBtn.on('click', function () {

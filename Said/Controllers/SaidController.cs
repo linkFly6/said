@@ -50,6 +50,7 @@ namespace Said.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [WapFilterAttribute]
         public ActionResult Article(string id)
         {
             ViewData["NavigatorIndex"] = 2;

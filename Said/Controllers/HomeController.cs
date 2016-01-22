@@ -14,7 +14,7 @@ namespace Said.Controllers
     {
         //
         // GET: /Home/
-
+        //[WapFilterAttribute]
         public ActionResult Index()
         {
             ViewData["articleList"] = ArticleApplication.GetByTop(3).ToList<Article>();

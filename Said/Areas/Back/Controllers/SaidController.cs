@@ -18,7 +18,7 @@ namespace Said.Areas.Back.Controllers
         public ActionResult Index()
         {
             //TODO 注意检测贪婪查询
-            ViewData["articles"] = ArticleApplication.Find().ToList();
+            ViewData["articles"] = ArticleApplication.FindAll().ToList();
             return View();
         }
 
@@ -101,6 +101,8 @@ namespace Said.Areas.Back.Controllers
 
             //验证，需要validateSubmit方法矫正歌曲等数据，如果没有id则生成一个id
             string vdResult = ArticleApplication.ValidateAndCorrectSubmit(model);
+
+            //TODO 这里要新增图片引用
             if (vdResult == null)
             {
                 //model.ClassifyId = model.Classify.ClassifyId;
@@ -162,6 +164,8 @@ namespace Said.Areas.Back.Controllers
             //验证
             ArticleApplication.ValidateAndCorrectSubmit(newModel);
             string vdResult = ArticleApplication.ValidateAndCorrectSubmit(model);
+            //TODO 这里要减去图片引用
+
             if (vdResult == null)
             {
                 //对齐对象
@@ -169,11 +173,12 @@ namespace Said.Areas.Back.Controllers
                 model.SContext = newModel.SContext;
                 model.SSummary = newModel.SSummary;
                 model.SSummaryTrim = newModel.SSummaryTrim;
+                model.SHTML = newModel.SHTML;
                 //====>   TODO 这里要验证Song是否已经修正到了正确的ID 引用
                 model.SongId = newModel.SongId;
-                model.Song = null;
+                //model.Song = null;
                 model.ImageId = newModel.ImageId;
-                model.Image = null;
+                //model.Image = null;
                 model.SName = newModel.SName;
                 model.SJS = newModel.SJS;
                 model.SCSS = newModel.SCSS;

@@ -148,6 +148,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\Filters\AdminFilterAttribute.cs" />
     <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
+    <Compile Include="Controllers\Filters\WapFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\SaidController.cs" />
@@ -623,7 +624,6 @@
     <Content Include="Content\wap\style\article.css.map" />
     <Content Include="Content\Back\Style\sass\saidCenter.scss" />
     <Content Include="Content\Back\Style\saidCenter.css.map" />
-    <Content Include="Content\Back\JavaScript\test.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

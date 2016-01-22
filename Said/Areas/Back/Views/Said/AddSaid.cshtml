@@ -323,7 +323,7 @@
                         return true;
                     },
                     encode = function (value) {
-                        return encodeURIComponent(value || '');
+                        return encodeURIComponent(value == null ? '' : value);
                     },
                     errorHash = {
                         'sTitle': ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],

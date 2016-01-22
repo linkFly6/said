@@ -26,7 +26,7 @@
             /*padding: 20px 0;*/
             font-size: 17px;
             line-height: 1.5em;
-            font-weight: 300;
+            font-weight: 400;
             color: #555;
             margin: 0 0 20px 0;
             word-break: break-word;
@@ -36,7 +36,7 @@
         blockquote {
             margin: 0 0 25px 0;
             padding: 20px;
-            font-weight: 300;
+            font-weight: 400;
             word-break: break-all;
             border-left: 4px solid #999;
             background-color: #f6f6f6;
@@ -93,11 +93,15 @@
     }
 }
 
+%ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .music-player {
     position: relative;
     padding: 10px 15px;
-    border: 1px solid red;
-
     .player {
         position: absolute;
         top: 0;
@@ -107,7 +111,7 @@
         padding-top: 12px;
 
         .play-btn {
-            color: #999;
+            color: #adadad;
         }
     }
 
@@ -119,18 +123,18 @@
             font-size: 16px;
             line-height: 18px;
             font-weight: normal;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
+            @extend %ellipsis;
         }
 
 
         .link {
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
             font-size: 12px;
             line-height: 1.5;
+            @extend %ellipsis;
+        }
+
+        .album {
+            @extend %ellipsis;
         }
     }
 }
