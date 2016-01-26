@@ -1,4 +1,5 @@
 ﻿using Said.Application;
+using Said.Controllers.Attrbute;
 using Said.Helper;
 using Said.Models;
 using System;
@@ -14,6 +15,8 @@ namespace Said.Controllers.Filters
     public class UserFilterAttribute : ActionFilterAttribute, IActionFilter
     {
 
+
+        //TODO 统计逻辑应该挂到Said.Common中，以便复用
         #region 统计逻辑
         /// <summary>
         /// 线程锁
@@ -139,7 +142,11 @@ namespace Said.Controllers.Filters
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            Statistics(HttpContext.Current);
+            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(NoFilter), false).Length == 0)
+            {
+                //启用noFilter特性的不统计
+                Statistics(HttpContext.Current);
+            }
             base.OnActionExecuting(filterContext);
         }
 

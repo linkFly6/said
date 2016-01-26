@@ -28,7 +28,7 @@ namespace Said.Controllers.Filters
             ////把所有参数都带过去
             //filterContext.Result = new RedirectToRouteResult(filterContext.RouteData.Values);
 
-            base.OnActionExecuting(filterContext);
+            //base.OnActionExecuting(filterContext);
         }
     }
 }

@@ -124,8 +124,19 @@
         line-height: 1.2;
         letter-spacing: 0;
         text-align: center;
+
         &:hover {
             color: #43b4ef;
+        }
+
+        &:visited {
+            color: #c03980;
+            transition: none;
+        }
+
+        &:visited:hover {
+            color: #c03980;
+            transition: none;
         }
     }
 }

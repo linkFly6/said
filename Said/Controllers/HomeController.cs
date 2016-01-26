@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 
 namespace Said.Controllers
 {
@@ -17,7 +18,13 @@ namespace Said.Controllers
         //[WapFilterAttribute]
         public ActionResult Index()
         {
-            ViewData["articleList"] = ArticleApplication.GetByTop(3).ToList<Article>();
+            if (Request.Browser.IsMobileDevice)//wap
+            {
+                ViewData["articleList"] = ArticleApplication.FindAllByDateDesc().ToList<Article>();
+            }
+            else {
+                ViewData["articleList"] = ArticleApplication.GetByTop(3).ToList<Article>();
+            }
             return View();
         }
 

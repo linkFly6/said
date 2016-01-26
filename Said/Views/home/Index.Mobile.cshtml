@@ -2,7 +2,7 @@
 @using Said.Common
 @{
     ViewBag.Title = "听说 - 世界很大，风住过这里";
-    Layout = "~/Areas/Wap/Views/Shared/_LayoutWap.cshtml";
+    Layout = "~/Views/Shared/_LayoutWap.cshtml";
     IList<Article> articles = ViewData["articleList"] as List<Article>;
     string saidResourcePath = ConfigInfo.SourceSaidPath;
 
@@ -24,7 +24,7 @@
         {
             foreach (Article item in articles)
             {
-                <a class="said-item displaybox" href="@Url.Action("Article", "Said", new { area = "Wap", id = item.SaidId })">
+                <a class="said-item displaybox" href="@Url.Action("Article", "Said", new { id = item.SaidId })">
                     <div class="item-bg" style="background-image:url(/Content/Images/bg/Reine-Norway.jpg)"></div>
                     <div class="item-context">
                         <ul class="item-txt">

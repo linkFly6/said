@@ -15,12 +15,12 @@ namespace Said
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             //wap - 
-            routes.MapRoute(
-                name: "Wap",
-                url: "Wap/{controller}/{action}/{id}",
-               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-               namespaces: new string[] { "Said.Areas.Wap.Controllers" }
-            );
+            //routes.MapRoute(
+            //    name: "Wap",
+            //    url: "Wap/{controller}/{action}/{id}",
+            //   defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+            //   namespaces: new string[] { "Said.Areas.Wap.Controllers" }
+            //);
 
             //routes.Add("wapRoute", new Route("m.tasaid.com", "", new { }));
 
@@ -59,12 +59,6 @@ namespace Said
                constraints: new { pageIndex = @"[\d]+" },
                namespaces: new string[] { "Said.Controllers" }
             );
-            routes.MapRoute(
-                name: "Back",
-                url: "Back/{controller}/{action}/{id}",
-               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-               namespaces: new string[] { "Said.Areas.Back.Controllers" }
-            );
 
 
             //defaults
@@ -74,6 +68,17 @@ namespace Said
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                 namespaces: new string[] { "Said.Controllers" }
             );
+
+
+            routes.MapRoute(
+                name: "Back",
+                url: "Back/{controller}/{action}/{id}",
+               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+               namespaces: new string[] { "Said.Areas.Back.Controllers" }
+            );
+
+
+
 
         }
     }

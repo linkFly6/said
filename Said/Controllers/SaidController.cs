@@ -50,9 +50,13 @@ namespace Said.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [WapFilterAttribute]
+        //[WapFilterAttribute]
         public ActionResult Article(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index", "Said", new { controller = "Home", sgs = "article", refer = Request.Url.AbsoluteUri });
+            }
             ViewData["NavigatorIndex"] = 2;
             var model = ArticleApplication.Find(id);
             if (model == null)
