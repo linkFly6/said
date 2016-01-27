@@ -70,6 +70,11 @@
 
         a {
             color: red;
+
+            &.likeIt {
+                color: #dd5862;
+                cursor: default;
+            }
         }
     }
 
@@ -102,6 +107,7 @@
 .music-player {
     position: relative;
     padding: 10px 15px;
+
     .player {
         position: absolute;
         top: 0;

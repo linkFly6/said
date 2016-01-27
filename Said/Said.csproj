@@ -387,6 +387,7 @@
     <Content Include="Content\Style\projects.css" />
     <Content Include="Content\Style\saiddetail.css" />
     <Content Include="Content\Style\saidList.css" />
+    <Content Include="Content\wap\style\about.css" />
     <Content Include="Content\wap\style\article.css" />
     <Content Include="Content\wap\style\index.css" />
     <Content Include="Content\wap\style\layout.css" />
@@ -619,6 +620,9 @@
     <Content Include="Views\Shared\_LayoutWap.cshtml" />
     <Content Include="Views\Home\Index.Mobile.cshtml" />
     <Content Include="Views\Said\Article.Mobile.cshtml" />
+    <Content Include="Views\Home\About.Mobile.cshtml" />
+    <Content Include="Content\wap\style\sass\about.scss" />
+    <Content Include="Content\wap\style\about.css.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

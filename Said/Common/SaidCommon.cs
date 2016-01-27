@@ -35,7 +35,7 @@ namespace Said
         {
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(ts.TotalMilliseconds).ToString();
-        }  
+        }
 
 
         /// <summary>
@@ -63,6 +63,34 @@ namespace Said
                 return date.ToString("前天 HH:mm");
             }
             return date.ToString("yyyy-MM-dd HH:mm");
+        }
+
+
+        /// <summary>
+        /// 将时间转换为本地文本（2016-01-01 => 昨天 22:00）
+        /// </summary>
+        /// <returns></returns>
+        public static string DateToLocalOrDay(DateTime date)
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan timespan = now - date;
+            if (timespan.TotalSeconds < 60)
+            {
+                return "刚才";
+            }
+            if (timespan.TotalDays < 1 && now.Day == date.Day)
+            {
+                return date.ToString("今天 HH:mm");
+            }
+            if (timespan.TotalDays < 2 && now.Day - date.Day == 1)
+            {
+                return date.ToString("昨天 HH:mm");
+            }
+            if (timespan.TotalDays < 3 && now.Day - date.Day == 2)
+            {
+                return date.ToString("前天 HH:mm");
+            }
+            return date.ToString("yyyy-MM-dd");
         }
 
 

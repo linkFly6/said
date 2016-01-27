@@ -25,13 +25,13 @@
             foreach (Article item in articles)
             {
                 <a class="said-item displaybox" href="@Url.Action("Article", "Said", new { id = item.SaidId })">
-                    <div class="item-bg" style="background-image:url(/Content/Images/bg/Reine-Norway.jpg)"></div>
+                    <div class="item-bg" style="background-image:url(@saidResourcePath@item.Image.IFileName)"></div>
                     <div class="item-context">
                         <ul class="item-txt">
                             <li><h2>@item.STitle</h2></li>
                             <li class="item-more">
                                 <span class="fa fa-heart-o" title="like"><i>@item.Likes</i></span>
-                                <time>@Said.SaidCommon.DateToLocal(item.Date)</time>
+                                <time>@Said.SaidCommon.DateToLocalOrDay(item.Date)</time>
                             </li>
                         </ul>
                     </div>
