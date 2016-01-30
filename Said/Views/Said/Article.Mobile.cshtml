@@ -15,7 +15,7 @@
         <div class="info">
             <h3>@Model.Song.SongName</h3>
             <div class="album">
-                <a title="Album" class="link" target="_blank" href="http://www.sogou.com/web?query=@Url.Encode(Model.Song.SongAlbum)&ie=utf8">@Model.Song.SongAlbum</a>
+                <a class="link" href="http://wap.sogou.com/web/searchList.jsp?keyword=@Url.Encode(Model.Song.SongArtist)">@Model.Song.SongArtist - @Model.Song.SongAlbum</a>
             </div>
         </div>
         <div class="player">
