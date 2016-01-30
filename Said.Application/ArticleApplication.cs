@@ -203,7 +203,7 @@ namespace Said.Application
         /// <returns>返回封装后的IPagedList对象</returns>
         public static IPagedList<Article> FindByDateDesc(Models.Data.Page page)
         {
-            return Context.FindByDateDesc(page, m => m.STitle != null, m => m.Date);
+            return Context.FindByDateDesc(page, m => m.IsDel == 0, m => m.Date);
         }
 
         /// <summary>

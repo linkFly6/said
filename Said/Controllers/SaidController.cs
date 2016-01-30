@@ -109,6 +109,36 @@ namespace Said.Controllers
                 LikeArticleId = id
             }) > 0 ? ResponseResult() : ResponseResult(3, "添加Like信息异常");
         }
+
+
+
+
+        /// <summary>
+        /// 分页获取said列表
+        /// </summary>
+        /// <param name="limit">个数</param>
+        /// <param name="offset">数据开始位置</param>
+        /// <param name="search"></param>
+        /// <param name="sort"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        public JsonResult GetSaidList(int limit, int offset)
+        {
+            var page = new Page
+            {
+                PageNumber = offset / limit + 1,
+                PageSize = limit
+            };
+            var res = ArticleApplication.FindByDateDesc(page);
+            return Json(new
+            {
+                //hasNextPage = res.HasNextPage,
+                //hasPreviousPage = res.HasPreviousPage,
+                total = res.Count,
+                rows = res.ToList<Article>()
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

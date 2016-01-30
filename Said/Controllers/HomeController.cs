@@ -1,6 +1,7 @@
 ﻿using Said.Application;
 using Said.Controllers.Filters;
 using Said.Models;
+using Said.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,13 @@ namespace Said.Controllers
         {
             if (Request.Browser.IsMobileDevice)//wap
             {
-                ViewData["articleList"] = ArticleApplication.FindAllByDateDesc().ToList<Article>();
+                var res = ArticleApplication.FindByDateDesc(new Page
+                {
+                    PageNumber = 1,
+                    PageSize = 10
+                });
+                ViewData["articleList"] = res.ToList<Article>();
+                ViewData["maxPage"] = res.TotalItemCount % 10 == 0 ? res.TotalItemCount / 10 : res.TotalItemCount / 10 + 1;
             }
             else {
                 ViewData["articleList"] = ArticleApplication.GetByTop(3).ToList<Article>();

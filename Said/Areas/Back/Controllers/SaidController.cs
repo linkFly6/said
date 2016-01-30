@@ -209,7 +209,7 @@ namespace Said.Areas.Back.Controllers
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
-            var res = ArticleApplication.Find(page, "你好");
+            var res = ArticleApplication.Find(page);
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,
