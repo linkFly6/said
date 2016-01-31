@@ -25,6 +25,10 @@ namespace Said.Controllers
 
         public ActionResult Index(string pageIndex = null)
         {
+            //wap访问跳转到wap首页
+            if (Request.Browser.IsMobileDevice) {
+                return RedirectToAction("Index", "Home");
+            }
             ViewData["NavigatorIndex"] = 2;
             int index = 1;
             if (!string.IsNullOrEmpty(pageIndex))
