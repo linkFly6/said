@@ -6,7 +6,7 @@
     IList<Article> List = ViewData["articles"] as List<Article>;
     int PageIndex = (int)ViewData["pageIndex"];
     int MaxPage = (int)ViewData["maxPage"];
-    string SourceSaidImage = Said.Common.ConfigInfo.SourceSaidPath;
+    string SourceSaidImage = Said.Common.ConfigInfo.SourceSaidThumbnailPath;
     string SourceMusicImage = Said.Common.ConfigInfo.SourceMusicImagePath;
 }
 <div class="said-background" style="background-image: url(/Content/Images/bg/saidbg.jpg)">
