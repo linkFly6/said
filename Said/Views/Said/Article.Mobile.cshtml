@@ -15,7 +15,7 @@
         <div class="info">
             <h3>@Model.Song.SongName</h3>
             <div class="album">
-                <a class="link" href="http://wap.sogou.com/web/searchList.jsp?keyword=@Url.Encode(Model.Song.SongArtist)">@Model.Song.SongArtist - @Model.Song.SongAlbum</a>
+                <a class="link" href="@Url.Action("Cl", "Home", new { url = "http://wap.sogou.com/web/searchList.jsp?keyword=" + Url.Encode(Model.Song.SongArtist), sgs = "m-s-q-"+Model.SaidId })">@Model.Song.SongArtist - @Model.Song.SongAlbum</a>
             </div>
         </div>
         <div class="player">
@@ -39,8 +39,8 @@
             </div>
             <ul class="blog-info">
                 <li><a href="/" class="blog-info-more">查看更多我的文章</a></li>
-                <li><a class="licenses licenses-cc" href="http://creativecommons.org/licenses/by/3.0/cn/">CC BY 3.0 CN</a></li>
-                <li><a class="licenses-link" href="http://creativecommons.org/licenses/by/3.0/cn/">本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权</a></li>
+                <li><a class="licenses licenses-cc" href="@Url.Action("Cl", "Home", new {url= "http://creativecommons.org/licenses/by/3.0/cn/",sgs= "m-s-licenses1" })">CC BY 3.0 CN</a></li>
+                <li><a class="licenses-link" href="@Url.Action("Cl", "Home", new {url= "http://creativecommons.org/licenses/by/3.0/cn/",sgs= "m-s-licenses2" })">本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权</a></li>
             </ul>
         </div>
         <section class="music-song"></section>

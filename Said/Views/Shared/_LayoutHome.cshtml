@@ -63,10 +63,10 @@
                     <nav id="nav">
                         <ul id="nav-flip">
                             <li class="@(NavigatorIndex ==0 ? "nav-active" : "")"><a href="/">首页</a></li>
-                            <li class="@(NavigatorIndex ==1 ? "nav-active" : "")"><a href="javascript:void(0);">blog</a></li>
+                            <li class="@(NavigatorIndex ==1 ? "nav-active" : "")"><a href="@Url.Action("Cl", "Home", new {url= "http://www.cnblogs.com/silin6/",sgs="home-cnblog" })" target="_blank">blog</a></li>
                             <li class="@(NavigatorIndex ==2 ? "nav-active" : "")"><a href="/said">听说</a></li>
                             <li class="@(NavigatorIndex ==3 ? "nav-active" : "")"><a href="/projects">项目</a></li>
-                            <li class="@(NavigatorIndex ==4 ? "nav-active" : "")"><a href="javascript:void(0);">实验室</a></li>
+                            <li class="@(NavigatorIndex ==4 ? "nav-active" : "")"><a href="javascript:alert('正在开发中');">实验室</a></li>
                             <li class="@(NavigatorIndex ==5 ? "nav-active" : "")"><a href="/about">关于</a></li>
                         </ul>
                         @*<div id="said-search-con" style="width: 50px;">
@@ -97,10 +97,10 @@
                             <dt>推荐</dt>
                             <dd>
                                 <ul class="footer-recm">
-                                    <li><a target="_blank" href="http://www.cnblogs.com/dojo-lzz/">博客园 - 木的树 - 我的小树林</a></li>
-                                    <li><a target="_blank" href="http://www.zhangxinxu.com/php/">张鑫旭的个人博客</a></li>
-                                    <li><a target="_blank" href="http://www.cnblogs.com/rubylouvre/">司徒正美个人博客 - 博客园</a></li>
-                                    <li><a target="_blank" href="https://github.com/linkFly6">Github - linkFly</a></li>
+                                    <li><a target="_blank" href="@Url.Action("Cl", "Home", new {url= "http://www.cnblogs.com/dojo-lzz/",sgs="rblog-mds" })">博客园 - 木的树 - 我的小树林</a></li>
+                                    <li><a target="_blank" href="@Url.Action("Cl", "Home", new {url= "https://github.com/linkFly6",sgs="rblog-linkFly" })">Github - linkFly</a></li>
+                                    <li><a target="_blank" href="@Url.Action("Cl", "Home", new {url= "http://www.zhangxinxu.com/php/",sgs="rblog-zxx" })">张鑫旭的个人博客</a></li>
+                                    <li><a target="_blank" href="@Url.Action("Cl", "Home", new {url= "http://www.cnblogs.com/rubylouvre/",sgs="rblog-stzm" })">司徒正美个人博客 - 博客园</a></li>
                                 </ul>
                             </dd>
                         </dl>
@@ -109,7 +109,7 @@
                                 许可
                             </dt>
                             <dd>
-                                本站原创并且没有注明相关许可协议的内容，默认均采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">《知识共享署名 3.0 中国大陆许可协议》</a>进行许可。非原创内容遵循原文许可协议。
+                                本站原创并且没有注明相关许可协议的内容，默认均采用<a href="@Url.Action("Cl", "Home", new {url= "http://creativecommons.org/licenses/by/3.0/cn/",sgs= "f-license" })" target="_blank">《知识共享署名 3.0 中国大陆许可协议》</a>进行许可。非原创内容遵循原文许可协议。
                             </dd>
                         </dl>
                         <dl>

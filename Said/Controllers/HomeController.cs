@@ -1,5 +1,8 @@
 ﻿using Said.Application;
+using Said.Common;
+using Said.Controllers.Attrbute;
 using Said.Controllers.Filters;
+using Said.Helper;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -54,6 +57,43 @@ namespace Said.Controllers
         {
             ViewData["NavigatorIndex"] = 5;
             return View();
+        }
+
+
+        /// <summary>
+        /// 统计方法
+        /// </summary>
+        /// <returns></returns>
+        [NoFilter]
+        public ActionResult Cl(string url, string referrer = null)
+        {
+            //收集统计信息
+            string key = Request[SaidRecordCommon.KEY];
+            //修正
+            if (string.IsNullOrWhiteSpace(key))
+                key = string.Empty;
+
+            //请求来源
+            Uri urlReferrer = null;
+            //请求的url
+            Uri requestUrl = null;
+            //检测并修正来源
+            if (string.IsNullOrWhiteSpace(referrer) || !Uri.TryCreate(referrer, UriKind.RelativeOrAbsolute, out urlReferrer))
+            {
+                urlReferrer = Request.UrlReferrer;
+            }
+            //检测请求的url是否合法
+            if (!Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out requestUrl))
+            {
+                SaidRecordCommon.AddFail(key, url, urlReferrer == null ? null : urlReferrer.OriginalString);
+                return Redirect(url);
+            }
+            //检测通过
+            if (urlReferrer == null)
+                SaidRecordCommon.Add(key, url);
+            else
+                SaidRecordCommon.Add(key, url, urlReferrer);
+            return Redirect(url);
         }
 
 

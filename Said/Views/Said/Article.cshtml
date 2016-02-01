@@ -23,8 +23,8 @@
                         <h2 class="music-song-name">@Model.Song.SongName</h2>
                     </li>
                     <li>
-                        <div class="music-song-summary"><a title="Artist" class="music-song-link" target="_blank" href="http://www.sogou.com/web?query=@Url.Encode(Model.Song.SongArtist)&ie=utf8">@Model.Song.SongArtist</a></div>
-                        <div class="music-song-summary"><a title="Album" class="music-song-link" target="_blank" href="http://www.sogou.com/web?query=@Url.Encode(Model.Song.SongAlbum)&ie=utf8">@Model.Song.SongAlbum</a></div>
+                        <div class="music-song-summary"><a title="Artist" class="music-song-link" target="_blank" href="@Url.Action("Cl", "Home", new { url = "http://www.sogou.com/web?ie=utf8&query=" + Url.Encode(Model.Song.SongArtist), sgs = "s-q-"+Model.SaidId })">@Model.Song.SongArtist</a></div>
+                        <div class="music-song-summary"><a title="Album" class="music-song-link" target="_blank" href="@Url.Action("Cl", "Home", new { url = "http://www.sogou.com/web?ie=utf8&query=" + Model.Song.SongAlbum, sgs = "s-q-"+Model.SaidId })">@Model.Song.SongAlbum</a></div>
                     </li>
                 </ul>
             </dd>
@@ -58,7 +58,7 @@
                     <span>评论(0)</span>
                 </div>*@
             <div class="licenses-box">
-                <a class="licenses licenses-cc" target="_blank" href="http://creativecommons.org/licenses/by/3.0/cn/" title="本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权">CC BY 3.0 CN</a>
+                <a class="licenses licenses-cc" target="_blank" href="@Url.Action("Cl", "Home", new {url= "http://creativecommons.org/licenses/by/3.0/cn/",sgs= "s-licenses" })" title="本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权">CC BY 3.0 CN</a>
             </div>
             <ul class="blog-info">
                 <li class="blog-info-date"><time>@Model.Date.ToString("yyyy/MM/dd HH:mm")</time></li>
