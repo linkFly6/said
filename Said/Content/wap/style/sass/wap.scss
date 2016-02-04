@@ -28,6 +28,13 @@ body {
     }
 }
 
+.clear, clear:after {
+    clear: both;
+    float: none !important;
+    content: '';
+    display: block;
+}
+
 .navbar {
     .nav-container {
         text-align: center;

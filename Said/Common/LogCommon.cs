@@ -1,9 +1,5 @@
 ﻿using log4net;
-using log4net.Config;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Said.Common
 {
@@ -15,11 +11,11 @@ namespace Said.Common
         /// <summary>
         /// 正常日志
         /// </summary>
-        public static readonly ILog loginfo = log4net.LogManager.GetLogger("loginfo");
+        public static readonly ILog loginfo = LogManager.GetLogger("loginfo");
         /// <summary>
         /// Error日志
         /// </summary>
-        public static readonly ILog logerror = log4net.LogManager.GetLogger("logerror");
+        public static readonly ILog logerror = LogManager.GetLogger("logerror");
 
         /// <summary>
         /// 输出日志

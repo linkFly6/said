@@ -415,6 +415,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Back\Models\" />
+    <Folder Include="Config\" />
     <Folder Include="Content\Back\JavaScript\jquery\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
     <Folder Include="Data\" />
@@ -559,16 +560,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Source\Sys\Dat\IP.dat" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Config\Upload.config">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Config\Path.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Back\Views\Image\Index.cshtml" />

@@ -26,7 +26,8 @@ namespace Said.Controllers
         public ActionResult Index(string pageIndex = null)
         {
             //wap访问跳转到wap首页
-            if (Request.Browser.IsMobileDevice) {
+            if (Request.Browser.IsMobileDevice)
+            {
                 return RedirectToAction("Index", "Home");
             }
             ViewData["NavigatorIndex"] = 2;
@@ -64,7 +65,7 @@ namespace Said.Controllers
             ViewData["NavigatorIndex"] = 2;
             var model = ArticleApplication.Find(id);
             if (model == null)
-                return View("Error");
+                return RedirectToAction("NotFound", "Home", new { sgs = "ArticleNotFound", url = Request.Url.AbsoluteUri });
             model.SPV++;
             //要确定之类是否要加锁
             ArticleApplication.Update(model);

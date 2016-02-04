@@ -11,7 +11,7 @@
     <link href="@Url.Content("~/Content/wap/style/index.css?v=1.0")" rel="stylesheet">
 }
 <div class="banner">
-    <div class="banner-bg" style="background-image:url(/Content/Images/bg/20150521092620.jpg);"></div>
+    <div class="banner-bg" style="background-image:url(/Content/Images/bg/6033.jpg);"></div>
     <div class="banner-content">
         <h1>世界很大，风住过这里</h1>
         <p>听说</p>
@@ -25,7 +25,7 @@
             {
                 foreach (Article item in articles)
                 {
-                    <a class="said-item displaybox" href="@Url.Action("Article", "Said", new { id = item.SaidId })">
+                    <a class="said-item clear" href="@Url.Action("Article", "Said", new { id = item.SaidId })">
                         <div class="item-bg" style="background-image:url(@saidResourcePath@item.Image.IFileName)"></div>
                         <div class="item-context">
                             <div class="item-article">
