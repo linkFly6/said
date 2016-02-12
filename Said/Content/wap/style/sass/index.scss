@@ -25,8 +25,9 @@ body {
         border-bottom: none;
     }*/
     .item-bg {
-        width: 200px;
+        width: 114px;
         height: 80px;
+        float: left;
         background: none center center no-repeat;
         background-size: 150% auto;
         @include prefixer(filter,brightness(.8));
@@ -34,9 +35,10 @@ body {
 
     .item-context {
         position: relative;
-        width: 100%;
+        /*width: 100%;*/
         overflow: hidden;
-        padding-left: 10px;
+        padding: 0 10px 15px 10px;
+        height: 66px;
     }
 
     h2 {
@@ -51,7 +53,7 @@ body {
     .article-txt {
         font-size: 14px;
         line-height: 20px;
-        max-height: 40px;
+        height: 40px;
     }
 
     i {

@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.WebPages;
 
 namespace Said
 {
@@ -16,10 +18,22 @@ namespace Said
     // visit http://go.microsoft.com/?LinkId=9394801
     public class MvcApplication : HttpApplication
     {
+        private Regex regMobile = new Regex("Android|iPhone|Windows Phone|Mobile", RegexOptions.IgnoreCase);
+
         protected void Application_Start()
         {
             MvcHandler.DisableMvcResponseHeader = false;
             LogCommon.Log(string.Format("应用程序开始"));
+
+            //强制检测移动端
+            DisplayModeProvider.Instance.Modes.Insert(0, new DefaultDisplayMode("Mobile")
+            {
+                ContextCondition = (context => regMobile.IsMatch(HttpContext.Current.Request.UserAgent))
+            });
+
+            //regMobile.IsMatch(HttpContext.Current.Request.UserAgent);
+
+
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -59,7 +73,7 @@ namespace Said
         protected void Application_Error(object sender, EventArgs e)
         {
             // 异常对象HttpContext.Current.Error
-            LogCommon.Error("程序发生未捕获异常", HttpContext.Current.Error);
+            LogCommon.Error("程序发生未捕获异常\n请求url：" + HttpContext.Current.Request.Url.AbsoluteUri, HttpContext.Current.Error);
         }
     }
 
