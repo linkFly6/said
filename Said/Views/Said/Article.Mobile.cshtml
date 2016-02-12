@@ -44,7 +44,7 @@
             </ul>
         </div>
         <section class="music-song"></section>
-        <audio id="said-player" height="0" width="0" src="@(SourceMusicDir+Model.Song.SongFileName)" loop></audio><!--autoplay="autoplay"-->
+        <audio id="said-player" height="0" width="0" loop></audio><!--autoplay="autoplay"-->
     </section>
 </section>
 
@@ -54,7 +54,9 @@
 
 @section FootJs{
     <script>
-        var saidId = "@Model.SaidId";
+        var saidId = "@Model.SaidId",
+            //采用懒加载资源，节省流量
+            playerSrc = '@(SourceMusicDir+Model.Song.SongFileName)';
     </script>
     <script>
         require(['jquery', 'so'], function ($, so) {
@@ -63,6 +65,7 @@
 
             var $player = $('#said-player'),//播放器
                 playerElem = $player[0],
+                isLoaded = false,//是否已经加载过资源文件
                 $playBtn = $('#said-player-play'),//播放
                 $stopBtn = $('#said-player-stop'),//停止
                 togglePlay = function (isPlay) {//切换显示播放按钮
@@ -82,6 +85,10 @@
             });
             //播放
             $playBtn.on('click', function () {
+                if (!isLoaded) {
+                    playerElem.src = playerSrc;
+                    isLoaded = true;
+                }
                 playerElem.play();
                 togglePlay(true);
             });
