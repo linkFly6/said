@@ -80,7 +80,8 @@
                 //xhr.setRequestHeader("Content-Disposition", 'Content-Disposition: form-data; name="img"; filename="blob"');
                 if (config.progress)
                     xhr.upload.addEventListener("progress", function (e) {
-                        vm.progress = Math.floor(e.loaded / size) * 100;
+                        vm.progress = e.loaded / size * 100;
+                        console.log(vm.progress);
                     }, false);
                 xhr.onreadystatechange = function (e) {
                     if (xhr.readyState === 4) {

@@ -109,7 +109,14 @@ namespace Said.Areas.Back.Controllers
                 //model.Classify = null;
                 //model.SongId = model.Song.SongId;
                 //model.Song = null;
-                model.SaidId = SaidCommon.GUID;
+
+
+                /*
+                    2016-02-13 22:10:45
+                    Said的ID和文件名保持一致
+                */
+                //model.SaidId = SaidCommon.GUID;
+                model.SaidId = model.SName;
                 return ArticleApplication.Add(model) > 0 ?
                     ResponseResult(0, model.SaidId) :
                     ResponseResult(2, "添加到数据库异常");
