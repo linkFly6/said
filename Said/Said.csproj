@@ -329,6 +329,7 @@
     <Content Include="Content\Images\said-public.png" />
     <Content Include="Content\Images\said-logo.png" />
     <Content Include="Content\Images\said-logo2.png" />
+    <Content Include="Content\Images\said-up-def.png" />
     <Content Include="Content\Images\said-watermark-2.png" />
     <Content Include="Content\Images\said-watermark.png" />
     <Content Include="Content\Images\sidebar-bg.jpg" />

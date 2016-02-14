@@ -183,7 +183,7 @@ namespace Said.Common
         public static string CreateFileNameByTime(string format = null)
         {
             if (string.IsNullOrEmpty(format))
-                format = "ffffyyyymmddHHssMM";//乱七八糟的格式~~~~
+                format = "yyyyMMddHHmmss";//乱七八糟的格式~~~~
             return DateTime.Now.ToString(format, DateTimeFormatInfo.InvariantInfo);
         }
         #endregion
