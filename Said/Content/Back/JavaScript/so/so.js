@@ -632,8 +632,9 @@
             //未来是否支持星期（dddd作为星期）？加入第三个参数扩展格式化？可以自定义解析格式？
         },
         //时间转本地=>时间转=>2个小时前
-        dateToLocal: function (oldDate, nowDate) {
+        dateToLocal: function (oldDate, nowDate, defautlsFormat) {
             oldDate = so.parseDate(oldDate);
+            defautlsFormat = defautlsFormat || 'yyyy年MM月dd日 HH:mm:ss';
             nowDate = nowDate ? so.parseDate(nowDate) : new Date();
             var timeSpan = nowDate.getTime() - oldDate.getTime();
             if (!oldDate || !nowDate || timeSpan < 0)
@@ -646,7 +647,7 @@
                 return Math.floor(timeSpan / 3600000) + '小时前';
             if (timeSpan / 86400000 <= 3)//1day=86400000ms
                 return Math.floor(timeSpan / 86400000) + '天前';
-            return so.dateFormat(oldDate, 'yyyy年MM月dd日 HH:mm:ss');//完整的时间
+            return so.dateFormat(oldDate, defautlsFormat);//完整的时间
         },
         /**
         * so.parseData(value) - 将一个字符串转换成相应的数据类型

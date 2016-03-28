@@ -38,7 +38,8 @@ namespace Said.Controllers
             }
             var page = new Page
             {
-                PageNumber = index / PageLimit + 1,
+                //PageNumber = index / PageLimit + 1,
+                PageNumber = index,
                 PageSize = PageLimit
             };
             IPagedList<Article> list = ArticleApplication.FindByDateDesc(page);

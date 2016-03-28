@@ -77,7 +77,7 @@
                     $nextPageText = $nextPage.find('span'),//下一页按钮文案
                     $saidListBox = $('#said-list-box'),//Said列表容器
                     htmlTemplates = {
-                        said: '<a class="said-item displaybox" href="${url}">\
+                        said: '<a class="said-item clear" href="${url}">\
                         <div class="item-bg" style="background-image:url(${imgUrl}"></div>\
                         <div class="item-context">\
                             <div class="item-article">\
@@ -108,7 +108,7 @@
                                     title: item.STitle,
                                     summary: item.SSummaryTrim,
                                     likes: item.Likes,
-                                    date: _.dateToLocal(item.Date, window.dateNow)
+                                    date: _.dateToLocal(item.Date, window.dateNow, 'yyyy-MM-dd')
                                 }));
                             });
                             $saidListBox.append(htmls.join(''));
