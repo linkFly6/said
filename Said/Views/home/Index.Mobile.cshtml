@@ -91,6 +91,7 @@
                     };
                 $nextPage.on('click', function () {
                     $loading.show();
+                    $nextPage.hide();
                     $.ajax({
                         url: Action.getSaidList,
                         type: "post",
@@ -116,14 +117,16 @@
                                 $nextPage.parent().hide();
                             } else {
                                 currentPageIndex++;
+                                $nextPage.show();
                                 $nextPageText.html('点击加载更多');
                             }
                         } else {
+                            $nextPage.show();
                             $nextPageText.html('加载失败，点击重新加载');
                         }
 
                     }).fail(function () {
-
+                        $nextPage.show();
                     }).always(function () {
                         $loading.hide();
                     });
