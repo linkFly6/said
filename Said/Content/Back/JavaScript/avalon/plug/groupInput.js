@@ -69,7 +69,7 @@
                 len = this.filters.length;
                 reset();
             } : function (value) {
-                value = value.toLowerCase();
+                value = value.trim().toLowerCase();
                 if (!isMultiple)
                     vm.values.clear();
                 this.filters.clear();
