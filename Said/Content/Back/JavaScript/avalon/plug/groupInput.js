@@ -6,8 +6,7 @@
                         </div></div>\
                         <div style="position:relative;"><div class="OPTION_QUERYSELECT" style="position:absolute;top:1px;" ms-visible="filters.length">\
                             <a class="OPTION_ITEM" href="javascript:;" ms-repeat-item="filters" ms-class="active:$index==activeIndex"  ms-click="itemClick($index)">{{item.name}}</a>\
-                        </div></div></div>',
-                        each = Array.prototype.forEach;
+                        </div></div></div>';
 
     //参数datas的格式
     //var demo = [
@@ -24,6 +23,7 @@
             datas = data.groupInputOptions.datas,
             callback = options.callback,
             trim = String.prototype.trim,
+            max = options.max,
             $containerDOM,
             vm, $elem = $(elem),
             stop = function (e) {
@@ -73,7 +73,7 @@
                 if (!isMultiple)
                     vm.values.clear();
                 this.filters.clear();
-                each.call(datas, function (item) {
+                so.each(datas, function (item, i) {
                     //支持二维数组
                     if (typeof item === 'object') {
                         //使用some尝试终止循环
@@ -84,7 +84,7 @@
                             })) {
                                 vm.filters.push(item);
                             }
-                        } else
+                        } else if (~item.query.toLowerCase().indexOf(value))
                             vm.filters.push(item);
                     }
                     else if (!~vm.values.indexOf(item) && ~item.indexOf(value))
@@ -92,7 +92,8 @@
                             name: item,
                             query: item,
                             data: item
-                        })
+                        });
+                    if (vm.filters.length >= max) return false;
                 });
                 len = vm.filters.length;
                 vm.reset();
@@ -234,7 +235,8 @@
         custom: true,
         values: [],
         datas: [],
-        zIndex: -1
+        zIndex: -1,
+        max: 10
     };
     return widget;
 });

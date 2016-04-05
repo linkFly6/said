@@ -1,5 +1,6 @@
 ﻿require.config({
     baseUrl: '/Content/Back/JavaScript',
+    urlArgs: 'v=20160405',
     paths: {
         'jquery': 'jQuery-2.1.1.min',
         'saidAdd': 'said/addSaid',
