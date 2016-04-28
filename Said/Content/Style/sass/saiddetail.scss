@@ -240,7 +240,8 @@ $playerBar: #dbdbdb;
 
 .blog-content {
     padding: 45px;
-    font-family: "lucida grande",lucida,helvetica,"Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+    //"Hiragino Sans GB","Microsoft YaHei",helvetica,"WenQuanYi Micro Hei",sans-serif
+    font-family: "Microsoft YaHei", 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
     /*padding: 10px;*/
     font-size: 16px;
     text-align: justify;
@@ -266,7 +267,7 @@ $playerBar: #dbdbdb;
     }
 
     code, kbd, pre, samp {
-        font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+        font-family: Consolas,Menlo,Monaco,Consolas,"Courier New",monospace;
     }
 
 
