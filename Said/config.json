@@ -4,7 +4,7 @@
     "images.filter": "gif,jpg,jpeg,jpe,png,bmp",
 
 
-    "music.maxSize": "6291456",
+    "music.maxSize": "10485760",
     "music.filter": "mp3,ogg",
     "music.images": "/Source/Said/Musics/Images/",
     "music.images.maxSize": "1048576",
