@@ -57,9 +57,15 @@ namespace Said.Areas.Back.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult Preview(Blog model)
+        {
 
-
+            return View();
+        }
         #endregion
+
+
 
 
 
