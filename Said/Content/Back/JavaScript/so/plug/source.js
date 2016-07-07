@@ -184,28 +184,31 @@
                      cancelButtonText: '取消',
                      //配置正在加载
                      showLoaderOnConfirm: true
-                 }, function () {
-                     var id = elem.dataset.id,
+                 }, function (isConfirm) {
+                     if (isConfirm) {
+                         var id = elem.dataset.id,
                          index = self._searchIndexOf(self.datas, id);
-                     $.ajax({
-                         url: self.options.deleteUrl,
-                         contentType: 'application/json',
-                         dataType: 'json',
-                         type: 'post',
-                         data: JSON.stringify({ id: id })
-                     }).done(function (data) {
-                         if (data.code !== 0)
-                             sweetalert('删除图片失败', '服务器返回消息：' + data.msg, 'error');
-                         else {
-                             ~index && self.datas.splice(index, 1);
-                             $(elem.parentNode.parentNode).remove();
-                             self._setCount(--self.total);
-                             sweetalert('删除成功', '删除图片成功！', 'success');
-                         }
+                         $.ajax({
+                             url: self.options.deleteUrl,
+                             contentType: 'application/json',
+                             dataType: 'json',
+                             type: 'post',
+                             data: JSON.stringify({ id: id })
+                         }).done(function (data) {
+                             if (data.code !== 0)
+                                 sweetalert('删除图片失败', '服务器返回消息：' + data.msg, 'error');
+                             else {
+                                 ~index && self.datas.splice(index, 1);
+                                 $(elem.parentNode.parentNode).remove();
+                                 self._setCount(--self.total);
+                                 sweetalert('删除成功', '删除图片成功！', 'success');
+                             }
 
-                     }).fail(function (res) {
-                         sweetalert('删除图片失败', '网络连接异常', 'error');
-                     });
+                         }).fail(function (res) {
+                             sweetalert('删除图片失败', '网络连接异常', 'error');
+                         });
+                     }
+                     
                  })
                  return false;
              });

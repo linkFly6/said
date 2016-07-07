@@ -195,22 +195,24 @@
                             cancelButtonText: '取消',
                             //配置正在加载
                             showLoaderOnConfirm: true
-                        }, function () {
-                            said.ajax(Action.realDeleteImage, {
-                                id: item.ImageId
-                            }).done(function (result) {
-                                if (result.code === 0) {
-                                    sweetalert('删除成功', '删除图片成功', 'success');
-                                    vmModel.datas.splice(i, 1);
-                                    //更新缓存池
-                                    var index = vmModel.offset + i;
-                                    if (vmModel.caches[index]) vmModel.caches.splice(index, 1);
-                                } else {
-                                    sweetalert('删除异常', '服务器返回异常：' + result.msg, 'error');
-                                }
-                            }).fail(function () {
-                                sweetalert('删除异常', '网络连接异常', 'error');
-                            });
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                said.ajax(Action.realDeleteImage, {
+                                    id: item.ImageId
+                                }).done(function (result) {
+                                    if (result.code === 0) {
+                                        sweetalert('删除成功', '删除图片成功', 'success');
+                                        vmModel.datas.splice(i, 1);
+                                        //更新缓存池
+                                        var index = vmModel.offset + i;
+                                        if (vmModel.caches[index]) vmModel.caches.splice(index, 1);
+                                    } else {
+                                        sweetalert('删除异常', '服务器返回异常：' + result.msg, 'error');
+                                    }
+                                }).fail(function () {
+                                    sweetalert('删除异常', '网络连接异常', 'error');
+                                });
+                            }
                         });
                         e.stopPropagation();
                     },
