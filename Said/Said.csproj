@@ -564,6 +564,7 @@
     <Content Include="Areas\Back\Views\Home\Login.cshtml" />
     <Content Include="Areas\Back\Views\Site\PageConfig.cshtml" />
     <Content Include="Areas\Back\Views\Site\SiteRecord.cshtml" />
+    <Content Include="Areas\Back\Views\Blog\Preview.cshtml" />
     <None Include="config.json" />
     <Content Include="log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

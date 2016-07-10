@@ -124,24 +124,21 @@
                     <div style="z-index: 2;" class="addSaid-mask" ms-visible="!imgSrc" ms-click="dialog()">
                         <span class="so-upload-text">选择文章缩略图</span>
                     </div>
-                    @*<div ms-widget="upload,uploadImages"></div>*@
                     <div class="panel-heading">描述</div>
                     <div class="panel-body">
                         <div class="col-md-4">
                             <div class="summay-img">
                                 <div class="thumbnail">
                                     <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '/Content/Images/said-up-def.png') + ')'"></div>
-                                    @*<img ms-attr-src="imgSrc ? imgSrc :'../../Content/Images/test-said-img.jpg'" />*@
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-8">
                             @Html.TextAreaFor(Model => Model.SSummary, new Dictionary<string, object>() {
                                     { "class", "said-dis" },
+                                    { "ms-class", "said-error:sImg!=null && !sSummary" },
                                     { "autocomplete", "off" },
                                     { "placeholder", "简介[支持HTML]" },
-                                    { "required", "" },
-                                    { "data-validate", "" },
                                     { "ms-duplex", "sSummary" },
                                     { "ms-change", "saveTolocalStorage('sSummary',sSummary)" }
                             })
@@ -307,7 +304,7 @@
         }
 
 
-        require(['said', 'jquery', 'so', 'avalon', 'source', 'dialog', 'sweetalert', 'markdown', 'upload', 'avalonUpload', 'showDownThemeGithub', 'groupInput'], function (said, $, so, avalon, source, dialog, sweetalert, showdown) {
+        require(['said', 'jquery', 'so', 'avalon', 'source', 'sweetalert', 'markdown', 'upload', 'avalonUpload', 'showDownThemeGithub', 'groupInput'], function (said, $, so, avalon, source, sweetalert, showdown) {
             'use strict';
             $(function () {
                 var slice = Array.prototype.slice;
@@ -337,7 +334,7 @@
                     $id: 'said',
                     sTitle: database.val('sTitle'),
                     sTag: database.val('sTag'),
-                    sSummary: database.val('sSummary'),
+                    sSummary: database.val('sSummary') || '',
                     sReprint: database.val('sReprint'),
                     sScript: database.val('sScript'),
                     sIsTop: database.val('sIsTop'),
@@ -496,38 +493,6 @@
                     vmSong.imgSrc = Source.songImg + localSongData[0].data.img;
                 }
 
-
-
-                ////tag
-                //avalon.define({
-                //    $id: 'tagController',
-                //    //tags: DataCenter.tags,
-                //    groupInput: {
-                //        datas: DataCenter.tags,
-                //        multiple: true,
-                //        zIndex: 4,
-                //        callback: function (values) {
-                //            //console.log(values);
-                //            vmSaid.bTag = values;
-                //            database.val('bTag', values);
-                //        },
-                //        values: vmSaid.bTag
-                //    }
-                //});
-                ////classify
-                //avalon.define({
-                //    $id: 'classifyController',
-                //    groupInput: {
-                //        datas: DataCenter.classifyList,
-                //        zIndex: 3,
-                //        custom: false,
-                //        callback: function (value) {
-                //            database.val('classify', value);
-                //        }
-                //        //classContaier: 'queryInputBar'
-                //    }
-                //});
-
                 //upload
 
                 var _summaryDialog = $.source({
@@ -535,21 +500,24 @@
                     path: Source.summaryImg,
                     type: Source.saidImageType,
                     uploadUrl: Action.uploadSaidImg,
-                    deleteUrl: '/Back/Source/RealDeleteImage',//这个是物理删除，测试用这个
+                    //deleteUrl: '/Back/Source/RealDeleteImage',//这个是物理删除，测试用这个
                     multiple: false,
-                    //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
+                    deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
                     callback: function (data) {
-                        vmUpload.data = data;
-                        var imgSrc = Source.summaryImg + data.IName;
-                        vmUpload.img = data.IName;
-                        vmUpload.imgSrc = imgSrc;
-                        vmSaid.sImg = data.ImageId;
-                        database.val('sImg', data.ImageId).val('summary.imgSrc', imgSrc);
+                        if (data) {
+                            vmUpload.data = data;
+                            var imgSrc = Source.summaryImg + data.IName;
+                            vmUpload.img = data.IName;
+                            vmUpload.imgSrc = imgSrc;
+                            vmSaid.sImg = data.ImageId;
+                            database.val('sImg', data.ImageId).val('summary.imgSrc', imgSrc);
+                        }
                     }
                 });
                 var vmUpload = avalon.define({
                     $id: 'uploadController',
-                    imgSrc: database.val('summary.imgSrc'),
+                    img: '',
+                    imgSrc: database.val('summary.imgSrc') || '',
                     $skipArray: ['img'],
                     dialog: function (id) {
                         _summaryDialog.show();

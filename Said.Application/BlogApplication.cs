@@ -44,8 +44,6 @@ namespace Said.Application
         {
             StringBuilder str = new StringBuilder();
             //防止tag有HTML标签，修正
-            if (!string.IsNullOrWhiteSpace(model.BTag))
-                model.BTag = HTMLCommon.HTMLTrim(model.BTag);
             foreach (var validateResult in model.Validate())
             {
                 //validateResult.MemberNames//这个要搞懂怎么用，或许能让提示信息更全一点

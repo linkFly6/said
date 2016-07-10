@@ -1027,8 +1027,8 @@ Showdown.converter = function (converter_options) {
                 codeblock = _Detab(codeblock);
                 codeblock = codeblock.replace(/^\n+/g, ""); // trim leading newlines
                 codeblock = codeblock.replace(/\n+$/g, ""); // trim trailing whitespace
-
-                codeblock = "<pre" + (language ? " class=\"brush:" + language + '"' : "") + ">" + codeblock + "\n</pre>";
+                //linkFlyÐÂÔö
+                codeblock = "<pre class='highlight highlight-source'><code" + (language ? " class=\"" + language + '"' : "") + ">" + codeblock + "\n</code></pre>";
 
                 return hashBlock(codeblock);
             }

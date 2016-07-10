@@ -62,8 +62,7 @@ namespace Said.Service
             return base.GetPage(page,
                                     a => a.BTitle.Contains(keywords)
                                         || a.BSummary.Contains(keywords)
-                                            || a.BContext.Contains(keywords)
-                                                || a.BTag.Contains(keywords),
+                                            || a.BContext.Contains(keywords),
                                 a => a.BDate);
         }
 
@@ -144,7 +143,7 @@ namespace Said.Service
                                         BlogId = m.BlogId,
                                         BTitle = m.BTitle,
                                         BSummary = m.BSummary,
-                                        BTag = m.BTag,
+                                        Tag = m.Tag,
                                         CName = m.Classify.CName,
                                         BDate = m.BDate,
                                         BPV = m.BPV,
@@ -154,7 +153,7 @@ namespace Said.Service
                                         BlogId = m.BlogId,
                                         BTitle = m.BTitle,
                                         BSummary = m.BSummary,
-                                        BTag = m.BTag,
+                                        Tag = m.Tag,
                                         Classify = new Classify { CName = m.CName },
                                         BDate = m.BDate,
                                         BPV = m.BPV,

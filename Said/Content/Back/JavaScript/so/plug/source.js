@@ -113,7 +113,6 @@
         self.$sum = $elem.find('.source-count-sum');
         self.$curr = $elem.find('.source-count-curr');
 
-
         //数据
         this.total = 0;//当前列表总数
         this.ids = [];//当前已经选中的数据
@@ -201,6 +200,10 @@
                                  ~index && self.datas.splice(index, 1);
                                  $(elem.parentNode.parentNode).remove();
                                  self._setCount(--self.total);
+                                 if (self.total === 0) {
+                                     //图片为0
+                                     $body.html('<div class="source-noResult">没有数据</div>');
+                                 }
                                  sweetalert('删除成功', '删除图片成功！', 'success');
                              }
 
@@ -208,7 +211,7 @@
                              sweetalert('删除图片失败', '网络连接异常', 'error');
                          });
                      }
-                     
+
                  })
                  return false;
              });
@@ -369,6 +372,8 @@
     Source.prototype._insert = function (data) {
         this.datas.unshift($.extend({}, data));
         data.path = this.options.path;
+        //本来没有图片，页面显示没有数据，而现在已经上传了图片，所以要把没有显示的文案给干掉
+        if (this.total === 0) this.$body.html('');
         this._setCount(++this.total);
         data.loading = this.options.imgLoading;
         var $elem = $(so.format(templateItem, data));

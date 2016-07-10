@@ -2,7 +2,7 @@
     'use strict';
     var globalTemplate = '<div class="OPTION_CONTAINER_CLASS" style="position:relative;ZINDEX"><div class="OPTION_BODY" >\
                         <div class="OPTION_SELECTED" ms-visible="isMultiple&&values.length">\
-                            <label ms-repeat-item="values"><span>{{item}}</span><a class="OPTION_VALUESITEM" href="javascript:;" ms-click="removeClick($index)">×</a></label>\
+                            <label ms-repeat-item="values"><span>{{item.name}}</span><a class="OPTION_VALUESITEM" href="javascript:;" ms-click="removeClick($index)">×</a></label>\
                         </div></div>\
                         <div style="position:relative;"><div class="OPTION_QUERYSELECT" style="position:absolute;top:1px;" ms-visible="filters.length">\
                             <a class="OPTION_ITEM" href="javascript:;" ms-repeat-item="filters" ms-class="active:$index==activeIndex"  ms-click="itemClick($index)">{{item.name}}</a>\
@@ -16,7 +16,6 @@
     //        data: '传递的数据'
     //    }
     //];
-
 
     var widget = avalon.ui.groupInput = function (elem, data, vms) {
         var options = data.groupInputOptions,
@@ -39,15 +38,25 @@
                                     .replace('OPTION_QUERYSELECT', options.classQuerySelect || '')
                                     .replace('OPTION_ITEM', options.classSelectItem || ''));
 
-        var isMultiple = options.multiple, acceptCustom = options.custom, filters;
+        var isMultiple = options.multiple, acceptCustom = options.custom, filters,
+            //默认值
+            defaultsValues;
+        if (options.values) {
+            defaultsValues = options.values.map(function (item) {
+                return typeof (item) == 'object' ? item : {
+                    query: item,
+                    name: item,
+                    data: item
+                };
+            });
+        } else
+            defaultsValues = [];
 
         vm = avalon.define({
             $id: data.groupInputId,
             activeIndex: -1,
             isMultiple: isMultiple,
-            values: options.values ? options.values.filter(function (item) {
-                return String(item).length > 0;
-            }) : [],
+            values: defaultsValues,
             filters: [{ name: '', query: '', data: {} }],
             removeClick: function (index) {
                 vm.values.splice(index, 1);
@@ -86,13 +95,18 @@
                             }
                         } else if (~item.query.toLowerCase().indexOf(value))
                             vm.filters.push(item);
-                    }
-                    else if (!~vm.values.indexOf(item) && ~item.indexOf(value))
-                        vm.filters.push({
-                            name: item,
-                            query: item,
-                            data: item
-                        });
+                    } else {
+                        if ((vm.values.length == 0 || vm.values.every(function (obj) {
+                             return !~obj.query.indexOf(item) && ~item.toLowerCase().indexOf(value);
+                        }))) {
+                            vm.filters.push({
+                                name: item,
+                                query: item,
+                                data: item
+                            })
+                        }
+                    };
+
                     if (vm.filters.length >= max) return false;
                 });
                 len = vm.filters.length;
@@ -103,10 +117,25 @@
                 vm.reset(true);
                 elem.focus();
             },
+            //把vm.values(viewmodel对象)转换为真正的js对象
+            value2Data: function () {
+                return vm.values.map(function (item) {
+                    return {
+                        name: item.name,
+                        query: item.query,
+                        data: item.data
+                    }
+                });
+            },
             vals: function (index) {
                 var value = typeof index === 'number' ?
                     vm.filters[index] :
-                    acceptCustom ? index : '';
+                    acceptCustom ?
+                    index ? {
+                        name: index,
+                        query: index,
+                        data: index
+                    } : '' : '';
                 //TODO 去重处理？
                 if (value) {
                     vm.values.push(value)
@@ -116,8 +145,13 @@
             /*下拉框逻辑*/
             checkCustomInput: function () {
                 if (!acceptCustom && elem.value.trim().length) {
+                    var value = elem.value.trim();
                     if (!datas.some(function (item) {
-                        return item.name === elem.value.trim();
+                        if (typeof item == 'object') {
+                        return item.name === value;
+                    } else {
+                        return item === value;
+                    }
                     })) {
                         elem.value = '';
                         //if (!isMultiple) vm.values.clear();
@@ -210,7 +244,7 @@
         vm.values.$watch('length', function (newLength, oldLength) {
             callback.call(elem, newLength === 0 ?
                 isMultiple ? [] : ''
-                : isMultiple ? vm.values : vm.values[0]);
+                : isMultiple ? vm.value2Data() : vm.value2Data()[0]);
         });
 
         vm.filters.clear();

@@ -29,7 +29,11 @@ namespace Said.Models
         /// <summary>
         /// 标签
         /// </summary>
-        public string BTag { get; set; }
+        /// <summary>
+        /// 标签集
+        /// </summary>
+        public virtual IList<Tag> Tag { get; set; }
+
         /// <summary>
         /// 修剪后的描述
         /// </summary>

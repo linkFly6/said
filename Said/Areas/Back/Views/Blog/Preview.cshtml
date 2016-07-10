@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Preview";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    IList<string> BTag = ViewData["BTag"] as List<string>;
+    string BImg = (string)ViewData["BImg"];
+    string BTitle = (string)ViewData["BTitle"];
+    string BHTML = (string)ViewData["BHTML"];
+    string ClassifyId = (string)ViewData["ClassifyId"];
+}
+
+<div class="html">
+    @(new HtmlString(BHTML))
+</div>
