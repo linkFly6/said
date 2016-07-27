@@ -52,6 +52,8 @@
                         return;
                     }
                 }
+                //选中图片并验证通过后
+                if ($.isFunction(config.selected) === false) return;
                 if (config.size > 0 && size > config.size) {
                     fail(vm, { code: 1, msg: '上传的文件超过了约定的最大大小（>' + Math.floor(config.size / 1024 / 1024) + 'MB）' });
                     return;
@@ -69,8 +71,7 @@
                         data.append(name, value);
                     })
                 }
-                if ($.isFunction(config.selected))
-                    config.selected(file);
+
 
                 //上传的文件名，默认为"uploadFile",server可以通过Request.Files["uploadFile"]来获取上传的文件
                 data.append(config.name, file /*file.slice(0)//如果需要支持断点续传的话*/, encodeURIComponent(name));//文件

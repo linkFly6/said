@@ -439,27 +439,29 @@
                             cancelButtonText: '取消',
                             //配置正在加载
                             showLoaderOnConfirm: true
-                        }, function () {
-                            if (item.ReferenceCount > 0) {
-                                sweetalert('删除歌曲异常', '歌曲正在被引用，禁止删除！', 'warning');
-                                return;
-                            }
-                            said.ajax(Action.realDelete, {
-                                id: item.SongId
-                            }).done(function (result) {
-                                if (result.code === 0) {
-                                    sweetalert('删除歌曲成功', '删除歌曲成功', 'success');
-                                    vmModel.datas.splice(i, 1);
-                                    //更新缓存池
-                                    var index = vmModel.offset + i;
-                                    if (vmModel.caches[index]) vmModel.caches.splice(index, 1);
-                                    vmModel.resetActive();
-                                } else {
-                                    sweetalert('服务器删除歌曲异常', '错误信息：' + result.msg, 'error');
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                if (item.ReferenceCount > 0) {
+                                    sweetalert('删除歌曲异常', '歌曲正在被引用，禁止删除！', 'warning');
+                                    return;
                                 }
-                            }).fail(function () {
-                                sweetalert('网络连接异常', '向服务器发送删除请求发生异常', 'error');
-                            });
+                                said.ajax(Action.realDelete, {
+                                    id: item.SongId
+                                }).done(function (result) {
+                                    if (result.code === 0) {
+                                        sweetalert('删除歌曲成功', '删除歌曲成功', 'success');
+                                        vmModel.datas.splice(i, 1);
+                                        //更新缓存池
+                                        var index = vmModel.offset + i;
+                                        if (vmModel.caches[index]) vmModel.caches.splice(index, 1);
+                                        vmModel.resetActive();
+                                    } else {
+                                        sweetalert('服务器删除歌曲异常', '错误信息：' + result.msg, 'error');
+                                    }
+                                }).fail(function () {
+                                    sweetalert('网络连接异常', '向服务器发送删除请求发生异常', 'error');
+                                });
+                            }
                         });
                     },
                     addModel: function (item) {

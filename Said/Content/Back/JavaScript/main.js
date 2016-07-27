@@ -13,6 +13,7 @@
         'showMsg': 'so/plug/showMsg',
         'dialog': 'so/plug/dialog',
         'source': 'so/plug/source',
+        'highlight': 'highlight/highlight.pack',
         'markdown': ['showdown/showdown'],
         'showDownThemeGithub': 'showdown/extensions/github',
         'bsTable': ['bootstrap/bootstrap-table/bootstrap-table'],

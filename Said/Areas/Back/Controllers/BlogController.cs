@@ -57,10 +57,23 @@ namespace Said.Areas.Back.Controllers
         }
 
 
+        /// <summary>
+        /// 预览文章页
+        /// </summary>
+        /// <param name="BImg"></param>
+        /// <param name="BTitle"></param>
+        /// <param name="BHTML"></param>
+        /// <param name="ClassifyId"></param>
+        /// <param name="BTag"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Preview(Blog model)
+        public ActionResult Preview(string BImg, string BTitle, string BHTML, string ClassifyId, IList<string> BTag)
         {
-
+            ViewData["BTag"] = BTag;
+            ViewData["BImg"] = BImg;
+            ViewData["BTitle"] = BTitle;
+            ViewData["BHTML"] = HttpUtility.UrlDecode(BHTML);
+            ViewData["ClassifyId"] = ClassifyId;
             return View();
         }
         #endregion

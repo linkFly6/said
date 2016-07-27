@@ -48,7 +48,7 @@ namespace Said.Areas.Back.Controllers
                 return UploadResult(1, "服务器异常");
             newFileName = FileCommon.CreateFileNameByTime() + fileExt;
             filePath = dirPath + newFileName;
-            file.SaveAs(filePath);
+            file.SaveAs(Server.MapPath(filePath));
 
             //分析上传的文件信息，返回解析得到的结果
             return UploadResult(0, "上传成功", newFileName);
@@ -101,7 +101,7 @@ namespace Said.Areas.Back.Controllers
             }
             newFileName = FileCommon.CreateFileNameByTime() + fileExt;
             filePath = dirPath + newFileName;
-            file.SaveAs(filePath);
+            file.SaveAs(Server.MapPath(filePath));
             result.Add("code", "0");
             result.Add("path", filePath);
             result.Add("dir", dirPath);

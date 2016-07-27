@@ -1,4 +1,5 @@
-﻿@model Said.Models.Blog
+﻿@using Said.Common;
+@model Said.Models.Blog
 @{
     Layout = "~/Areas/Back/Views/Shared/_LayoutBack.cshtml";
     var ClassifysList = ViewData["ClassifysList"] as IList<Said.Models.Classify>;
@@ -52,7 +53,7 @@
                             { "required", "required" }
                 })
             </div>
-            <button class="btn btn-lg said-priview center-block" ms-click="preview(bContext)" type="button">预览</button>
+            <button class="btn btn-lg said-priview center-block" ms-click="preview()" type="button">预览</button>
         </div>
         @*ms-controller="defaultsDatas"*@
         <div class="row said-view-container">
@@ -62,15 +63,15 @@
                     <div class="panel-body">
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            @Html.TextBoxFor(m => m.BTag, new Dictionary<string, object>() {
+                            @Html.TextBoxFor(m => m.Tag, new Dictionary<string, object>() {
                                 { "class", "tag-input" },
-                                { "ms-change", "saveTolocalStorage('bTag',bTag)" },
+                                //{ "ms-change", "saveTolocalStorage('bTag',bTag)" },
                                 { "ms-widget", "groupInput" },
                                 { "placeholder", "标签，支持[tab]分隔" },
                                 { "autocomplete", "off" }
                             })
                         </div>
-                        <div class="input-group" ms-class="has-error:!classify.length" ms-controller="classifyController">
+                        <div class="input-group" ms-class="has-error:!classifyId" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
                             @Html.TextBoxFor(m => m.Classify.CName, new Dictionary<string, object>() {
                                 { "class", "classify-input" },
@@ -83,26 +84,28 @@
                     </div>
                 </div>
                 <div class="panel panel-default relative-container" ms-controller="uploadController">
-                    <div ms-widget="upload,uploadImages" ms-elem="summaryMask"></div>
+                    <div style="z-index: 2;" class="addSaid-mask" ms-visible="!imgSrc" ms-click="dialog()">
+                        <span class="so-upload-text">选择文章缩略图</span>
+                    </div>
                     <div class="panel-heading">描述</div>
                     <div class="panel-body">
                         <div class="col-md-4">
-                            <div class="music-img">
+                            <div class="summay-img">
                                 <div class="thumbnail">
-                                    <img ms-attr-src="bImg ? sourcePath+bImg :'/Content/Images/said-up-def.png'" />
+                                    <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '/Content/Images/said-up-def.png') + ')'"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-8">
                             @Html.TextAreaFor(m => m.BSummary, new Dictionary<string, object>() {
                             { "class", "said-dis" },
+                            { "autocomplete", "off" },
                             { "ms-duplex", "bSummary" },
-                            { "ms-class", "said-error:bImg&&!bSummary.length" },
+                            { "ms-class", "said-error:bImg!=null && !bSummary" },
                             { "placeholder", "简介[支持HTML]" },
-                            { "ms-change", "saveTolocalStorage('bSummary',bSummary)" },
-                            { "required", "required" }})
+                            { "ms-change", "saveTolocalStorage('bSummary',bSummary)" }})
                             <div class="songOp-btn song-up-content">
-                                <button ms-click="removeImg('uploadImages')" class="btn btn-danger songBtn" type="button">删除</button>
+                                <button type="button" class="btn btn-danger songBtn" ms-click="clear()">移除图片</button>
                             </div>
                         </div>
 
@@ -176,19 +179,11 @@
     @*<script src="@Url.Content("~/Content/Back/JavaScript/avalon/plus/autoComplete.js")"></script>*@
     <script>
         var TemplatePromptText = {
-            supportNewWindow: ['不支持该项操作', '<p>您的浏览器阻止了弹窗操作。</p><p>因为用户设置或者某些安全策略，浏览器或许会阻止弹窗操作。</p>'],
-            previewInputBContext: '请输入正文',
-            previewTitle: '预览 - ${0} ',
             errorBTitle: ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],
             errorBContext: ['(｡☉౪ ⊙｡)  文章正文不正确', '大哥你连正文都木有发表了文章谁看啊...赶紧检查一下  '],
             errorImg: [' (≖ ‿ ≖)✧ 文章插图不正确', 'Said规定所有的文章必须要有灵犀又生动的插图哟...赶紧挑张图片让文章更加的精彩'],
             errorBSummary: [' (￣▽￣)~* 文章描述不正确', '文章描述是一定要有的，没有文章描述诱惑，别人也许就不会读文章了'],
             errorClasify: [' (｡・`ω´･) 文章分类不正确', '是的，为了以后让你的文章特别特别特别方便的管理/检索，一定要有文章的分类'],
-            addBlogDone: '喜大普奔，添加文章《${0}》成功',
-            addBlogFail: '添加(提交)异常，异常代码：${0}（${1}）\
-                          <p>如果您觉得本次异常不合情理，请点击<a class="submitBug" href="javascript:;">反馈异常</a>，将跟踪此次异常。</p>',
-            addBlogError: '添加失败，服务器返回信息（错误代码 ${1}）：${0}\
-                          <p>如果您觉得本次异常不合情理，请点击<a class="submitBug" href="javascript:;">反馈异常</a>，将跟踪此次异常。</p>',
             uploadImgFail: '上传图片异常，错误信息：${0}',
             uploadImgError: '上传图片失败，服务器返回信息：${0}'
         };
@@ -198,203 +193,39 @@
 }
 @section FootJs{
 
-    <script id="tplOpen" type="text/template">
-        <!DOCTYPE HTML>
-        <html xmlns="http://www.w3.org/1999/xhtml">
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <title>预览Blog - 你听，你静静听</title>
-            <link href="/Content/Style/Global.css" rel="stylesheet" />
-            <link href="/Content/Style/music.css" rel="stylesheet" />
-            <link href="/Content/Back/JavaScript/syntaxhighlighter/styles/shCoreDefault.css" rel="stylesheet" />
-            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shCore.js"></replacescript>
-            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushJScript.js"></replacescript>
-            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCSharp.js"></replacescript>
-            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushCss.js"></replacescript>
-            <replacescript src="/Content/Back/JavaScript/syntaxhighlighter/scripts/shBrushSql.js"></replacescript>
-        </head>
-        <body>
-            <section id="said-page">
-                <header id="header">
-                    <div id="nav-logo">
-                        <a class="logo" title="听说" href="javascript:;">
-                            <img src="/Content/Images/Said.png" alt="said logo" />
-                        </a>
-                    </div>
-                    <nav id="nav">
-                        <ul id="nav-flip">
-                            <li>
-                                <a href="javascript:;">首页</a>
-                            </li>
-                            <li><a href="javascript:;">blog</a></li>
-                            <li><a href="javascript:;" class="nav-active">听说</a></li>
-                            <li><a href="javascript:;">实验室</a></li>
-                            <li><a href="javascript:;">关于</a></li>
-                        </ul>
-                        <div id="said-search-con" style="width: 50px;">
-                            <div id="said-search">
-                                <div id="said-search-btn" title="搜索"></div>
-                                <form id="said-search-form">
-                                    <input autocomplete="off" id="said-search-input" type="text" placeholder="搜索你感兴趣的" />
-                                </form>
-                            </div>
-                        </div>
-                        <span id="nav-hover" style="left: 140px;"></span>
-                    </nav>
-                </header>
-                <section id="content">
-                    <div class="content-bg">
-                        <div class="content-bg-img" style="left: 0;"></div>
-                    </div>
-                    <section class="music-song">
-                        <dl class="music-song-content">
-                            <dt class="music-song-img">
-                                <img src="/Content/Images/testImg-Paramore.Ps.jpg" alt="paramore" />
-                            </dt>
-                            <dd class="music-song-info">
-                                <ul>
-                                    <li>
-                                        <h2 class="music-song-name">The Only Exception The Only Exception The Only Exception</h2>
-                                    </li>
-                                    <li>
-                                        <div class="music-song-summary"><a title="Artist" class="music-song-link" target="_blank" href="http://www.sogou.com/web?query=paramore&ie=utf8">Paramore</a></div>
-                                        <div class="music-song-summary"><a title="Album" class="music-song-link" target="_blank" href="http://www.sogou.com/web?query=The+Only+Exception&ie=utf8">The Only Exception</a></div>
-                                    </li>
-                                </ul>
-                            </dd>
-                            <dd id="music-play" class="music-song-play">
-                                <div class="music-play-status"><a href="javascript:;" id="said-player-play" class="play-btn player-play">播放</a></div>
-                                <ul class="music-play-status">
-                                    <li class="music-play-detail">
-                                        <div class="music-time music-play-sound"><span>01:03</span><span>&nbsp;/&nbsp;03:42</span></div>
-                                        <a class="music-like music-play-sound" href="javascript:;" title="我喜欢~么么哒">like</a><a class="music-volume music-play-sound" href="javascript:;" title="音量" id="said-play-volume"></a>
-                                    </li>
-                                    <li>
-                                        <div class="music-play-progress">
-                                            <div class="play-progress" id="said-progress" style="width: 28%;"></div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </dd>
-                        </dl>
-                    </section>
-                    <article class="music-content">
-                        <h1 class="blog-title" id="title"></h1>
-                        <section class="blog-content" id="context"></section>
-                    </article>
-                    <section class="blog-more-info">
-                        <div class="blog-more-head">
-                            <div class="blog-comment-txt"><span>评论(0)</span></div>
-                            <ul class="blog-info">
-                                <li class="blog-info-date"><time>2014/10/08 00:21:51</time></li>
-                                <li class="blog-info-like" title="like"><span>1</span></li>
-                                <li class="blog-info-PV" title="浏览"><span>1</span></li>
-                            </ul>
-                        </div>
-                        <div class="blog-more-comment">
-                            <div class="blog-comment-content">
-                                <div class="blog-comment-bar">
-                                    <div class="comment-portrait">
-                                        <img alt="github" src="/Content/Images/github.png" />
-                                    </div>
-                                    <form action="/" class="comment-form">
-                                        <ul class="blog-comment-info" style="">
-                                            <li>
-                                                <input placeholder="名称" />
-                                            </li>
-                                            <li>
-                                                <input type="email" placeholder="Email" />
-                                            </li>
-                                            <li>
-                                                <input type="url" placeholder="您的站点" />
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" id="comment-cookie" /><label for="comment-cookie">下次自动填写</label>
-                                            </li>
-                                        </ul>
-                                        <div class="comment-bar">
-                                            <textarea name="comment" class="cmt-context" id="comment-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea><div class="comment-more-bar">
-                                                <div class="comment-more-bg"></div>
-                                                <input type="submit" class="submitLock ct-submit" id="comment-submit" value="提交评论" />
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </section>
-            </section>
-            <footer id="footer">
-                <section id="footer-content">
-                    <dl>
-                        <dt>推荐</dt>
-                        <dd>
-                            <ul class="footer-recm">
-                                <li><a href="javascript:;">博客园 - 开发者的网上家园</a></li>
-                                <li><a href="javascript:;">张鑫旭的个人博客</a></li>
-                                <li><a href="javascript:;">司徒正美个人博客 - 博客园</a></li>
-                                <li><a href="javascript:;">Github - linkFly</a></li>
-                            </ul>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>许可</dt>
-                        <dd>本站原创并且没有注明相关许可协议的内容，默认均采用<a href="javascript:;">《知识共享署名 3.0 中国大陆许可协议》</a>进行许可。非原创内容遵循原文许可协议。</dd>
-                    </dl>
-                    <dl>
-                        <dt>联系方式</dt>
-                        <dd>内容基本都是自己原创的，引用的地方都会给出相关引用，如有疏漏，联系方式：</dd>
-                        <dd>linkFly6#live.com（#替换成@@）</dd>
-                    </dl>
-                    <div class="footer-copyright">©2015&nbsp;linkFly&nbsp;-&nbsp;Said:听说&nbsp;&nbsp;京ICP备13014059号</div>
-                </section>
-            </footer>
-            <replacescript type="text/javascript">
-                document.title = "预览Said -" + window.said.title;
-                document.getElementById("title").innerHTML = window.said.title;
-                document.getElementById("context").innerHTML = window.said.context;
-                SyntaxHighlighter.defaults["toolbar"] = false;
-                SyntaxHighlighter.defaults["collapse"] = false;
-                SyntaxHighlighter.all();
-            </replacescript>
-        </body>
-    </html>
-</script>
+    <link href="~/Content/Back/JavaScript/highlight/styles/default.css" rel="stylesheet" />
+    <script type="text/javascript">
+        var Action = {
+            summaryImg: '@ConfigInfo.SourceSaidPath',
+            blogImageType: '@((int)Said.Models.ImageType.Blog)',
+            uploadImg: '@Url.Action("Upload", "Image")',
+            deleteImg: '@Url.Action("DeleteImage","Source")',
+            form: '@Url.Action("AddBlog", "Blog")',
+            summaryImg: '@ConfigInfo.SourceBlogPath',
+            //预览
+            preview: '@Url.Action("Preview","Blog")'
+        },
+        DataCenter = {
+            tags: [],
+            classifyDatas: [],
+            files: []
+        };
 
-
-<script type="text/javascript">
-    var Action = {
-        song: '/Source/SaidSong',
-        imagesSourceCenter: '@Url.Action("UploadBlogImg", "Source")',
-        imgLocation: '@Url.Content("~/Source/Blog/Images/")',
-        music: '@Url.Action("UploadMusic", "Source")',
-        existsSongFile: '@Url.Action("ExistsSongFileName", "Back")',
-        existsSaidName: '@Url.Action("ExistsSaidFileName", "Back")',
-        form: '@Url.Action("AddBlog", "Blog")'
-    },
-    DataCenter = {
-        tags: [],
-        classifyDatas: [],
-        classifyList: [],
-        files: []
-    };
-
-    @if (ClassifysList != null)
+        @if (ClassifysList != null)
         {
             foreach (var item in ClassifysList)
             {
-                Write(new HtmlString(string.Format("DataCenter.classifyDatas.push(['{0}','{1}']);", item.CName, item.ClassifyId)));
+                Write(new HtmlString(string.Format("DataCenter.classifyDatas.push({{query:'{0}',name:'{0}',data:'{1}'}});", item.CName,item.ClassifyId)));
             }
         }
-    @if (TagList != null)
+        @if (TagList != null)
         {
             foreach (var item in TagList)
             {
                 Write(new HtmlString(string.Format("DataCenter.tags.push('{0}');", item.TagName)));
             }
         }
-    @if (BlogFiles != null)
+        @if (BlogFiles != null)
         {
             foreach (var item in BlogFiles)
             {
@@ -402,246 +233,266 @@
             }
         }
 
+        if (DataCenter.files.length)
+            DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
+        //console.log(DataCenter.files);
+        require(['jquery', 'so', 'avalon', 'sweetalert', 'source', 'markdown', 'highlight', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function ($, so, avalon, sweetalert, source, showdown, highlight) {
+            $(function () {
+                document.addEventListener('keydown', function (e) {
+                    if (e.ctrlKey && e.keyCode == 83) {
+                        e.preventDefault();
+                    }
+                });
 
-    if (DataCenter.classifyDatas.length) {
-        DataCenter.classifyList = DataCenter.classifyDatas.map(function (item) {
-            return item[0];
-        });
-    }
-    if (DataCenter.files.length)
-        DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
-    //console.log(DataCenter.files);
-    require(['jquery', 'so', 'so/plug/search', 'avalon', 'showMsg', 'source', 'markdown', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function ($, so, Search, avalon, showMsg, source, showdown) {
-        $(function () {
-            var previewTemplent = document.getElementById('tplOpen').innerHTML.replace(/replaceScript/g, 'script'),
-                //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
-                showdown = window.Showdown,
-                converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
-                preview = function () {
-                    var previewWindow,//上一次打开的window
-                            isSupport = true,//是否支持弹窗
-                            supportError = function () {
-                                if (!isSupport)
-                                    dialog(TemplatePromptText.supportNewWindow[0], TemplatePromptText.supportNewWindow[1]);
-                                return isSupport;
-                            };
-                    return function (title, context) {
-                        if (!supportError()) return false;
-                        if (!previewWindow || previewWindow.closed)
-                            previewWindow = window.open();
-                        if (!previewWindow) {//没有权限弹窗
-                            isSupport = false;
-                            return supportError();
+                var //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
+                    showdown = window.Showdown,
+                    converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
+                    preview = function (title, context, classify, tags, bImg) {
+                        var $context = $('<div>' + context + '</div>');
+                        //这破玩意儿不能用HTML转换？？？
+                        highlight.configure({
+                            tabReplace: ' '//要把这个tab替换掉
+                        });
+                        $context.find('pre code').each(function (i, block) {
+                            highlight.highlightBlock(block);
+                        });
+                        //console.info($context.html());
+                        context = $context.html();
+                        var htmls = [
+                            '<textarea name="BTitle">' + title + '</textarea>',
+                            '<textarea name="BHTML">' + encodeURIComponent(context) + '</textarea>',
+                            '<textarea name="ClassifyId">' + classify + '</textarea>',
+                            tags.map(function (tag) {
+                                return '<input name="BTag" value="' + tag.name + '"/>';
+                            }).join(''),
+                            bImg ? '<input name="BImg" value="' + bImg + '" />' : ''
+                        ].join('');
+                        //TODO img的refer应该处理下
+                        //链接也应该做转发处理
+
+                        //context = context.replace(/<pre[^>]*>.*(<code[^>]*>)?[^<]*(<\/code>)?<\/pre>/gm, function (sourceCode) {
+                        //    //console.log(highlight.highlightAuto(sourceCode));
+                        //    return highlight.highlightAuto(sourceCode).value;
+                        //});
+
+                        //console.log(highlight.highlightAuto(context));
+                        //return;
+
+                        var $form = $('<form target="_blank" method="post" action="' + Action.preview + '" style="display:none;"></form>');
+                        $form.append(htmls);
+                        $form.submit();
+                    },
+                    database = new so.Database('back.addBlog'),
+                    checkEmptyValue = function (key, title, summary) {
+                        if (!vmBlog[key]) {
+                            sweetalert(title, summary, 'warning');
+                            return false;
                         }
-                        /*
-                        document.write只能输出到body，但HTML标签可以输出，但是输出没用，样式js都不解析执行..
-                        所以访问window给它设置值来执行
-                        */
-
-                        previewWindow.document.open();
-                        previewWindow.said = {
-                            title: title.replace(/</g, '').replace(/>/g, ''),//标题
-                            context: context//正文
-                        };
-                        previewWindow.document.write(previewTemplent);
-                        previewWindow.document.close();
                         return true;
-                    }
-                }(),
-                //利用avalon封装bootstrap modal组件
-                dialog = function (model) {
-                    var vm = avalon.define('modal', function (vm) {
-                        vm.title = vm.body = '';
-                    });
-                    return function (title, context) {
-                        if (context == null && title != null)
-                            vm.body = title;
-                        else {
-                            vm.title = title || '';
-                            vm.body = context || '';
-                        }
-                        return model.modal('show');
+                    },
+                    errorHash = {
+                        'bTitle': TemplatePromptText.errorBTitle,
+                        'bContext': TemplatePromptText.errorBContext,
+                        'bImg': TemplatePromptText.errorImg,
+                        'bSummary': TemplatePromptText.errorBSummary,
+                        'classify': TemplatePromptText.errorClasify
+                    },
+                    encode = function (value) {
+                        return encodeURIComponent(value);
                     };
-                }($('#blog-modal')),
-                database = new so.Database('back.addBlog'),
-                checkEmptyValue = function (key, title, summary) {
-                    if (!vmBlog[key]) {
-                        dialog(title, summary);
-                        return false;
-                    }
-                    return true;
-                },
-                errorHash = {
-                    'bTitle': TemplatePromptText.errorBTitle,
-                    'bContext': TemplatePromptText.errorBContext,
-                    'bImg': TemplatePromptText.errorImg,
-                    'bSummary': TemplatePromptText.errorBSummary,
-                    'classify': TemplatePromptText.errorClasify
-                },
-                encode = function (value) {
-                    return encodeURIComponent(value);
-                };
 
 
-            var vmBlog = avalon.define({
-                $id: 'blog',
-                bTitle: database.val('bTitle'),
-                bTag: database.val('bTag'),
-                bSummary: database.val('bSummary'),
-                bReprint: database.val('bReprint'),
-                bScript: database.val('bScript'),
-                bIsTop: database.val('bIsTop'),
-                bCSS: database.val('bCSS'),
-                bContext: database.val('bContext'),
-                bImg: database.val('bImg'),
-                bName: database.val('bName'),
-                classify: database.val('classify'),
-                checkFile: false,
-                submitState: false,
-                $skipArray: ['bTag'],
-                //保存到本地数据库
-                saveTolocalStorage: function (name, value) {
-                    database.val(name, value);
-                },
-                //预览
-                preview: function (markdownCode) {
-                    if (!markdownCode.length) {
-                        showMsg(TemplatePromptText.previewInputBContext, showMsg.WARNING, 2000);
-                        return;
-                    }
-                    preview(so.format(TemplatePromptText.previewTitle, vmBlog.title || '没有标题'), converter.makeHtml(markdownCode));
-                },
-                checkFileName: function () {
-                    //考虑性能，DOM缓存
-                    var $cache, key = 'bName';
-                    return function (elem, value) {
-                        !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
-                        vmBlog.checkFile = !!(value && ~DataCenter.files.indexOf(value.toLowerCase()));
-                        $cache.tooltip(vmBlog.checkFile ? 'show' : 'hide');
-                        vmBlog.checkFile ?
-                            database.remove(key) : database.val(key, value);
-                    }
-                }(),
-                check: function () {
-                    vmBlog.submitState = true;
-                    var temp;
-                    return ['bTitle', 'bContext', 'classify', 'bImg', 'bSummary'].every(function (key) {
-                        temp = errorHash[key];
-                        return checkEmptyValue(key, temp[0], temp[1]);
-                    });
-                },
-                save: function () {
-                    //锁定按钮状态
-                    if (vmBlog.submitState) return;
-                    if (!(vmBlog.submitState = vmBlog.check())) return;
-
-                    //针对分类id特殊处理下
-                    var classifyId = DataCenter.classifyDatas.filter(function (item) {
-                        return item[0].toLowerCase() === vmBlog.classify.toLowerCase();
-                    });
-                    classifyId = classifyId.length ? classifyId[0][1] : '';
-                    said.ajax(Action.form, {
-                        'BTitle': encode(vmBlog.bTitle),
-                        'BTag': encode(vmBlog.bTag.join(',')),
-                        'BSummary': encode(vmBlog.bSummary),
-                        'BHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
-                        'BReprint': encode(vmBlog.bReprint),
-                        'BScript': encode(vmBlog.bScript),
-                        'BIsTop': encode(vmBlog.bIsTop),
-                        'BCSS': encode(vmBlog.bCSS),
-                        'BContext': encode(vmBlog.bContext),
-                        'BImg': encode(vmBlog.bImg),
-                        'BName': encode(vmBlog.bName),
-                        'ClassifyId': encode(classifyId)
-                    }).done(function (data) {
-                        if (!data.code) {//done
-                            showMsg(so.format(TemplatePromptText.addBlogDone, vmBlog.bTitle), showMsg.OK, true);
-                        } else {
-                            showMsg(so.format(TemplatePromptText.addBlogError, data.data.msg.split(',').map(function (msg) {
-                                return '<p>' + msg + '</p>';
-                            }).join(''), data.code), showMsg.ERROR, true);
-                        }
-
-                    }).fail(function (data) {
-                        showMsg(so.format(TemplatePromptText.addBlogFail, data.status, data.statusText), showMsg.ERROR, true);
-                    }).always(function () {
-                        vmBlog.submitState = false;
-                    });
-                }
-            });
-
-            //vmBlog.$watch('$all', function () {
-            //    console.log(arguments);
-            //});
-
-            //tag
-            avalon.define({
-                $id: 'tagController',
-                //tags: DataCenter.tags,
-                groupInput: {
-                    datas: DataCenter.tags,
-                    multiple: true,
-                    zIndex: 5,
-                    callback: function (values) {
-                        //console.log(values);
-                        vmBlog.bTag = values;
-                        database.val('bTag', values);
+                var vmBlog = avalon.define({
+                    $id: 'blog',
+                    bTitle: database.val('bTitle') || '',
+                    bTag: database.val('bTag') || [],
+                    bSummary: database.val('bSummary') || '',
+                    bReprint: database.val('bReprint') || '',
+                    bScript: database.val('bScript') || '',
+                    bIsTop: database.val('bIsTop') || '',
+                    bCSS: database.val('bCSS') || '',
+                    bContext: database.val('bContext') || '',
+                    bImg: database.val('bImg') || '',
+                    bName: database.val('bName') || '',
+                    classifyId: '',
+                    classify: '',
+                    checkFile: false,
+                    submitState: false,
+                    $skipArray: ['bTag', 'classify'],
+                    //保存到本地数据库
+                    saveTolocalStorage: function (name, value) {
+                        database.val(name, value);
                     },
-                    values: vmBlog.bTag
-                }
-            });
-            //classify
-            avalon.define({
-                $id: 'classifyController',
-                groupInput: {
-                    datas: DataCenter.classifyList,
-                    zIndex: 4,
-                    custom: false,
-                    callback: function (value) {
-                        database.val('classify', value);
-                    }
-                    //classContaier: 'queryInputBar'
-                }
-            });
-
-            //upload
-            var vmUpload = avalon.define({
-                $id: 'uploadController',
-                sourcePath: Action.imgLocation,
-                removeImg: function (id) {
-                    avalon.vmodels[id].visible = true;
-                    vmBlog.bImg = '';
-                    database.remove('bImg');
-                },
-                upload: {
-                    classFile: 'hidden-file',
-                    //name: 'testFile',
-                    url: Action.imagesSourceCenter,
-                    visible: !vmBlog.bImg,
-                    done: function (vm, data) {
-                        if (data.code) {
-                            showMsg(so.format(TemplatePromptText.uploadImgError, data.msg), showMsg.ERROR, true);
-                            return true;
+                    //预览
+                    preview: function (markdownCode) {
+                        if (!vmBlog.bTitle.trim()) {
+                            sweetalert('预览信息不完整', '标题不能为空', 'info');
+                            return;
                         }
-                        database.val('bImg', vmBlog.bImg = data.name);
+                        if (!vmBlog.bContext.trim()) {
+                            sweetalert('预览信息不完整', '正文不能为空', 'info');
+                            return;
+                        }
+                        if (!vmBlog.classifyId) {
+                            sweetalert('预览信息不完整', '类别不能为空', 'info');
+                            return;
+                        }
+                        if (!vmBlog.bTag.length) {
+                            sweetalert('预览信息不完整', '至少要有一个标签', 'info');
+                            return;
+                        }
+                        preview(vmBlog.bTitle.trim(),
+                            converter.makeHtml(vmBlog.bContext),//进行HTML转换
+                            vmBlog.classifyId,
+                            vmBlog.bTag,
+                            vmBlog.bImg
+                            );
+
                     },
-                    fail: function (vm, data) {
-                        showMsg(so.format(TemplatePromptText.uploadImgFail, data.msg), showMsg.ERROR, true);
+                    checkFileName: function () {
+                        //考虑性能，DOM缓存
+                        var $cache, key = 'bName';
+                        return function (elem, value) {
+                            !$cache && ($cache = $(elem).tooltip({ trigger: 'manual' }));
+                            vmBlog.checkFile = !!(value && ~DataCenter.files.indexOf(value.toLowerCase()));
+                            $cache.tooltip(vmBlog.checkFile ? 'show' : 'hide');
+                            vmBlog.checkFile ?
+                                database.remove(key) : database.val(key, value);
+                        }
+                    }(),
+                    check: function () {
+                        vmBlog.submitState = true;
+                        var temp;
+                        return ['bTitle', 'bContext', 'classify', 'bImg', 'bSummary'].every(function (key) {
+                            temp = errorHash[key];
+                            return checkEmptyValue(key, temp[0], temp[1]);
+                        });
+                    },
+                    save: function () {
+                        //锁定按钮状态
+                        if (vmBlog.submitState) return;
+                        if (!(vmBlog.submitState = vmBlog.check())) return;
+
+                        said.ajax(Action.form, {
+                            'BTitle': encode(vmBlog.bTitle),
+                            'BTag': encode(vmBlog.bTag.join(',')),
+                            'BSummary': encode(vmBlog.bSummary),
+                            'BHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
+                            'BReprint': encode(vmBlog.bReprint),
+                            'BScript': encode(vmBlog.bScript),
+                            'BIsTop': encode(vmBlog.bIsTop),
+                            'BCSS': encode(vmBlog.bCSS),
+                            'BContext': encode(vmBlog.bContext),
+                            'BImg': encode(vmBlog.bImg),
+                            'BName': encode(vmBlog.bName),
+                            'ClassifyId': encode(vmBlog.classifyId)
+                        }).done(function (data) {
+                            if (!data.code) {//done
+                                sweetalert('喜大普奔', so.format('添加文章《${0}》成功', vmBlog.bTitle), 'ok');
+                            } else {
+                                sweetalert('添加失败', so.format('服务器返回信息（错误代码 ${1}）：${0}', data.data.msg.split(',').map(function (msg) {
+                                    return '<p>' + msg + '</p>';
+                                }).join(''), data.code), 'error');
+                            }
+
+                        }).fail(function (data) {
+                            sweetalert('添加(提交)异常', so.format('异常代码：${0}（${1}）', data.status, data.statusText), 'warning');
+                        }).always(function () {
+                            vmBlog.submitState = false;
+                        });
                     }
+                });
+
+                //vmBlog.$watch('$all', function () {
+                //    console.log(arguments);
+                //});
+
+                //tag
+                avalon.define({
+                    $id: 'tagController',
+                    //tags: DataCenter.tags,
+                    groupInput: {
+                        datas: DataCenter.tags,
+                        multiple: true,
+                        zIndex: 5,
+                        callback: function (values) {
+                            //console.log(values);
+                            vmBlog.bTag = values;
+                            database.val('bTag', values);
+                        },
+                        values: vmBlog.bTag
+                    }
+                });
+                //classify
+                var _classifydbData = database.val('classify');
+                if (_classifydbData) {
+                    vmBlog.classifyId = _classifydbData.data;
+                    vmBlog.classify = _classifydbData.name;
                 }
+                avalon.define({
+                    $id: 'classifyController',
+                    groupInput: {
+                        datas: DataCenter.classifyDatas,
+                        zIndex: 4,
+                        custom: false,
+                        callback: function (value) {
+                            //console.log(value);
+                            vmBlog.classifyId = value.data;
+                            vmBlog.classify = value.name;
+                            database.val('classify', value);
+                        },
+                        values: _classifydbData ? [_classifydbData.data] : null
+                        //classContaier: 'queryInputBar'
+                    }
+                });
+
+
+                var _summaryDialog = $.source({
+                    zIndex: 6,
+                    loadUrl: '/Back/Image/GetImagesList',
+                    path: Action.summaryImg,
+                    type: Action.blogImageType,
+                    uploadUrl: Action.uploadImg,
+                    //deleteUrl: '/Back/Source/RealDeleteImage',//这个是物理删除，测试用这个
+                    multiple: false,
+                    deleteUrl: Action.deleteImg, //这个是逻辑删除，上线用这个
+                    callback: function (data) {
+                        if (data) {
+                            vmUpload.data = data;
+                            var imgSrc = Action.summaryImg + data.IName;
+                            vmUpload.img = data.IName;
+                            vmUpload.imgSrc = imgSrc;
+                            vmBlog.bImg = data.ImageId;
+                            database.val('bImg', data.ImageId).val('summary.imgSrc', imgSrc);
+                        }
+                    }
+                });
+                var vmUpload = avalon.define({
+                    $id: 'uploadController',
+                    imgSrc: database.val('summary.imgSrc') || '',
+                    dialog: function (id) {
+                        _summaryDialog.show();
+                    },
+                    clear: function () {
+                        database.remove('bImg')
+                        database.remove('summary.imgSrc');
+                        vmBlog.bImg = null;
+                        vmUpload.imgSrc = vmUpload.img = '';
+                    }
+                });
+
+                //upload
+                //console.log(vmUpload);
+
+
+
+
+                //var vmBlog = avalon.define('blog', function (vm) {
+                //    vm.BTitle = '';
+                //});
+                avalon.scan();
+                //console.dir(avalon.vmodels);
             });
-
-            //console.log(vmUpload);
-
-
-
-
-            //var vmBlog = avalon.define('blog', function (vm) {
-            //    vm.BTitle = '';
-            //});
-            avalon.scan();
-            //console.dir(avalon.vmodels);
         });
-    });
-</script>
+    </script>
 }
