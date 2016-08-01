@@ -128,19 +128,29 @@
                 });
             },
             vals: function (index) {
-                var value = typeof index === 'number' ?
-                    vm.filters[index] :
-                    acceptCustom ?
-                    index ? {
+                var valueIsNumber = typeof index === 'number',
+                    value;
+                if (valueIsNumber) {//从索引取
+                    value = vm.filters[index];
+                    vm.values.push(value);
+                } else if (acceptCustom && !valueIsNumber) {//允许用户输入，并且用户输入的是String
+                    value = {
                         name: index,
                         query: index,
                         data: index
-                    } : '' : '';
-                //TODO 去重处理？
-                if (value) {
-                    vm.values.push(value)
-                }
-                elem.value = isMultiple || !value ? '' : value.name;
+                    };
+                    //进行去重
+                    if (vm.values.length && vm.values.some(function (item) {
+                        return item.name.trim() === value.name.trim();
+                    })) {
+                        //这里可以给重复的那个选择项加class，显示动画
+                        elem.value = '';
+                        return;
+                    }
+                    vm.values.push(value);
+                    elem.value = isMultiple || !value ? '' : value.name;
+                };
+
             },
             /*下拉框逻辑*/
             checkCustomInput: function () {

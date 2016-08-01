@@ -224,6 +224,8 @@
     <Content Include="Content\Back\JavaScript\echarts-2.1.8\src\echarts-all.min.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.min.js" />
+    <Content Include="Content\Back\JavaScript\highlight\highlight.pack.js" />
+    <Content Include="Content\Back\JavaScript\highlight\styles\vs.css" />
     <Content Include="Content\Back\JavaScript\knockout\knockout.debug.js" />
     <Content Include="Content\Back\JavaScript\knockout\knockout.js" />
     <Content Include="Content\Back\JavaScript\said\classify.js" />
@@ -320,6 +322,7 @@
     <Content Include="Content\Images\night-sky.jpg" />
     <Content Include="Content\Images\not-blog.gif" />
     <Content Include="Content\Images\o_bg-clouds.png" />
+    <Content Include="Content\Images\sad-nav-template2.jpg" />
     <Content Include="Content\Images\said-banner.jpg" />
     <Content Include="Content\Images\Said-Images-load.gif" />
     <Content Include="Content\Images\said-public.png" />
@@ -392,6 +395,8 @@
     <Content Include="Content\wap\style\index.css" />
     <Content Include="Content\wap\style\layout.css" />
     <Content Include="Content\wap\style\wap.css" />
+    <Content Include="Content\Widget\highlight\github-gist.css" />
+    <Content Include="Content\Widget\highlight\github.css" />
     <Content Include="Content\Widget\sweetalert\sweetalert-dev.js" />
     <Content Include="Content\Widget\sweetalert\sweetalert.css" />
     <Content Include="Content\Widget\sweetalert\sweetalert.min.js" />
@@ -615,6 +620,7 @@
     <Content Include="Views\Home\About.Mobile.cshtml" />
     <Content Include="Content\wap\style\sass\about.scss" />
     <Content Include="Content\wap\style\about.css.map" />
+    <Content Include="Content\Style\sass\blog.scss" />
     <None Include="Properties\PublishProfiles\Said.pubxml" />
   </ItemGroup>
   <PropertyGroup>

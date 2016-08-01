@@ -74,6 +74,7 @@ namespace Said.Areas.Back.Controllers
             ViewData["BTitle"] = BTitle;
             ViewData["BHTML"] = HttpUtility.UrlDecode(BHTML);
             ViewData["ClassifyId"] = ClassifyId;
+            ViewData["NavigatorIndex"] = 1;
             return View();
         }
         #endregion
