@@ -49,7 +49,7 @@
             <div class="source-body add-song" ms-visible="isAdd" ms-controller="song">
                 <div class="panel-body">
                     <div class="upload-file-box" ms-visible="!isUploadedFile">
-                        <div ms-widget="upload,uploadImages,$uploadImagesConfig" class="btn  btn-upload btn-lg btn-primary"></div>
+                        <div ms-widget="upload,uploadMusic,$uploadMusic" class="btn  btn-upload btn-lg btn-primary"></div>
                     </div>
                     <div class="add-form" ms-visible="isUploadedFile">
                         <div class="row">
@@ -315,10 +315,11 @@
                         _songImageDialog.show();
                     },
                     //widget
-                    $uploadImagesConfig: {
+                    $uploadMusic: {
                         classFile: 'hidden-file',
                         //name: 'testFile',
                         filters: Source.filters,
+                        accept: 'audio/mp3,audio/mpeg,audio/ogg,audio/wav',
                         url: Action.upload,
                         text: '添加音乐',
                         classContainer: 'upload-mask',
@@ -382,6 +383,7 @@
                     uploadUrl: Action.uploadImage,
                     deleteUrl: Action.realDeleteImage,
                     multiple: false,
+                    accept: 'image/*',
                     //deleteUrl: Action.deleteImage, //这个是逻辑删除，上线用这个
                     callback: function (data) {
                         var imgSrc;

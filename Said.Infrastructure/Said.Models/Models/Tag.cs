@@ -24,6 +24,9 @@ namespace Said.Models
         /// </summary>
         public int Count { get; set; }
 
+        //延迟加载Blog
+        public virtual ICollection<Blog> Blogs { get; set; }
+
         public override IEnumerable<ValidationResult> Validate()
         {
             throw new NotImplementedException();

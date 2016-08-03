@@ -2,7 +2,7 @@
     var template = '<div class="CLASS_CONTAINER" ms-visible="visible" ms-class="lock:uploading" style="z-index:ZINDEX;">\
                         <span class="CLASS_TEXT">{{text}}</span>\
                      <div class="CLASS_PROGRESS" role="progressbar" ms-css-width="{{progress}}%"></div>\
-                      <input type="file" class="CLASS_FILEINPUT" ms-visible="!uploading" ms-change="change($event)" ms-click="up($event)"/>\</div>',
+                      <input type="file" class="CLASS_FILEINPUT" ms-visible="!uploading" ms-change="change($event)" ms-click="up($event)" accept="ACCEPT"/>\</div>',
         fileExttension = /\.[^\.]+/i,//得到后缀
         clearDirtyName = /\W/g,//清除脏字符
         noop = function () { };
@@ -19,7 +19,8 @@
                                           .replace('ZINDEX', config.zIndex || 3)
                                           .replace('CLASS_TEXT', config.classText || '')
                                           .replace('CLASS_PROGRESS', config.classProgress || '')
-                                          .replace('CLASS_FILEINPUT', config.classFile || ''))[0];
+                                          .replace('CLASS_FILEINPUT', config.classFile || '')
+                                          .replace('ACCEPT', config.accept || ''))[0];
 
         viewModel = avalon.define(data.uploadId, function (vm) {
             vm.visible = config.visible;
@@ -53,7 +54,7 @@
                     }
                 }
                 //选中图片并验证通过后
-                if ($.isFunction(config.selected) === false) return;
+                if ($.isFunction(config.selected) && config.selected(file) === false) return;
                 if (config.size > 0 && size > config.size) {
                     fail(vm, { code: 1, msg: '上传的文件超过了约定的最大大小（>' + Math.floor(config.size / 1024 / 1024) + 'MB）' });
                     return;
@@ -147,7 +148,8 @@
         done: noop,//上传成功
         fail: noop,//上传失败
         selected: noop,//选择了文件（已经验证过了正确性）
-        zIndex: 3
+        zIndex: 3,
+        accept: '*'
     };
     return widget;
 });

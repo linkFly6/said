@@ -63,7 +63,7 @@
                     <div class="panel-body">
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            @Html.TextBoxFor(m => m.Tag, new Dictionary<string, object>() {
+                            @Html.TextBoxFor(m => m.Tags, new Dictionary<string, object>() {
                                 { "class", "tag-input" },
                                 //{ "ms-change", "saveTolocalStorage('bTag',bTag)" },
                                 { "ms-widget", "groupInput" },
@@ -193,7 +193,6 @@
 }
 @section FootJs{
 
-    <link href="~/Content/Back/JavaScript/highlight/styles/default.css" rel="stylesheet" />
     <script type="text/javascript">
         var Action = {
             summaryImg: '@ConfigInfo.SourceSaidPath',
@@ -222,7 +221,7 @@
         {
             foreach (var item in TagList)
             {
-                Write(new HtmlString(string.Format("DataCenter.tags.push('{0}');", item.TagName)));
+                Write(new HtmlString(string.Format("DataCenter.tags.push({{query:'{0}',name:'{0}',data:'{1}'}});", item.TagName,item.TagId)));
             }
         }
         @if (BlogFiles != null)
@@ -236,7 +235,7 @@
         if (DataCenter.files.length)
             DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
         //console.log(DataCenter.files);
-        require(['jquery', 'so', 'avalon', 'sweetalert', 'source', 'markdown', 'highlight', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function ($, so, avalon, sweetalert, source, showdown, highlight) {
+        require(['said', 'jquery', 'so', 'avalon', 'sweetalert', 'source', 'markdown', 'highlight', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function (said, $, so, avalon, sweetalert, source, showdown, highlight) {
             $(function () {
                 document.addEventListener('keydown', function (e) {
                     if (e.ctrlKey && e.keyCode == 83) {
@@ -247,17 +246,21 @@
                 var //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
                     showdown = window.Showdown,
                     converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
-                    preview = function (title, context, classify, tags, bImg) {
+                    getContextHTML = function (context) {
                         var $context = $('<div>' + context + '</div>');
                         //这破玩意儿不能用HTML转换？？？
                         highlight.configure({
                             tabReplace: ' '//要把这个tab替换掉
                         });
+                        //这里要读一下hilightJS的源码，直接通过code转换
                         $context.find('pre code').each(function (i, block) {
                             highlight.highlightBlock(block);
                         });
                         //console.info($context.html());
-                        context = $context.html();
+                        return $context.html();
+                    },
+                    preview = function (title, context, classify, tags, bImg) {
+                        context = getContextHTML(context);
                         var htmls = [
                             '<textarea name="BTitle">' + title + '</textarea>',
                             '<textarea name="BHTML">' + encodeURIComponent(context) + '</textarea>',
@@ -375,7 +378,18 @@
 
                         said.ajax(Action.form, {
                             'BTitle': encode(vmBlog.bTitle),
-                            'BTag': encode(vmBlog.bTag.join(',')),
+                            'BTag': encode(JSON.stringify(vmBlog.bTag.map(function (tag) {
+                                if (tag.name == tag.data) {
+                                    return {
+                                        TagId: null,
+                                        TagName: tag.name
+                                    };
+                                } else
+                                    return {
+                                        TagId: tag.data,
+                                        TagName: ''
+                                    };
+                            }))),
                             'BSummary': encode(vmBlog.bSummary),
                             'BHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
                             'BReprint': encode(vmBlog.bReprint),
@@ -417,7 +431,7 @@
                         zIndex: 5,
                         callback: function (values) {
                             //console.log(values);
-                            vmBlog.bTag = values;
+                            vmBlog.bTag = values;//[ {"name":"ES","query":"ES","data":"tagID"} ]
                             database.val('bTag', values);
                         },
                         values: vmBlog.bTag

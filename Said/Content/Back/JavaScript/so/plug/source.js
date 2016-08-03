@@ -24,6 +24,7 @@
             //        }
             //    }
             //},
+            accept: '*',//允许选择的资源
             id: '',
             className: '',
             zIndex: 4,
@@ -72,7 +73,7 @@
                         <div style="z-index: 3;" class="so-upload-mask">\
                             <span class="so-upload-text">上传</span>\
                             <div role="progressbar" class="so-upload-progress" style="width: 0"></div>\
-                            <input type="file" class="hidden-file" style="display: block;" />\
+                            <input type="file" class="hidden-file" style="display: block;" accept="${accept}"/>\
                         </div>\
                     </div>\
                 </div>\

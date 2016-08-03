@@ -10,13 +10,19 @@ namespace Said.Domain.Said.Data
 {
     public class SaidDbContext : DbContext
     {
-        public SaidDbContext(string databaseName = "SaidEntities")
-            : base(databaseName)
+        public SaidDbContext()
+            : base("name=SaidEntities")
         {
             //关闭延迟加载
             //this.Configuration.LazyLoadingEnabled = false;
             //databaseName是connectionString的name
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SaidDbContext>());//每次重新生成Model的时候重置数据库
+
+
+            /*
+                生产环境不要使用这一特性，非常危险，生产环境数据库改变之后请使用“Entity framework数据迁移”
+            */
+            //Database.SetInitializer(new DropCreateDatabaseIfModelChanges<SaidDbContext>());//每次重新生成Model的时候重置数据库
+            Database.SetInitializer<SaidDbContext>(null);
 
         }
 
@@ -24,6 +30,13 @@ namespace Said.Domain.Said.Data
         {
             //throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
             //初始化的时候需要添加测试数据到数据库
+
+            modelBuilder.Entity<Blog>().HasMany(a => a.Tags).WithMany(t => t.Blogs).Map(m =>
+            {
+                m.ToTable("BlogsTags"); //中间关系表表名
+                m.MapLeftKey("TagId"); //设置Activity表在中间表主键名
+                m.MapRightKey("BlogId"); //设置Trip表在中间表主键名
+            });
         }
 
 
