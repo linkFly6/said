@@ -30,7 +30,7 @@ namespace Said.Models
         /// <summary>
         /// 标签集
         /// </summary>
-        public virtual IList<Tag> Tags { get; set; }
+        //public virtual IList<Tag> Tags { get; set; }
 
         /// <summary>
         /// 修剪后的描述

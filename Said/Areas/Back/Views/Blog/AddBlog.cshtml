@@ -378,7 +378,7 @@
 
                         said.ajax(Action.form, {
                             'BTitle': encode(vmBlog.bTitle),
-                            'BTag': encode(JSON.stringify(vmBlog.bTag.map(function (tag) {
+                            'Tags': vmBlog.bTag.length ? encode(JSON.stringify(vmBlog.bTag.map(function (tag) {
                                 if (tag.name == tag.data) {
                                     return {
                                         TagId: null,
@@ -389,7 +389,7 @@
                                         TagId: tag.data,
                                         TagName: ''
                                     };
-                            }))),
+                            }))) : null,
                             'BSummary': encode(vmBlog.bSummary),
                             'BHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
                             'BReprint': encode(vmBlog.bReprint),

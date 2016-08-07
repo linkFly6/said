@@ -40,6 +40,22 @@ namespace Said.Application
             });
         }
 
+
+        /// <summary>
+        /// 添加一组tag
+        /// </summary>
+        /// <param name="models">Tag集合</param>
+        /// <returns></returns>
+        public static int AddList(IEnumerable<Tag> models)
+        {
+            foreach (var item in models)
+            {
+                Context.Add(item);
+            }
+            return Context.Submit();
+        }
+
+
         /// <summary>
         /// 编辑
         /// </summary>

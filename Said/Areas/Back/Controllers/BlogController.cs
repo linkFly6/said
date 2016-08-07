@@ -94,15 +94,30 @@ namespace Said.Areas.Back.Controllers
 
             //修正编码数据
             model = UrlCommon.DecodeModel<Blog>(model);
+            int tagResult = 0;
+            IList<Tag> tags = null;
+            if (!String.IsNullOrWhiteSpace(Request["Tags"]))
+            {
+                //反序列化tag
+                tags = JavaScriptCommon.DeSerialize<IList<Tag>>(UrlCommon.Decode(Request["Tags"]));
+            }
+
             string validateResult = BlogApplication.ValidateAndCorrectSubmit(model);
             if (validateResult == null)
             {
                 //生成ID
-                model.BlogId = Guid.NewGuid().ToString().Replace("-", "");
+                model.BlogId = SaidCommon.CreateId();
                 model.BDate = DateTime.Now;
                 //修剪数据
                 model.BName = model.BName.Trim();
-                BlogApplication.Add(model);
+                //添加Blog到数据库
+                int addBlogResult = BlogApplication.Add(model);
+                if (addBlogResult > 0)
+                {//添加Blog成功，添加标签和Blog关系
+                    IList<BlogTags> blogTags = BlogApplication.UpdateBlogTags(model.BlogId, tags);
+
+                }
+
                 return ResponseResult(new { id = model.BlogId });
             }
             else

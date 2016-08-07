@@ -56,12 +56,47 @@ namespace Said.Application
             else
             {
                 //开始矫正数据
-                model.BlogId = Guid.NewGuid().ToString();
                 //没有文件名或文件名不合法，则生成一个新的文件名
                 if (string.IsNullOrWhiteSpace(model.BName) || BlogApplication.FindByFileName(model.BName.Trim()) != null)
                     model.BName = FileCommon.CreateFileNameByTime();
             }
             return str.Length > 0 ? str.ToString() : null;
+        }
+
+
+
+        /// <summary>
+        /// 检测文件标签并插入标签
+        /// </summary>
+        /// <param name="BlogId"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public static IList<BlogTags> UpdateBlogTags(string BlogId, IList<Tag> tags)
+        {
+            var selectTag = tags.Where(tag => tag != null);//需要查询的Tag集合
+            var addTags = tags.Where(tag =>
+            {
+                if (tag == null)
+                {
+                    tag.TagId = SaidCommon.CreateId();
+                    tag.Count = 1;//tag应该由中间表记录和Blog的关系，而不应该直接查询Tag
+                    tag.Date = DateTime.Now;
+                    return true;
+                }
+                return false;
+            });//需要添加的Tag集合
+            tags = selectTag.Concat(addTags) as IList<Tag>;//Concat参考：http://www.cnblogs.com/heyuquan/p/Linq-to-Objects.html
+            //这里应该是调用BlogTagsApplication的方法，添加并生成Tag
+            if (TagApplication.AddList(addTags) < 1)
+            {
+
+            }
+            else {
+                //Tag新增完毕
+
+            }
+
+            return -1;
         }
         #endregion
 
