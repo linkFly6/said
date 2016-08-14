@@ -154,5 +154,33 @@ namespace Said.Common
                 }
             }
         }
+
+
+        /// <summary>
+        /// 进行事务操作，当代码出现异常的时候，则会回滚事务（事务的异常会被抛出），该参数的重载了事务的返回值
+        /// </summary>
+        /// <typeparam name="TResult">指定的返回类型</typeparam>
+        /// <param name="func">要进行事务操作的回调函数</param>
+        /// <returns></returns>
+        public static TResult Transaction<TResult>(Func<TResult> func)
+        {
+            using (TransactionScope scope = new TransactionScope())
+            {
+                try
+                {
+                    TResult result = func();
+                    scope.Complete();
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            }
+        }
     }
 }

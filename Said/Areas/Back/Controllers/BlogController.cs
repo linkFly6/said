@@ -18,7 +18,7 @@ namespace Said.Areas.Back.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Title = "Blog管理 - Said后台管理系统";
+            ViewData["models"] = BlogApplication.FindAllToListSection().ToList();//仅包含关键数据：BTitle,BSummary,CName,BDate,BPV,BComment
             return View();
         }
 
@@ -100,11 +100,14 @@ namespace Said.Areas.Back.Controllers
                 //反序列化tag
                 tags = JavaScriptCommon.DeSerialize<IList<Tag>>(UrlCommon.Decode(Request["Tags"]));
             }
+            else {
+                return ResponseResult(1, new { msg = "标签不允许为空" });
+            }
 
             string validateResult = BlogApplication.ValidateAndCorrectSubmit(model);
             if (validateResult == null)
             {
-                //BlogApplication.AddBlog(model, tags);
+                BlogApplication.AddBlog(model, tags);
                 return ResponseResult(new { id = model.BlogId });
             }
             else
@@ -137,7 +140,7 @@ namespace Said.Areas.Back.Controllers
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
-            var res = BlogApplication.FindToList(page, "这是一篇测试文章");
+            var res = BlogApplication.FindToListSectionByKeywords(page, "这是一篇测试文章");
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,
@@ -146,6 +149,52 @@ namespace Said.Areas.Back.Controllers
                 rows = res.ToList<Blog>()
             }, JsonRequestBehavior.AllowGet);
         }
+
+
+
+        #region 逻辑删除一篇Said
+        /// <summary>
+        /// 逻辑删除一篇文章
+        /// </summary>
+        /// <param name="id">文章id</param>
+        /// <returns></returns>
+        public JsonResult Delete(string id)
+        {
+            Blog model = BlogApplication.Find(id);
+            if (model == null)
+                return ResponseResult(1, "要删除的文章不存在（数据库未检索到该文章ID）");
+            return BlogApplication.LogicDelete(model) > 0 ?
+                ResponseResult()
+                : ResponseResult(2, "从数据库中删除文章失败");
+        }
+
+        /// <summary>
+        /// 物理删除一篇文章
+        /// </summary>
+        /// <param name="id">文章id</param>
+        /// <returns></returns>
+        public JsonResult RealDelete(string id)
+        {
+            Blog model = BlogApplication.Find(id);
+            if (model == null)
+                return ResponseResult(1, "要删除的文章不存在（数据库未检索到该文章ID）");
+            return SaidCommon.Transaction(() =>
+            {
+                var blogTags = BlogTagsApplication.FindByBlogId(model.BlogId);
+                if (blogTags != null && blogTags.Count() > 0)
+                {
+                    if (BlogTagsApplication.DeleteByBlogId(model.BlogId) <= 0)
+                    {
+                        return ResponseResult(3, "删除文章失败（删除Blog和标签对应的关系失败）");
+                    };
+                }
+                return BlogApplication.DeleteBlog(model) > 0 ?
+                ResponseResult()
+                : ResponseResult(2, "从数据库中删除文章失败");
+            });
+
+        }
+        #endregion
         #endregion
 
 

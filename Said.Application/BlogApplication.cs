@@ -1,6 +1,7 @@
 ﻿using PagedList;
 using Said.Common;
 using Said.Models;
+using Said.Models.Data;
 using Said.Service;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,30 @@ namespace Said.Application
         {
             Context.Add(model);
             return service.Submit();
+        }
+
+
+        /// <summary>
+        /// 修改Blog
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int Update(Blog model)
+        {
+            Context.Update(model);
+            return service.Submit();
+        }
+
+
+        /// <summary>
+        /// 逻辑删除一个Blog（修改isDelete），该删除操作仅为逻辑删除，仍然可以在数据库中检索到数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int LogicDelete(Blog model)
+        {
+            Context.Del(model);
+            return Context.Submit();
         }
 
 
@@ -93,12 +118,12 @@ namespace Said.Application
         /// <returns></returns>
         private static IList<BlogTags> UpdateBlogTags(Blog blog, IList<Tag> tags)
         {
-            var selectTagIds = tags.Where(tag => !string.IsNullOrWhiteSpace(tag.TagId)).Select(m => m.TagName);//得到要查询的Tag name列表（把为null的tag的tagId过滤掉，因为前端传递过来的tag，如果是新增的，则为null），然后进行数据库查询
+            var selectTagIds = tags.Where(tag => !string.IsNullOrWhiteSpace(tag.TagId)).Select(m => m.TagId);//得到要查询的Tag name列表（把为null的tag的tagId过滤掉，因为前端传递过来的tag，如果是新增的，则为null），然后进行数据库查询
             IEnumerable<Tag> existTags = TagApplication.FindListByTagIdList(selectTagIds.ToArray());//从数据库中查询到已存在的Tag
-            var addTags = tags.Where(tag =>
+            IList<Tag> addTags = tags.Where(tag =>
             {
                 //前端传递过来，新增的tag的tagId都是null，同时去数据库中检测，如果发现有新增的项数据库中并没有
-                if (string.IsNullOrWhiteSpace(tag.TagId) || !existTags.Any(t => t.TagName == tag.TagName))
+                if (string.IsNullOrWhiteSpace(tag.TagId) && !existTags.Any(t => t.TagName == tag.TagName))
                 {
                     tag.TagId = SaidCommon.GUID;
                     tag.Count = 1;//tag应该由中间表记录和Blog的关系，而不应该直接查询Tag
@@ -106,29 +131,47 @@ namespace Said.Application
                     return true;
                 }
                 return false;
-            });
-
-            tags = existTags.Concat(addTags) as IList<Tag>;//Concat参考：http://www.cnblogs.com/heyuquan/p/Linq-to-Objects.html
-            //这里应该是调用BlogTagsApplication的方法，添加并生成Tag
+            }).ToList();
             if (TagApplication.AddList(addTags) < 1)
             {
                 throw new Exception("新增Tag失败");
             }
-            else {
-                //新增Tag成功，生成BlogTags
-                var blogTags = new List<BlogTags>();
-                foreach (var item in tags)
+            if (existTags != null && existTags.Count() > 0)
+                tags = existTags.Concat(addTags).ToList();//Concat参考：http://www.cnblogs.com/heyuquan/p/Linq-to-Objects.html
+            else
+                tags = addTags;
+            //这里应该是调用BlogTagsApplication的方法
+            //新增Tag成功，生成BlogTags
+            var blogTags = new List<BlogTags>();
+            foreach (var item in tags)
+            {
+                blogTags.Add(new BlogTags
                 {
-                    blogTags.Add(new BlogTags
-                    {
-                        BlogId = blog.BlogId,
-                        TagId = item.TagId,
-                        Date = DateTime.Now,
-                        BlogTagsId = SaidCommon.GUID
-                    });
-                }
-                return blogTags;
+                    BlogId = blog.BlogId,
+                    TagId = item.TagId,
+                    Date = DateTime.Now,
+                    BlogTagsId = SaidCommon.GUID
+                });
             }
+            return blogTags;
+        }
+
+
+
+
+        /// <summary>
+        /// 删除Blog以及Blog对应的BlogTags ** 注意：该删除是真实的删除，不可恢复 **
+        /// </summary>
+        /// <param name="blog"></param>
+        /// <returns></returns>
+        public static int DeleteBlog(Blog blog)
+        {
+            return SaidCommon.Transaction(() =>
+            {
+                Context.Delete(blog);
+                BlogTagsApplication.DeleteByBlogId(blog.BlogId);
+                return Context.Submit();
+            });
         }
         #endregion
 
@@ -157,7 +200,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="page">分页对象</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Blog> Find(Models.Data.Page page)
+        public static IPagedList<Blog> Find(Page page)
         {
             //TODO要把GetPage方法好好封装一下
             return Context.GetPage(page, m => m.BTitle != null, m => m.Date);
@@ -169,21 +212,42 @@ namespace Said.Application
         /// <param name="page">分页对象</param>
         /// <param name="keywords">要查询的关键字</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Blog> Find(Models.Data.Page page, string keywords)
+        public static IPagedList<Blog> Find(Page page, string keywords)
         {
             return Context.GetPage(page, m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords), m => m.Date);
         }
 
 
+
         /// <summary>
-        /// 分页查询列表，怎么和上面方法一样啊，WTF！！
+        /// 查询所有列表，仅包含Blog部分属性
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <returns></returns>
+        public static IEnumerable<Blog> FindAllToListSectionByKeywords(string keywords)
+        {
+            return Context.FindAllToListSectionByKeywords(keywords);
+        }
+
+
+        /// <summary>
+        /// 分页查询列表，仅包含Blog部分属性
         /// </summary>
         /// <param name="page"></param>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static IPagedList<Blog> FindToList(Models.Data.Page page, string keywords)
+        public static IPagedList<Blog> FindToListSectionByKeywords(Page page, string keywords)
         {
-            return Context.FindToList(page, keywords);
+            return Context.FindToListSectionByKeywords(page, keywords);
+        }
+
+        /// <summary>
+        /// 分页查询列表，仅包含关键数据：BTitle,BSummary,CName,BDate,BPV,BComment
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<Blog> FindAllToListSection()
+        {
+            return Context.FindAllToListSection();
         }
 
 

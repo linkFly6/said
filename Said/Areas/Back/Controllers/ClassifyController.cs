@@ -180,9 +180,20 @@ namespace Said.Areas.Back.Controllers
             var model = TagApplication.Find(id);
             if (model == null)
                 return ResponseResult(2, "没有找到要删除的标签信息");
-            return TagApplication.Delete(id) > 0 ?
-                ResponseResult() :
-                ResponseResult(3, "服务器异常");
+            return SaidCommon.Transaction(() =>
+            {
+                var blogTags = BlogTagsApplication.FindByTagId(model.TagId);
+                if (blogTags != null && blogTags.Count() > 0)
+                {
+                    if (BlogTagsApplication.DeleteByBlogTagId(model.TagId) <= 0)
+                    {
+                        return ResponseResult(4, "删除标签失败，删除标签和Blog对应的关系失败");
+                    }
+                }
+
+                return TagApplication.Delete(id) > 0 ? ResponseResult() : ResponseResult(3, "删除标签失败，服务器异常");
+            });
+
         }
         #endregion
     }

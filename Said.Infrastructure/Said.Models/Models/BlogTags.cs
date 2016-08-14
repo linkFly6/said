@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace Said.Models
         /// <summary>
         /// Blog
         /// </summary>
+        [ForeignKey("BlogId")]
         public virtual Blog Blog { get; set; }
 
         /// <summary>
@@ -38,6 +40,7 @@ namespace Said.Models
         /// <summary>
         /// TagID
         /// </summary>
+        [ForeignKey("TagId")]
         public virtual Tag Tag { get; set; }
 
 

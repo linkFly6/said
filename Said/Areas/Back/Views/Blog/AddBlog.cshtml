@@ -83,7 +83,7 @@
                            { "style","height:142px"},
                             { "ms-duplex", "bSummary" },
                             { "ms-class", "said-error:bImg!=null && !bSummary" },
-                            { "placeholder", "简介[支持HTML]" },
+                            { "placeholder", "简介，支持多行" },
                             { "ms-change", "saveTolocalStorage('bSummary',bSummary)" }})
                         </div>
                     </div>
@@ -295,6 +295,17 @@
                     checkFile: false,
                     submitState: false,
                     $skipArray: ['bTag', 'classify'],
+                    reset: function () {
+                        database.clear();
+                        sweetalert({
+                            title: "准备跳转",
+                            text: "正在清空本地缓存，1s后进行跳转...",
+                            timer: 1000,
+                            showConfirmButton: false
+                        }, function () {
+                            window.location.href = '/Back/Blog';
+                        });
+                    },
                     //保存到本地数据库
                     saveTolocalStorage: function (name, value) {
                         database.val(name, value);
@@ -348,6 +359,10 @@
                         if (vmBlog.submitState) return;
                         if (!(vmBlog.submitState = vmBlog.check())) return;
 
+                        var bSummaryTrim = vmBlog.bSummary.split('\n').map(function (item) {
+                            return '<p>' + item + '</p>';
+                        }).join('');
+
                         said.ajax(Action.form, {
                             'BTitle': encode(vmBlog.bTitle),
                             'Tags': vmBlog.bTag.length ? encode(JSON.stringify(vmBlog.bTag.map(function (tag) {
@@ -363,8 +378,9 @@
                                     };
                             }))) : null,
                             'BSummary': encode(vmBlog.bSummary),
-                            'BHTML': encodeURIComponent(converter.makeHtml(vmBlog.bContext)),
+                            'BHTML': encodeURIComponent(getContextHTML(converter.makeHtml(vmBlog.bContext))),
                             'BReprint': encode(vmBlog.bReprint),
+                            'BSummaryTrim': encode(bSummaryTrim),
                             'BScript': encode(vmBlog.bScript),
                             'BIsTop': encode(vmBlog.bIsTop),
                             'BCSS': encode(vmBlog.bCSS),
@@ -373,11 +389,26 @@
                             'ClassifyId': encode(vmBlog.classifyId)
                         }).done(function (data) {
                             if (!data.code) {//done
-                                sweetalert('喜大普奔', so.format('添加文章《${0}》成功', vmBlog.bTitle), 'ok');
+                                sweetalert({
+                                    title: '添加成功',
+                                    text: so.format('喜大普奔，添加Blog《${0}》成功', vmBlog.bTitle),
+                                    type: "success",
+                                    //当sweetalert回调函数中需要再弹出一个sweetalert的时候，要设置这个属性
+                                    closeOnConfirm: false
+                                }, function () {
+                                    vmBlog.reset();
+                                });
+
+
                             } else {
-                                sweetalert('添加失败', so.format('服务器返回信息（错误代码 ${1}）：${0}', data.data.msg.split(',').map(function (msg) {
-                                    return '<p>' + msg + '</p>';
-                                }).join(''), data.code), 'error');
+                                sweetalert({
+                                    title: '添加失败',
+                                    text: so.format('服务器返回信息（错误代码 ${1}）：${0}', data.data.msg.split(',').map(function (msg) {
+                                        return '<p>' + msg + '</p>';
+                                    }).join(''), data.code),
+                                    html: true,
+                                    type: 'error'
+                                });
                             }
 
                         }).fail(function (data) {

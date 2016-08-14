@@ -36,8 +36,21 @@ namespace Said.Service
         /// 获取所有文章列表（仅获取关键属性）
         /// </summary>
         /// <returns></returns>
-        IPagedList<Blog> FindToList(Page page, string keywords);
+        IPagedList<Blog> FindToListSectionByKeywords(Page page, string keywords);
 
+
+        /// <summary>
+        /// 获取所有文章列表（仅获取关键属性）
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Blog> FindAllToListSectionByKeywords(string keywords);
+
+
+        /// <summary>
+        /// 无条件获取所有文章列表（仅获取关键属性）
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Blog> FindAllToListSection();
 
     }
     /// <summary>
@@ -102,7 +115,7 @@ namespace Said.Service
         /// <param name="page">分页对象</param>
         /// <param name="keywords">要查询的关键字</param>
         /// <returns></returns>
-        public IPagedList<Blog> FindToList(Page page, string keywords)
+        public IPagedList<Blog> FindToListSectionByKeywords(Page page, string keywords)
         {
             /**
             //如果getPage没有封装，则需要自己进行查询并分页
@@ -160,6 +173,121 @@ namespace Said.Service
                                         BComment = m.BComment
                                     });
 
+
+        }
+
+
+        /// <summary>
+        /// 查询Blog的一部分数据，仅包含关键数据：BTitle,BSummary,CName,BDate,BPV,BComment
+        /// </summary>
+        /// <param name="page">分页对象</param>
+        /// <param name="keywords">要查询的关键字</param>
+        /// <returns></returns>
+        public IEnumerable<Blog> FindAllToListSectionByKeywords(string keywords)
+        {
+            /**
+            //如果getPage没有封装，则需要自己进行查询并分页
+            //dudu在这篇文章解释了EF设计查询部分字段必须要两次select：http://www.cnblogs.com/dudu/archive/2011/03/31/entity_framework_select_new.html
+            var query = (from m in base.Context.Blog
+                         where m.BTitle.Contains(keywords) || m.BContext.Contains(keywords)
+                         orderby m.BDate descending
+                         select new
+                         {
+                             BTitle = m.BTitle,
+                             BSummary = m.BSummary,
+                             BTag = m.BTag,
+                             CName = m.Classify.CName,
+                             BDate = m.BDate,
+                             BPV = m.BPV,
+                             BComment = m.BComment
+                         });
+            var results = query.GetPage(page).ToList().Select(m => new Blog
+            {
+                BTitle = m.BTitle,
+                BSummary = m.BSummary,
+                BTag = m.BTag,
+                Classify = new Classify { CName = m.CName },
+                BDate = m.BDate,
+                BPV = m.BPV,
+                BComment = m.BComment
+            });
+            var total = Context.Blog.Count(m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords));
+            return new StaticPagedList<Blog>(results, page.PageNumber, page.PageSize, total);
+
+            **/
+
+            //这里会报错，请参考FindAllToListSection
+            var query = from m in Context.Blog
+                        join c in Context.Classify on m.ClassifyId equals c.ClassifyId
+                        where m.BlogId.Contains(keywords) || m.BContext.Contains(keywords)
+                        orderby m.Date descending
+                        select new Blog
+                        {
+                            BlogId = m.BlogId,
+                            BTitle = m.BTitle,
+                            BSummary = m.BSummary,
+                            Classify = new Classify { CName = c.CLastBlogName },
+                            Date = m.Date,
+                            BPV = m.BPV,
+                            BComment = m.BComment
+                        };
+            return query.ToList();
+
+        }
+
+        /// <summary>
+        /// 无条件获取所有文章列表（仅获取关键属性）
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Blog> FindAllToListSection()
+        {
+            //return from m in Context.Set<Blog>()
+            //       join c in Context.Classify on m.ClassifyId equals c.ClassifyId
+            //       orderby m.Date descending
+            //select m;  
+            //select new Blog
+            //{
+            //    BlogId = c.ClassifyId,
+            //    //BlogId = m.BlogId,
+            //    //BTitle = m.BTitle,
+            //    //BSummary = m.BSummary,
+            //    //Classify = new Classify { CName = c.CName },
+            //    //Date = m.Date,
+            //    //BPV = m.BPV
+            //    //,BComment = m.BComment
+            //};
+            /*  这里可以select m，
+                但是不能直接new Blog，
+                这是EF的要求，要求返回的对象可以是一个匿名对象/其他对象，但不能是DBContext中的对象
+                http://stackoverflow.com/questions/5325797/the-entity-cannot-be-constructed-in-a-linq-to-entities-query
+                可以使用下面的查询方案来进行查询，
+                先匿名，再转换成对象
+                链接STO里说这种方式生成的Sql会先进行全量查询，把所有数据查出来之后再把需要的属性筛选出来
+                但经过Sql Server Profiler抓取发现是进行关键属性查询的，所以性能的要求也达到了
+            */
+            return (from m in Context.Blog
+                    join c in Context.Classify on m.ClassifyId equals c.ClassifyId
+                    orderby m.Date descending
+                    select new
+                    {
+                        BlogId = m.BlogId,
+                        BTitle = m.BTitle,
+                        BSummary = m.BSummary,
+                        Classify = new { CName = c.CName },
+                        Date = m.Date,
+                        BPV = m.BPV,
+                        BComment = m.BComment
+                        
+                    }).ToList().Select(m => new Blog
+                    {
+                        BlogId = m.BlogId,
+                        BTitle = m.BTitle,
+                        BSummary = m.BSummary,
+                        Classify = new Classify { CName = m.Classify.CName },
+                        Date = m.Date,
+                        BPV = m.BPV,
+                        BComment = m.BComment
+                    });//如果再在后面追加Select，则会进数据库把所有的结果查出来然后进行筛选，这样性能要求就达不到了，所以这里只能勉强返回IQueryable
 
         }
     }

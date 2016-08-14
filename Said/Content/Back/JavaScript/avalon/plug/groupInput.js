@@ -87,12 +87,14 @@
                     if (typeof item === 'object') {
                         //使用some尝试终止循环
                         if (vm.values.length) {
-                            //如果已经有了值
+                            //如果在已选中的值里面找到了当前项，就排除当前项
                             if (vm.values.some(function (obj) {
-                            return !~obj.query.toLowerCase().indexOf(item.query.toLowerCase()) && ~item.query.toLowerCase().indexOf(value);
+                                return ~obj.query.toLowerCase().indexOf(item.query.toLowerCase());
                             })) {
-                                vm.filters.push(item);
+                                return;
                             }
+                            if (value == '' || ~item.query.toLowerCase().indexOf(value))
+                                vm.filters.push(item);
                         } else if (~item.query.toLowerCase().indexOf(value))
                             vm.filters.push(item);
                     } else {
@@ -130,6 +132,7 @@
             vals: function (index) {
                 var valueIsNumber = typeof index === 'number',
                     value;
+                if (index == '') return;
                 if (valueIsNumber) {//从索引取
                     value = vm.filters[index];
                     vm.values.push(value);
@@ -148,9 +151,14 @@
                         return;
                     }
                     vm.values.push(value);
-                    elem.value = isMultiple || !value ? '' : value.name;
+                    //elem.value = isMultiple || !value ? '' : value.name;
                 };
-
+                if (value) {
+                    if (isMultiple) {
+                        elem.value = '';
+                    } else
+                        elem.value = value.name;
+                }
             },
             /*下拉框逻辑*/
             checkCustomInput: function () {

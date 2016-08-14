@@ -281,7 +281,7 @@
                     deleteArticle(isRealDelete, dataId, dataTitle, function () {
                         $bsTable.bootstrapTable('remove', {
                             field: 'SaidId',
-                            values: [dataId]
+                            values: [dataId + '']//bootStrapTable的bug，因为dataId是被jQuery转成了数字，导致bootStrapTable检测BlogId字段是否相等的时候发生了bug
                         });
                     });
                 });

@@ -119,8 +119,8 @@ namespace Said.Models
                 yield return new ValidationResult("标题不允许为空");
             if (string.IsNullOrWhiteSpace(BSummary))
                 yield return new ValidationResult("描述不允许为空");
-            if (string.IsNullOrWhiteSpace(BImg))
-                yield return new ValidationResult("图片不允许为空");
+            //if (string.IsNullOrWhiteSpace(BImg))
+            //    yield return new ValidationResult("图片不允许为空");
             //if (string.IsNullOrWhiteSpace(BTag))
             //    yield return new ValidationResult("标签不允许为空");
             if (Classify == null && string.IsNullOrEmpty(ClassifyId))

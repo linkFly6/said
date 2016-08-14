@@ -302,7 +302,7 @@
                             if (result.code === 0) {
                                 $classifyTable.bootstrapTable('remove', {
                                     field: 'ClassifyId',
-                                    values: [id]
+                                    values: [id + '']//bootStrapTable的bug，因为dataId是被jQuery转成了数字，导致bootStrapTable检测BlogId字段是否相等的时候发生了bug
                                 });
                                 sweetalert({
                                     title: '删除分类成功',
@@ -512,7 +512,7 @@
                             if (result.code === 0) {
                                 $tagTable.bootstrapTable('remove', {
                                     field: 'TTagId',
-                                    values: [id]
+                                    values: [id + '']//bootStrapTable的bug，因为dataId是被jQuery转成了数字，导致bootStrapTable检测BlogId字段是否相等的时候发生了bug
                                 });
                                 sweetalert({
                                     title: '删除标签成功',
@@ -539,7 +539,7 @@
                     ICON: '<img src="' + Action.sourceClassify + '${0}" alt="" class="blog-other-icon"/>',
                     CLASSIFYOPERATOR: '<a class="btn btn-info fa fa-edit data-edit" href="javascript:;" data-id="${id}"  data-index="${index}" data-icon="${img}" data-name="${name}" title="编辑"></a>\
                                <a class="btn btn-danger fa fa-trash-o data-delete" href="javascript:;" data-id="${id}" data-name="${name}" title="删除"></a>',
-                    DELETE: '您确定要删除${0}[ <span style="color:red;font-weight:bold;">${1}</span> ]么？',
+                    DELETE: '您确定要删除${0}[ <span style="color:red;font-weight:bold;">${1}</span> ]么？该删除操作<span style="color:red;font-weight:bold;">不可恢复</span>，且该删除项有可能正在被引用',
                     TAGOPERATOR: '<a class="btn btn-info fa fa-edit data-edit" href="javascript:;" data-id="${id}" data-index="${index}" data-name="${name}" title="编辑"></a><a class="btn btn-danger fa fa-trash-o data-delete" href="javascript:;" data-id="${id}" data-name="${name}" title="删除"></a>'
                 },
                     //分类

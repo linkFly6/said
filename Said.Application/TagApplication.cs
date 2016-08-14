@@ -121,22 +121,13 @@ namespace Said.Application
         }
 
         /// <summary>
-        /// 根据长ID查找一个分类
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Tag Find(long id)
-        {
-            return Context.GetById(id);
-        }
-        /// <summary>
         /// 根据ID查找一个分类
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public static Tag Find(string id)
         {
-            return Context.GetById(id);
+            return Context.Get(m => m.TagId == id);
         }
         /// <summary>
         /// 无条件查询全部
