@@ -81,10 +81,6 @@ namespace Said.Models
         /// 文章HTML
         /// </summary>
         public string BHTML { get; set; }
-        /// <summary>
-        /// 文章发表时间
-        /// </summary>
-        public DateTime BDate { get; set; }
 
         /// <summary>
         /// CSS（如果有的话）

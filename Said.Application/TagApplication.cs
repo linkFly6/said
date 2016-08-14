@@ -110,6 +110,15 @@ namespace Said.Application
             return Context.GetMany(m => m.TagName == name);
         }
 
+        /// <summary>
+        /// 根据一组ID和name查询到一组Tag（因为Tag的id和name是复合主键（要求都不能重复），所以需要两个条件进行容错）
+        /// </summary>
+        /// <param name="namesOrIds">要查询的TagId和name列表</param>
+        /// <returns></returns>
+        public static IEnumerable<Tag> FindListByTagIdList(string[] namesOrIds)
+        {
+            return Context.GetMany(m => namesOrIds.Contains(m.TagId));
+        }
 
         /// <summary>
         /// 根据长ID查找一个分类

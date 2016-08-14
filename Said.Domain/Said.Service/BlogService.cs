@@ -63,7 +63,7 @@ namespace Said.Service
                                     a => a.BTitle.Contains(keywords)
                                         || a.BSummary.Contains(keywords)
                                             || a.BContext.Contains(keywords),
-                                a => a.BDate);
+                                a => a.Date);
         }
 
 
@@ -97,7 +97,7 @@ namespace Said.Service
 
 
         /// <summary>
-        /// 查询Blog的一部分数据，仅包含关键数据：BTitle,BSummary,BTag,CName,BDate,BPV,BComment
+        /// 查询Blog的一部分数据，仅包含关键数据：BTitle,BSummary,CName,BDate,BPV,BComment
         /// </summary>
         /// <param name="page">分页对象</param>
         /// <param name="keywords">要查询的关键字</param>
@@ -137,15 +137,15 @@ namespace Said.Service
 
             return base.GetPage(page,
                                     m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords),
-                                    m => m.BDate,
+                                    m => m.Date,
                                     m => new
                                     {
                                         BlogId = m.BlogId,
                                         BTitle = m.BTitle,
                                         BSummary = m.BSummary,
-                                        Tags = m.Tags,
+                                        //Tags = m.Tags,
                                         CName = m.Classify.CName,
-                                        BDate = m.BDate,
+                                        Date = m.Date,
                                         BPV = m.BPV,
                                         BComment = m.BComment
                                     }, m => new Blog
@@ -153,9 +153,9 @@ namespace Said.Service
                                         BlogId = m.BlogId,
                                         BTitle = m.BTitle,
                                         BSummary = m.BSummary,
-                                        Tags = m.Tags,
+                                        //Tags = m.Tags,
                                         Classify = new Classify { CName = m.CName },
-                                        BDate = m.BDate,
+                                        Date = m.Date,
                                         BPV = m.BPV,
                                         BComment = m.BComment
                                     });

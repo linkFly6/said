@@ -31,12 +31,12 @@ namespace Said.Domain.Said.Data
             //throw new System.Data.Entity.Infrastructure.UnintentionalCodeFirstException();
             //初始化的时候需要添加测试数据到数据库
 
-            modelBuilder.Entity<Blog>().HasMany(a => a.Tags).WithMany(t => t.Blogs).Map(m =>
-            {
-                m.ToTable("BlogsTags"); //中间关系表表名
-                m.MapLeftKey("TagId"); //设置Activity表在中间表主键名
-                m.MapRightKey("BlogId"); //设置Trip表在中间表主键名
-            });
+            //modelBuilder.Entity<Blog>().HasMany(a => a.Tags).WithMany(t => t.Blogs).Map(m =>
+            //{
+            //    m.ToTable("BlogsTags"); //中间关系表表名
+            //    m.MapLeftKey("TagId"); //设置Activity表在中间表主键名
+            //    m.MapRightKey("BlogId"); //设置Trip表在中间表主键名
+            //});
         }
 
 
@@ -63,6 +63,9 @@ namespace Said.Domain.Said.Data
         public DbSet<AdminRecord> AdminRecord { get; set; }
         public DbSet<Banner> Banner { get; set; }
         public DbSet<UserLike> UserLike { get; set; }
+        public DbSet<Comment> Comment { get; set; }
+        public DbSet<Reply> Reply { get; set; }
+        public DbSet<BlogTags> BlogTags { get; set; }
         #endregion
     }
 }

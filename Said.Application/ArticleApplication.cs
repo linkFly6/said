@@ -76,7 +76,7 @@ namespace Said.Application
                 if (string.IsNullOrEmpty(model.SaidId))
                 {
                     //新增
-                    if (string.IsNullOrWhiteSpace(model.SName) || ArticleApplication.FindByFileName(model.SName.Trim()) != null)    //没有文件名或文件名不合法，则生成一个新的文件名
+                    if (string.IsNullOrWhiteSpace(model.SName) || FindByFileName(model.SName.Trim()) != null)    //没有文件名或文件名不合法，则生成一个新的文件名
                         model.SName = FileCommon.CreateFileNameByTime();
                 }
                 else {
@@ -87,7 +87,7 @@ namespace Said.Application
                     }
                     else {
                         //从数据库中检索是否存在
-                        var SaidIdLists = ArticleApplication.FindSaidIdByFileName(model.SName).ToList();
+                        var SaidIdLists = FindSaidIdByFileName(model.SName).ToList();
                         //文件名重复
                         if (SaidIdLists.Count > 1 && SaidIdLists.IndexOf(model.SaidId) > -1)
                         {

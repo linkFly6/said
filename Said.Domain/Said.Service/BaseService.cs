@@ -35,8 +35,8 @@ namespace Said.IServices
         /// </summary>
         public BaseService(DatabaseFactory factory)
         {
-            this.Factory = factory;
-            this.dbset = Context.Set<T>();
+            Factory = factory;
+            dbset = Context.Set<T>();
         }
 
         #region Sql通用查询
@@ -390,7 +390,7 @@ namespace Said.IServices
         /// <returns></returns>
         public int Submit()
         {
-            return this.Context.Commit();
+            return Context.Commit();
         }
 
     }

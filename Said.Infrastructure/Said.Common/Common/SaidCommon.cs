@@ -1,21 +1,17 @@
-﻿using Said.Application;
-using Said.Helper;
-using Said.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Web;
+using System.Transactions;
 
-namespace Said
+namespace Said.Common
 {
-    /// <summary>
-    /// Said全局帮助类
-    /// </summary>
     public class SaidCommon
     {
+
         /// <summary>
-        /// 创建一个对象ID（新增对象的时候）
+        /// 创建一个对象ID（新增对象的时候）  * 该API会逐渐私有化，请使用SaidCommon.GUID *
         /// </summary>
         /// <returns></returns>
         public static string CreateId()
@@ -135,7 +131,28 @@ namespace Said
             return FixedkDate.AddSeconds(duration).ToString("mm:ss");
         }
 
-        
-
+        /// <summary>
+        /// 进行事务操作，当代码出现异常的时候，则会回滚事务（事务的异常会被抛出）
+        /// </summary>
+        /// <param name="func">要进行事务操作的回调函数</param>
+        public static void Transaction(Action func)
+        {
+            using (TransactionScope scope = new TransactionScope())
+            {
+                try
+                {
+                    func();
+                    scope.Complete();
+                }
+                catch (Exception e)
+                {
+                    throw e;
+                }
+                finally
+                {
+                    scope.Dispose();
+                }
+            }
+        }
     }
 }
