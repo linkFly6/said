@@ -138,7 +138,6 @@
     <Compile Include="Common\IPRange.cs" />
     <Compile Include="Common\JavaScriptCommon.cs" />
     <Compile Include="Common\LogCommon.cs" />
-    <Compile Include="Common\SaidCommon.cs" />
     <Compile Include="Common\SaidRecordCommon.cs" />
     <Compile Include="Controllers\Attrbute\NoFilter.cs" />
     <Compile Include="Controllers\BaseController.cs" />

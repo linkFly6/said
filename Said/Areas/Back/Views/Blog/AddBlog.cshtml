@@ -63,13 +63,7 @@
                     <div class="panel-body">
                         <div class="input-group" ms-controller="tagController">
                             <span class="input-group-addon">标签</span>
-                            @Html.TextBoxFor(m => m.Tags, new Dictionary<string, object>() {
-                                { "class", "tag-input" },
-                                //{ "ms-change", "saveTolocalStorage('bTag',bTag)" },
-                                { "ms-widget", "groupInput" },
-                                { "placeholder", "标签，支持[tab]分隔" },
-                                { "autocomplete", "off" }
-                            })
+                            <input class="tag-input" ms-widget="groupInput" placeholder="标签，支持[tab]分隔" autocomplete="off" />
                         </div>
                         <div class="input-group" ms-class="has-error:!classifyId" ms-controller="classifyController">
                             <span class="input-group-addon">分类</span>
@@ -81,34 +75,17 @@
                                 { "ms-widget", "groupInput" }
                             })
                         </div>
-                    </div>
-                </div>
-                <div class="panel panel-default relative-container" ms-controller="uploadController">
-                    <div style="z-index: 2;" class="addSaid-mask" ms-visible="!imgSrc" ms-click="dialog()">
-                        <span class="so-upload-text">选择文章缩略图</span>
-                    </div>
-                    <div class="panel-heading">描述</div>
-                    <div class="panel-body">
-                        <div class="col-md-4">
-                            <div class="summay-img">
-                                <div class="thumbnail">
-                                    <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '/Content/Images/said-up-def.png') + ')'"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="form-group">
+                            <label>简述</label>
                             @Html.TextAreaFor(m => m.BSummary, new Dictionary<string, object>() {
-                            { "class", "said-dis" },
+                            { "class", "form-control" },
                             { "autocomplete", "off" },
+                           { "style","height:142px"},
                             { "ms-duplex", "bSummary" },
                             { "ms-class", "said-error:bImg!=null && !bSummary" },
                             { "placeholder", "简介[支持HTML]" },
                             { "ms-change", "saveTolocalStorage('bSummary',bSummary)" }})
-                            <div class="songOp-btn song-up-content">
-                                <button type="button" class="btn btn-danger songBtn" ms-click="clear()">移除图片</button>
-                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -181,7 +158,6 @@
         var TemplatePromptText = {
             errorBTitle: ['（￣工￣lll） 文章标题不正确', '你忘记填写文章标题了... '],
             errorBContext: ['(｡☉౪ ⊙｡)  文章正文不正确', '大哥你连正文都木有发表了文章谁看啊...赶紧检查一下  '],
-            errorImg: [' (≖ ‿ ≖)✧ 文章插图不正确', 'Said规定所有的文章必须要有灵犀又生动的插图哟...赶紧挑张图片让文章更加的精彩'],
             errorBSummary: [' (￣▽￣)~* 文章描述不正确', '文章描述是一定要有的，没有文章描述诱惑，别人也许就不会读文章了'],
             errorClasify: [' (｡・`ω´･) 文章分类不正确', '是的，为了以后让你的文章特别特别特别方便的管理/检索，一定要有文章的分类'],
             uploadImgFail: '上传图片异常，错误信息：${0}',
@@ -259,7 +235,7 @@
                         //console.info($context.html());
                         return $context.html();
                     },
-                    preview = function (title, context, classify, tags, bImg) {
+                    preview = function (title, context, classify, tags) {
                         context = getContextHTML(context);
                         var htmls = [
                             '<textarea name="BTitle">' + title + '</textarea>',
@@ -267,8 +243,7 @@
                             '<textarea name="ClassifyId">' + classify + '</textarea>',
                             tags.map(function (tag) {
                                 return '<input name="BTag" value="' + tag.name + '"/>';
-                            }).join(''),
-                            bImg ? '<input name="BImg" value="' + bImg + '" />' : ''
+                            }).join('')
                         ].join('');
                         //TODO img的refer应该处理下
                         //链接也应该做转发处理
@@ -296,7 +271,6 @@
                     errorHash = {
                         'bTitle': TemplatePromptText.errorBTitle,
                         'bContext': TemplatePromptText.errorBContext,
-                        'bImg': TemplatePromptText.errorImg,
                         'bSummary': TemplatePromptText.errorBSummary,
                         'classify': TemplatePromptText.errorClasify
                     },
@@ -315,7 +289,6 @@
                     bIsTop: database.val('bIsTop') || '',
                     bCSS: database.val('bCSS') || '',
                     bContext: database.val('bContext') || '',
-                    bImg: database.val('bImg') || '',
                     bName: database.val('bName') || '',
                     classifyId: '',
                     classify: '',
@@ -347,8 +320,7 @@
                         preview(vmBlog.bTitle.trim(),
                             converter.makeHtml(vmBlog.bContext),//进行HTML转换
                             vmBlog.classifyId,
-                            vmBlog.bTag,
-                            vmBlog.bImg
+                            vmBlog.bTag
                             );
 
                     },
@@ -366,7 +338,7 @@
                     check: function () {
                         vmBlog.submitState = true;
                         var temp;
-                        return ['bTitle', 'bContext', 'classify', 'bImg', 'bSummary'].every(function (key) {
+                        return ['bTitle', 'bContext', 'classify', 'bSummary'].every(function (key) {
                             temp = errorHash[key];
                             return checkEmptyValue(key, temp[0], temp[1]);
                         });
@@ -397,7 +369,6 @@
                             'BIsTop': encode(vmBlog.bIsTop),
                             'BCSS': encode(vmBlog.bCSS),
                             'BContext': encode(vmBlog.bContext),
-                            'BImg': encode(vmBlog.bImg),
                             'BName': encode(vmBlog.bName),
                             'ClassifyId': encode(vmBlog.classifyId)
                         }).done(function (data) {
@@ -461,39 +432,39 @@
                 });
 
 
-                var _summaryDialog = $.source({
-                    zIndex: 6,
-                    loadUrl: '/Back/Image/GetImagesList',
-                    path: Action.summaryImg,
-                    type: Action.blogImageType,
-                    uploadUrl: Action.uploadImg,
-                    //deleteUrl: '/Back/Source/RealDeleteImage',//这个是物理删除，测试用这个
-                    multiple: false,
-                    deleteUrl: Action.deleteImg, //这个是逻辑删除，上线用这个
-                    callback: function (data) {
-                        if (data) {
-                            vmUpload.data = data;
-                            var imgSrc = Action.summaryImg + data.IName;
-                            vmUpload.img = data.IName;
-                            vmUpload.imgSrc = imgSrc;
-                            vmBlog.bImg = data.ImageId;
-                            database.val('bImg', data.ImageId).val('summary.imgSrc', imgSrc);
-                        }
-                    }
-                });
-                var vmUpload = avalon.define({
-                    $id: 'uploadController',
-                    imgSrc: database.val('summary.imgSrc') || '',
-                    dialog: function (id) {
-                        _summaryDialog.show();
-                    },
-                    clear: function () {
-                        database.remove('bImg')
-                        database.remove('summary.imgSrc');
-                        vmBlog.bImg = null;
-                        vmUpload.imgSrc = vmUpload.img = '';
-                    }
-                });
+                //var _summaryDialog = $.source({
+                //    zIndex: 6,
+                //    loadUrl: '/Back/Image/GetImagesList',
+                //    path: Action.summaryImg,
+                //    type: Action.blogImageType,
+                //    uploadUrl: Action.uploadImg,
+                //    //deleteUrl: '/Back/Source/RealDeleteImage',//这个是物理删除，测试用这个
+                //    multiple: false,
+                //    deleteUrl: Action.deleteImg, //这个是逻辑删除，上线用这个
+                //    callback: function (data) {
+                //        if (data) {
+                //            vmUpload.data = data;
+                //            var imgSrc = Action.summaryImg + data.IName;
+                //            vmUpload.img = data.IName;
+                //            vmUpload.imgSrc = imgSrc;
+                //            vmBlog.bImg = data.ImageId;
+                //            database.val('bImg', data.ImageId).val('summary.imgSrc', imgSrc);
+                //        }
+                //    }
+                //});
+                //var vmUpload = avalon.define({
+                //    $id: 'uploadController',
+                //    imgSrc: database.val('summary.imgSrc') || '',
+                //    dialog: function (id) {
+                //        _summaryDialog.show();
+                //    },
+                //    clear: function () {
+                //        database.remove('bImg')
+                //        database.remove('summary.imgSrc');
+                //        vmBlog.bImg = null;
+                //        vmUpload.imgSrc = vmUpload.img = '';
+                //    }
+                //});
 
                 //upload
                 //console.log(vmUpload);
