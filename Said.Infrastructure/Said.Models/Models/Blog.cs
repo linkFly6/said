@@ -54,6 +54,11 @@ namespace Said.Models
         public int BPV { get; set; }
 
         /// <summary>
+        /// Like数
+        /// </summary>
+        public int Likes { get; set; }
+
+        /// <summary>
         /// 文件名
         /// </summary>
         public string BName { get; set; }

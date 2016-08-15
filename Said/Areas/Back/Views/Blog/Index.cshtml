@@ -37,16 +37,20 @@
                         BTitle: '{1}',
                         BPV: '{2}',
                         BDate: '{3}',
-                        Classify: {{ CName : '{4}' }}
+                        Classify: {{ CName : '{4}' }},
+                        BPV:'{5}',
+                        BComment:'{6}',
+                        Likes:'{7}',
                         }});",
                         item.BlogId,
                         item.BTitle,
                         item.BPV,
                         item.Date.ToString("yyyy-MM-dd HH:mm:ss"),
-                        item.Classify.CName
+                        item.Classify.CName,
+                        item.BPV,
+                        item.BComment,
+                        item.Likes
                         )));
-
-
             }
         }
         //console.info(articlesDatas);
@@ -62,60 +66,67 @@
             form: '@Url.Action("AddBlog", "Blog")'*@
         };
         $(function () {
-            var option = {
-                title: {
-                    text: '2014-11-15',
-                    subtext: '昨日/今日访问量'
-                },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['昨日', '今日']
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-                        restore: { show: true },
-                        saveAsImage: { show: true }
-                    }
-                },
-                calculable: true,
-                xAxis: [
-                    {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: ['0:00', '1:00', '2:00', '3:00', '4:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value'
-                    }
-                ],
-                series: [
-                    {
-                        name: '昨日',
-                        type: 'line',
-                        smooth: true,
-                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
+
+            var blogDates = blogDatas.map(function (item) {
+                return item.BDate;
+            }),
+                blogPVs = blogDatas.map(function (item) {
+                    return item.BPV;
+                }),
+                echartsOption = {
+                    title: {
+                        text: '2016-01-09',
+                        //subtext: '今日访问量'
                     },
-                    {
-                        name: '今日',
-                        type: 'line',
-                        smooth: true,
-                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [5, 2, 5, 5, 5, 3, 3, 9, 10, 19, 16, 16, 22, 7, 7, 8, 8, 0, 0, 0, 0, 1, 6, 7]
-                    }
-                ]
-            };
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['访问量']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: { show: true },
+                            dataView: { show: true, readOnly: false },
+                            magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                            restore: { show: true },
+                            saveAsImage: { show: true }
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: blogDatas
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        //{
+                        //    name: '昨日',
+                        //    type: 'line',
+                        //    smooth: true,
+                        //    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                        //    data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
+                        //},
+                        {
+                            name: 'PV',
+                            type: 'line',
+                            smooth: true,
+                            itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                            data: blogPVs
+                        }
+                    ]
+                };
             require(['echarts'], function (ec) {
                 var myChart = ec.init(document.getElementById('userChart'));
-                myChart.setOption(option);
+                myChart.setOption(echartsOption);
             });
 
 
@@ -200,6 +211,30 @@
                          field: 'Classify.CName',
                          title: '分&nbsp;&nbsp;&nbsp;类',
                          sortable: true,
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'Likes',
+                         title: '喜&nbsp;&nbsp;&nbsp;欢',
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BPV',
+                         title: '浏&nbsp;&nbsp;&nbsp;览',
+                         valign: 'middle',
+                         formatter: function (value, row, index) {
+                             return value;
+                         }
+                     },
+                     {
+                         field: 'BComment',
+                         title: '评&nbsp;&nbsp;&nbsp;论',
                          valign: 'middle',
                          formatter: function (value, row, index) {
                              return value;

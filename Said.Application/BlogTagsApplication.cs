@@ -1,4 +1,5 @@
-﻿using Said.Models;
+﻿using Said.Common;
+using Said.Models;
 using Said.Service;
 using System;
 using System.Collections.Generic;
@@ -81,5 +82,61 @@ namespace Said.Application
             Context.Delete(m => m.TagId == tagId);
             return Context.Submit();
         }
+
+
+        /// <summary>
+        /// 将Blog的Tag添加到数据库，并生成BlogTags（Blog和Tag关系表）的数组（尚未提交到数据库，需要自己提交，并且关系表中的对象(Blog/Tag)都为null）
+        /// </summary>
+        /// <param name="blog"></param>
+        /// <param name="tags">Blog对应的标签对象</param>
+        /// <returns></returns>
+        public static IList<BlogTags> UpdateBlogTags(Blog blog, IList<Tag> tags)
+        {
+            var selectTagIds = tags.Where(tag => !string.IsNullOrWhiteSpace(tag.TagId)).Select(m => m.TagId);//得到要查询的Tag name列表（把为null的tag的tagId过滤掉，因为前端传递过来的tag，如果是新增的，则为null），然后进行数据库查询
+            IEnumerable<Tag> existTags = TagApplication.FindListByTagIdList(selectTagIds.ToArray());//从数据库中查询到已存在的Tag
+            IList<Tag> addTags = tags.Where(tag =>
+            {
+                //前端传递过来，新增的tag的tagId都是null，同时去数据库中检测，如果发现有新增的项数据库中并没有
+                if (string.IsNullOrWhiteSpace(tag.TagId) && !existTags.Any(t => t.TagName == tag.TagName))
+                {
+                    tag.TagId = SaidCommon.GUID;
+                    tag.Count = 1;//tag应该由中间表记录和Blog的关系，而不应该直接查询Tag
+                    tag.Date = DateTime.Now;
+                    return true;
+                }
+                return false;
+            }).ToList();
+            if (addTags.Count() > 0)
+            {
+                if (TagApplication.AddList(addTags) < 1)
+                {
+                    throw new Exception("新增Tag失败");
+                }
+            }
+            if (existTags != null && existTags.Count() > 0 && addTags.Count() > 0)
+                tags = existTags.Concat(addTags).ToList();//Concat参考：http://www.cnblogs.com/heyuquan/p/Linq-to-Objects.html
+            else if (addTags.Count() > 0)
+                tags = addTags;
+            else if (existTags.Count() > 0)
+                tags = existTags.ToList();
+
+            //这里应该是调用BlogTagsApplication的方法
+            //新增Tag成功，生成BlogTags
+            var blogTags = new List<BlogTags>();
+            foreach (var item in tags)
+            {
+                blogTags.Add(new BlogTags
+                {
+                    BlogId = blog.BlogId,
+                    TagId = item.TagId,
+                    Date = DateTime.Now,
+                    BlogTagsId = SaidCommon.GUID
+                });
+            }
+            return blogTags;
+        }
+
+
+
     }
 }

@@ -47,13 +47,20 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return View("Error");
-            ViewBag.Title = "编辑文章 - Said后台管理系统 ";
+            var model = BlogApplication.Find(id);
+            if (model == null)
+            {
+                return RedirectToAction("Index", new
+                {
+                    formUrl = Request.Url.AbsoluteUri
+                });
+            }
             //初始化页面需要的数据
             ViewData["ClassifysList"] = ClassifyApplication.Find();
-            ViewData["Tags"] = TagApplication.Find();
-            ViewData["TagList"] = TagApplication.Find();
-            ViewData["BlogFiles"] = BlogApplication.GetAllBlogFileName().ToList<Blog>();
-            return View(BlogApplication.Find(id));
+            ViewData["TagList"] = TagApplication.Find().ToList();
+            ViewData["BlogFiles"] = BlogApplication.GetAllBlogFileName().ToList();
+            ViewData["BlogTags"] = BlogTagsApplication.FindByBlogId(model.BlogId).ToList();
+            return View(model);
         }
 
 
@@ -93,7 +100,7 @@ namespace Said.Areas.Back.Controllers
             //    return ResponseResult(1, "没有填写分类信息");
 
             //修正编码数据
-            model = UrlCommon.DecodeModel<Blog>(model);
+            model = UrlCommon.DecodeModel(model);
             IList<Tag> tags = null;
             if (!String.IsNullOrWhiteSpace(Request["Tags"]))
             {
@@ -119,9 +126,34 @@ namespace Said.Areas.Back.Controllers
 
 
         [HttpPost]
-        public JsonResult Edit(Blog model)
+        public JsonResult Edit(Blog newModel)
         {
-            return ResponseResult();
+            newModel = UrlCommon.DecodeModel(newModel);
+            if (string.IsNullOrWhiteSpace(newModel.BlogId))
+                return ResponseResult(-1, "要编辑的文章ID不正确（无法获取）");
+            var model = BlogApplication.Find(newModel.BlogId);
+            IList<Tag> tags = null;
+            if (!string.IsNullOrWhiteSpace(Request["Tags"]))
+            {
+                //反序列化tag
+                tags = JavaScriptCommon.DeSerialize<IList<Tag>>(UrlCommon.Decode(Request["Tags"]));
+            }
+            else {
+                return ResponseResult(1, new { msg = "标签不允许为空" });
+            }
+            //TODO 应该先对两个blog进行修改，如果发现是一样的就不修改blog了
+            string validateResult = BlogApplication.ValidateAndCorrectSubmit(newModel);
+            if (validateResult == null)
+            {
+                if (BlogApplication.EditBlog(newModel, model, tags) > 0)
+                    return ResponseResult(new { id = newModel.BlogId });
+                else
+                    return ResponseResult(2, "修改Blog失败");
+            }
+            else
+            {
+                return ResponseResult(1, new { msg = validateResult });
+            }
         }
 
         /// <summary>

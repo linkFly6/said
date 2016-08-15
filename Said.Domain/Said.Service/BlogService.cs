@@ -52,6 +52,13 @@ namespace Said.Service
         /// <returns></returns>
         IEnumerable<Blog> FindAllToListSection();
 
+        /// <summary>
+        /// 根据Blog文件名称，获取该文件名称对应的Blog（列表）
+        /// </summary>
+        /// <param name="filename">要检索的文件名称</param>
+        /// <returns></returns>
+        IEnumerable<string> GetBlogIdByFileName(string fileName);
+
     }
     /// <summary>
     /// Blog（文章）服务
@@ -276,8 +283,8 @@ namespace Said.Service
                         Classify = new { CName = c.CName },
                         Date = m.Date,
                         BPV = m.BPV,
-                        BComment = m.BComment
-                        
+                        BComment = m.BComment,
+                        Likes = m.Likes
                     }).ToList().Select(m => new Blog
                     {
                         BlogId = m.BlogId,
@@ -286,9 +293,21 @@ namespace Said.Service
                         Classify = new Classify { CName = m.Classify.CName },
                         Date = m.Date,
                         BPV = m.BPV,
-                        BComment = m.BComment
+                        BComment = m.BComment,
+                        Likes = m.Likes
                     });//如果再在后面追加Select，则会进数据库把所有的结果查出来然后进行筛选，这样性能要求就达不到了，所以这里只能勉强返回IQueryable
 
+        }
+        /// <summary>
+        /// 根据Blog文件名称，获取该文件名称对应的Blog（列表）
+        /// </summary>
+        /// <param name="filename">要检索的文件名称</param>
+        /// <returns></returns>
+        public IEnumerable<string> GetBlogIdByFileName(string fileName)
+        {
+            return from m in Context.Blog
+                   where m.BName == fileName
+                   select m.BlogId;
         }
     }
 }

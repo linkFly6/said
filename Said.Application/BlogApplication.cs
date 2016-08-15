@@ -36,6 +36,16 @@ namespace Said.Application
 
 
         /// <summary>
+        /// 根据文章文件名称，获取该文件名称对应的BlogId（列表），用于检索文件重名业务
+        /// </summary>
+        /// <param name="fileName">要检索的文件名称</param>
+        /// <returns>返回SaidID列表</returns>
+        public static IEnumerable<string> FindBlogIdByFileName(string fileName)
+        {
+            return Context.GetBlogIdByFileName(fileName);
+        }
+
+        /// <summary>
         /// 修改Blog
         /// </summary>
         /// <param name="model"></param>
@@ -80,10 +90,35 @@ namespace Said.Application
                 str.Length--;//StringBuilder的length可以用于裁剪字符串？
             else
             {
-                //开始矫正数据
-                //没有文件名或文件名不合法，则生成一个新的文件名
-                if (string.IsNullOrWhiteSpace(model.BName) || BlogApplication.FindByFileName(model.BName.Trim()) != null)
-                    model.BName = FileCommon.CreateFileNameByTime();
+
+                if (string.IsNullOrEmpty(model.BlogId))//新增
+                {
+
+                    //开始矫正数据
+                    //没有文件名或文件名不合法，则生成一个新的文件名
+                    if (string.IsNullOrWhiteSpace(model.BName) || BlogApplication.FindByFileName(model.BName.Trim()) != null)
+                        model.BName = FileCommon.CreateFileNameByTime();
+                }
+                else {
+                    //编辑
+                    if (string.IsNullOrWhiteSpace(model.BName))
+                    {
+                        model.BName = FileCommon.CreateFileNameByTime();
+                    }
+                    else {
+                        //从数据库中检索是否存在
+                        var SaidIdLists = FindBlogIdByFileName(model.BName).ToList();
+                        //文件名重复
+                        if (SaidIdLists.Count > 1 && SaidIdLists.IndexOf(model.BName) > -1)
+                        {
+                            model.BName = FileCommon.CreateFileNameByTime();
+                        }
+
+                    }
+
+                }
+
+
             }
             return str.Length > 0 ? str.ToString() : null;
         }
@@ -102,7 +137,7 @@ namespace Said.Application
             //进行事务添加
             SaidCommon.Transaction(() =>
             {
-                IList<BlogTags> blogTags = UpdateBlogTags(blog, tags);
+                IList<BlogTags> blogTags = BlogTagsApplication.UpdateBlogTags(blog, tags);
                 Add(blog);
                 BlogTagsApplication.AddLists(blogTags);
             });
@@ -111,50 +146,52 @@ namespace Said.Application
 
 
         /// <summary>
-        /// 将Blog的Tag添加到数据库，并生成BlogTags（Blog和Tag关系表）的数组（尚未提交到数据库，需要自己提交，并且关系表中的对象(Blog/Tag)都为null）
+        /// 修改Blog，会自动修正Blog的数据
         /// </summary>
-        /// <param name="blog"></param>
-        /// <param name="tags">Blog对应的标签对象</param>
+        /// <param name="newBlog">修改完成的Blog</param>
+        /// /// <param name="blog">要修改的Blog</param>
+        /// <param name="tags"></param>
         /// <returns></returns>
-        private static IList<BlogTags> UpdateBlogTags(Blog blog, IList<Tag> tags)
+        public static int EditBlog(Blog newBlog, Blog blog, IList<Tag> tags)
         {
-            var selectTagIds = tags.Where(tag => !string.IsNullOrWhiteSpace(tag.TagId)).Select(m => m.TagId);//得到要查询的Tag name列表（把为null的tag的tagId过滤掉，因为前端传递过来的tag，如果是新增的，则为null），然后进行数据库查询
-            IEnumerable<Tag> existTags = TagApplication.FindListByTagIdList(selectTagIds.ToArray());//从数据库中查询到已存在的Tag
-            IList<Tag> addTags = tags.Where(tag =>
+            //先调用ValidateAndCorrectSubmit验证更合理
+            newBlog.Date = DateTime.Now;
+            //进行事务添加
+            return SaidCommon.Transaction(() =>
             {
-                //前端传递过来，新增的tag的tagId都是null，同时去数据库中检测，如果发现有新增的项数据库中并没有
-                if (string.IsNullOrWhiteSpace(tag.TagId) && !existTags.Any(t => t.TagName == tag.TagName))
+                if (BlogTagsApplication.DeleteByBlogId(blog.BlogId) <= 0)
                 {
-                    tag.TagId = SaidCommon.GUID;
-                    tag.Count = 1;//tag应该由中间表记录和Blog的关系，而不应该直接查询Tag
-                    tag.Date = DateTime.Now;
-                    return true;
+                    throw new Exception("删除原Blog和标签关系异常");
                 }
-                return false;
-            }).ToList();
-            if (TagApplication.AddList(addTags) < 1)
-            {
-                throw new Exception("新增Tag失败");
-            }
-            if (existTags != null && existTags.Count() > 0)
-                tags = existTags.Concat(addTags).ToList();//Concat参考：http://www.cnblogs.com/heyuquan/p/Linq-to-Objects.html
-            else
-                tags = addTags;
-            //这里应该是调用BlogTagsApplication的方法
-            //新增Tag成功，生成BlogTags
-            var blogTags = new List<BlogTags>();
-            foreach (var item in tags)
-            {
-                blogTags.Add(new BlogTags
-                {
-                    BlogId = blog.BlogId,
-                    TagId = item.TagId,
-                    Date = DateTime.Now,
-                    BlogTagsId = SaidCommon.GUID
-                });
-            }
-            return blogTags;
+                IList<BlogTags> blogTags = BlogTagsApplication.UpdateBlogTags(blog, tags);
+                //对齐Blog对象
+                blog.BTitle = newBlog.BTitle;
+                blog.BContext = newBlog.BContext;
+                blog.BSummary = newBlog.BSummary;
+                blog.BSummaryTrim = newBlog.BSummaryTrim;
+                blog.BHTML = newBlog.BHTML;
+                blog.BScript = newBlog.BScript;
+                blog.BReprint = newBlog.BReprint;
+                //blog.BPV = newBlog.BPV;
+                //blog.Likes = newBlog.Likes;
+                blog.BName = newBlog.BName;
+                blog.BLastCommentUser = newBlog.BLastCommentUser;
+                blog.BLastComment = newBlog.BLastComment;
+                blog.BIsTop = newBlog.BIsTop;
+                blog.BImgTrim = newBlog.BImgTrim;
+                blog.BImg = newBlog.BImg;
+                //blog.BComment = newBlog.BComment;
+                //blog.BClick = newBlog.BClick;
+                blog.ClassifyId = newBlog.ClassifyId;
+                blog.BName = newBlog.BName;
+                Update(blog);
+                BlogTagsApplication.AddLists(blogTags);
+                return 1;
+            });
         }
+
+
+
 
 
 

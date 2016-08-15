@@ -7,13 +7,13 @@ namespace Said.Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.2-31219")]
-    public sealed partial class _20160814225346 : IMigrationMetadata
+    public sealed partial class _20160815225042 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_20160814225346));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_20160815225042));
         
         string IMigrationMetadata.Id
         {
-            get { return "201608141456598_20160814225346"; }
+            get { return "201608151450551_20160815225042"; }
         }
         
         string IMigrationMetadata.Source

@@ -132,7 +132,7 @@
             vals: function (index) {
                 var valueIsNumber = typeof index === 'number',
                     value;
-                if (index == '') return;
+                if (index === '') return;
                 if (valueIsNumber) {//从索引取
                     value = vm.filters[index];
                     vm.values.push(value);
