@@ -222,18 +222,24 @@
                 var //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
                     showdown = window.Showdown,
                     converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
+                    //解析并返回HTML
                     getContextHTML = function (context) {
-                        var $context = $('<div>' + context + '</div>');
-                        //这破玩意儿不能用HTML转换？？？
-                        highlight.configure({
-                            tabReplace: ' '//要把这个tab替换掉
-                        });
-                        //这里要读一下hilightJS的源码，直接通过code转换
-                        $context.find('pre code').each(function (i, block) {
-                            highlight.highlightBlock(block);
-                        });
-                        //console.info($context.html());
-                        return $context.html();
+                        //先使用markdown解析为HTML
+                        var html = converter.makeHtml(context);
+                        //再使用highlight高亮代码，highlightInHTML()这个方法是自己写的
+                        return highlight.highlightInHTML(html);
+
+                        //var $context = $('<div>' + context + '</div>');
+                        ////这破玩意儿不能用HTML转换？？？
+                        //highlight.configure({
+                        //    tabReplace: ' '//要把这个tab替换掉
+                        //});
+                        ////这里要读一下hilightJS的源码，直接通过code转换
+                        //$context.find('pre code').each(function (i, block) {
+                        //    highlight.highlightBlock(block);
+                        //});
+                        ////console.info($context.html());
+                        //return $context.html();
                     },
                     preview = function (title, context, classify, tags) {
                         context = getContextHTML(context);
@@ -329,7 +335,7 @@
                             return;
                         }
                         preview(vmBlog.bTitle.trim(),
-                            converter.makeHtml(vmBlog.bContext),//进行HTML转换
+                            vmBlog.bContext,//进行HTML转换
                             vmBlog.classifyId,
                             vmBlog.bTag
                             );
@@ -378,7 +384,7 @@
                                     };
                             }))) : null,
                             'BSummary': encode(vmBlog.bSummary),
-                            'BHTML': encodeURIComponent(getContextHTML(converter.makeHtml(vmBlog.bContext))),
+                            'BHTML': encodeURIComponent(getContextHTML(vmBlog.bContext)),
                             'BReprint': encode(vmBlog.bReprint),
                             'BSummaryTrim': encode(bSummaryTrim),
                             'BScript': encode(vmBlog.bScript),

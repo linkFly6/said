@@ -506,8 +506,13 @@ Showdown.converter = function (converter_options) {
         text = _DoItalicsAndBold(text);
 
         // Do hard breaks:
-        text = text.replace(/  +\n/g, " <br />\n");
-
+        //text = text.replace(/  +\n/g, " <br />\n");
+        /*
+            linkFly修改 - 2016-08-21 03:46:22：
+            1. 原showdown的做法的当最后有两个空格的时候才插入<br/>，修改语法为1个空格的时候即插入</br>
+            2. 原showdown将"\n"替换为了"<br/>\n"，导致了换行的HTML每一行前面都还有一个\n，在页面上如果设置了css样式white-space:pre-wrap，浏览器会解析这个\n，会造成换行的元素前面（上一个元素是<br/>的时候）会多出一个空格
+        */
+        text = text.replace(/\n/g, "<br />");
         return text;
     }
 
@@ -1027,7 +1032,7 @@ Showdown.converter = function (converter_options) {
                 codeblock = _Detab(codeblock);
                 codeblock = codeblock.replace(/^\n+/g, ""); // trim leading newlines
                 codeblock = codeblock.replace(/\n+$/g, ""); // trim trailing whitespace
-                //linkFly����
+                //linkFly新增
                 codeblock = "<pre class='highlight highlight-source'><code" + (language ? " class=\"" + language + '"' : "") + ">" + codeblock + "\n</code></pre>";
 
                 return hashBlock(codeblock);

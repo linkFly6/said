@@ -620,6 +620,7 @@
     <Content Include="Content\wap\style\sass\about.scss" />
     <Content Include="Content\wap\style\about.css.map" />
     <Content Include="Content\Style\sass\blog.scss" />
+    <Content Include="Content\Style\blog.css.map" />
     <None Include="Properties\PublishProfiles\Said.pubxml" />
   </ItemGroup>
   <PropertyGroup>
