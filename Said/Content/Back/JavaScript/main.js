@@ -15,7 +15,8 @@
         'source': 'so/plug/source',
         //'highlight': 'highlight/highlight.pack', //直接使用自己改写的
         'highlight': 'highlight/highlight.said-linkFly',
-        'markdown': ['showdown/showdown'],
+        //'showdown': ['showdown/showdown'],//原showdown
+        'showdown': ['showdown/showdown.said'],
         'showDownThemeGithub': 'showdown/extensions/github',
         'bsTable': ['bootstrap/bootstrap-table/bootstrap-table'],
         'popup': ['avalon/plug/popup'],

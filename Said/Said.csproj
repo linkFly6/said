@@ -224,6 +224,7 @@
     <Content Include="Content\Back\JavaScript\flat-ui.js" />
     <Content Include="Content\Back\JavaScript\flat-ui.min.js" />
     <Content Include="Content\Back\JavaScript\highlight\highlight.pack.js" />
+    <Content Include="Content\Back\JavaScript\highlight\highlight.said-linkFly.js" />
     <Content Include="Content\Back\JavaScript\highlight\styles\vs.css" />
     <Content Include="Content\Back\JavaScript\knockout\knockout.debug.js" />
     <Content Include="Content\Back\JavaScript\knockout\knockout.js" />
@@ -621,6 +622,7 @@
     <Content Include="Content\wap\style\about.css.map" />
     <Content Include="Content\Style\sass\blog.scss" />
     <Content Include="Content\Style\blog.css.map" />
+    <Content Include="Content\Style\sass\bloglist.scss" />
     <None Include="Properties\PublishProfiles\Said.pubxml" />
   </ItemGroup>
   <PropertyGroup>

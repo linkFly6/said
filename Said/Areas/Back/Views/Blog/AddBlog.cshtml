@@ -211,7 +211,7 @@
         if (DataCenter.files.length)
             DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
         //console.log(DataCenter.files);
-        require(['said', 'jquery', 'so', 'avalon', 'sweetalert', 'source', 'markdown', 'highlight', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function (said, $, so, avalon, sweetalert, source, showdown, highlight) {
+        require(['said', 'jquery', 'so', 'avalon', 'sweetalert', 'source', 'showdown', 'highlight', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function (said, $, so, avalon, sweetalert, source, showdown, highlight) {
             $(function () {
                 document.addEventListener('keydown', function (e) {
                     if (e.ctrlKey && e.keyCode == 83) {

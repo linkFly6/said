@@ -52,8 +52,12 @@
     }
 }
 
+.said-banner-bar {
+    padding-top: 210px;
+}
+
 #content {
-    padding: 500px 0 0 0;
+    padding: 30px 0 0 0;
     margin-bottom: 0;
     overflow: hidden;
 }
@@ -165,14 +169,14 @@
     position: absolute;
     top: 78px;
     left: 0;
-    height: 460px;
+    height: 600px;
     width: 100%;
     overflow: hidden;
 
     .content-bg-img {
         width: 100%;
         height: 680px;
-        background: url(/Content/Images/sad-nav-template2.jpg) no-repeat;
+        background: #fafafa no-repeat;
         position: relative;
         left: 0;
         transition: left 10s linear 0s;
@@ -191,6 +195,8 @@
     font-weight: 300;
 }
 
+
+
 .blog-content {
     padding: 40px 0 20px;
     line-height: 1.6;
@@ -204,6 +210,21 @@
         background-color: #f7f7f7;
         border-radius: 3px;
 
+        &::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb:horizontal {
+            background-color: #CCCCCC;
+            border-radius: 6px;
+            opacity: .1;
+        }
+
+        &::-webkit-scrollbar-thumb:horizontal:hover {
+            opacity: .1;
+        }
+
+
         code {
             line-height: 1.6;
             font-size: 16px;
@@ -212,15 +233,67 @@
         }
     }
 
+    img {
+        max-width: 100%;
+        display: block;
+        /*margin: 0 auto;*/
+    }
+
     code {
         font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        padding: 0 0.5em;
         padding-top: 0.2em;
         padding-bottom: 0.2em;
         margin: 0;
         font-size: 85%;
         background-color: rgba(0,0,0,0.04);
         border-radius: 3px;
+    }
+
+    table {
+        width: 100%;
+        background: #FFF;
+        margin: 1em 0;
+        border: 1px solid rgba(34,36,38,.15);
+        box-shadow: none;
+        border-radius: .28571429rem;
+        text-align: left;
+        color: rgba(0,0,0,.87);
+        border-collapse: separate;
+        border-spacing: 0;
+
+        thead tr:first-child > th:first-child {
+            border-radius: .28571429rem 0 0;
+            border-left: none;
+        }
+
+        thead tr:first-child > th:last-child {
+            border-radius: 0 .28571429rem 0 0;
+        }
+
+        tbody tr > td:first-child {
+            border-left: none;
+        }
+
+        tbody tr:first-child > td {
+            border-top: none;
+        }
+
+        th {
+            padding: .3em 1em;
+            background: #F9FAFB;
+            text-align: inherit;
+            color: rgba(0,0,0,.87);
+            vertical-align: inherit;
+            font-weight: 700;
+            border-bottom: 1px solid rgba(34,36,38,.1);
+            border-left: 1px solid rgba(34,36,38,.1);
+        }
+
+        td {
+            padding: .5em 1em;
+            border-left: 1px solid rgba(34,36,38,.1);
+            border-top: 1px solid rgba(34,36,38,.1);
+        }
     }
 
     h1, h2, h3, h4, h5, h6 {
