@@ -9,10 +9,6 @@
     <li class="active">文章管理</li>
 </ol>
 <div class="main-context">
-    <div class="context-chart">
-        <div id="userChart">
-        </div>
-    </div>
     <div class="bs-table">
         <table id="btTable" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true"></table>
     </div>
@@ -72,62 +68,7 @@
             }),
                 blogPVs = blogDatas.map(function (item) {
                     return item.BPV;
-                }),
-                echartsOption = {
-                    title: {
-                        text: '2016-01-09',
-                        //subtext: '今日访问量'
-                    },
-                    tooltip: {
-                        trigger: 'axis'
-                    },
-                    legend: {
-                        data: ['访问量']
-                    },
-                    toolbox: {
-                        show: true,
-                        feature: {
-                            mark: { show: true },
-                            dataView: { show: true, readOnly: false },
-                            magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-                            restore: { show: true },
-                            saveAsImage: { show: true }
-                        }
-                    },
-                    calculable: true,
-                    xAxis: [
-                        {
-                            type: 'category',
-                            boundaryGap: false,
-                            data: blogDatas
-                        }
-                    ],
-                    yAxis: [
-                        {
-                            type: 'value'
-                        }
-                    ],
-                    series: [
-                        //{
-                        //    name: '昨日',
-                        //    type: 'line',
-                        //    smooth: true,
-                        //    itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        //    data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
-                        //},
-                        {
-                            name: 'PV',
-                            type: 'line',
-                            smooth: true,
-                            itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                            data: blogPVs
-                        }
-                    ]
-                };
-            require(['echarts'], function (ec) {
-                var myChart = ec.init(document.getElementById('userChart'));
-                myChart.setOption(echartsOption);
-            });
+                });
 
 
             var $ = window.jQuery;

@@ -6,13 +6,18 @@
     var TagList = ViewData["TagList"] as IList<Said.Models.Tag>;
     var BlogFiles = ViewData["BlogFiles"] as IList<Said.Models.Blog>;
 }
-<div class="page-header">
-    <h2>添加文章&nbsp;&nbsp;<small>&gt;添加一篇文章</small></h2>
+<div id="said-help" class="said-mask-content said-watermark">
+    <ul>
+        <li>英文和中文中间请在英文<span class="keywords">两侧使用空格</span>，排版更漂亮</li>
+        <li>图片请上传到本站再使用，<span class="keywords">不要使用外链</span>的图片</li>
+        <li>&lt;li&gt;标签里再放&lt;code&gt;片段的时候，请在&lt;li&gt;下面使用一个回车（空行）</li>
+    </ul>
 </div>
 <ol class="breadcrumb">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">文章管理</a></li>
+    <li><a href="/Back">Home</a></li>
+    <li>文章管理</li>
     <li class="active">添加文章</li>
+    <li class="g-help"><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></li>
 </ol>
 <div class="main-context">
     <div class="modal fade" ms-controller="modal" id="blog-modal">
@@ -47,10 +52,11 @@
             </div>
             <div class="said-context-content">
                 @Html.TextAreaFor(m => m.BContext, new Dictionary<string, object>() {
-                            { "class", "said-context" },
+                            { "class", "said-context said-watermark" },
                             { "ms-duplex", "bContext" },
                             { "ms-change", "saveTolocalStorage('bContext',bContext)" },
-                            { "required", "required" }
+                            { "required", "required" },
+                            { "placeholder", "请使用Markdown编写正文" }
                 })
             </div>
             <button class="btn btn-lg said-priview center-block" ms-click="preview()" type="button">预览</button>
@@ -211,7 +217,7 @@
         if (DataCenter.files.length)
             DataCenter.files = DataCenter.files.map(function (item) { return item.toLowerCase() });
         //console.log(DataCenter.files);
-        require(['said', 'jquery', 'so', 'avalon', 'sweetalert', 'source', 'showdown', 'highlight', 'showDownThemeGithub', 'groupInput', 'avalonUpload'], function (said, $, so, avalon, sweetalert, source, showdown, highlight) {
+        require(['said', 'jquery', 'so', 'avalon', 'sweetalert', 'source', 'showdown', 'highlight', 'groupInput', 'avalonUpload'], function (said, $, so, avalon, sweetalert, source, showdown, highlight) {
             $(function () {
                 document.addEventListener('keydown', function (e) {
                     if (e.ctrlKey && e.keyCode == 83) {
@@ -219,27 +225,51 @@
                     }
                 });
 
-                var //showdown, github并非AMD库，requireJS只能保证当前这些库已经被加载完成，而不能得到加载完成的对象，所以仍然要去window环境下获取
-                    showdown = window.Showdown,
-                    converter = new showdown.converter({ extensions: ['github'] }),//页面markdown转换器=>来自showDown.js
-                    //解析并返回HTML
+                var converter = new showdown.Converter({ /*extensions: ['github'],*/
+                    omitExtraWLInCodeBlocks: false,//配置生成的code是否最后生成一个\n
+                    //noHeaderId: true//是否禁用h1-h7生成id
+                    prefixHeaderId: 'bt-',//设置h1-h7的的id（会进行自增，默认为title，第二个为title1）
+
+                    /*
+                        启用从降级语法中设置图像尺寸
+                        ![foo](foo.jpg =100x80)     100*80px
+                        ![bar](bar.jpg =100x*)      设置height为"auto"
+                        ![baz](baz.jpg =80%x5em)    width=80%,height=5em
+                    */
+                    parseImgDimensions: true,
+                    /*
+                        是否自动转换站点
+                        www.said.com => <a href="www.said.com">www.said.com</a>
+                    */
+                    //simplifiedAutoLink: false,
+
+                    /*
+                        支持删除线
+                        ~~said~~  => <del>said</del>
+                    */
+                    strikethrough: true,
+
+                    /*
+                        支持表格
+                        | h1    |    h2   |      h3 |
+                        |:------|:-------:|--------:|
+                        | 100   | [a][1]  | ![b][2] |
+                        | *foo* | **bar** | ~~baz~~ |
+                    */
+                    tables: true,
+
+                    //tablesHeaderId: true,//为表格的表格头设置一个表格ID
+
+                    //smoothLivePreview: true//防止在实时预览输入中，由于不完整输入造成显示起来怪异的影响
+
+                    //smartIndentationFix: true//（尝试修复）当涉及到ES6模板字符串中缩进代码的格式
+
+                }),//页面markdown转换器=>来自showDown.js
                     getContextHTML = function (context) {
                         //先使用markdown解析为HTML
                         var html = converter.makeHtml(context);
                         //再使用highlight高亮代码，highlightInHTML()这个方法是自己写的
                         return highlight.highlightInHTML(html);
-
-                        //var $context = $('<div>' + context + '</div>');
-                        ////这破玩意儿不能用HTML转换？？？
-                        //highlight.configure({
-                        //    tabReplace: ' '//要把这个tab替换掉
-                        //});
-                        ////这里要读一下hilightJS的源码，直接通过code转换
-                        //$context.find('pre code').each(function (i, block) {
-                        //    highlight.highlightBlock(block);
-                        //});
-                        ////console.info($context.html());
-                        //return $context.html();
                     },
                     preview = function (title, context, classify, tags) {
                         context = getContextHTML(context);

@@ -1,0 +1,197 @@
+﻿@using Said.Models
+@model Blog
+@{
+    ViewBag.Title = Model.BTitle + " - Blog";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+    bool userLike = (bool)ViewData["userLike"];
+    IList<Comment> comments = ViewData["comments"] as IList<Comment>;
+}
+<div class="said-background" style="background-image: url(/Content/Images/bg/said_codebg.png)">
+    <!--code-bg.jpg-->
+    <div class="said-banner-bar">
+        <ul class="said-banner">
+            <li class="said-banner-item said-banner-white">
+                <h3 class="banner-title">Write the code,change the world</h3>
+                <div class="banner-content">
+                    <p>console.log('Hello,Wrold!');</p>
+                    <p>(46840404742).toString(36).replace(/\u0066/,function(){ return arguments[0].toUpperCase(); });</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<section id="content">
+    <!--<div class="content-bg">
+        <div class="content-bg-img" style="left: 0;"></div>
+    </div>-->
+    <section class="center afterClear" id="blog-main">
+        <div class="b-null-block"></div>
+        <div class="b-m">
+            <h1 class="blog-title">@Model.BTitle</h1>
+            <article class="blog-article">
+                <div class="html">
+                    <section class="blog-content">
+                        <div class="html">@(new HtmlString(Model.BHTML))</div>
+                    </section>
+                    <div class="l-author">
+                        <div>作者：linkFly</div>
+                        <div>原文：<a href="@Url.Action("Cl", "Home", new {url= string.Format("http://tasaid.com/blog/{0}.html", Model.BlogId),sgs="blog-dec" })">@(string.Format("http://tasaid.com/blog/{0}.html", Model.BlogId))</a></div>
+                        <div>出处：<a href="@Url.Action("Cl", "Home", new {url= string.Format("http://tasaid.com", Model.BlogId),sgs="blog-"+Model.BlogId })">http://tasaid.com</a></div>
+                        <div>声明：转载相关授权请<a href="javascript:;">点击这里</a>。请尊重作者的辛勤劳动成果。</div>
+                    </div>
+                </div>
+            </article>
+            <section class="blog-more-info">
+                <div class="blog-more-head">
+                    <div class="blog-comment-txt">
+                        <span>评论(@comments.Count)</span>
+                    </div>
+                    <ul class="blog-info afterClear">
+                        <li class="bi-l">
+                            <a class="licenses licenses-cc" target="_blank" href="/Home/Cl?url=http%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F3.0%2Fcn%2F&amp;sgs=s-licenses" title="本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权">CC BY 3.0 CN</a>
+                        </li>
+                        <li title="浏览"><a href="javascript:;" class="oprater"><i class="fa fa-eye"></i><span>15</span></a></li>
+                        <li title="like"><a href="javascript:;" class="oprater active"><i class="fa fa-heart"></i><span>12</span></a></li>
+                        <li><a href="javascript:;" class="blog-info-more">查看更多我的文章</a></li>
+                        <li class="blog-info-date"><time>2014/10/08 00:21:51</time></li>
+                    </ul>
+                </div>
+                <div class="blog-more-comment">
+                    <div class="blog-comment-content" id="comment-content">
+                        <div class="blog-comment-bar">
+                            <form action="/" class="comment-form">
+                                <ul class="blog-comment-info" style="">
+                                    <li>
+                                        <input placeholder="昵称" class="form-control" />
+                                    </li>
+                                    <li>
+                                        <input type="email" placeholder="Email" class="form-control" />
+                                    </li>
+                                    <li>
+                                        <input type="url" placeholder="您的站点" class="form-control" />
+                                    </li>
+                                    <li>
+                                        <input type="checkbox" id="comment-cookie" checked="checked" /><label for="comment-cookie">下次自动填写</label>
+                                    </li>
+                                </ul>
+                                <div class="comment-bar">
+                                    <textarea name="comment" class="form-control cmt-context" id="comment-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
+                                    <div class="comment-more-bar">
+                                        <div class="comment-more-bg">
+                                            <ul style="display:none;" class="loading-line">
+                                                <li class="loading-dot">1</li>
+                                                <li class="loading-dot">2</li>
+                                                <li class="loading-dot">3</li>
+                                                <li class="loading-dot">4</li>
+                                                <li class="loading-dot">5</li>
+                                            </ul>
+                                        </div>
+                                        <input type="button" class="said-btn ct-submit said-btn-default" id="comment-submit" value="提交评论" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="blog-comment-context">
+                            <ul class="comment-list">
+                                @if (comments.Count > 0)
+                                {
+                                    for (int i = 0; i < comments.Count; i++)
+                                    {
+                                        <li class="comment-item">
+                                            <a href="#c-@i" name="c-@i">#1</a>
+                                            <div class="ctitem-content">
+                                                <div class="ct-top said-ellipsis">
+                                                    <a href="javascript:;" class="ct-name" target="_blank" @(ViewBag.AdminId != null ? "title='管理员'" : "'查看ta的站点'")>linkFly</a>
+                                                    @if (ViewBag.AdminId != null)
+                                                    {
+                                                        <i class="fa fa-user admin" title="管理员"></i>
+                                                    }
+                                                </div>
+                                                <div class="ct-context">@comments[i].Context</div>
+                                                <div class="ct-footer">
+                                                    <span class="ct-num">#1</span>
+                                                    <time class="ct-time">@Said.Common.SaidCommon.DateToLocal(comments[i].Date)</time>
+                                                    <a href="javascript:;" class="ct-reply" data-parent="@comments[i].CommentId">回复</a>
+                                                </div>
+                                                <div class="comment-reply" @(comments[i].Replys == null || comments[i].Replys.Count == 0 ? "style='display:none'" : "")>
+                                                    <div class="arrow-border cr-arrow"></div>
+                                                    <ul class="cr-container">
+                                                        @if (comments[i].Replys != null && comments[i].Replys.Count > 0)
+                                                        {
+                                                            for (int j = 0; j < comments[j].Replys.Count; j++)
+                                                            {
+                                                                var reply = comments[j].Replys[j];
+                                                                <li class="cr-item">
+                                                                    <div class="cr-content">
+                                                                        <div class="ct-top said-ellipsis">
+                                                                            @if (reply.ToReply == null)
+                                                                            {
+                                                                                <a href="/" class="ct-name " target="_blank" title="查看ta的站点">风住过的地方</a>
+                                                                            }
+                                                                            else {
+                                                                                <span class="ct-name ">linkFly</span>@("&nbsp;&nbsp;回复&nbsp;&nbsp;")<<a style="" class="ct-name" href="javascript:;">风住过的地方</a>
+                                                                            }
+                                                                        </div>
+                                                                        <p class="cr-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
+                                                                        <div class="cr-footer">
+                                                                            <time class="cr-time">昨天</time>
+                                                                            <a class="cr-reply" href="javascript:;"><i class="fa fa-comments" aria-hidden="true"></i>回复</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="b-n">
+            <nav id="a-nav" class="nav">
+                <!--fixed-->
+                <div class="nav-title">目录</div>
+                <div class="an-c">
+                    <div class="nav-bg">&nbsp;</div>
+                    <div class="an-body">
+                        <ul class="anb-box">
+                            <li class="active"><a href="#articleHeader0">Promise应对的问题</a></li>
+                            <li><a href="#articleHeader1">Promise的解决</a></li>
+                            <li><a href="#articleHeader2">ECMAScript 6 Promise</a></li>
+                            <li style="list-style:none;">
+                                <ul>
+                                    <li><a href="#articleHeader3">Promise.prototype.then</a></li>
+                                    <li><a href="#articleHeader3">Promise.constructor</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#articleHeader4">参考和引用</a>
+                            </li>
+                            <li><a href="#articleHeader5">Promise/A+规范</a></li>
+                            <li><a href="#articleHeader6">ECMAScript 6 入门 - Promise对象</a></li>
+                            <li><a href="#articleHeader7">Promise启示录</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </nav>
+
+        </div>
+
+
+    </section>
+
+</section>
+@section Css{
+    <link href="@Url.Content("~/Content/Style/blog.css?v=1.0")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Widget/highlight/github.css?v=1.0")" rel="stylesheet" />
+}
+@section FootJs{
+
+}

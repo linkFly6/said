@@ -673,11 +673,19 @@
             {
                 parentNode: { className: preClass },//用于判断highlight是否高亮这段代码
                 className: codeClass,//用于判断解析语言
+                innerHTML: ''//如果配置了options.useBR为true，则会用innerHTML处理一下，为了让它不抛异常，给innerHTML赋上值
             }
-            if (options.useBR) {
-                virtualDOM.innerHTML = code;//解析的源码，如果配置了useBR为true，则会用到，用于解析\n为<br/>的
-            } else
-                virtualDOM.textContent = code;//解析的源码，如果没有配置useBR为true，则会使用这个
+            if (options.useBR) {//处理一下\n
+                virtualDOM.innerHTML = code;
+            }
+
+            /*
+            highlight最终是通过node.textContent获取源码的，因为这样获取的源码是：<a>这种形式的，然后直接对标签进行的处理，这里要模拟出来，进行反转义
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;'
+            */
+            virtualDOM.textContent = code.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
             var result = highlightBlock(virtualDOM);
             if (result === void 0) {
                 return sourceHTML;

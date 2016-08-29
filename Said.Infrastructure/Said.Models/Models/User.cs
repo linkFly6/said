@@ -21,7 +21,7 @@ namespace Said.Models
         /// </summary>
         public string EMail { get; set; }
         /// <summary>
-        /// 用户创建时间
+        /// 用户名称
         /// </summary>
         public string Name { get; set; }
 

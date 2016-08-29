@@ -95,6 +95,30 @@ namespace Said.Common
 
 
         /// <summary>
+        /// 将时间转换为本地文本（2016-01-01 => 今天、昨天、前天、9天前、10日）
+        /// </summary>
+        /// <returns></returns>
+        public static string DateToLocalOrDay2(DateTime date)
+        {
+            DateTime now = DateTime.Now;
+            TimeSpan timespan = now - date;
+            if (timespan.TotalDays < 1 && now.Day == date.Day)
+            {
+                return date.ToString("今天");
+            }
+            if (timespan.TotalDays < 2 && now.Day - date.Day == 1)
+            {
+                return date.ToString("昨天");
+            }
+            if (timespan.TotalDays < 3 && now.Day - date.Day == 2)
+            {
+                return date.ToString("前天");
+            }
+            return date.ToString("dd日");
+        }
+
+
+        /// <summary>
         /// 将时间转换为本地星期
         /// </summary>
         /// <returns></returns>

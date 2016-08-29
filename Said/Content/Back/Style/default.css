@@ -129,7 +129,8 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 #said-help-btn:hover { color: #a5cf5e; }
 #said-help { min-width: 600px; min-height: 100px; max-width: 960px; background-color: #fafafa; }
 #said-help ul, #said-help li { list-style: inside none disc; }
-
+.breadcrumb .g-help { float: right; margin-top: -2px; }
+.breadcrumb .g-help:before { content: ''; }
 
 
 /*plug - showMsg */

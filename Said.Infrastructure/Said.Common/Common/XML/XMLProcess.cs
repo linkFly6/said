@@ -59,7 +59,7 @@ namespace Said.Helper
                 string filename = AppDomain.CurrentDomain.BaseDirectory.ToString() + strPath;
                 if (File.Exists(filename)) xmldoc.Load(filename);
             }
-            catch (Exception e)
+            catch (Exception)
             { }
             return xmldoc;
         }

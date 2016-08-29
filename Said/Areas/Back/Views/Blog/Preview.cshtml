@@ -1,13 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Preview";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     IList<string> BTag = ViewData["BTag"] as List<string>;
     string BImg = (string)ViewData["BImg"];
     string BTitle = (string)ViewData["BTitle"];
     string BHTML = (string)ViewData["BHTML"];
     string ClassifyId = (string)ViewData["ClassifyId"];
+    ViewBag.Title = string.Format("预览 - 《{0}》", BTitle);
 }
-<div class="said-background" style="background-image: url(/Content/Images/bg/Siad-Code底板.png)">
+<div class="said-background" style="background-image: url(/Content/Images/bg/said_codebg.png)">
     <div class="said-banner-bar">
         <ul class="said-banner">
             <li class="said-banner-item said-banner-white">
@@ -337,8 +337,8 @@
 </section>
 
 @section Css{
-    <link href="@Url.Content("~/Content/Style/blog.css?v=1.2")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/Widget/highlight/github.css?v=1.2")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Style/blog.css?v=1.0")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Widget/highlight/github.css?v=1.0")" rel="stylesheet" />
 }
 
 @section FootJs{

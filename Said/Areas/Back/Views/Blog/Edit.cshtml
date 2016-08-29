@@ -8,10 +8,18 @@
     var BlogFiles = ViewData["BlogFiles"] as IList<Said.Models.Blog>;
     var BlogTags = ViewData["BlogTags"] as IList<Said.Models.BlogTags>;
 }
+<div id="said-help" class="said-mask-content said-watermark">
+    <ul>
+        <li>英文和中文中间请在英文<span class="keywords">两侧使用空格</span>，排版更漂亮</li>
+        <li>图片请上传到本站再使用，<span class="keywords">不要使用外链</span>的图片</li>
+        <li>&lt;li&gt;标签里再放&lt;code&gt;片段的时候，请在&lt;li&gt;下面使用一个回车（空行）</li>
+    </ul>
+</div>
 <ol class="breadcrumb">
     <li><a href="/Back">Home</a></li>
-    <li>Blog管理</li>
+    <li>文章管理</li>
     <li class="active">编辑Blog - 《@Model.BTitle》</li>
+    <li class="g-help"><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></li>
 </ol>
 <div class="main-context">
     <div class="modal fade" ms-controller="modal" id="blog-modal">
@@ -49,10 +57,11 @@
                     })*@
             </div>
             <div class="said-context-content">
-                <textarea name="BContext" id="BContext" ms-duplex="bContext" class="said-context"></textarea>
+                <textarea name="BContext" id="BContext" ms-duplex="bContext" class="said-context said-watermark"></textarea>
                 @Html.HiddenFor(m => m.BContext, new Dictionary<string, object>() {
                     { "id", "bContext-hidden" },
-                    { "ms-dom", "bContext-h" }
+                    { "ms-dom", "bContext-h" },
+                    { "placeholder", "请使用Markdown编写正文" }
                 })
                 @*@Html.TextAreaFor(m => m.BContext, new Dictionary<string, object>() {
                                 { "class", "said-context" },
@@ -301,7 +310,9 @@
                         //先使用markdown解析为HTML
                         var html = converter.makeHtml(context);
                         //再使用highlight高亮代码，highlightInHTML()这个方法是自己写的
-                        return highlight.highlightInHTML(html);
+                        var temp = highlight.highlightInHTML(html);
+                        console.log(temp);
+                        return temp;
                     },
                     preview = function (title, context, classify, tags) {
                         context = getContextHTML(context);
@@ -446,7 +457,7 @@
                             if (!data.code) {//done
                                 sweetalert({
                                     title: '修改成功',
-                                    text: so.format('喜大普奔，添加Blog《${0}》成功', vmBlog.bTitle),
+                                    text: so.format('喜大普奔，修改Blog《${0}》成功', vmBlog.bTitle),
                                     type: "success",
                                     //当sweetalert回调函数中需要再弹出一个sweetalert的时候，要设置这个属性
                                     closeOnConfirm: false

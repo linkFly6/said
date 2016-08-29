@@ -341,9 +341,14 @@
     }
 
     blockquote {
-        padding: 0 15px;
+        padding: 15px 15px;
         color: #777;
-        border-left: 4px solid #ddd;
+        background-color: #f8f8f8;
+        border-left: 4px solid #56a1d6;
+
+        p:last-child {
+            margin-bottom: 0;
+        }
     }
 
 
@@ -557,6 +562,11 @@
 
         .comment-item, .cr-item {
             padding: 20px 0;
+
+            .admin {
+                color: #2da2dd;
+                padding-left: 5px;
+            }
         }
 
         .comment-item:last-child .ctitem-content, .cr-item:last-child .cr-content {
@@ -593,10 +603,6 @@
             color: #8b8b8b;
         }
 
-        .ct-name, .cr-name {
-            font-size: 18px;
-        }
-
         .ct-reply, .cr-reply {
             margin-left: 15px;
             color: #666;
@@ -622,6 +628,10 @@
 
         .cr-content {
             padding: 0 0 5px 25px;
+        }
+
+        .ct-top {
+            font-size: 16px;
         }
 
         .cr-arrow {

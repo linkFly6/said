@@ -60,7 +60,7 @@ namespace Said.Controllers
         //[WapFilterAttribute]
         public ActionResult Article(string id)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return RedirectToAction("Index", "Said", new { controller = "Home", sgs = "article", refer = Request.Url.AbsoluteUri });
             }

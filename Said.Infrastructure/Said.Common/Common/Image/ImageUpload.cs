@@ -560,7 +560,7 @@ namespace Said.Helper
                 _Error = 0;
                 return;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _Error = 4;
                 return;

@@ -141,6 +141,7 @@
     <Compile Include="Common\SaidRecordCommon.cs" />
     <Compile Include="Controllers\Attrbute\NoFilter.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\Filters\AdminFilterAttribute.cs" />
     <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
     <Compile Include="Controllers\Filters\WapFilterAttribute.cs" />
@@ -242,6 +243,7 @@
     <Content Include="Content\Back\JavaScript\showdown\extensions\table.js" />
     <Content Include="Content\Back\JavaScript\showdown\extensions\twitter.js" />
     <Content Include="Content\Back\JavaScript\showdown\showdown.js" />
+    <Content Include="Content\Back\JavaScript\showdown\showdown.said.js" />
     <Content Include="Content\Back\JavaScript\showdown\showdown.min.js" />
     <Content Include="Content\Back\JavaScript\so\plug\css\popup.css" />
     <Content Include="Content\Back\JavaScript\so\plug\css\showMsg.css" />
@@ -623,7 +625,10 @@
     <Content Include="Content\Style\sass\blog.scss" />
     <Content Include="Content\Style\blog.css.map" />
     <Content Include="Content\Style\sass\bloglist.scss" />
+    <Content Include="Content\Back\Style\sass\said-editor.scss" />
     <None Include="Properties\PublishProfiles\Said.pubxml" />
+    <Content Include="Views\Blog\Index.cshtml" />
+    <Content Include="Views\Blog\Article.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

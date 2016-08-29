@@ -20,6 +20,7 @@ namespace Said.Controllers.Filters
                 //启用noFilter特性的不统计
 
                 SaidRecordCommon.Add(HttpContext.Current);
+                SaidRecordCommon.SetAdmindId(HttpContext.Current);
             }
             base.OnActionExecuting(filterContext);
         }

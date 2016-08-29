@@ -24,21 +24,47 @@ namespace Said
 
             //routes.Add("wapRoute", new Route("m.tasaid.com", "", new { }));
 
-
+            //said
+            routes.MapRoute(
+                name: "said",
+                url: "said/{pageIndex}",
+                defaults: new { controller = "Said", action = "Index", pageIndex = UrlParameter.Optional },
+                constraints: new { pageIndex = @"\d+" },
+                namespaces: new string[] { "Said.Controllers" }
+            );
 
             //said-article
             routes.MapRoute(
                 name: "saidDetail",
                 url: "said/{id}.html",//参见http://blog.csdn.net/leftfist/article/details/9969797
-               defaults: new { controller = "Said", action = "Article", id = UrlParameter.Optional },
-               namespaces: new string[] { "Said.Controllers" }
+                defaults: new { controller = "Said", action = "Article", id = UrlParameter.Optional },
+                namespaces: new string[] { "Said.Controllers" }
             );
+
+            //blog-list
+            routes.MapRoute(
+                name: "blog",
+                url: "blog/{pageIndex}",
+                defaults: new { controller = "Blog", action = "Index", pageIndex = UrlParameter.Optional },
+                constraints: new { pageIndex = @"\d+" },
+                namespaces: new string[] { "Said.Controllers" }
+            );
+
+            //blog-detail
+            routes.MapRoute(
+                name: "blogDetail",
+                url: "blog/{id}.html",
+                defaults: new { controller = "Blog", action = "Article", id = UrlParameter.Optional },
+                namespaces: new string[] { "Said.Controllers" }
+            );
+
+
             //notFound
             routes.MapRoute(
                 name: "saidNotFound",
                 url: "{code}",
                 defaults: new { controller = "Home", action = "NotFound" },
-                constraints: new { code = @"404(.html)?" }, //匹配：http://www.tasaid.com/404 和 http://www.tasaid.com/404.html
+                constraints: new { code = @"^404(.html)?$" }, //匹配：http://www.tasaid.com/404 和 http://www.tasaid.com/404.html
                 namespaces: new string[] { "Said.Controllers" }
             );
 
@@ -51,14 +77,7 @@ namespace Said
                 namespaces: new string[] { "Said.Controllers" }
             );
 
-            //said
-            routes.MapRoute(
-                name: "said",
-                url: "said/{pageIndex}",
-               defaults: new { controller = "Said", action = "Index", pageIndex = UrlParameter.Optional },
-               constraints: new { pageIndex = @"[\d]+" },
-               namespaces: new string[] { "Said.Controllers" }
-            );
+
 
 
             //defaults
@@ -69,12 +88,11 @@ namespace Said
                 namespaces: new string[] { "Said.Controllers" }
             );
 
-
             routes.MapRoute(
                 name: "Back",
                 url: "Back/{controller}/{action}/{id}",
-               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-               namespaces: new string[] { "Said.Areas.Back.Controllers" }
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                namespaces: new string[] { "Said.Areas.Back.Controllers" }
             );
 
 

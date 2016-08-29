@@ -40,5 +40,15 @@ namespace Said.Application
             return Context.GetById(id);
         }
 
+
+        /// <summary>
+        /// 验证用户是否存在
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool Exists(string id)
+        {
+            return Context.Exists(id);
+        }
     }
 }

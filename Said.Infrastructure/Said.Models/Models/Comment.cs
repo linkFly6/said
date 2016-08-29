@@ -52,6 +52,11 @@ namespace Said.Models
         /// </summary>
         public string Context { get; set; }
 
+        /// <summary>
+        /// 针对该评论的回复
+        /// </summary>
+        public virtual List<Reply> Replys { get; set; }
+
         public override IEnumerable<ValidationResult> Validate()
         {
             throw new NotImplementedException();

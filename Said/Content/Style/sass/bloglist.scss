@@ -447,9 +447,9 @@
     padding: 15px 0;
     text-align: center;
 
-
-
-    span {
+    a, span {
+        display: block;
+        padding: 10px 0;
         font-size: 1.6em;
         padding-left: 10px;
     }

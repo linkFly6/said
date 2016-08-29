@@ -57,6 +57,41 @@ namespace Said.Common
 
 
         /// <summary>
+        /// 设置管理员信息，如果当前用户是管理员的话，则给session的adminId设置为管理员ID，否则不设置session
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static void SetAdmindId(HttpContext context)
+        {
+            if (context.Session["adminId"] != null) return;
+            HttpCookie recordCookie = context.Request.Cookies["sh"];//said history=>Said登录历史
+
+            string recordId = recordCookie == null ? null : recordCookie.Value;
+            if (!string.IsNullOrEmpty(recordId))
+            {//管理员访问历史cookie存在
+                AdminRecord record = CacheHelper.GetCache(recordId) as AdminRecord;//检测cache是否有
+                if (record == null)
+                {
+                    record = AdminRecordApplication.Get(recordId);//从数据库查询
+                    if (record != null)//从cookie中查出来了，放入cache
+                    {
+                        CacheHelper.SetCache(recordId, record.Admin);
+                        //更新到Session
+                        context.Session["adminId"] = record.AdminId;
+                        //return record.AdminId;
+                    }
+                }
+                else {
+                    //return record.AdminId;
+                    context.Session["adminId"] = record.AdminId;
+                }
+            }
+            //return null;
+
+        }
+
+
+        /// <summary>
         /// 获取当前回话的用户ID，如果没有用户ID，则会创建一个用户ID
         /// </summary>
         /// <param name="context">请求上下文</param>
@@ -65,8 +100,8 @@ namespace Said.Common
         {
             HttpCookie cookie = context.Request.Cookies.Get("uid");
             string userId = string.Empty;
-            if (cookie == null || cookie.Value == null)//没有用户ID，创建
-            {
+            if (cookie == null || cookie.Value == null || !UserApplication.Exists(cookie.Value))//没有用户ID，并且验证cookie合法 => 用户id是否存在，否则直接创建一个
+            {//
                 cookie = new HttpCookie("uid");
                 User user = new User { UserID = userId = Guid.NewGuid().ToString().Replace("-", ""), EMail = string.Empty, Name = string.Empty, Date = DateTime.Now };
                 if (UserApplication.Add(user) > 0)
@@ -81,7 +116,7 @@ namespace Said.Common
             }
             else
             {
-                userId = cookie.Value;//【【【【【【【【【【【TODO： 这里要验证cookie的合法性】】】】】】】】】】
+                userId = cookie.Value;
             }
             context.Session["userId"] = userId;
             return userId;

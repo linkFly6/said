@@ -232,6 +232,39 @@ namespace Said.Application
             return Context.Get(m => m.BName == fileName);
         }
 
+
+        /// <summary>
+        /// 无条件查询全部（按时间排序）
+        /// </summary>
+        /// <returns>未被标记删除的结果集</returns>
+        public static IEnumerable<Blog> Find()
+        {
+            return Context.GetManyDesc(m => m.IsDel == 0, m => m.Date);
+        }
+
+
+        /// <summary>
+        /// 按照分类查询
+        /// </summary>
+        /// <param name="classify">分类对象</param>
+        /// <returns>未被标记删除的结果集</returns>
+        public static IEnumerable<Blog> FindByClassify(Classify classify)
+        {
+            return Context.GetManyDesc(m => m.IsDel == 0 && m.ClassifyId == classify.ClassifyId, m => m.Date);
+        }
+
+        /// <summary>
+        /// 按照分类Id查询
+        /// </summary>
+        /// <param name="classifyId">分类ID</param>
+        /// <returns>未被标记删除的结果集</returns>
+        public static IEnumerable<Blog> FindByClassify(string classifyId)
+        {
+            return Context.GetManyDesc(m => m.IsDel == 0 && m.ClassifyId == classifyId, m => m.Date);
+        }
+
+
+
         /// <summary>
         /// 分页查询
         /// </summary>
