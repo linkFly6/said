@@ -11,6 +11,7 @@ namespace Said.Controllers
 {
     public class BaseController : Controller
     {
+
         //这个控制器可以定义顶层控制器的行为
 
         public BaseController()
@@ -18,25 +19,47 @@ namespace Said.Controllers
             //System.Diagnostics.Debug.Write(ConfigEnum.SourceDataIP);
         }
 
+
         /// <summary>
-        /// 获取当前用户的完整信息
+        /// 用户完整信息
         /// </summary>
-        /// <returns></returns>
-        protected User GetUser()
+        public User UserInfo
         {
-            //从数据库中查询
-            string userId = GetUserId();
-            return UserApplication.Find(userId);
+            get
+            {
+                return UserApplication.Find(UserId);
+            }
         }
 
         /// <summary>
-        /// 获取当前用户的用户Id
+        /// 用户ID，从Session获取
         /// </summary>
-        /// <returns></returns>
-        protected string GetUserId()
+        public string UserId
         {
-            return Session["userId"].ToString();
+            get
+            {
+                return Session["userId"].ToString();
+            }
         }
+
+        ///// <summary>
+        ///// 是否是Admin
+        ///// </summary>
+        //public bool IsAdmin
+        //{
+        //    get { return Session["adminId"] != null; }
+        //    //set { IsAdmin = value; }
+        //}
+
+        /// <summary>
+        /// 管理员ID
+        /// </summary>
+        public string AdminId
+        {
+            get { return Session["adminId"] as string; }
+            //set { AdminId = value; }
+        }
+
 
 
         #region Other

@@ -50,35 +50,36 @@
                         <li class="bi-l">
                             <a class="licenses licenses-cc" target="_blank" href="/Home/Cl?url=http%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby%2F3.0%2Fcn%2F&amp;sgs=s-licenses" title="本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权">CC BY 3.0 CN</a>
                         </li>
-                        <li title="浏览"><a href="javascript:;" class="oprater"><i class="fa fa-eye"></i><span>15</span></a></li>
-                        <li title="like"><a href="javascript:;" class="oprater active"><i class="fa fa-heart"></i><span>12</span></a></li>
-                        <li><a href="javascript:;" class="blog-info-more">查看更多我的文章</a></li>
-                        <li class="blog-info-date"><time>2014/10/08 00:21:51</time></li>
+                        <li title="浏览"><span href="javascript:;" class="oprater"><i class="fa fa-eye"></i><span>@Model.BPV</span></span></li>
+                        <li class="blog-info-like"><a href="javascript:;" class="@(userLike?"likeIt":string.Empty)" data-like="@(userLike?"true":"false")" title="我喜欢" id="blog-like"><i class="fa fa-heart"></i><span class="like-sum" id="likeCount">@Model.Likes</span></a></li>
+                        <li><a href="/Blog" class="blog-info-more">查看更多我的文章</a></li>
+                        <li class="blog-info-date"><time>@Model.Date.ToString("yyyy/MM/dd HH:mm")</time></li>
                     </ul>
                 </div>
                 <div class="blog-more-comment">
                     <div class="blog-comment-content" id="comment-content">
                         <div class="blog-comment-bar">
-                            <form action="/" class="comment-form">
-                                <ul class="blog-comment-info" style="">
+                            <form action="/" class="comment-form" id="comment-form" onsubmit="return false;">
+                                <ul class="blog-comment-info">
                                     <li>
-                                        <input placeholder="昵称" class="form-control" />
+                                        <input placeholder="昵称" class="form-control" name="nickName" />
                                     </li>
                                     <li>
-                                        <input type="email" placeholder="Email" class="form-control" />
+                                        <input type="email" placeholder="Email" class="form-control" name="email" />
                                     </li>
                                     <li>
-                                        <input type="url" placeholder="您的站点" class="form-control" />
+                                        <input type="url" placeholder="您的站点" class="form-control" name="site" />
                                     </li>
                                     <li>
-                                        <input type="checkbox" id="comment-cookie" checked="checked" /><label for="comment-cookie">下次自动填写</label>
+                                        <input type="checkbox" name="remember" checked="checked" id="cmt-remember" /><label for="cmt-remember">下次自动填写</label>
                                     </li>
                                 </ul>
                                 <div class="comment-bar">
-                                    <textarea name="comment" class="form-control cmt-context" id="comment-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
+                                    <textarea name="context" class="form-control cmt-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
                                     <div class="comment-more-bar">
                                         <div class="comment-more-bg">
-                                            <ul style="display:none;" class="loading-line">
+                                            <div id="cmt-result" class="errMsg _errMsg"></div>
+                                            <ul style="display:none;" class="loading-line _loading">
                                                 <li class="loading-dot">1</li>
                                                 <li class="loading-dot">2</li>
                                                 <li class="loading-dot">3</li>
@@ -86,59 +87,88 @@
                                                 <li class="loading-dot">5</li>
                                             </ul>
                                         </div>
-                                        <input type="button" class="said-btn ct-submit said-btn-default" id="comment-submit" value="提交评论" />
+                                        <input type="button" class="said-btn ct-submit said-btn-default" name="submit" value="提交评论" />
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="blog-comment-context">
-                            <ul class="comment-list">
+                            <ul class="comment-list" id="comment-list">
                                 @if (comments.Count > 0)
                                 {
                                     for (int i = 0; i < comments.Count; i++)
                                     {
+                                        var comment = comments[i];
                                         <li class="comment-item">
-                                            <a href="#c-@i" name="c-@i">#1</a>
                                             <div class="ctitem-content">
-                                                <div class="ct-top said-ellipsis">
-                                                    <a href="javascript:;" class="ct-name" target="_blank" @(ViewBag.AdminId != null ? "title='管理员'" : "'查看ta的站点'")>linkFly</a>
-                                                    @if (ViewBag.AdminId != null)
+                                                <div class="ct-top">
+                                                    <a href="#@(i+1)" name="@(i+1)" title="锚点引用" class="anchor"><i class="fa fa-link"></i></a>
+                                                    @if (comment.User.Rule == 1)//管理员
                                                     {
-                                                        <i class="fa fa-user admin" title="管理员"></i>
+                                                    <a href="/" class="ct-name" target="_blank" title="管理员">linkFly</a><i class="fa fa-user-secret admin" title="管理员"></i>
+                                                    }
+                                                    else {
+                                                        if (!string.IsNullOrEmpty(comment.User.Site))//有输入站点
+                                                        {
+                                                    <a title="访问Ta的站点" href="@Url.Action("Cl", "Home", new {url= comment.User.Site,sgs="blog-comment-"+i })" class="ct-name">@comment.User.Name</a>
+                                                        }
+                                                        else {
+                                                    <span class="ct-name">linkFly</span>
+                                                        }
                                                     }
                                                 </div>
-                                                <div class="ct-context">@comments[i].Context</div>
+                                                <div class="ct-context"><p>@comment.Context</p></div>
                                                 <div class="ct-footer">
-                                                    <span class="ct-num">#1</span>
-                                                    <time class="ct-time">@Said.Common.SaidCommon.DateToLocal(comments[i].Date)</time>
-                                                    <a href="javascript:;" class="ct-reply" data-parent="@comments[i].CommentId">回复</a>
+                                                    <span class="ct-num">#@(i + 1)</span>
+                                                    @if (ViewBag.AdminId != null)//如果是管理员则允许删除操作
+                                                    {
+                                                    <a href="javascript:;" class="delete _commentDelete" title="删除该评论（请谨慎操作）" data-comment-id="@comment.CommentId">删除</a>
+                                                    }
+                                                    <time class="ct-time">@Said.Common.SaidCommon.DateToLocal(comment.Date)</time>
+                                                    <a href="javascript:;" class="ct-reply _reply" data-commentId="@comment.CommentId"><i class="fa fa-comments" aria-hidden="true"></i>回复</a>
                                                 </div>
-                                                <div class="comment-reply" @(comments[i].Replys == null || comments[i].Replys.Count == 0 ? "style='display:none'" : "")>
+                                                <div class="comment-reply" @(comment.Replys == null || comment.Replys.Count == 0 ? "style=display:none" : "")>
                                                     <div class="arrow-border cr-arrow"></div>
                                                     <ul class="cr-container">
-                                                        @if (comments[i].Replys != null && comments[i].Replys.Count > 0)
+                                                        @if (comment.Replys != null && comment.Replys.Count > 0)
                                                         {
-                                                            for (int j = 0; j < comments[j].Replys.Count; j++)
+                                                            for (int j = 0; j < comment.Replys.Count; j++)
                                                             {
-                                                                var reply = comments[j].Replys[j];
-                                                                <li class="cr-item">
-                                                                    <div class="cr-content">
-                                                                        <div class="ct-top said-ellipsis">
-                                                                            @if (reply.ToReply == null)
+                                                                var reply = comment.Replys[j];
+                                                        <li class="cr-item">
+                                                            <div class="cr-content">
+                                                                <div class="ct-top">
+                                                                    <a href="#@i-@j" title="锚点引用" class="anchor"><i class="fa fa-link"></i></a>
+                                                                    @if (reply.User.Site != string.Empty)//有输入站点
                                                                             {
-                                                                                <a href="/" class="ct-name " target="_blank" title="查看ta的站点">风住过的地方</a>
+                                                                    <a href="@Url.Action("Cl", "Home", new {url= reply.User.Site,sgs="blog-comment-"+i })" class="ct-name">@reply.User.Name</a>
                                                                             }
                                                                             else {
-                                                                                <span class="ct-name ">linkFly</span>@("&nbsp;&nbsp;回复&nbsp;&nbsp;")<<a style="" class="ct-name" href="javascript:;">风住过的地方</a>
+                                                                    <span class="ct-name">@reply.User.Name</span>
                                                                             }
-                                                                        </div>
-                                                                        <p class="cr-context wordbreak">重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。</p>
-                                                                        <div class="cr-footer">
-                                                                            <time class="cr-time">昨天</time>
-                                                                            <a class="cr-reply" href="javascript:;"><i class="fa fa-comments" aria-hidden="true"></i>回复</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
+                                                                    @if (reply.ToReply != null)
+                                                                            {
+                                                                    @("&nbsp;&nbsp;回复&nbsp;&nbsp;")
+                                                                                if (reply.ToReply.User.Site != string.Empty)//有输入站点
+                                                                                {
+                                                                    <a href="@Url.Action("Cl", "Home", new {url= reply.ToReply.User.Site,sgs="blog-comment-"+i })" class="ct-name">@reply.ToReply.User.Name</a>
+                                                                                }
+                                                                                else {
+                                                                    <span class="ct-name">@reply.ToReply.User.Name</span>
+                                                                                }
+                                                                            }
+                                                                </div>
+                                                                <p class="cr-context wordbreak">@reply.Context</p>
+                                                                <div class="cr-footer">
+                                                                    @if (ViewBag.AdminId != null)//如果是管理员则允许删除操作
+                                                                            {
+                                                                    <a href="javascript:;" class="delete _replyDelete" title="删除该评论（请谨慎操作）" data-comment-id="@comment.CommentId" data-reply-id="@reply.ReplyId">删除</a>
+                                                                            }
+                                                                    <time class="ct-time">@Said.Common.SaidCommon.DateToLocal(reply.Date)</time>
+                                                                    <a href="javascript:;" class="ct-reply _reply2reply" data-comment-id="@comment.CommentId" data-reply-id="@reply.ReplyId">回复</a>
+                                                                </div>
+                                                            </div>
+                                                        </li>
                                                             }
                                                         }
                                                     </ul>
@@ -152,6 +182,40 @@
                     </div>
                 </div>
             </section>
+        </div>
+        <div class="reply-bar" style="display:none;" id="reply-form">
+            <form action="/" class="comment-form" name="reply-form">
+                <ul class="blog-comment-info" style="">
+                    <li>
+                        <input placeholder="名称" name="nickName" class="form-control">
+                    </li>
+                    <li>
+                        <input type="email" placeholder="Email" name="email" class="form-control">
+                    </li>
+                    <li>
+                        <input type="url" placeholder="您的站点" name="site" class="form-control">
+                    </li>
+                    <li>
+                        <input type="checkbox" name="remember" id="reply-remember"><label for="reply-remember">下次自动填写</label>
+                    </li>
+                </ul>
+                <div class="comment-bar">
+                    <textarea name="context" class="form-control cmt-context" placeholder="名称和Email（不会公开）必填，保存信息会保存这些信息，下次自动填充"></textarea>
+                    <div class="comment-more-bar">
+                        <div class="comment-more-bg">
+                            <div id="cmt-result" class="errMsg _errMsg"></div>
+                            <ul style="display:none;" class="loading-line _loading">
+                                <li class="loading-dot">1</li>
+                                <li class="loading-dot">2</li>
+                                <li class="loading-dot">3</li>
+                                <li class="loading-dot">4</li>
+                                <li class="loading-dot">5</li>
+                            </ul>
+                        </div>
+                        <input type="button" class="said-btn ct-submit said-btn-default" name="submit" value="提交评论">
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="b-n">
             <nav id="a-nav" class="nav">
@@ -193,5 +257,9 @@
     <link href="@Url.Content("~/Content/Widget/highlight/github.css?v=1.0")" rel="stylesheet" />
 }
 @section FootJs{
-
+    <script>
+        require(['said/blog'], function (view) {
+            view("@Model.BlogId");
+        });
+    </script>
 }

@@ -381,6 +381,7 @@
     <Content Include="Content\JavaScript\jquery-2.1.1.js" />
     <Content Include="Content\JavaScript\require.config.js" />
     <Content Include="Content\JavaScript\said.js" />
+    <Content Include="Content\JavaScript\said\blog.js" />
     <Content Include="Content\JavaScript\said\global.js" />
     <Content Include="Content\Style\about.css" />
     <Content Include="Content\Style\blog.css" />
@@ -422,6 +423,7 @@
     <Folder Include="Config\" />
     <Folder Include="Content\Back\JavaScript\jquery\" />
     <Folder Include="Content\Back\JavaScript\said\plug\" />
+    <Folder Include="Content\JavaScript\dist\" />
     <Folder Include="Data\" />
     <Folder Include="Models\" />
     <Folder Include="System\Log\" />

@@ -172,6 +172,7 @@
 
 
     /*===========================================================================基础模块===========================================================================*/
+    /* Utility functions */
 
     so.extend({
         //基础函数
@@ -285,7 +286,7 @@
             });
         },
         /**
-        * 编码一个对象，注意编码的对象如果有function也会被编码
+        * 编码一个对象，返回被编码的Url，注意编码的对象如果有function也会被编码
         * so.param(obj)
         * so.param(obj, deep)
         * @param {object} obj - 要编码的对象
@@ -307,6 +308,28 @@
                     res.push(escape(name) + '=' + escape(value));
             }
             return res.join('&')/*.replace(/%20/g, '+')*/;//TODO需要测试后端是否支持这里的空格转+号
+        },
+        /**
+        * 编码一个对象，只将对象的value进行编码，返回一个新对象
+        * so.param(obj)
+        * so.param(obj, deep)
+        * @param {object} obj - 要编码的对象
+        * @param {boolean} [deep=true] - 是否深度编码（当一个对象包含子对象的时候，是否也编码这个子对象）
+        * @returns {Object}
+        */
+        encode: function (obj, deep) {
+            var res, name, value;
+            if (!isObject(obj)) return obj;
+            deep = deep == null ? true : deep;
+            res = {};
+            for (name in obj) {
+                value = obj[name];
+                if (deep && value && isPlainObject(value)) {
+                    res[name] = escape(so.encode(value, deep));
+                } else if (value != null) //当值是null/undefined的时候不会追加到参数中
+                    res[name] = escape(value);
+            }
+            return res;
         },
         /**
         * 获取url中的参数
@@ -852,11 +875,19 @@
             if (arguments.length > 1) {
                 //set
                 valueType = so.type(value);
-                localStorage.setItem(this._getKey(key), valueType === 'array' || valueType === 'object' ? JSON.stringify(value) : value);
+                try {
+                    localStorage.setItem(this._getKey(key), valueType === 'array' || valueType === 'object' ? JSON.stringify(value) : value);
+                } catch (e) {
+
+                }
                 return this;
             }
             //get
-            return so.parseData(localStorage.getItem(this._getKey(key)));
+            try {
+                return so.parseData(localStorage.getItem(this._getKey(key)));
+            } catch (e) {
+                return null;
+            }
         },
 
         /*
@@ -878,10 +909,14 @@
             };
             if (key) {
                 key = this._getKey(key);
-                res = localStorage.getItem(key);
-                if (res) {
-                    res = so.parseData(res);
-                    localStorage.removeItem(key);
+                try {
+                    res = localStorage.getItem(key);
+                    if (res) {
+                        res = so.parseData(res);
+                        localStorage.removeItem(key);
+                    }
+                } catch (e) {
+                    res = null;
                 }
                 return res;
             }
@@ -899,7 +934,11 @@
                 if (reg.test(name)) {
                     i--;//removeItem了之后，索引不正确，修正索引
                     res[name] = so.parseData(localStorage[name]);
-                    localStorage.removeItem(name);
+                    try {
+                        localStorage.removeItem(name);
+                    } catch (e) {
+
+                    }
                 }
             }
             return res;

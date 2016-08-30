@@ -41,8 +41,8 @@ namespace Said.Common
         /// <returns>解码后的字符串</returns>
         public static string Decode(string str)
         {
-            if (string.IsNullOrEmpty(str)) return str;
-            return HttpUtility.UrlDecode(str);
+            if (string.IsNullOrWhiteSpace(str)) return str;
+            return HttpUtility.UrlDecode(str.Trim());
         }
     }
 }

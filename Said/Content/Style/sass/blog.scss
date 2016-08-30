@@ -21,27 +21,29 @@
         -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
         -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
         transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+        &:focus {
+            border-color: #66afe9;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+
+        &::-moz-placeholder {
+            color: #999;
+            opacity: 1;
+        }
+
+        &:-ms-input-placeholder {
+            color: #999;
+        }
+
+        &::-webkit-input-placeholder {
+            color: #999;
+        }
     }
 
-    .form-control:focus {
-        border-color: #66afe9;
-        outline: 0;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-    }
 
-    .form-control::-moz-placeholder {
-        color: #999;
-        opacity: 1;
-    }
-
-    .form-control:-ms-input-placeholder {
-        color: #999;
-    }
-
-    .form-control::-webkit-input-placeholder {
-        color: #999;
-    }
 
     .form-control[disabled],
     .form-control[readonly],
@@ -420,19 +422,29 @@
     }
 
     .oprater {
-        color: #666;
-
-        &:hover {
-            color: #dd5862;
-        }
+        color: #b0b0b1;
 
         span {
             padding-left: 2px;
         }
+    }
 
-        &.active {
-            color: #dd5862;
-            cursor: default;
+    .blog-info-like {
+        a {
+            color: #b0b0b1;
+
+            &:hover {
+                color: #dd5862;
+            }
+
+            &.likeIt {
+                color: #dd5862;
+                cursor: default;
+            }
+        }
+
+        .like-sum {
+            padding: 0 5px;
         }
     }
 
@@ -456,7 +468,6 @@
 
             span {
                 background-color: #FFF;
-                padding-right: 10px;
             }
         }
 
@@ -482,13 +493,11 @@
         .blog-comment-info {
             padding-bottom: 10px;
             overflow: hidden;
+
+            li {
+                display: inline-block;
+            }
         }
-
-        li {
-            display: inline-block;
-        }
-
-
 
         input[type=checkbox] {
             vertical-align: middle;
@@ -529,10 +538,13 @@
             border: 1px solid #CCC;
             border-top: none;
             padding: 0 200px 0 100px;
-        }
-        //锁住上传按钮
-        .submitLock {
-            background-color: #75b4f4 !important;
+
+            .errMsg {
+                color: #ff717b;
+                height: 100%;
+                text-align: center;
+                line-height: 34px;
+            }
         }
 
         .ct-submit {
@@ -549,22 +561,26 @@
         border-top: 1px dashed #CCC;
         padding-top: 10px;
 
-        .ct-context {
-            padding: 10px 0;
+        .comment-item {
+            .ct-context {
+                padding: 10px 0;
 
-            p {
-                text-align: justify;
-                white-space: pre-wrap;
-                word-break: break-all;
-                word-wrap: break-word;
+                p {
+                    text-align: justify;
+                    white-space: pre-wrap;
+                    word-break: break-all;
+                    word-wrap: break-word;
+                }
             }
         }
 
+
+
         .comment-item, .cr-item {
-            padding: 20px 0;
+            padding: 15px 0;
 
             .admin {
-                color: #2da2dd;
+                color: #a1a1a1;
                 padding-left: 5px;
             }
         }
@@ -599,6 +615,14 @@
             color: #c03980;
         }
 
+        .ct-time, .cr-time {
+            margin-left: 15px;
+        }
+
+        .delete {
+            color: #e97070;
+        }
+
         span.ct-name, .ct-time, .ct-num, .cr-time {
             color: #8b8b8b;
         }
@@ -624,14 +648,39 @@
             padding: 0 12px 0 15px;
             border: 1px solid #eee;
             border-radius: 5px;
-        }
 
-        .cr-content {
-            padding: 0 0 5px 25px;
+            .ct-top {
+                font-size: inherit;
+            }
         }
 
         .ct-top {
             font-size: 16px;
+
+            &:hover {
+                .anchor {
+                    visibility: visible;
+                }
+            }
+
+            .anchor {
+                float: left;
+                margin-left: -1.3em;
+                padding-right: .3em;
+                visibility: hidden;
+
+                &.hover {
+                    visibility: visible;
+                }
+            }
+
+            .fa-link {
+                color: #b3b2b2;
+            }
+        }
+
+        .cr-content {
+            padding: 0 20px 5px;
         }
 
         .cr-arrow {
@@ -645,7 +694,7 @@
         }
         /*reply-comment*/
         .reply-bar {
-            padding: 15px 0;
+            padding: 15px 20px;
         }
         /*footer*/
     }

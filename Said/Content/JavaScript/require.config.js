@@ -1,24 +1,21 @@
 ﻿require.config({
+    urlArgs: 'v=20160830',
     baseUrl: '/Content/JavaScript',
     paths: {
-        'jquery': 'jQuery-2.1.1.min'
+        'jquery': '/Content/Back/JavaScript/jQuery-2.1.1.min',
+        
     },
     packages: [
             {
-                name: 'so',
-                location: 'so',
-                main: 'so'
-            },
-            {
                 name: 'said',
                 location: 'said',
-                main: 'said'
+                main: 'global'
             },
-            //{
-            //    name: 'echarts',
-            //    location: 'echarts-2.1.8/src',
-            //    main: 'echarts'
-            //},
+            {
+                name: 'so',
+                location: '/Content/Back/JavaScript/so',
+                main: 'so'
+            }
             //{
             //    name: 'zrender',
             //    //location: 'http://ecomfe.github.io/zrender/src',

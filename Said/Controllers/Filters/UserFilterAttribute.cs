@@ -18,9 +18,8 @@ namespace Said.Controllers.Filters
             if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(NoFilter), false).Length == 0)
             {
                 //启用noFilter特性的不统计
-
-                SaidRecordCommon.Add(HttpContext.Current);
                 SaidRecordCommon.SetAdmindId(HttpContext.Current);
+                SaidRecordCommon.Add(HttpContext.Current);
             }
             base.OnActionExecuting(filterContext);
         }

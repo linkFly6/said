@@ -4,6 +4,7 @@ using Said.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +15,13 @@ namespace Said.Service
     /// </summary>
     public interface ICommentServicee : IService<Comment>
     {
-
+        /// <summary>
+        /// 根据文章返回评论列表（返回的内容按照时间正序排序），并且贪婪加载所有信息
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <param name="order">正序排列字段</param>
+        /// <returns></returns>
+        IEnumerable<Comment> FindAllInfo<T>(Expression<Func<Comment, bool>> where, Expression<Func<Comment, T>> order);
     }
     /// <summary>
     /// 标签服务
@@ -26,6 +33,17 @@ namespace Said.Service
             : base(factory)
         {
 
+        }
+
+        /// <summary>
+        /// 根据文章返回评论列表（返回的内容按照时间正序排序），并且贪婪加载所有信息
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <param name="order">正序排列字段</param>
+        /// <returns></returns>
+        public IEnumerable<Comment> FindAllInfo<T>(Expression<Func<Comment, bool>> where, Expression<Func<Comment, T>> order)
+        {
+            return Context.Comment.Include("User").OrderBy(order).Where(where);
         }
     }
 

@@ -55,7 +55,6 @@ namespace Said.Common
             //});
         }
 
-
         /// <summary>
         /// 设置管理员信息，如果当前用户是管理员的话，则给session的adminId设置为管理员ID，否则不设置session
         /// </summary>
@@ -101,9 +100,22 @@ namespace Said.Common
             HttpCookie cookie = context.Request.Cookies.Get("uid");
             string userId = string.Empty;
             if (cookie == null || cookie.Value == null || !UserApplication.Exists(cookie.Value))//没有用户ID，并且验证cookie合法 => 用户id是否存在，否则直接创建一个
-            {//
+            {
+
                 cookie = new HttpCookie("uid");
-                User user = new User { UserID = userId = Guid.NewGuid().ToString().Replace("-", ""), EMail = string.Empty, Name = string.Empty, Date = DateTime.Now };
+                User user = new User
+                {
+                    UserID = userId = SaidCommon.GUID,
+                    EMail = string.Empty,
+                    Name = string.Empty,
+                    Date = DateTime.Now,
+                    //如果是管理员则种下管理员的GUID，否则重新生成一个普通用户的GUID
+                    SecretKey = context.Session["adminId"] != null ? context.Session["adminId"] as string : SaidCommon.GUID,
+                    //管理员则标记上管理员身份
+                    Rule = context.Session["adminId"] != null ? 1 : 0,
+                    IsSubscribeComments = true,
+                    Site = string.Empty
+                };
                 if (UserApplication.Add(user) > 0)
                 {
                     cookie.Name = "uid";

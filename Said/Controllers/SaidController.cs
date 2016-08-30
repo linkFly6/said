@@ -71,7 +71,7 @@ namespace Said.Controllers
             model.SPV++;
             //要确定之类是否要加锁
             ArticleApplication.Update(model);
-            ViewData["userLike"] = UserLikeApplication.ExistsLike(model.SaidId, GetUserId(), 0) == null ? false : true;
+            ViewData["userLike"] = UserLikeApplication.ExistsLike(model.SaidId, this.UserId, 0) == null ? false : true;
             return View(model);
         }
         #endregion
@@ -110,7 +110,7 @@ namespace Said.Controllers
             return UserLikeApplication.Add(new UserLike
             {
                 Date = DateTime.Now,
-                UserId = GetUserId(),
+                UserId = this.UserId,
                 LikeType = 0,
                 UserLikeId = SaidCommon.GUID,
                 LikeArticleId = id
