@@ -43,7 +43,8 @@ namespace Said.Service
         /// <returns></returns>
         public IEnumerable<Comment> FindAllInfo<T>(Expression<Func<Comment, bool>> where, Expression<Func<Comment, T>> order)
         {
-            return Context.Comment.Include("User").OrderBy(order).Where(where);
+            //EF每次查询的时候会从缓存读，而评论要求时效性，所以使用AsNoTracking()把缓存给干掉
+            return Context.Comment.AsNoTracking().Include("User").Include("Replys").OrderBy(order).Where(where);
         }
     }
 

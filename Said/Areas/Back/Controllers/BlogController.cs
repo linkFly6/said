@@ -210,20 +210,31 @@ namespace Said.Areas.Back.Controllers
             Blog model = BlogApplication.Find(id);
             if (model == null)
                 return ResponseResult(1, "要删除的文章不存在（数据库未检索到该文章ID）");
-            return SaidCommon.Transaction(() =>
+            try
             {
-                var blogTags = BlogTagsApplication.FindByBlogId(model.BlogId);
-                if (blogTags != null && blogTags.Count() > 0)
+                return SaidCommon.Transaction(() =>
                 {
-                    if (BlogTagsApplication.DeleteByBlogId(model.BlogId) <= 0)
+                    var blogTags = BlogTagsApplication.FindByBlogId(model.BlogId);
+                    if (blogTags != null && blogTags.Count() > 0)
                     {
-                        return ResponseResult(3, "删除文章失败（删除Blog和标签对应的关系失败）");
-                    };
-                }
-                return BlogApplication.DeleteBlog(model) > 0 ?
-                ResponseResult()
-                : ResponseResult(2, "从数据库中删除文章失败");
-            });
+                        if (BlogTagsApplication.DeleteByBlogId(model.BlogId) <= 0)
+                        {
+                            throw new Exception("删除文章失败（删除Blog和标签对应的关系失败）");
+                        };
+                    }
+                    if (BlogApplication.DeleteBlog(model) > 0) {
+                        return ResponseResult();
+                    }
+                    else {
+                        throw new Exception("从数据库中删除文章失败");
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                return ResponseResult(2, e.Message);
+            }
+
 
         }
         #endregion

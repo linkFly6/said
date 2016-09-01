@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using log4net;
+using PagedList;
 using Said.Application;
 using Said.Common;
 using Said.Helper;
@@ -14,6 +15,9 @@ namespace Said.Areas.Back.Controllers
 {
     public class SiteController : BaseController
     {
+
+        private static readonly ILog logManager = LogManager.GetLogger(typeof(SaidController));
+
         //
         // GET: /Back/Site/
 
@@ -94,7 +98,7 @@ namespace Said.Areas.Back.Controllers
             var model = BannerApplication.Get(id);
             if (model != null && BannerApplication.Delete(model) > 0)
             {
-                LogCommon.Log(string.Format(
+                logManager.InfoFormat(
                     @"管理员删除了一条Banner：
                       BannerId = {0},
                       创建日期 = {1},
@@ -103,7 +107,7 @@ namespace Said.Areas.Back.Controllers
                       链接 = {4},
                       源码 = {5},
                       主题 = {6}
-                    ", model.BannerId, model.Date, model.Description, model.HTML, model.Link, model.SourceCode, model.Theme));
+                    ", model.BannerId, model.Date, model.Description, model.HTML, model.Link, model.SourceCode, model.Theme);
 
                 return ResponseResult();
             }
@@ -146,7 +150,7 @@ namespace Said.Areas.Back.Controllers
                 }
                 catch (Exception e)
                 {
-                    LogCommon.Log(string.Format("不正确的请求Url：{0}", Request.RawUrl), e);
+                    logManager.InfoFormat("不正确的请求Url：{0}", Request.RawUrl, e.InnerException);
                     return Json(new
                     {
                         total = 0,
@@ -165,5 +169,5 @@ namespace Said.Areas.Back.Controllers
         }
 
     }
-        #endregion
+    #endregion
 }

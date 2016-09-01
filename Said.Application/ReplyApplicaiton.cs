@@ -39,6 +39,18 @@ namespace Said.Application
             return service.Submit();
         }
 
+
+        /// <summary>
+        /// 根据ID查找
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Reply Find(string id)
+        {
+            return Context.Get(m => m.ReplyId == id && m.IsDel == 0);
+        }
+
+
         /// <summary>
         /// 根据文章返回所有子评论
         /// </summary>
@@ -46,7 +58,7 @@ namespace Said.Application
         /// <returns>返回SaidID列表</returns>
         public static IEnumerable<Reply> FindByBlogId(string blogId)
         {
-            return Context.GetManyDesc(m => m.BlogId == blogId && m.IsDel == 0, m => m.Date);
+            return Context.GetMany(m => m.BlogId == blogId && m.IsDel == 0, m => m.Date);
         }
 
         /// <summary>
@@ -56,7 +68,7 @@ namespace Said.Application
         /// <returns>返回SaidID列表</returns>
         public static IEnumerable<Reply> FindByCommentId(string commentId)
         {
-            return Context.GetManyDesc(m => m.CommentId == commentId && m.IsDel == 0, m => m.Date);
+            return Context.GetMany(m => m.CommentId == commentId && m.IsDel == 0, m => m.Date);
         }
 
     }

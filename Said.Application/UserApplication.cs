@@ -1,4 +1,5 @@
-﻿using Said.Models;
+﻿using Said.Common;
+using Said.Models;
 using Said.Service;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,17 @@ namespace Said.Application
         }
 
 
+        /// <summary>
+        /// 验证用户是否存在（没有缓存）
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static bool ExistsNoCache(string id)
+        {
+            return Context.ExistsNoCache(m => m.UserID == id);
+        }
+
+
         private static Regex regSite = new Regex(@"^((https|http|ftp|rtsp|mms)?://)?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-z_!~*'()-]+\.)*([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.[a-z]{2,6})(:[0-9]{1,4})?((/?)|(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$");
         private static Regex regEmail = new Regex(@"^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$");
 
@@ -90,7 +102,7 @@ namespace Said.Application
         /// <returns></returns>
         public static string CheckSite(string value)
         {
-            if (value.Trim().Length > 60 || !regSite.IsMatch(value))
+            if (value.Trim().Length > 60 || !UrlCommon.CheckUri(value))
             {
                 return "用户站点不正确，不允许携带参数和超过60个字符";
             }
@@ -134,7 +146,7 @@ namespace Said.Application
             {
                 validateResult = CheckSite(user.Site);
                 if (validateResult != null) return validateResult;
-                user.Site = user.Site.Trim();
+                user.Site = UrlCommon.ResolveHTTPUri(user.Site.Trim());//将URL修正
             }
             else
                 user.Site = null;
@@ -167,6 +179,13 @@ namespace Said.Application
             databaseUser.Site = user.Site == null ? string.Empty : user.Site;//用户站点可以被更新，不能被空的逻辑给占用了，这样会让用户觉得自己修改不了自己的站点
             if (user.EMail != null && databaseUser.EMail != user.EMail)
                 databaseUser.EMail = user.EMail;
+            //用户角色改变
+            if (user.Rule != databaseUser.Rule)
+            {
+                databaseUser.Rule = user.Rule;
+                if (user.SecretKey != null)
+                    databaseUser.SecretKey = user.SecretKey;
+            }
             return validateResult;
         }
     }

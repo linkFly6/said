@@ -1,4 +1,5 @@
-﻿using Said.Application;
+﻿using log4net;
+using Said.Application;
 using Said.Common;
 using Said.Controllers.Attrbute;
 using Said.Controllers.Filters;
@@ -17,6 +18,9 @@ namespace Said.Controllers
     [UserFilterAttribute]
     public class HomeController : BaseController
     {
+
+        private static readonly ILog logManager = LogManager.GetLogger(typeof(HomeController));
+
         //
         // GET: /Home/
         //[WapFilterAttribute]
@@ -83,17 +87,25 @@ namespace Said.Controllers
             {
                 urlReferrer = Request.UrlReferrer;
             }
-            //检测请求的url是否合法
-            if (!Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out requestUrl))
+            try
             {
-                SaidRecordCommon.AddFail(key, url, urlReferrer == null ? null : urlReferrer.OriginalString);
-                return Redirect(url);
+                //检测请求的url是否合法
+                if (!Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out requestUrl))
+                {
+                    SaidRecordCommon.AddFail(key, url, urlReferrer == null ? null : urlReferrer.OriginalString);
+                    return Redirect(url);
+                }
+                url = UrlCommon.ResolveHTTPUri(url);//修正uri
+                                                    //检测通过
+                if (urlReferrer == null)
+                    SaidRecordCommon.Add(key, url);
+                else
+                    SaidRecordCommon.Add(key, url, urlReferrer);
             }
-            //检测通过
-            if (urlReferrer == null)
-                SaidRecordCommon.Add(key, url);
-            else
-                SaidRecordCommon.Add(key, url, urlReferrer);
+            catch (Exception e)
+            {
+                logManager.Error("跳转Error", e.InnerException);
+            }
             return Redirect(url);
         }
 

@@ -220,7 +220,7 @@
         require(['said', 'jquery', 'so', 'avalon', 'sweetalert', 'source', 'showdown', 'highlight', 'groupInput', 'avalonUpload'], function (said, $, so, avalon, sweetalert, source, showdown, highlight) {
             $(function () {
                 document.addEventListener('keydown', function (e) {
-                    if (e.ctrlKey && e.keyCode == 83) {
+                    if (e.ctrlKey && e.keyCode == 83) {//ctrl+s => save
                         e.preventDefault();
                     }
                 });

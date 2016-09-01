@@ -15,13 +15,14 @@ namespace Said.Controllers.Filters
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            base.OnActionExecuting(filterContext);
             if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(NoFilter), false).Length == 0)
             {
                 //启用noFilter特性的不统计
                 SaidRecordCommon.SetAdmindId(HttpContext.Current);
                 SaidRecordCommon.Add(HttpContext.Current);
             }
-            base.OnActionExecuting(filterContext);
+            
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using Said.Application;
+﻿using log4net;
+using Said.Application;
 using Said.Helper;
 using Said.Models;
 using System;
@@ -14,6 +15,8 @@ namespace Said.Common
     /// </summary>
     public class SaidRecordCommon
     {
+        private static readonly ILog logManager = LogManager.GetLogger(typeof(SaidRecordCommon));
+
         /// <summary>
         /// 统计关键词的参数
         /// </summary>
@@ -94,12 +97,17 @@ namespace Said.Common
         /// 获取当前回话的用户ID，如果没有用户ID，则会创建一个用户ID
         /// </summary>
         /// <param name="context">请求上下文</param>
+        /// <param name="noCache">是否跳过缓存</param>
         /// <returns></returns>
-        public static string GetUserId(HttpContext context)
+        public static string GetUserId(HttpContext context, bool noCache = false)
         {
             HttpCookie cookie = context.Request.Cookies.Get("uid");
             string userId = string.Empty;
-            if (cookie == null || cookie.Value == null || !UserApplication.Exists(cookie.Value))//没有用户ID，并且验证cookie合法 => 用户id是否存在，否则直接创建一个
+            if (cookie == null || cookie.Value == null ||
+                //没有用户ID，并且验证cookie合法 => 用户id是否存在，否则直接创建一个
+                (noCache ?
+                !UserApplication.ExistsNoCache(cookie.Value) ://配置了跳过缓存
+                !UserApplication.Exists(cookie.Value)))//EF默认有缓存，检索用户是否存在*应该*更快
             {
 
                 cookie = new HttpCookie("uid");
@@ -142,7 +150,7 @@ namespace Said.Common
         /// </summary>
         /// <param name="key">统计的标记（关键词）</param>
         /// <param name="record">统计信息对象</param>
-        public static void AddRecord(UserRecord record)
+        public static void AddRecord(UserRecord record, HttpContext context)
         {
             //异步根据IP获取地址
             Task.Run(() =>
@@ -154,11 +162,30 @@ namespace Said.Common
                     record.Country = address[0];
                     record.Province = address[1];
                     record.City = address[2];
-                    UserRecordApplication.Add(record);
+                    try
+                    {
+                        if (UserRecordApplication.Add(record) <= 0)
+                        {
+                            throw new Exception("插入用户记录异常");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        /*
+                            发生异常的话，这里可能是用户的cookie是伪造的，数据库中并没有真实的用户信息，所以重新生成一个
+                            在之前的逻辑中使用了GetUserID()去检测用户是否存在，但是因为EF有缓存策略，可能导致检测到的用户是有缓存的，所以这里再重新获取一下用户ID，并且标记跳过缓存
+
+                            -- 后更新：
+                            这里拿到Session是为null的，因为是异步任务，而重新获取用户ID是主要注入Session的，这样会导致业务出问题，所以还是放弃这里
+                            详情参见Said buglog: https://github.com/linkFly6/Said/issues/7
+                        */
+                        logManager.Error(string.Format("用户ID：{0}", record.UserID), e.InnerException);//这时候抛出Log
+                    }
                 }
             });
 
         }
+
 
         /// <summary>
         /// 添加统计记录方法
@@ -197,7 +224,7 @@ namespace Said.Common
                 record.UrlReferrer = context.Request.UrlReferrer.OriginalString;
                 record.ReferrerAuthority = context.Request.UrlReferrer.Authority;
             }
-            AddRecord(record);
+            AddRecord(record, context);
         }
         #endregion
 
@@ -249,7 +276,7 @@ namespace Said.Common
                 record.UrlReferrer = urlReferrer.OriginalString;
                 record.ReferrerAuthority = urlReferrer.Authority;
             }
-            AddRecord(record);
+            AddRecord(record, context);
         }
 
 
@@ -288,7 +315,7 @@ namespace Said.Common
                 record.UrlReferrer = urlReferrer;
                 record.ReferrerAuthority = string.Empty;
             }
-            AddRecord(record);
+            AddRecord(record, HttpContext.Current);
         }
 
 

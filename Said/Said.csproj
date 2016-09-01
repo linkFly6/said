@@ -21,6 +21,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -121,8 +126,13 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Areas\Back\BackAreaRegistration.cs" />
     <Compile Include="Areas\Back\Controllers\BaseController.cs" />
     <Compile Include="Areas\Back\Controllers\BlogController.cs" />
@@ -137,7 +147,6 @@
     <Compile Include="Common\ImageCommon.cs" />
     <Compile Include="Common\IPRange.cs" />
     <Compile Include="Common\JavaScriptCommon.cs" />
-    <Compile Include="Common\LogCommon.cs" />
     <Compile Include="Common\SaidRecordCommon.cs" />
     <Compile Include="Controllers\Attrbute\NoFilter.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -152,6 +161,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\SaidLogMessage.cs" />
+    <Compile Include="Models\SaidLogMessagePatternConver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -425,7 +436,6 @@
     <Folder Include="Content\Back\JavaScript\said\plug\" />
     <Folder Include="Content\JavaScript\dist\" />
     <Folder Include="Data\" />
-    <Folder Include="Models\" />
     <Folder Include="System\Log\" />
     <Folder Include="User\" />
   </ItemGroup>

@@ -44,7 +44,7 @@
             <section class="blog-more-info">
                 <div class="blog-more-head">
                     <div class="blog-comment-txt">
-                        <span>评论(@comments.Count)</span>
+                        <span>评论(@Model.BComment)</span>
                     </div>
                     <ul class="blog-info afterClear">
                         <li class="bi-l">
@@ -59,7 +59,7 @@
                 <div class="blog-more-comment">
                     <div class="blog-comment-content" id="comment-content">
                         <div class="blog-comment-bar">
-                            <form action="/" class="comment-form" id="comment-form" onsubmit="return false;">
+                            <form action="/" class="comment-form" id="comment-form" onsubmit="return false;" spellcheck="false">
                                 <ul class="blog-comment-info">
                                     <li>
                                         <input placeholder="昵称" class="form-control" name="nickName" />
@@ -71,7 +71,7 @@
                                         <input type="url" placeholder="您的站点" class="form-control" name="site" />
                                     </li>
                                     <li>
-                                        <input type="checkbox" name="remember" checked="checked" id="cmt-remember" /><label for="cmt-remember">下次自动填写</label>
+                                        <input type="checkbox" name="remember" id="cmt-remember" checked /><label for="cmt-remember">下次自动填写</label>
                                     </li>
                                 </ul>
                                 <div class="comment-bar">
@@ -100,20 +100,20 @@
                                     {
                                         var comment = comments[i];
                                         <li class="comment-item">
-                                            <div class="ctitem-content">
+                                            <div class="ctitem-content _comment">
                                                 <div class="ct-top">
                                                     <a href="#@(i+1)" name="@(i+1)" title="锚点引用" class="anchor"><i class="fa fa-link"></i></a>
                                                     @if (comment.User.Rule == 1)//管理员
                                                     {
-                                                    <a href="/" class="ct-name" target="_blank" title="管理员">linkFly</a><i class="fa fa-user-secret admin" title="管理员"></i>
+                                                        <a href="/" class="ct-name _canchor" target="_blank" title="管理员" data-admin="true" data-anthor="@(i+1)">linkFly</a><i class="fa fa-user-secret admin" title="管理员"></i>
                                                     }
                                                     else {
                                                         if (!string.IsNullOrEmpty(comment.User.Site))//有输入站点
                                                         {
-                                                    <a title="访问Ta的站点" href="@Url.Action("Cl", "Home", new {url= comment.User.Site,sgs="blog-comment-"+i })" class="ct-name">@comment.User.Name</a>
+                                                            <a title="访问Ta的站点" href="@Url.Action("Cl", "Home", new {url= comment.User.Site,sgs="b-c-"+(i+1) })" class="ct-name _canchor" data-anthor="@(i+1)"  target="_blank">@comment.User.Name</a>
                                                         }
                                                         else {
-                                                    <span class="ct-name">linkFly</span>
+                                                            <span class="ct-name _canchor" data-anthor="@(i+1)">@comment.User.Name</span>
                                                         }
                                                     }
                                                 </div>
@@ -122,10 +122,19 @@
                                                     <span class="ct-num">#@(i + 1)</span>
                                                     @if (ViewBag.AdminId != null)//如果是管理员则允许删除操作
                                                     {
-                                                    <a href="javascript:;" class="delete _commentDelete" title="删除该评论（请谨慎操作）" data-comment-id="@comment.CommentId">删除</a>
+                                                        <a href="javascript:;" class="delete _commentDelete" title="删除该评论（请谨慎操作）" data-comment-id="@comment.CommentId">删除</a>
                                                     }
                                                     <time class="ct-time">@Said.Common.SaidCommon.DateToLocal(comment.Date)</time>
-                                                    <a href="javascript:;" class="ct-reply _reply" data-commentId="@comment.CommentId"><i class="fa fa-comments" aria-hidden="true"></i>回复</a>
+                                                    @if (ViewBag.UserId != comment.UserId)
+                                                    {
+                                                        <a href="javascript:;" class="ct-reply _reply"
+                                                           data-comment-id="@comment.CommentId"
+                                                           data-admin="@(comment.User.Rule == 1?"true":"false")"
+                                                           data-anthor="@(i+1)"
+                                                           data-site="@(!string.IsNullOrEmpty(comment.User.Site)?string.Empty:Url.Encode(comment.User.Site))"
+                                                           data-nick-name="@(comment.User.Rule == 1?"linkFly":Said.Common.HTMLCommon.HTMLEncode(comment.User.Name))"><i class="fa fa-comments"></i>回复</a>
+                                                    }
+
                                                 </div>
                                                 <div class="comment-reply" @(comment.Replys == null || comment.Replys.Count == 0 ? "style=display:none" : "")>
                                                     <div class="arrow-border cr-arrow"></div>
@@ -135,40 +144,52 @@
                                                             for (int j = 0; j < comment.Replys.Count; j++)
                                                             {
                                                                 var reply = comment.Replys[j];
-                                                        <li class="cr-item">
-                                                            <div class="cr-content">
-                                                                <div class="ct-top">
-                                                                    <a href="#@i-@j" title="锚点引用" class="anchor"><i class="fa fa-link"></i></a>
-                                                                    @if (reply.User.Site != string.Empty)//有输入站点
+                                                                <li class="cr-item">
+                                                                    <div class="cr-content">
+                                                                        <div class="ct-top">
+                                                                            <a href="#@(i+1)-@(j+1)" name="@(i+1)-@(j+1)" title="锚点引用" class="anchor" target="_blank"><i class="fa fa-link"></i></a>
+                                                                            @if (reply.User.Site != string.Empty)//有输入站点
                                                                             {
-                                                                    <a href="@Url.Action("Cl", "Home", new {url= reply.User.Site,sgs="blog-comment-"+i })" class="ct-name">@reply.User.Name</a>
+                                                                                <a href="@Url.Action("Cl", "Home", new {url= reply.User.Site,sgs=string.Format("b-c-{0}-{1}",i+1,j+1) })" class="ct-name _ranchor">@reply.User.Name</a>
                                                                             }
                                                                             else {
-                                                                    <span class="ct-name">@reply.User.Name</span>
+                                                                                <span class="ct-name _ranchor">@reply.User.Name</span>
                                                                             }
-                                                                    @if (reply.ToReply != null)
+                                                                            @if (reply.ToReply != null)
                                                                             {
-                                                                    @("&nbsp;&nbsp;回复&nbsp;&nbsp;")
+                                                                                @("&nbsp;&nbsp;回复&nbsp;&nbsp;")
                                                                                 if (reply.ToReply.User.Site != string.Empty)//有输入站点
                                                                                 {
-                                                                    <a href="@Url.Action("Cl", "Home", new {url= reply.ToReply.User.Site,sgs="blog-comment-"+i })" class="ct-name">@reply.ToReply.User.Name</a>
+                                                                                    <a href="@Url.Action("Cl", "Home", new {url= reply.ToReply.User.Site,sgs=string.Format("b-c-to-{0}-{1}",i+1,j+1) })" class="ct-name"  target="_blank">@reply.ToReply.User.Name</a>
                                                                                 }
                                                                                 else {
-                                                                    <span class="ct-name">@reply.ToReply.User.Name</span>
+                                                                                    <span class="ct-name">@reply.ToReply.User.Name</span>
                                                                                 }
                                                                             }
-                                                                </div>
-                                                                <p class="cr-context wordbreak">@reply.Context</p>
-                                                                <div class="cr-footer">
-                                                                    @if (ViewBag.AdminId != null)//如果是管理员则允许删除操作
+                                                                        </div>
+                                                                        <p class="cr-context wordbreak">@reply.Context</p>
+                                                                        <div class="cr-footer">
+                                                                            @if (ViewBag.AdminId != null)//如果是管理员则允许删除操作
                                                                             {
-                                                                    <a href="javascript:;" class="delete _replyDelete" title="删除该评论（请谨慎操作）" data-comment-id="@comment.CommentId" data-reply-id="@reply.ReplyId">删除</a>
+                                                                                <a href="javascript:;" class="delete _replyDelete" title="删除该评论（请谨慎操作）" data-comment-id="@comment.CommentId" data-reply-id="@reply.ReplyId">删除</a>
                                                                             }
-                                                                    <time class="ct-time">@Said.Common.SaidCommon.DateToLocal(reply.Date)</time>
-                                                                    <a href="javascript:;" class="ct-reply _reply2reply" data-comment-id="@comment.CommentId" data-reply-id="@reply.ReplyId">回复</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>
+                                                                            <time class="ct-time">@Said.Common.SaidCommon.DateToLocal(reply.Date)</time>
+                                                                            @if (ViewBag.UserId != reply.UserId)
+                                                                            {
+                                                                                <a href="javascript:;" class="ct-reply _reply2reply"
+                                                                                   title="回复Ta"
+                                                                                   data-comment-id="@comment.CommentId"
+                                                                                   data-reply-id="@reply.ReplyId"
+                                                                                   data-admin="@(reply.User.Rule == 1?"true":"false")"
+                                                                                   data-parent-anthor="@(i+1)"
+                                                                                   data-anthor="@(j+1)"
+                                                                                   data-site="@(!string.IsNullOrEmpty(reply.User.Site)?string.Empty:Url.Encode(reply.User.Site))"
+                                                                                   data-nick-name="@(reply.User.Rule == 1?"linkFly":Said.Common.HTMLCommon.HTMLEncode(reply.User.Name))"><i class="fa fa-comments-o"></i>回复</a>
+                                                                            }
+
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
                                                             }
                                                         }
                                                     </ul>
@@ -184,7 +205,7 @@
             </section>
         </div>
         <div class="reply-bar" style="display:none;" id="reply-form">
-            <form action="/" class="comment-form" name="reply-form">
+            <form action="/" class="comment-form" name="reply-form" spellcheck="false">
                 <ul class="blog-comment-info" style="">
                     <li>
                         <input placeholder="名称" name="nickName" class="form-control">
@@ -196,7 +217,7 @@
                         <input type="url" placeholder="您的站点" name="site" class="form-control">
                     </li>
                     <li>
-                        <input type="checkbox" name="remember" id="reply-remember"><label for="reply-remember">下次自动填写</label>
+                        <input type="checkbox" name="remember" id="reply-remember" checked><label for="reply-remember">下次自动填写</label>
                     </li>
                 </ul>
                 <div class="comment-bar">
@@ -212,7 +233,7 @@
                                 <li class="loading-dot">5</li>
                             </ul>
                         </div>
-                        <input type="button" class="said-btn ct-submit said-btn-default" name="submit" value="提交评论">
+                        <input type="button" class="said-btn ct-submit said-btn-default" name="submit" value="提交回复">
                     </div>
                 </div>
             </form>
@@ -258,8 +279,41 @@
 }
 @section FootJs{
     <script>
+        @*var comments = [];
+        @for (int i = 0; i < comments.Count; i++)//循环到js数据中
+        {
+            Write(new HtmlString(string.Format(
+                 @"comments.push({{
+                                    commentsId: '{0}',
+                                    nickName: '{1}',
+                                    site: '{2}',
+                                    isAdmin:{3},
+                                    anthor: 1,
+                                }});", item.CName, item.CIcon, item.ClassifyId)));
+        }
+        comments.push({
+            commentsId: '',
+            nickName: '',
+            site: '',
+            isAdmin: false,
+            anthor: 1,
+            context: '',
+            replys: [
+                {
+                    replys: 'replyId',
+                    nickName: '', site: '', isAdmin: false, anthor: 1, context: '',
+                    toReply: {
+                        replyId: '',
+                        nickName: '',
+                        site: '',
+                        isAdmin: false,
+                        anthor: ''
+                    }
+                }
+            ]
+        });*@
         require(['said/blog'], function (view) {
-            view("@Model.BlogId");
+            view("@Model.BlogId", "@ViewBag.UserId");
         });
     </script>
 }

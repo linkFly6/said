@@ -4,6 +4,7 @@ using Said.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +17,19 @@ namespace Said.Service
     /// </summary>
     public interface IAdminRecordService : IService<AdminRecord>
     {
+        /// <summary>
+        /// 根据用户ID获取最后一次登录操作
+        /// </summary>
+        /// <param name="adminId">管理员ID</param>
+        /// <returns></returns>
         IEnumerable<AdminRecord> GetByAdminLastDay(string adminId);
+
+        /// <summary>
+        /// 贪婪查询一条
+        /// </summary>
+        /// <param name="adminRecordId"></param>
+        /// <returns></returns>
+        AdminRecord GetAllInfo(Expression<Func<AdminRecord, bool>> where);
     }
     #endregion
 
@@ -48,7 +61,17 @@ namespace Said.Service
                             select g.Key.ToString("yyyyMMdd")
                             ).Contains(m.Date.ToString("yyyMMdd"))
                         select m;
-            return query.ToList<AdminRecord>();
+            return query.ToList();
+        }
+
+        /// <summary>
+        /// 贪婪查询一条
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public AdminRecord GetAllInfo(Expression<Func<AdminRecord, bool>> where)
+        {
+            return Context.AdminRecord.Include("Admin").Where(where).FirstOrDefault();
         }
     }
     #endregion

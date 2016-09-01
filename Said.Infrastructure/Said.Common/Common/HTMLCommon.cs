@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Said.Common
 {
@@ -25,6 +26,17 @@ namespace Said.Common
             if (string.IsNullOrWhiteSpace(html))
                 return string.Empty;
             return HTMLTRIM.Replace(html, string.Empty);
+        }
+
+        /// <summary>
+        /// 将输出的文本经过HTML转义后输出
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string HTMLEncode(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return string.Empty;
+            return HttpUtility.HtmlEncode(text);
         }
     }
 }

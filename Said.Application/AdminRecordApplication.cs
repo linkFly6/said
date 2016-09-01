@@ -36,12 +36,13 @@ namespace Said.Application
         #endregion
 
         /// <summary>
-        /// 根据ID获取一条记录
+        /// 根据ID获取一条记录（贪婪获取）
         /// </summary>
         /// <returns></returns>
         public static AdminRecord Get(string recordId)
         {
-            return Context.Get(m => m.AdminRecordId == recordId);
+            //return Context.Get(m => m.AdminRecordId == recordId);
+            return Context.GetAllInfo(m => m.AdminRecordId == recordId);
         }
 
 
