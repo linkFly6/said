@@ -20,16 +20,13 @@
     <meta http-equiv="description" content="听说 - linkFly" />
     <meta name="author" content="linkFly" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    @*<meta http-equiv-"x-ua-compatible" content="IE =9" />*@
     <title>@ViewBag.Title</title>
-    <link href="@Url.Content("~/Content//Style/Global.css?v=1.0")" rel="stylesheet">
-    <link href="@Url.Content("~/Content/Style/font-awesome.min.css?v=1.0")" rel="stylesheet">
-    <link href="@Url.Content("~/Content/Style/layout.css?v=1.0")" rel="stylesheet">
+    @Styles.Render("~/static/said/css/global.css")
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/favicon.ico" />
-    <script src="@Url.Content("~/Content/Back/JavaScript/requirejs-2.1.15.js?v=1.0")"></script>
-    @Html.InlineScripts("~/said.main.js")
+    @Scripts.Render("~/static/w/requirejs.js")
+    @Html.InlineScripts("~/static/said/config.js")
     @{
         if (IsSectionDefined("Css"))
         {
@@ -127,8 +124,7 @@
             }
         }
     }
-    @*<script src="@Url.Content("~/Content/JavaScript/jQuery-2.1.1.js?v=1.0")"></script>
-        <script src="@Url.Content("~/Content/JavaScript/said/global.js?v=1.0")"></script>*@
+    @Scripts.Render("~/static/said/main.js")
     <script>
         var dateNow = '@Said.Common.SaidCommon.GetTimeStamp()';
     </script>

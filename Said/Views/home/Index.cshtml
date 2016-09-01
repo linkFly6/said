@@ -7,9 +7,6 @@
     string saidResourcePath = ConfigInfo.SourceSaidThumbnailPath;
 
 }
-@section Css{
-    <link href="@Url.Content("~/Content/Style/index.css?v=1.0")" rel="stylesheet">
-}
 <div class="index-background">
     <ul class="index-banner" id="banner-box">
         <li class="banner-item banner-white" style="background-image: url(/Content/Images/bg/6036.jpg);opacity:1;z-index:2;">
@@ -102,65 +99,6 @@
                 <a href="@Url.Action("Cl", "Home", new {url= "http://www.cnblogs.com/silin6/",sgs="home-my-cnblog" })" target="_blank" class="module-more-link icon-coffee">我的博客园</a>
             </div>
             <div class="module-content afterClear">
-                @*<div class="said-main">
-                        <a class="said-main-img" href="javascript:;" style="background-image: url(../../Content/Images/UEDImg/1164878.jpg);">
-                            <div class="module-mask">
-                                <div class="said-main-context">
-                                    <h2 class="said-main-title">世界很大，风住过这里</h2>
-                                    <div class="said-main-summary">
-                                        <p>在一段不算明媚的日子里，黄叶随风而舞，捎来了秋日即将来劲的口信。我不明白自己为何如何如此期怀这样一个秋，或许是秋日寄托了太多儿时的情感，在家乡那个古老的院墙上吹拂着放纵而无邪的青春，那时候漫天飞舞的黄叶注定了一种难以释怀的情结。</p>
-                                        <p>秋之美丽在于流逝——所有的美丽，源于流逝。</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>*@
-                @*<ul>
-                        <li class="said-item">
-                            <div class="module-img-con said-img" style="background-image: url(../../Content/Images/UEDImg/TuscanyItaly1.jpg);">
-                                <div class="module-mask">
-                                    <div class="module-summary">
-                                        <p>在一段不算明媚的日子里，黄叶随风而舞，捎来了秋日即将来劲的口信。我不明白自己为何如何如此期怀这样一个秋，或许是秋日寄托了太多儿时的情感，在家乡那个古老的院墙上吹拂着放纵而无邪的青春，那时候漫天飞舞的黄叶注定了一种难以释怀的情结。</p>
-                                        <p>秋之美丽在于流逝——所有的美丽，源于流逝。</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="said-music">
-                                <div class="music-img">
-                                    <div class="music-ring"></div>
-                                    <img title="paramore" alt="test" src="/Content/Images/UEDImg/28576941_1391673826_ncZU.jpg" />
-                                </div>
-                                <div class="music-info">
-                                    <h2><a href="javascript:;" class="module-item-title said-ellipsis" title="世界很大，风住过这里，这个标题很长，测试一下看看行不行">世界很大，风住过这里，这个标题很长，测试一下看看行不行</a></h2>
-                                    <h4 title="千里之外 - 周杰伦" class="music-artist said-ellipsis">千里之外 - 周杰伦</h4>
-                                    <time class="said-date">2015-05-20 星期一</time>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="said-item">
-                            <div class="module-img-con said-img" style="background-image: url(../../Content/Images/UEDImg/0150427135119.jpg);">
-                                <div class="module-mask">
-                                    <div class="module-summary">
-                                        <p>突然想要走一段陌生的路，让自己无谓一点。 </p>
-                                        <p>外面突然下起了雨，偶尔让晚九点的天空白了一瞬。就好像天公懂的作美，陪衬着你的心情，加一杯调料。 </p>
-                                        <p>突然很安静，就好像世界空了一点点，灯已经关上，夜已经沉重。 </p>
-                                        <p>不由自主的学会疗伤，从一个未知点开始，不由自主的，也许是从一个闪电，就如灵感一般把控不住的。这是王者的法则？还是弱者的悲情？ 突然想单曲循环一首歌，让心跳不会去选择沉闷。 从一个初夏循环到一个雪落，也许需要一点漫长的东西酝酿一种感觉，否则就没有起伏让自己懂的</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="said-music">
-                                <div class="music-img">
-                                    <div class="music-ring"></div>
-                                    <img title="paramore" alt="test" src="/Content/Images/UEDImg/8f366562-afce-4f15-baf3-3bccdcf51aa6.jpg" />
-                                </div>
-                                <div class="music-info">
-                                    <h2><a href="javascript:;" class="module-item-title said-ellipsis" title="风住过的地方">风住过的地方</a></h2>
-                                    <h4 title="Where We Are - Westlife" class="music-artist said-ellipsis">Where We Are - Westlife</h4>
-                                    <time class="said-date">2015-05-21 星期四</time>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>*@
             </div>
         </div>
         <div class="said-module">
@@ -174,62 +112,9 @@
         </div>
     </div>
 </section>
+@section Css{
+    @Styles.Render("~/static/said/index.css")
+}
 @section FootJs{
-    <script>
-        require(['jquery', 'so'], function ($, so) {
-            var $bannerItems = $('#banner-box').find('li'),//banner项
-                $rings = $('#banner-footer').find('li'),//banner小圆点
-                $arrows = $('.banner-arrow'),//左右翻页banner
-                $currBannerItem = $bannerItems.eq(0),//当前显示的banner
-                maxBannerIndex = $bannerItems.length - 1,//banner最大值
-                currBannerIndex = 0,//banner当前滑动页
-                intervalId,
-                start = function () {//banner动画开始
-                    clearInterval(intervalId);
-                    intervalId = setInterval(function () {
-                        currBannerIndex++;
-                        if (currBannerIndex > maxBannerIndex) {
-                            toggleBanner(0);
-                        } else
-                            toggleBanner(currBannerIndex);
-                    }, 8000);
-                },
-                stop = function () {//banner动画停止
-                    clearInterval(intervalId);
-                },
-                //切换banner
-                toggleBanner = function (index) {
-                    currBannerIndex = index;
-                    $currBannerItem.stop().animate({ 'opacity': 0, 'z-index': 1 }, 500);
-                    $currBannerItem = $bannerItems.eq(index).stop().animate({ 'opacity': 1, 'z-index': 2 }, 500);
-                    $rings.removeClass('active').eq(index).addClass('active');
-                };
-
-            //点击小按钮
-            $rings.each(function (i) {
-                $(this).on('click', function () {
-                    if (currBannerIndex === i) return;
-                    toggleBanner(i);
-                }).hover(function () {
-                    stop();
-                }, function () {
-                    start();
-                });
-            });
-            $arrows.each(function (i) {
-                var func = i ?
-                    function () {//向右
-                        return currBannerIndex == maxBannerIndex ? 0 : currBannerIndex + 1;
-                    } :
-                    function () {//向左
-                        return currBannerIndex == 0 ? maxBannerIndex : currBannerIndex - 1;
-                    };
-                $(this).on('click', function () {
-                    toggleBanner(func());
-                    start();
-                });
-            });
-            start();
-        });
-    </script>
+    @Scripts.Render("~/static/said/home.index.js")
 }

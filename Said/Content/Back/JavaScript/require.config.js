@@ -2,7 +2,6 @@
     baseUrl: '/static/w/',
     urlArgs: 'v=20160902a',
     paths: {
-        'jquery': 'jquery',
         'groupInput': 'a/gi',
         'avalonUpload': 'a/ub',
         'upload': 'so/upload',

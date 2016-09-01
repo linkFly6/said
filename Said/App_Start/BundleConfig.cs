@@ -12,13 +12,51 @@ namespace Said
 
             #endregion
 
-            #region 全站通用JS
+            #region JS插件
+            //avalon插件
+            bundles.Add(new ScriptBundle("~/static/w/a/gi.js").Include("~/Content/widget/avalon/groupInput.js"));
+            bundles.Add(new ScriptBundle("~/static/w/a/popup.js").Include("~/Content/widget/avalon/popup.js"));
+            bundles.Add(new ScriptBundle("~/static/w/a/ub.js").Include("~/Content/widget/avalon/uploadBox.js"));
+
+            //bootstrap
+            bundles.Add(new ScriptBundle("~/static/w/bs/bootstrap.js").Include("~/Content/widget/bootstrap/bootstrap.js"));
+            bundles.Add(new ScriptBundle("~/static/w/bs/date.js").Include("~/Content/widget/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.js"));
+            bundles.Add(new ScriptBundle("~/static/w/bs/table.js").Include("~/Content/widget/bootstrap/bootstrap-table/bootstrap-table.js"));
+
+            //highlight
+            bundles.Add(new ScriptBundle("~/static/w/hl/highlight.js").Include("~/Content/widget/highlight/highlight.said.js"));
+
+            //so
+            bundles.Add(new ScriptBundle("~/static/w/so/so.js").Include("~/Content/widget/so/so.js"));
+            bundles.Add(new ScriptBundle("~/static/w/so/dialog.js").Include("~/Content/widget/so/plug/dialog.js"));
+            bundles.Add(new ScriptBundle("~/static/w/so/search.js").Include("~/Content/widget/so/plug/search.js"));
+            bundles.Add(new ScriptBundle("~/static/w/so/source.js").Include("~/Content/widget/so/plug/source.js"));
+            bundles.Add(new ScriptBundle("~/static/w/so/upload.js").Include("~/Content/widget/so/plug/upload.js"));
+
+            //sweetalert
+            bundles.Add(new ScriptBundle("~/static/w/sweetalert.js").Include("~/Content/widget/sweetalert/sweetalert.min.js"));
+
+            //echarts
+            bundles.Add(new ScriptBundle("~/static/w/echarts.js").Include("~/Content/widget/echarts.js"));
+
+            //showdown
+            bundles.Add(new ScriptBundle("~/static/w/showdown.js").Include("~/Content/widget/showdown.said.js"));
+
+            //underscore
+            bundles.Add(new ScriptBundle("~/static/w/underscore.js").Include("~/Content/widget/underscore.js"));
+
+            //requirejs
+            bundles.Add(new ScriptBundle("~/static/w/requirejs.js").Include("~/Content/widget/requirejs-2.1.15.js"));
+
+            //underscore
+            bundles.Add(new ScriptBundle("~/static/w/jquery.js").Include("~/Content/widget/jquery-2.1.1.js"));
+
             #endregion
 
 
             #region 后台CSS
             //全局样式
-            bundles.Add(new StyleBundle("~/static/back/css/global")
+            bundles.Add(new StyleBundle("~/static/back/css/global.css")
                    .Include(
                         "~/Content/widget/bootstrap/bootstrap.css",
                         "~/Content/Style/font-awesome.min.css",
@@ -117,64 +155,102 @@ namespace Said
             #endregion
 
 
-
-
-
-
             #endregion
 
-            #region JS插件
-            //avalon插件
-            bundles.Add(new ScriptBundle("~/static/w/a/gi.js").Include("~/Content/widget/avalon/groupInput.js"));
-            bundles.Add(new ScriptBundle("~/static/w/a/popup.js").Include("~/Content/widget/avalon/popup.js"));
-            bundles.Add(new ScriptBundle("~/static/w/a/ub.js").Include("~/Content/widget/avalon/uploadBox.js"));
 
-            //bootstrap
-            bundles.Add(new ScriptBundle("~/static/w/bs/bootstrap.js").Include("~/Content/widget/bootstrap/bootstrap.js"));
-            bundles.Add(new ScriptBundle("~/static/w/bs/date.js").Include("~/Content/widget/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.js"));
-            bundles.Add(new ScriptBundle("~/static/w/bs/table.js").Include("~/Content/widget/bootstrap/bootstrap-table/bootstrap-table.js"));
-
-            //highlight
-            bundles.Add(new ScriptBundle("~/static/w/hl/highlight.js").Include("~/Content/widget/highlight/highlight.said.js"));
-
-            //so
-            bundles.Add(new ScriptBundle("~/static/w/so/so.js").Include("~/Content/widget/so/so.js"));
-            bundles.Add(new ScriptBundle("~/static/w/so/dialog.js").Include("~/Content/widget/so/plug/dialog.js"));
-            bundles.Add(new ScriptBundle("~/static/w/so/search.js").Include("~/Content/widget/so/plug/search.js"));
-            bundles.Add(new ScriptBundle("~/static/w/so/source.js").Include("~/Content/widget/so/plug/source.js"));
-            bundles.Add(new ScriptBundle("~/static/w/so/upload.js").Include("~/Content/widget/so/plug/upload.js"));
-
-            //sweetalert
-            bundles.Add(new ScriptBundle("~/static/w/sweetalert.js").Include("~/Content/widget/sweetalert/sweetalert.min.js"));
-
-            //echarts
-            bundles.Add(new ScriptBundle("~/static/w/echarts.js").Include("~/Content/widget/echarts.js"));
-
-            //showdown
-            bundles.Add(new ScriptBundle("~/static/w/showdown.js").Include("~/Content/widget/showdown.said.js"));
-
-            //underscore
-            bundles.Add(new ScriptBundle("~/static/w/underscore.js").Include("~/Content/widget/underscore.js"));
-
-            //requirejs
-            bundles.Add(new ScriptBundle("~/static/w/requirejs.js").Include("~/Content/widget/requirejs-2.1.15.js"));
-
-            //underscore
-            bundles.Add(new ScriptBundle("~/static/w/jquery.js").Include("~/Content/widget/jquery-2.1.1.js"));
-
-            #endregion
 
 
             #region 前台CSS
-            //blog
-            bundles.Add(new StyleBundle("~/static/said/blog").Include("~/Content/Style/blog.css", "~/Content/widget/highlight/github.css"));
-            #endregion
+            //全局样式
+            bundles.Add(new StyleBundle("~/static/said/css/global.css")
+                   .Include(
+                        "~/Content/style/Global.css",
+                        "~/Content/Style/font-awesome.min.css",
+                        "~/Content/Style/layout.css"));
 
+            //blog
+            bundles.Add(new StyleBundle("~/static/said/blog.css").Include("~/Content/Style/blog.css", "~/Content/widget/highlight/github.css"));
+            bundles.Add(new StyleBundle("~/static/said/blog.index.css").Include("~/Content/Style/bloglist.css"));
+
+            //Home
+            bundles.Add(new StyleBundle("~/static/said/home.about.css").Include("~/Content/Style/about.css"));
+            bundles.Add(new StyleBundle("~/static/said/index.css").Include("~/Content/Style/index.css"));
+            bundles.Add(new StyleBundle("~/static/said/error.css").Include("~/Content/Style/notFound.css"));
+
+            //project
+            bundles.Add(new StyleBundle("~/static/said/projects.css").Include("~/Content/Style/projects.css"));
+            bundles.Add(new StyleBundle("~/static/said/.css").Include("~/Content/Style/.css"));
+
+
+            //said
+            bundles.Add(new StyleBundle("~/static/said/article.css").Include("~/Content/Style/saiddetail.css"));
+            bundles.Add(new StyleBundle("~/static/said/article.index.css").Include("~/Content/Style/saidlist.css"));
+
+
+            //bundles.Add(new StyleBundle("~/static/said/.css").Include("~/Content/Style/.css"));
+
+            #endregion
 
             #region 前台JS
-            bundles.Add(new ScriptBundle("~/said.main.js").Include("~/Content/javaScript/require.config.js"));
+            //require配置
+            bundles.Add(new ScriptBundle("~/static/said/config.js").Include("~/Content/javascript/require.config.js"));
+            //全局
+            bundles.Add(new ScriptBundle("~/static/said/main.js").Include("~/Content/widget/jquery-2.1.1.js", "~/Content/javaScript/global.js"));
+
+            //blog业务
+            bundles.Add(new ScriptBundle("~/static/said/blog.js").Include("~/Content/javascript/blog.js"));
+            bundles.Add(new ScriptBundle("~/static/said/blog.index.js").Include("~/Content/javascript/blog.index.js"));
+
+            //home
+            bundles.Add(new ScriptBundle("~/static/said/home.index.js").Include("~/Content/javascript/home.index.js"));
+
+            //said
+            bundles.Add(new ScriptBundle("~/static/said/article.js").Include("~/Content/javascript/article.js"));
+
+            //
+            //bundles.Add(new ScriptBundle("~/static/said/.js").Include("~/Content/javascript/.js"));
             #endregion
 
+
+
+            #region WapCSS
+            //全局样式
+            bundles.Add(new StyleBundle("~/static/wap/css/global.css")
+                   .Include(
+                        "~/Content/wap/style/layout.css",
+                        "~/Content/Style/font-awesome.min.css",
+                        "~/Content/wap/style/wap.css"));
+
+            //blog
+            bundles.Add(new StyleBundle("~/static/wap/about.css").Include("~/Content/wap/style/about.css"));
+
+            //Said
+            bundles.Add(new StyleBundle("~/static/wap/article.css").Include("~/Content/wap/style/article.css"));
+            bundles.Add(new StyleBundle("~/static/wap/article.index.css").Include("~/Content/wap/style/article.index.css"));
+
+            //blog
+            bundles.Add(new StyleBundle("~/static/wap/blog.css").Include("~/Content/wap/style/blog.css"));
+
+            #endregion
+
+            #region WapJS
+            //require配置
+            bundles.Add(new ScriptBundle("~/static/wap/config.js").Include("~/Content/wap/javascript/require.config.js"));
+
+            //首页
+            bundles.Add(new ScriptBundle("~/static/wap/index.js").Include("~/Content/wap/javascript/index.js"));
+
+            //said
+            bundles.Add(new ScriptBundle("~/static/wap/article.js").Include("~/Content/wap/javascript/article.js"));
+            bundles.Add(new ScriptBundle("~/static/wap/article.index.js").Include("~/Content/wap/javascript/article.js"));
+
+
+            //blog
+            bundles.Add(new ScriptBundle("~/static/wap/blog.index.js").Include("~/Content/wap/javascript/blog.index.js"));
+            bundles.Add(new ScriptBundle("~/static/wap/blog.js").Include("~/Content/wap/javascript/blog.js"));
+
+
+            #endregion
         }
     }
 }

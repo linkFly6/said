@@ -7,9 +7,7 @@
     string saidResourcePath = ConfigInfo.SourceSaidPath;
 
 }
-@section Css{
-    <link href="@Url.Content("~/Content/wap/style/about.css?v=1.0")" rel="stylesheet">
-}
+
 <div class="banner">
     <div class="banner-bg" style="background-image:url(/Content/Images/bg/paperman_about.jpg);"></div>
     <div class="banner-content">
@@ -34,8 +32,9 @@
     </div>
 </section>
 
-@section FootJs{
-    <script>
-    </script>
-
+@section Css{
+    @Styles.Render("~/static/wap/about.css")
 }
+@*@section FootJs{
+
+    }*@

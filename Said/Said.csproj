@@ -212,7 +212,12 @@
     <Content Include="Content\back\images\showMsg\error.png" />
     <Content Include="Content\back\images\showMsg\ok.png" />
     <Content Include="Content\font\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\javascript\article.js" />
+    <Content Include="Content\javascript\blog.index.js" />
+    <Content Include="Content\javascript\home.index.js" />
     <Content Include="Content\style\bloglist.css" />
+    <Content Include="Content\wap\javascript\article.js" />
+    <Content Include="Content\wap\javascript\index.js" />
     <Content Include="Content\widget\avalon\avalon.mobile.js" />
     <Content Include="Content\widget\avalon\groupInput.js" />
     <Content Include="Content\widget\avalon\popup.js" />
@@ -342,9 +347,9 @@
     <Content Include="Content\images\UEDImg\X.js.png" />
     <Content Include="Content\images\work_tool_001.png" />
     <Content Include="Content\widget\jquery-2.1.1.js" />
-    <Content Include="Content\javaScript\require.config.js" />
-    <Content Include="Content\javaScript\blog.js" />
-    <Content Include="Content\javaScript\global.js" />
+    <Content Include="Content\javascript\require.config.js" />
+    <Content Include="Content\javascript\blog.js" />
+    <Content Include="Content\javascript\global.js" />
     <Content Include="Content\style\about.css" />
     <Content Include="Content\style\blog.css" />
     <Content Include="Content\style\font-awesome.min.css" />

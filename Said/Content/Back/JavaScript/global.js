@@ -1,4 +1,4 @@
-﻿require(['so', 'jquery'], function (so, $) {
+﻿require(['jquery'], function ($) {
     var     //绑定导航
     bindNavigation = function ($content, keyClass, openClass) {
         $content.find('.' + keyClass).each(function () {
@@ -31,7 +31,7 @@
         });
     });
 });
-define('said', ['so', 'jquery'], function (so, $) {
+define('said', ['jquery'], function ($) {
     var document = window.document,
         said = {};
 

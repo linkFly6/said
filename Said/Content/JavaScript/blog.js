@@ -1,4 +1,4 @@
-﻿define(['jquery', 'so'], function ($, _) {
+﻿define('blog', ['jquery', 'so'], function ($, _) {
     'use strict';
     var commentsTemplate = '<li class="comment-item"><div class="ctitem-content _comment"><div class="ct-top"><a href="#${anthor}" name="${anthor}" title="锚点引用" class ="anchor"><i class ="fa fa-link"></i></a>${title}</div><div class="ct-context"><p>${context}</p></div><div class="ct-footer"><span class="ct-num">#${anthor}</span>${deleteHTML}<time class="ct-time">${date}</time>${replyHTML}</div><div class="comment-reply" style="display:none"><div class="arrow-border cr-arrow"></div><ul class="cr-container"></ul></div></div></li>';
     //var replyTemplte = `<li class="cr-item">
