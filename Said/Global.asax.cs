@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.WebPages;
 
@@ -40,12 +41,18 @@ namespace Said
 
             //regMobile.IsMatch(HttpContext.Current.Request.UserAgent);
 
+#if DEBUG
+            BundleTable.EnableOptimizations = true;
+#endif
+
+
 
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             logManager.Info("载入配置文件");
             //加载配置文件

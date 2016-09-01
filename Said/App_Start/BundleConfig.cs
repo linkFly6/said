@@ -8,6 +8,16 @@ namespace Said
         // 有关 Bundling 的详细信息，请访问 http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
+
+            //css
+            bundles.Add(new StyleBundle("~/bundles/pc-blog").Include("~/Content/Style/blog.css", "~/Content/Widget/highlight/github.css"));
+
+
+            //js
+            bundles.Add(new ScriptBundle("~/said.main.js").Include("~/Content/JavaScript/require.config.js"));
+
+
+            /*
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 
@@ -38,6 +48,7 @@ namespace Said
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+                        */
         }
     }
 }
