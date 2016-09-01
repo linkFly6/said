@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 
-namespace Said.Models
+namespace Said.Html
 {
     /// <summary>
     /// 扩展Said HTML
@@ -16,7 +16,7 @@ namespace Said.Models
         /// 输出内联CSS（通过Bundle压缩）
         /// </summary>
         /// <param name="htmlHelper"></param>
-        /// <param name="bundleVirtualPath"></param>
+        /// <param name="bundleVirtualPath">Bundle配置的虚拟路径</param>
         /// <returns></returns>
         public static IHtmlString InlineStyles(this HtmlHelper htmlHelper, string bundleVirtualPath)
         {
@@ -30,7 +30,7 @@ namespace Said.Models
         /// 输出内联JS（通过Bundle压缩）
         /// </summary>
         /// <param name="htmlHelper"></param>
-        /// <param name="bundleVirtualPath"></param>
+        /// <param name="bundleVirtualPath">Bundle配置的虚拟路径</param>
         /// <returns></returns>
         public static IHtmlString InlineScripts(this HtmlHelper htmlHelper, string bundleVirtualPath)
         {

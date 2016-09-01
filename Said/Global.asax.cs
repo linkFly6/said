@@ -42,7 +42,7 @@ namespace Said
             //regMobile.IsMatch(HttpContext.Current.Request.UserAgent);
 
 #if DEBUG
-            BundleTable.EnableOptimizations = true;
+            //BundleTable.EnableOptimizations = true;
 #endif
 
 

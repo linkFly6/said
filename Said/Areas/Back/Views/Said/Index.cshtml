@@ -14,17 +14,16 @@
     <li class="active">添加Said</li>
 </ol>
 <div class="main-context">
-    <div class="context-chart">
-        <div id="userChart">
-        </div>
-    </div>
+    @*<div class="context-chart">
+            <div id="userChart">
+            </div>
+        </div>*@
     <div class="bs-table">
         <table id="btTable" class="table table-hover table-striped" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
     </div>
 </div>
 @section Css{
-    <link href="~/Content/Back/Style/saidCenter.css" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/Back/JavaScript/bootstrap/bootstrap-table/bootstrap-table.min.css")" rel="stylesheet" />
+    @Styles.Render("~/static/back/css/saidCenter", "~/static/back/css/bootstrap-table")
     <style>
         /*boostrap-table的列表后加载出来，会造成页面出横向滚动条，是因为页面的宽度计算有问题（数据加载的多，会出竖向滚动条，竖向滚动条占据了空间，导致页面上的元素宽度计算不正确，从而出现横向滚动条），所以特殊处理下样式*/
         .main-context { overflow: hidden; }
@@ -32,6 +31,7 @@
     </style>
 }
 @section FootJs{
+    @Scripts.Render("~/static/back/js/said.index")
     <script>
         var articlesDatas = [];
 
@@ -104,192 +104,66 @@
             delele: '/Back/Said/Delete/',
             realDelete: '/Back/Said/RealDelete/'
         };
-        $(function () {
-            var option = {
-                title: {
-                    text: '2014-11-15',
-                    subtext: '昨日/今日访问量'
+        /*
+        var option = {
+            title: {
+                text: '2014-11-15',
+                subtext: '昨日/今日访问量'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['昨日', '今日']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['0:00', '1:00', '2:00', '3:00', '4:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '昨日',
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
                 },
-                tooltip: {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data: ['昨日', '今日']
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-                        restore: { show: true },
-                        saveAsImage: { show: true }
-                    }
-                },
-                calculable: true,
-                xAxis: [
-                    {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: ['0:00', '1:00', '2:00', '3:00', '4:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value'
-                    }
-                ],
-                series: [
-                    {
-                        name: '昨日',
-                        type: 'line',
-                        smooth: true,
-                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [1, 5, 2, 15, 5, 4, 3, 2, 4, 4, 4, 5, 12, 15, 20, 7, 6, 6, 1, 0, 2, 0, 6, 20]
-                    },
-                    {
-                        name: '今日',
-                        type: 'line',
-                        smooth: true,
-                        itemStyle: { normal: { areaStyle: { type: 'default' } } },
-                        data: [5, 2, 5, 5, 5, 3, 3, 9, 10, 19, 16, 16, 22, 7, 7, 8, 8, 0, 0, 0, 0, 1, 6, 7]
-                    }
-                ]
-            };
-            require(['echarts'], function (ec) {
-                var myChart = ec.init(document.getElementById('userChart'));
-                myChart.setOption(option);
-            });
-            require(['said', 'jquery', 'so', 'sweetalert', 'bsTable'], function (said, $, so, sweetalert) {
-                var templates = {
-                    deleteArticle: {
-                        text: '您确定要删除文章《<span class="said-red said-bold"> ${0} </span>》么？<br/>该操作为<span class="said-red said-bold">逻辑删除</span>',
-                        ok: '删除文章《${0}》成功<br/>该操作为逻辑删除，仍可以在数据库中查阅到'
-                    },
-                    realDeleteArticle: {
-                        text: '您确定要永久删除文章《<span class="said-red said-bold"> ${0} </span>》么？<br/>该操作为<span class="said-red said-bold">物理删除，不可恢复</span>',
-                        ok: '删除文章《${0}》成功<br/>该操作为物理删除，不可恢复'
-                    }
-                },
-                    deleteArticle = function (isRealDelete, id, title, callback) {
-                        sweetalert({
-                            title: '确认删除',
-                            text: so.format(isRealDelete ? templates.realDeleteArticle.text : templates.deleteArticle.text, title),
-                            html: true,
-                            type: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: '确认删除',
-                            closeOnConfirm: false,
-                            cancelButtonText: '取消',
-                            //配置正在加载
-                            showLoaderOnConfirm: true
-                        }, function (isConfirm) {
-                            if (isConfirm) {
-                                said.ajax(isRealDelete ? Action.realDelete : Action.delele, {
-                                    id: id
-                                }).done(function (result) {
-                                    if (result.code === 0) {
-                                        sweetalert({
-                                            title: '删除成功',
-                                            text: so.format(isRealDelete ? templates.realDeleteArticle.ok : templates.deleteArticle.ok, title),
-                                            html: true,
-                                            type: 'success'
-                                        });
-                                        callback(id);
-                                    } else {
-                                        sweetalert('删除异常', '服务器返回异常：' + result.msg, 'error');
-                                    }
-                                }).fail(function () {
-                                    sweetalert('删除异常', '网络连接异常', 'error');
-                                });
-                            }
-                        });
-                    }
-
-
-                var $bsTable = $('#btTable').bootstrapTable({
-                    columns: [
-                     //{ field: 'SaidId', title: 'ID', visible: true },
-                     {
-                         field: 'STitle',
-                         title: '名&nbsp;&nbsp;&nbsp;称',
-                         valign: 'middle',
-                         sortable: true,
-                         formatter: function (value, row, index) {
-                             //console.log(row); //row可以访问到数据
-                             //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
-                             return ['<a target="_blank" href="/Said/', row.SaidId, '.html">', value, '</a>'].join('');
-                         }
-                     },
-                     //{
-                     //    field: 'SSummary',
-                     //    title: '描&nbsp;&nbsp;&nbsp;述',
-                     //    valign: 'middle',
-                     //    sortable: true,
-                     //    formatter: function (value, row, index) {
-                     //        return value;
-                     //    }
-                     //},
-                     {
-                         field: 'Song.SongName',
-                         title: '歌&nbsp;&nbsp;&nbsp;曲',
-                         valign: 'middle',
-                         formatter: function (value, row, index) {
-                             return value;
-                         }
-                     },
-                     {
-                         field: 'SPV',
-                         title: '浏&nbsp;&nbsp;&nbsp;览',
-                         valign: 'middle',
-                         sortable: true,
-                         formatter: function (value, row, index) {
-                             return value;
-                         }
-                     },
-                     {
-                         field: 'Date',
-                         title: '发布时间',
-                         sortable: true,
-                         valign: 'middle',
-                         formatter: function (value, row, index) {
-                             return value;
-                         }
-                     },
-                     {
-                         field: 'Likes',
-                         title: '喜&nbsp;&nbsp;&nbsp;欢',
-                         valign: 'middle',
-                         formatter: function (value, row, index) {
-                             return value;
-                         }
-                     },
-                     {
-                         field: 'SaidId',
-                         title: '操&nbsp;&nbsp;&nbsp;作',
-                         formatter: function (value, row, index) {
-                             return ['<a class="btn btn-info fa fa-edit" data-id="', value, '" href="/Back/Said/Edit/', value, '" title="编辑"></a>&nbsp;&nbsp;&nbsp;<a class="btn btn-default fa fa-trash-o btn-delete" data-title="', row.STitle, '" data-id="', value, '" title="逻辑删除"></a>&nbsp;&nbsp;&nbsp;<a class="btn btn-danger fa fa-trash-o btn-delete" data-is-real="1" data-title="', row.STitle, '" data-id="', value, '" title="物理删除（永久删除）"></a>'].join('');
-                         }
-                     }
-                    ],
-                    pageSize: 20,
-                    pageList: [20, 50, 100, 150, 200, 400, 600, 1000],
-                    data: articlesDatas
-                }).on('click', '.btn-delete', function () {
-                    var $elem = $(this), dataId = $elem.data('id'), dataTitle = $elem.data('title'), isRealDelete = $elem.data('isReal');
-                    deleteArticle(isRealDelete, dataId, dataTitle, function () {
-                        $bsTable.bootstrapTable('remove', {
-                            field: 'SaidId',
-                            values: [dataId + '']//bootStrapTable的bug，因为dataId是被jQuery转成了数字，导致bootStrapTable检测BlogId字段是否相等的时候发生了bug
-                        });
-                    });
-                });
-            });
-
-
+                {
+                    name: '今日',
+                    type: 'line',
+                    smooth: true,
+                    itemStyle: { normal: { areaStyle: { type: 'default' } } },
+                    data: [5, 2, 5, 5, 5, 3, 3, 9, 10, 19, 16, 16, 22, 7, 7, 8, 8, 0, 0, 0, 0, 1, 6, 7]
+                }
+            ]
+        };
+        require(['echarts'], function (ec) {
+            var myChart = ec.init(document.getElementById('userChart'));
+            myChart.setOption(option);
         });
-
+        */
+        require(['said.index'], function (view) {
+            view(Action);
+        });
 
     </script>
 }

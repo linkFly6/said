@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,SAAU;EACN,KAAK,EAAE,KAAK;EACZ,MAAM,EAAE,MAAM;EAGV,4BAAU;IACN,aAAa,EAAE,IAAI;EAI3B,uBAAc;IACV,MAAM,EAAE,KAAK;IACb,UAAU,EAAE,+BAA+B;IAC3C,eAAe,EAAE,UAAU;EAG/B,sBAAa;IACT,OAAO,EAAE,MAAM;EAIf,gCAAW;IACP,MAAM,EAAE,WAAW",
-"sources": ["sass/pageConfig.scss"],
-"names": [],
-"file": "pageConfig.css"
-}

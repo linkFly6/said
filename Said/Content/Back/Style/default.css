@@ -133,16 +133,6 @@ ul.page-sidebar-menu > li.active > a .selected { display: block; float: right; p
 .breadcrumb .g-help:before { content: ''; }
 
 
-/*plug - showMsg */
-.showmsg-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 1031; }
-.showmsg-container .showmsg-mask { bottom: 0; left: 0; position: fixed; right: 0; top: 0; background: #fff; opacity: 0.5; }
-.showmsg-content { z-index: 1040; position: absolute; min-width: 320px; left: 35%; top: 30%; max-width: 60%; background-color: #FFF; box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); border: 3px solid #4fc3f7; padding: 10px; }
-.showmsg-state { height: 30px; vertical-align: bottom; margin-right: 5px; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
-.showmsg-content .showmsg-context { line-height: 31px; font-size: 15px; text-align: center; display: inline; /*display: block;*/ }
-.showmsg-content .showmsg-state-ok { border-color: #7ad6e1; animation: state-ok 0.5s ease-in-out; }
-.showmsg-content .showmsg-state-error { border-color: #ef8381; animation: state-error 0.5s ease-in-out; }
-.showmsg-content .showmsg-state-warning { border-color: #4fc3f7; animation: state-warning 0.5s ease-in-out; }
-
 /*plug-dialog*/
 .__dialog, .__dialog .dialog-mask { width: 100%; height: 100%; top: 0; left: 0; }
 .__dialog { position: fixed; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; pointer-events: none; }
