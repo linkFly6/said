@@ -1,6 +1,18 @@
-﻿.content {
+﻿.said-box {
     a {
         color: #28a1c5;
+    }
+}
+
+.blog {
+    font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Microsoft Yahei", sans-serif;
+    background-color: #fff;
+
+    .blog-content.codeFont {
+        /*font-size: 14px;*/
+        p {
+            /*font-size: 14px;*/
+        }
     }
 }
 
@@ -20,7 +32,13 @@
     .blog-content {
         color: #555;
         word-wrap: break-word;
-        padding-top: 25px;
+        padding-top: 5px;
+
+        img {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
 
         p {
             /*padding: 20px 0;*/
@@ -30,7 +48,8 @@
             font-weight: 400;
             color: #555;
             letter-spacing: 1px;
-            margin: 0 0 20px 0;
+            /*margin: 0 0 20px 0;*/
+            margin: 1.5em 0;
             word-break: break-word;
             white-space: pre-wrap;
             text-align: justify;
@@ -41,12 +60,18 @@
         }
 
         code {
-            background-color: #e7f5fa;
+            background-color: #F6F6F6;
             border-radius: 4px;
             color: #000;
             font-size: 90%;
             padding: 2px 6px;
             margin: 0 2px;
+        }
+
+        .highlight-source {
+            code {
+                padding: 1em;
+            }
         }
 
         code, kbd, pre, samp {
@@ -87,6 +112,15 @@
     }*/
     .info-like {
         text-align: right;
+
+        .info-cate {
+            margin-right: 12px;
+            color: #555;
+        }
+
+        time {
+            color: #999;
+        }
 
         a {
             color: red;

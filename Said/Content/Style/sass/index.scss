@@ -14,7 +14,7 @@
     opacity: 0;
 }
 
-.index-background:hover .said-banner-footer, .index-background:hover .banner-arrow, .said-item:hover .music-artist {
+.index-background:hover .said-banner-footer, .index-background:hover .banner-arrow {
     opacity: 1;
 }
 /*arrow*/
@@ -202,88 +202,19 @@
         line-height: 2;
         padding: 10px;
     }
-}
 
-.module-title .fa-quote-left, .module-title .fa-quote-right {
-    font-size: 10px;
-    vertical-align: middle;
-    padding-right: 1em;
-    color: #777;
-}
-
-.module-content .said-item, .module-content .blog-item {
-    width: 33.3333%;
-    float: left;
-    padding: 10px;
-    position: relative;
-}
-
-.module-content .said-item {
-    width: 50%;
-}
-
-.module-content li:hover .module-mask, .said-main-img:hover .module-mask {
-    opacity: 0.7;
-}
-
-.module-mask {
-    background: linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)) repeat scroll 0 0 #222;
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-
-    &::after {
-        content: '';
-        display: inline-block;
-        height: 100%;
+    .fa-quote-left, .fa-quote-right {
+        font-size: 10px;
         vertical-align: middle;
+        padding-right: 1em;
+        color: #777;
     }
 }
 
 
-
-.module-summary {
-    color: #fff;
-    text-align: justify;
-    padding: 10px;
-    text-indent: 2em;
-    width: 100%;
-    margin: auto;
-}
-
-.module-img-con {
-    width: 100%;
-    position: relative;
-    height: 280px;
-    background-size: 547px 300px;
-    background-position: 50% 0;
-    background-repeat: no-repeat;
-}
-
-.said-img {
-    background-position: center;
-    background-size: 1094px 600px;
-    height: 320px;
-}
-
-a.module-item-title, .said-main-title {
-    font-size: 25px;
-    line-height: 2;
-    color: #444;
-    display: block;
-    text-align: center;
-}
-
-a.module-item-title:hover {
-    color: #08c;
-}
-
 /*blog*/
 .module-more-link {
-    font-family: "PingHei","Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
+    font-family: "Helvetica Neue","Helvetica","Arial","Verdana","sans-serif";
     font-size: 15px;
 
     &:hover {
@@ -291,116 +222,153 @@ a.module-item-title:hover {
     }
 }
 
+.module-content {
 
-/*   
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);   
-*/
-.blog-info {
-    text-align: center;
-}
+    .module-mask {
+        background: linear-gradient(rgba(61, 61, 61, 0.9), rgba(20, 40, 50, 0.9)) repeat scroll 0 0 #222;
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
 
-.blog-date {
-    color: #999;
-    display: block;
-    text-align: center;
-}
+        &::after {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+        }
+    }
 
+    .module-summary {
+        color: #fff;
+        text-align: justify;
+        padding: 10px;
+        text-indent: 2em;
+        width: 100%;
+        margin: auto;
+    }
 
-/*said*/
-.said-item .module-summary {
-    padding: 20px;
-}
-/*.said-item:hover .music-img { transform: rotate(360deg); }*/
-.said-main {
-    padding: 10px;
-}
+    .module-img-con {
+        width: 100%;
+        position: relative;
+        height: 280px;
+        background-size: 547px 300px;
+        background-position: 50% 0;
+        background-repeat: no-repeat;
+    }
 
-.said-main-img {
-    display: block;
-    width: 100%;
-    height: 500px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-}
-
-.said-main-context {
-    margin: auto;
-    text-align: center;
-}
-
-.said-main-title, .said-main-summary {
-    display: inline-block;
-    color: #fff;
-    vertical-align: middle;
-    min-width: 150px;
-    max-width: 400px;
-    padding-right: 50px;
-    text-align: justify;
-}
-
-.said-main-summary {
-    padding: 0 0 0 50px;
-    border-left: 1px solid #e2e2e2;
-    max-height: 300px;
-    overflow: hidden;
-    text-indent: 2em;
-}
-
-.said-main-title {
-    transition: color 0.2s ease-in-out 0s;
-}
-
-.said-music {
-    position: relative;
-    margin: 0 auto;
-}
-
-%musicImg {
-    height: 100px;
-    width: 100px;
-    border-radius: 50%;
-}
-
-.music-img {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    transition: transform 1s ease-in-out 0s;
-    @extend %musicImg;
-
-    img {
+    a.module-item-title, .said-main-title {
+        font-size: 25px;
+        line-height: 2;
+        color: #444;
         display: block;
-        @extend %musicImg;
+        text-align: center;
+    }
+
+    a.module-item-title:hover {
+        color: #08c;
+    }
+
+
+    .said-item, .blog-item {
+        width: 33.3333%;
+        float: left;
+        padding: 10px;
+        position: relative;
+    }
+    //Said 列表样式
+    .said-item {
+        .blog-info {
+            text-align: center;
+        }
+
+        .blog-date {
+            color: #999;
+            display: block;
+            text-align: center;
+        }
+    }
+
+    &.blog-content {
+        padding-top: 20px;
+    }
+    //blog列表样式
+    .blog-item {
+        padding: 15px 20px 10px;
+
+        &:nth-child(2) {
+            border-left: 1px solid #f3f3f3;
+            border-right: 1px solid #f3f3f3;
+        }
+
+        .b-title {
+            color: #333;
+            font-size: 20px;
+
+            &:visited {
+                color: #c03980;
+            }
+
+            a:hover {
+                color: #057dbb;
+                text-decoration: underline;
+            }
+        }
+
+        .b-summary {
+            color: #777;
+            padding: 9px 0 5px;
+            text-align: justify;
+            /*max-height: 109px;*/
+            height:109px;
+            overflow: hidden;
+        }
+
+        .b-footer {
+            padding-bottom: 3px;
+            color: #999;
+            overflow: hidden;
+
+            %blogMoreFont {
+                font: 14px/24px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif;
+            }
+            //blog下面的分类
+            .b-info {
+                vertical-align: middle;
+                color: #999;
+                font-size: 13px;
+                padding-left: 5px;
+                transition: color 0.2s ease-in-out 0s;
+
+                &:hover {
+                    text-decoration: underline;
+                    color: #028cd3;
+                }
+
+                .b-cate {
+                    @extend %blogMoreFont;
+                }
+            }
+
+            .b-date {
+                float: right;
+            }
+            //pv量
+            .b-pv {
+                vertical-align: middle;
+                padding-left: 5px;
+                cursor: default;
+
+                .pv-txt {
+                    @extend %blogMoreFont;
+                }
+            }
+        }
     }
 }
 
-.music-info {
-    padding: 20px 0 20px 130px;
-    line-height: 2;
-    overflow: hidden;
-}
-
-.music-ring {
-    position: absolute;
-    width: 25%;
-    height: 25%;
-    top: 38%;
-    left: 38%;
-    background-color: #FFF;
-    border-radius: 50%;
-}
-
-.music-artist {
-    font-size: 18px;
-    color: #999;
-    padding-right: 130px;
-}
-
-.said-date {
-    position: absolute;
-    color: #999;
-    bottom: 20px;
-    right: 0;
+.module-content li:hover .module-mask, .said-main-img:hover .module-mask {
+    opacity: 0.7;
 }

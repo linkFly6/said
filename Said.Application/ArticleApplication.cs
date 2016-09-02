@@ -187,23 +187,39 @@ namespace Said.Application
         }
 
         /// <summary>
-        /// 贪婪获取指定个数的文章列表
+        /// 获取指定个数的文章列表，为提升性能，仅获取这些关键属性：
+        /// SaidId
+        /// STitle
+        /// SSummaryTrim
+        /// Date
+        /// Image => { IName, IFileName }
+        /// SPV
+        /// Likes
+        /// Song => { SongName, SongFileName, SongArtist, SongAlbum, Image => { IFileName,IName  } }
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
         public static IEnumerable<Article> GetByTop(int top)
         {
-            return Context.GetByTop(top);
+            return Context.GetByTopPartialDatas(top);
         }
 
         /// <summary>
-        /// 贪婪分页查询
+        /// 贪婪分页查询，为提升性能，只返回关键属性：
+        /// SaidId
+        /// STitle
+        /// SSummaryTrim
+        /// Date
+        /// Image => { IName, IFileName }
+        /// SPV
+        /// Likes
+        /// Song => { SongName, SongFileName, SongArtist, SongAlbum, Image => { IFileName,IName  } }
         /// </summary>
         /// <param name="page">分页对象</param>
         /// <returns>返回封装后的IPagedList对象</returns>
         public static IPagedList<Article> FindByDateDesc(Models.Data.Page page)
         {
-            return Context.FindByDateDesc(page, m => m.IsDel == 0, m => m.Date);
+            return Context.FindByPartialDatasDateDesc(page);
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ using Said.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,6 +59,57 @@ namespace Said.Service
         /// <param name="filename">要检索的文件名称</param>
         /// <returns></returns>
         IEnumerable<string> GetBlogIdByFileName(string fileName);
+
+
+        /// <summary>
+        /// 分页查询，为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <returns></returns>
+        IPagedList<Blog> GetPartialDatasByPage(Page page);
+
+        /// <summary>
+        /// 获取指定个数的文章列表，为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <param name="top">要获取的个数</param>
+        /// <returns></returns>
+        IEnumerable<Blog> GetPartialDatasByTop(int top);
+
+
+        /// <summary>
+        /// 获取所有文章列表（默认条件为时间倒序，数据标记删除），为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Blog> GetAllPartialDatas();
+
+        /// <summary>
+        /// 根据分类查询相应文章的列表，为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Blog> GetAllPartialDatasByClassifyId(string classifyId);
 
     }
     /// <summary>
@@ -156,7 +208,7 @@ namespace Said.Service
             **/
 
             return base.GetPage(page,
-                                    m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords),
+                                    m => (m.BTitle.Contains(keywords) || m.BContext.Contains(keywords)) && m.IsDel == 0,
                                     m => m.Date,
                                     m => new
                                     {
@@ -308,6 +360,172 @@ namespace Said.Service
             return from m in Context.Blog
                    where m.BName == fileName
                    select m.BlogId;
+        }
+
+
+        /// <summary>
+        /// 分页查询，为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <returns></returns>
+        public IPagedList<Blog> GetPartialDatasByPage(Page page)
+        {
+
+            return base.GetPage(page,
+                                   m => m.IsDel == 0,
+                                   m => m.Date,
+                                   m => new
+                                   {
+                                       BlogId = m.BlogId,
+                                       BTitle = m.BTitle,
+                                       BSummaryTrim = m.BSummaryTrim,
+                                       //Tags = m.Tags,
+                                       CName = m.Classify.CName,
+                                       ClassifyId = m.ClassifyId,
+                                       Date = m.Date,
+                                       BPV = m.BPV,
+                                       BComment = m.BComment
+                                   }, m => new Blog
+                                   {
+                                       BlogId = m.BlogId,
+                                       BTitle = m.BTitle,
+                                       BSummaryTrim = m.BSummaryTrim,
+                                       //Tags = m.Tags,
+                                       Classify = new Classify { CName = m.CName, ClassifyId = m.ClassifyId },
+                                       ClassifyId = m.ClassifyId,
+                                       Date = m.Date,
+                                       BPV = m.BPV
+                                   });
+        }
+
+
+        /// <summary>
+        /// 获取指定个数的文章列表（时间倒序），为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <param name="top">要获取的个数</param>
+        /// <returns></returns>
+        public IEnumerable<Blog> GetPartialDatasByTop(int top)
+        {
+            //不需要和FindAllToListSection一样进行join连接，直接使用对象属性也可以，EF会自动生成
+            return (from m in Context.Blog
+                    orderby m.Date descending
+                    where m.IsDel == 0
+                    select new
+                    {
+                        BlogId = m.BlogId,
+                        BTitle = m.BTitle,
+                        Classify = new { CName = m.Classify.CName, ClassifyId = m.Classify.ClassifyId },
+                        Date = m.Date,
+                        BSummaryTrim = m.BSummaryTrim,
+                        BPV = m.BPV
+                    }).ToList().Select(m => new Blog
+                    {
+                        BlogId = m.BlogId,
+                        BTitle = m.BTitle,
+                        Classify = new Classify { CName = m.Classify.CName, ClassifyId = m.Classify.ClassifyId },
+                        ClassifyId = m.Classify.ClassifyId,
+                        BPV = m.BPV,
+                        Date = m.Date,
+                        BSummaryTrim = m.BSummaryTrim
+                    }).Take(top);
+
+
+        }
+
+
+        /// <summary>
+        /// 获取所有文章列表（默认条件为时间倒序，数据标记删除），为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Blog> GetAllPartialDatas()
+        {
+            return (from m in Context.Blog
+                    orderby m.Date descending
+                    where m.IsDel == 0
+                    select new
+                    {
+                        BlogId = m.BlogId,
+                        BTitle = m.BTitle,
+                        Classify = new { CName = m.Classify.CName, ClassifyId = m.Classify.ClassifyId },
+                        Date = m.Date,
+                        BSummaryTrim = m.BSummaryTrim,
+                        BPV = m.BPV
+                    }).ToList().Select(m => new Blog
+                    {
+                        BlogId = m.BlogId,
+                        Classify = new Classify { CName = m.Classify.CName, ClassifyId = m.Classify.ClassifyId },
+                        BTitle = m.BTitle,
+                        ClassifyId = m.Classify.ClassifyId,
+                        BPV = m.BPV,
+                        Date = m.Date,
+                        BSummaryTrim = m.BSummaryTrim
+                    });
+        }
+
+
+        /// <summary>
+        /// 根据分类查询相应的文章列表，为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Blog> GetAllPartialDatasByClassifyId(string classifyId)
+        {
+            //这样写没效果...
+            return (from m in Context.Blog
+                    orderby m.Date descending
+                    where m.IsDel == 0 && m.ClassifyId == classifyId
+                    select new
+                    {
+                        BlogId = m.BlogId,
+                        BTitle = m.BTitle,
+                        Classify = new { CName = m.Classify.CName, ClassifyId = m.Classify.ClassifyId },
+                        Date = m.Date,
+                        BSummaryTrim = m.BSummaryTrim,
+                        BPV = m.BPV
+                    }).ToList().Select(m => new Blog
+                    {
+                        BlogId = m.BlogId,
+                        Classify = new Classify { CName = m.Classify.CName, ClassifyId = m.Classify.ClassifyId },
+                        BTitle = m.BTitle,
+                        ClassifyId = m.Classify.ClassifyId,
+                        BPV = m.BPV,
+                        Date = m.Date,
+                        BSummaryTrim = m.BSummaryTrim
+                    }).ToList();
+
+            //return Context.Blog.Where(where).OrderByDescending(order)
+            //    .ToList()//这里如果不ToList一下会报错，这个BlogService后来几个方法都很不错，值得分享
+            //    .Select(m => new Blog
+            //    {
+            //        BlogId = m.BlogId,
+            //        Classify = new Classify { CName = m.Classify.CName, ClassifyId = m.Classify.ClassifyId },
+            //        ClassifyId = m.Classify.ClassifyId,
+            //        BPV = m.BPV,
+            //        Date = m.Date,
+            //        BSummaryTrim = m.BSummaryTrim
+            //    });
         }
     }
 }

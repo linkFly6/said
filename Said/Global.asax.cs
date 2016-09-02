@@ -42,7 +42,8 @@ namespace Said
             //regMobile.IsMatch(HttpContext.Current.Request.UserAgent);
 
 #if DEBUG
-            //BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
+            //BundleTable.EnableOptimizations = true;//如果要配置压缩，把这里设置成true（或者把web.config里面的debug设置为false）
 #endif
 
 

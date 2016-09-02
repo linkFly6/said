@@ -4,8 +4,8 @@
     ViewBag.Title = "听说 - 世界很大，风住过这里";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     IList<Article> articles = ViewData["articleList"] as List<Article>;
+    IList<Blog> blogList = ViewData["blogList"] as List<Blog>;
     string saidResourcePath = ConfigInfo.SourceSaidThumbnailPath;
-
 }
 <div class="index-background">
     <ul class="index-banner" id="banner-box">
@@ -21,18 +21,6 @@
                         <p>于是我把它们分别折进一首歌里</p>
                         <p>在百无聊赖的下午</p>
                         <p>与你分享</p>
-                    </div>
-                </div>
-            </div>
-        </li>
-        <li class="banner-item" style="background-image: url(/Content/Images/bg/6033.jpg);">
-            <div class="banner-item-box">
-                <div class="banner-content">
-                    <h3 class="banner-title">Write the code, change the world</h3>
-                    <div class="banner-text">
-                        <p>console.log('Hello,Wrold!');</p>
-                        <p>任何可以使用JavaScript来编写的应用，最终都会由JavaScript编写。</p>
-                        <p>(46840404742).toString(36).replace(/\u0066/,function(){ return arguments[0].toUpperCase(); });</p>
                     </div>
                 </div>
             </div>
@@ -54,7 +42,6 @@
     <ul class="said-banner-footer" id="banner-footer">
         <li class="said-banner-ring active">1</li>
         <li class="said-banner-ring">2</li>
-        <li class="said-banner-ring">3</li>
     </ul>
     <a href="javascript:;" class="banner-arrow arrow-left"></a>
     <a href="javascript:;" class="banner-arrow arrow-right"></a>
@@ -94,12 +81,32 @@
             <div class="module-title">
                 <h1>博客精选</h1>
                 <p><i class="fa fa-quote-left"></i>泡上咖啡，我们用舒服的方式聊聊技术<i class="fa fa-quote-right"></i></p>
-                <p>正在开发中，敬请期待</p>
-                @*<a href="javascript:;" class="module-more-link">查看更多精彩技术文章</a>*@
-                <a href="@Url.Action("Cl", "Home", new {url= "http://www.cnblogs.com/silin6/",sgs="home-my-cnblog" })" target="_blank" class="module-more-link icon-coffee">我的博客园</a>
+                <a href="/blog" class="module-more-link icon-coffee">查看更多精彩技术文章</a>
             </div>
-            <div class="module-content afterClear">
-            </div>
+            <ul class="module-content afterClear blog-content">
+                @if (blogList != null)
+                {
+                    foreach (Blog item in blogList)
+                    {
+                        <li class="blog-item">
+                            <div class="b-main">
+                                <h2 class="b-title said-ellipsis">
+                                    <a href="blog.html" class="b-title">@item.BTitle</a>
+                                </h2>
+                                <div class="b-summary">
+                                    <p>@(new HtmlString(item.BSummaryTrim))</p>
+                                </div>
+                                <footer class="b-footer">
+                                    <a class="b-info link fa fa-th-large" title="分类" href="@Url.Action("Index","Blog", new { cate = item.ClassifyId })">&nbsp;<span class="b-cate">@item.Classify.CName</span></a>
+                                    <i class="fa fa-eye b-pv" aria-hidden="true" title="浏览">&nbsp;<span class="pv-txt">@item.BPV</span></i>
+                                    <span class="b-date">@SaidCommon.DateToLocal(item.Date) @SaidCommon.DateToLocalWeek(item.Date)</span>
+                                </footer>
+                            </div>
+                        </li>
+                    }
+                }
+
+            </ul>
         </div>
         <div class="said-module">
             <div class="module-title">

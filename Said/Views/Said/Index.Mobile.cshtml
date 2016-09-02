@@ -1,0 +1,68 @@
+﻿@using Said.Models
+@using Said.Common
+@{
+    ViewBag.Title = "听说 - 秋天该很好，你若尚在场";
+    Layout = "~/Views/Shared/_LayoutWap.cshtml";
+    string saidResourcePath = Said.Common.ConfigInfo.SourceSaidThumbnailPath;
+    //string SourceMusicImage = Said.Common.ConfigInfo.SourceMusicImagePath;
+    //string SourceMusicDir = Said.Common.ConfigInfo.SourceMusicPath;
+    int total = (int)ViewData["total"];
+    int maxPage = (int)ViewData["maxPage"];
+    IList<Article> articles = ViewData["articles"] as List<Article>;
+    int limit = (int)ViewData["limit"];
+}
+<div class="banner">
+    <div class="banner-bg cover" style="background-image:url(/Content/images/bg/6036.jpg);"></div>
+    <div class="banner-content">
+        <h1 class="anima fadeIn">听&nbsp;&#183;&nbsp;说</h1>
+    </div>
+</div>
+<section class="said-box">
+    <div class="said-list" id="said-list-box">
+        <div class="module-title">
+            <span>探索</span>
+        </div>
+        @if (total > 0 && articles != null)
+        {
+            foreach (Article item in articles)
+            {
+                <a class="said-item" href="@Url.Action("Article", "Said", new { id = item.SaidId })">
+                    <div class="item-bg" style="background-image:url(@saidResourcePath@item.Image.IFileName)"></div>
+                    <div class="item-context">
+                        <div class="item-article">
+                            <h2>@item.STitle</h2>
+                            <div class="item-music said-ellipsis">
+                                <i class="fa fa-music"></i>@item.Song.SongName@(new HtmlString("&nbsp;-&nbsp;"))@item.Song.SongArtist
+                            </div>
+                            <div class="article-txt line-clamp line2">@(new HtmlString(item.SSummaryTrim))</div>
+                            <div class="item-more">
+                                <span class="fa fa-eye"><i class="globalFont">@item.SPV</i></span>
+                                <time class="fa fa-calendar-o time"><i class="globalFont">@SaidCommon.DateToLocalOrDay(item.Date)</i></time>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        }
+    </div>
+    @if (maxPage > 1)
+    {
+        <div class="said-next">
+            <a id="said-nextPage" class="next-page" href="javascript:;"><span>点击加载更多</span><i class="fa fa-caret-down"></i></a>
+            <span id="said-loading" class="next-page" style="display:none;">加载中<i class="fa fa-circle-o-notch fa-spin"></i></span>
+        </div>
+    }
+
+</section>
+@*@section Css{
+
+    }*@
+
+@section FootJs{
+    @Scripts.Render("~/static/wap/article.index.js");
+    <script>
+        require(['article.index'], function (view) {
+            view(@maxPage,@limit,'@Url.Action("GetSaidList", "Said")','/blog/','@saidResourcePath');
+        });
+    </script>
+}

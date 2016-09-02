@@ -76,15 +76,15 @@
         <div class="said-blog-content">
             @if (blogs != null && blogs.Count() > 0)
             {
-                var lastDate = blogs[0].Date;
+                var lastDate = DateTime.MinValue;
                 <section class="blog-box">
                     @foreach (var blog in blogs)
                     {
                         if (blog.Date.Year != lastDate.Year || blog.Date.Month != lastDate.Month)
                         {
                             lastDate = blog.Date;
+                            <div class="b-year"><span class="by-txt">@lastDate.ToString("yyyy年MM月")</span></div>
                         }
-                        <div class="b-year"><span class="by-txt">@lastDate.ToString("yyyy年MM月")</span></div>
                         <article class="b-item">
                             <div class="b-more">
                                 <span>@Said.Common.SaidCommon.DateToLocalOrDay2(blog.Date)</span><small>@blog.Date.ToString("HH:mm")</small>
@@ -97,7 +97,7 @@
                                     <p>@(new HtmlString(blog.BSummaryTrim))</p>
                                 </div>
                                 <footer class="b-footer">
-                                    <span class="b-info link fa fa-th-large" title="分类"><a href="@Url.Action("Index","Blog", new { cate = blog.Classify.ClassifyId })">@blog.Classify.CName</a></span>
+                                    <span class="b-info link fa fa-th-large" title="分类"><a href="@Url.Action("Index","Blog", new { cate = blog.ClassifyId })">@blog.Classify.CName</a></span>
                                     <i class="fa fa-eye" title="浏览"></i>@blog.BPV
                                 </footer>
                             </div>
@@ -109,7 +109,7 @@
             else {
                 <div class="said-blog-notfound">
                     <div class="blog-notfound-Title">
-                        <span>没有在该分类/标签下找到相关数据</span>
+                        <span>在该分类/标签下没有找到相关数据</span>
                         <a href="@Url.Action("Index","Blog")">查看全部文章</a>
                     </div>
                     @*<div class="blog-notfound-more">

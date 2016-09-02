@@ -158,8 +158,6 @@ namespace Said
             #endregion
 
 
-
-
             #region 前台CSS
             //全局样式
             bundles.Add(new StyleBundle("~/static/said/css/global.css")
@@ -218,15 +216,13 @@ namespace Said
             bundles.Add(new StyleBundle("~/static/wap/css/global.css")
                    .Include(
                         "~/Content/wap/style/layout.css",
-                        "~/Content/Style/font-awesome.min.css",
-                        "~/Content/wap/style/wap.css"));
+                        "~/Content/Style/font-awesome.min.css"));
 
             //blog
             bundles.Add(new StyleBundle("~/static/wap/about.css").Include("~/Content/wap/style/about.css"));
 
             //Said
             bundles.Add(new StyleBundle("~/static/wap/article.css").Include("~/Content/wap/style/article.css"));
-            bundles.Add(new StyleBundle("~/static/wap/article.index.css").Include("~/Content/wap/style/article.index.css"));
 
             //blog
             bundles.Add(new StyleBundle("~/static/wap/blog.css").Include("~/Content/wap/style/blog.css"));
@@ -234,6 +230,11 @@ namespace Said
             #endregion
 
             #region WapJS
+            bundles.Add(new ScriptBundle("~/static/wap/global.js").Include(
+                "~/Content/widget/jquery-2.1.1.js",
+                "~/Content/wap/javascript/global.js"
+                ));
+
             //require配置
             bundles.Add(new ScriptBundle("~/static/wap/config.js").Include("~/Content/wap/javascript/require.config.js"));
 
@@ -242,7 +243,7 @@ namespace Said
 
             //said
             bundles.Add(new ScriptBundle("~/static/wap/article.js").Include("~/Content/wap/javascript/article.js"));
-            bundles.Add(new ScriptBundle("~/static/wap/article.index.js").Include("~/Content/wap/javascript/article.js"));
+            bundles.Add(new ScriptBundle("~/static/wap/article.index.js").Include("~/Content/wap/javascript/article.index.js"));
 
 
             //blog

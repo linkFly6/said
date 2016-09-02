@@ -26,19 +26,8 @@ namespace Said.Controllers
         //[WapFilterAttribute]
         public ActionResult Index()
         {
-            if (Request.Browser.IsMobileDevice)//wap
-            {
-                var res = ArticleApplication.FindByDateDesc(new Page
-                {
-                    PageNumber = 1,
-                    PageSize = 10
-                });
-                ViewData["articleList"] = res.ToList<Article>();
-                ViewData["maxPage"] = res.TotalItemCount % 10 == 0 ? res.TotalItemCount / 10 : res.TotalItemCount / 10 + 1;
-            }
-            else {
-                ViewData["articleList"] = ArticleApplication.GetByTop(3).ToList<Article>();
-            }
+            ViewData["articleList"] = ArticleApplication.GetByTop(3).ToList();
+            ViewData["blogList"] = BlogApplication.FindPartialDatasByTop(3).ToList();
             //dipslay mode - 直接访问域名：http://tasaid.com ，无法自动识别到mobile，需要访问 http://tasaid.com/home/index 才可以自动识别mobile，所以手动修正这个问题
             return Request.Browser.IsMobileDevice ? View("Index.Mobile") : View();
         }

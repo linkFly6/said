@@ -273,7 +273,6 @@ namespace Said.Application
         /// <returns>返回封装后的IPagedList对象</returns>
         public static IPagedList<Blog> Find(Page page)
         {
-            //TODO要把GetPage方法好好封装一下
             return Context.GetPage(page, m => m.BTitle != null, m => m.Date);
         }
 
@@ -329,6 +328,86 @@ namespace Said.Application
         public static IEnumerable<Blog> GetAllBlogFileName()
         {
             return Context.GetAllBlogFileName();
+        }
+
+        /// <summary>
+        /// 分页查询，为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <returns>返回的数据仅仅可以访问属性：BName</returns>
+        public static IPagedList<Blog> FindPartialDatasByPage(Page page)
+        {
+            return Context.GetPartialDatasByPage(page);
+        }
+
+        /// <summary>
+        /// 获取指定个数的文章列表（时间倒序），为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <param name="top">要获取的个数</param>
+        /// <returns></returns>
+        public static IEnumerable<Blog> FindPartialDatasByTop(int top)
+        {
+            return Context.GetPartialDatasByTop(top);
+        }
+
+
+        /// <summary>
+        /// 获取所有文章列表（默认条件为时间倒序，数据标记删除），为提升性能，仅获取这些关键属性：
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <param name="top">要获取的个数</param>
+        /// <returns></returns>
+        public static IEnumerable<Blog> FindPartialDatas()
+        {
+            return Context.GetAllPartialDatas();
+        }
+
+        /// <summary>
+        /// 按照分类ID获取文章，只包含部分特殊属性
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <param name="top">要获取的个数</param>
+        /// <returns></returns>
+        public static IEnumerable<Blog> FindPartialDatasByClassify(string classifyId)
+        {
+            return Context.GetAllPartialDatasByClassifyId(classifyId);
+        }
+
+        /// <summary>
+        /// 按照分类ID获取文章，只包含部分特殊属性
+        /// BlogId
+        /// BTitle
+        /// Classify => { CName , ClassifyId}
+        /// Date
+        /// BSummaryTrim
+        /// BPV
+        /// </summary>
+        /// <param name="top">要获取的个数</param>
+        /// <returns></returns>
+        public static IEnumerable<Blog> FindPartialDatasByClassify(Classify classify)
+        {
+            return Context.GetAllPartialDatasByClassifyId(classify.ClassifyId);
         }
 
         #endregion

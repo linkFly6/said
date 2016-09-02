@@ -20,34 +20,40 @@ namespace Said.Controllers
         /// <summary>
         /// 一页数据个数
         /// </summary>
-        int PageLimit = 10;
+        private static readonly int PageLimit = 1;
         //
         // GET: /Said/
 
         public ActionResult Index(string pageIndex = null)
         {
-            //wap访问跳转到wap首页
+            //wap访问
             if (Request.Browser.IsMobileDevice)
             {
-                return RedirectToAction("Index", "Home");
+                IPagedList<Article> list = ArticleApplication.FindByDateDesc(new Page { PageNumber = 1, PageSize = PageLimit });
+                ViewData["total"] = list.TotalItemCount;
+                ViewData["articles"] = list.ToList();
+                ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
+                ViewData["limit"] = PageLimit;
             }
-            ViewData["NavigatorIndex"] = 2;
-            int index = 1;
-            if (!string.IsNullOrEmpty(pageIndex))
-            {
-                int.TryParse(pageIndex, out index);
+            else {
+                ViewData["NavigatorIndex"] = 2;
+                int index = 1;
+                if (!string.IsNullOrEmpty(pageIndex))
+                {
+                    int.TryParse(pageIndex, out index);
+                }
+                var page = new Page
+                {
+                    //PageNumber = index / PageLimit + 1,
+                    PageNumber = index,
+                    PageSize = PageLimit
+                };
+                IPagedList<Article> list = ArticleApplication.FindByDateDesc(page);
+                ViewData["total"] = list.TotalItemCount;
+                ViewData["articles"] = list.ToList();
+                ViewData["pageIndex"] = index;
+                ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
             }
-            var page = new Page
-            {
-                //PageNumber = index / PageLimit + 1,
-                PageNumber = index,
-                PageSize = PageLimit
-            };
-            IPagedList<Article> list = ArticleApplication.FindByDateDesc(page);
-            ViewData["total"] = list.TotalItemCount;
-            ViewData["articles"] = list.ToList();
-            ViewData["pageIndex"] = index;
-            ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
             return View();
         }
 
@@ -129,6 +135,7 @@ namespace Said.Controllers
         /// <param name="sort"></param>
         /// <param name="order"></param>
         /// <returns></returns>
+        [HttpGet]
         public JsonResult GetSaidList(int limit, int offset)
         {
             var page = new Page
@@ -136,13 +143,25 @@ namespace Said.Controllers
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
+            if (limit > PageLimit)
+                limit = PageLimit;
             var res = ArticleApplication.FindByDateDesc(page);
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,
                 //hasPreviousPage = res.HasPreviousPage,
                 total = res.Count,
-                rows = res.ToList<Article>()
+                rows = res.Select(m => new
+                {
+                    url = m.SaidId,
+                    img = m.Image.IName,
+                    title = m.STitle,
+                    summary = m.SSummaryTrim,
+                    songname = m.Song.SongName,
+                    artist = m.Song.SongArtist,
+                    pv = m.SPV,
+                    date = m.Date
+                })
             }, JsonRequestBehavior.AllowGet);
         }
 

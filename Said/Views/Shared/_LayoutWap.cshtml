@@ -43,28 +43,64 @@
 </head>
 <body>
     <section class="page-container">
-        <header class="navbar navbar-default">
+        <header class="navbar navbar-default" id="nav-bar">
             <div class="nav-container">
-                <div class="logo">
+                <div class="logo white">
                     <a href="/" class="home">听说</a>
                 </div>
+                <a href="javascript:;" class="nav-btn" id="nav-btn">
+                    <span class="ico-l-top"></span>
+                    <span class="ico-l-bottom"></span>
+                    <span class="ico-m-left"></span>
+                    <span class="ico-m-right"></span>
+                </a>
             </div>
         </header>
-        <section id="said-page">
+        <section class="inner-container" style="display:none;" id="navMask">
+            <!--addClass:open-->
+            <div class="nav-animate-box">
+                <i class="menu-bg top" style=""></i>
+                <i class="menu-bg middle" style=""></i>
+                <i class="menu-bg bottom" style=""></i>
+                <nav class="menu-container">
+                    <ul class="menu">
+                        <li>
+                            <a href="/said">听&#183;说</a>
+                        </li>
+                        <li>
+                            <a href="/blog">Blog</a>
+                        </li>
+                        <li>
+                            <a href="/about">关&nbsp;&nbsp;于</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Cl", "Home", new {url= "http://weibo.com/silin6/",sgs="blog-dec" })">@@为你聚焦半世纪</a>
+                        </li>
+                        <li class="nav-By">
+                            <span>听说 - by linkFly</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </section>
+        <section id="said-page" class="page-content">
             @RenderBody()
         </section>
     </section>
     <footer class="footer">
         <div class="f-link">
             <a href="/" class="f-home">首页</a>
-            <a href="/about" class="f-about">关于</a>
+            <a href="/said" class="f-about l-line">听说</a>
+            <a href="/blog" class="f-about l-line">Blog</a>
+            <a href="/about" class="f-about l-line">关于</a>
         </div>
         <div class="logo-box">
-            <div class="logo">
+            <div class="logo blackTxt">
                 <a href="/" class="home">听说</a>
             </div>
         </div>
     </footer>
+    @Scripts.Render("~/static/wap/global.js")
     <script>
         var dateNow = '@Said.Common.SaidCommon.GetTimeStamp()';
     </script>

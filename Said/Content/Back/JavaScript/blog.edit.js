@@ -59,7 +59,6 @@
                     var html = converter.makeHtml(context);
                     //再使用highlight高亮代码，highlightInHTML()这个方法是自己写的
                     var temp = highlight.highlightInHTML(html);
-                    console.log(temp);
                     return temp;
                 },
                 preview = function (title, context, classify, tags) {

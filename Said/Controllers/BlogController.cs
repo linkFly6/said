@@ -1,8 +1,10 @@
 ﻿using log4net;
+using PagedList;
 using Said.Application;
 using Said.Common;
 using Said.Controllers.Filters;
 using Said.Models;
+using Said.Models.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,12 @@ namespace Said.Controllers
         private static readonly ILog logManager = LogManager.GetLogger(typeof(BlogController));
 
         /// <summary>
+        /// 一页数据个数
+        /// </summary>
+        private static readonly int PageLimit = 10;
+
+
+        /// <summary>
         /// 分类的Icon路径
         /// </summary>
         private readonly string CLASSIFYICONPATH = "~/Source/Sys/Images/Icons/";
@@ -29,27 +37,39 @@ namespace Said.Controllers
         #region Views
         public ActionResult Index(string cate = "")
         {
-            ViewData["NavigatorIndex"] = 1;
-            var classifyList = ClassifyApplication.Find();
-            IEnumerable<Blog> blogs = null;
-            if (string.IsNullOrWhiteSpace(cate))
+            //wap访问
+            if (Request.Browser.IsMobileDevice)
             {
-
-                blogs = BlogApplication.Find();
+                IPagedList<Blog> list = BlogApplication.FindPartialDatasByPage(new Page { PageNumber = 1, PageSize = PageLimit });
+                ViewData["total"] = list.TotalItemCount;
+                ViewData["blogs"] = list.ToList();
+                ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
+                ViewData["limit"] = PageLimit;
             }
             else
-            {//带分类查询
-                var classify = ClassifyApplication.Find(cate);
-                //TODO 所有带参数查询的地方，应该对参数格式做校验，比如md5的，就用正则识别一下格式是否正确
-                if (classify != null)
+            {
+                ViewData["NavigatorIndex"] = 1;
+                var classifyList = ClassifyApplication.Find();
+                IEnumerable<Blog> blogs = null;
+                if (string.IsNullOrWhiteSpace(cate))
                 {
-                    blogs = BlogApplication.FindByClassify(classify);
+
+                    blogs = BlogApplication.FindPartialDatas().ToList();
                 }
-                ViewData["currClassify"] = classify;
+                else
+                {//带分类查询
+                    var classify = ClassifyApplication.Find(cate);
+                    //TODO 所有带参数查询的地方，应该对参数格式做校验，比如md5的，就用正则识别一下格式是否正确
+                    if (classify != null)
+                    {
+                        blogs = BlogApplication.FindPartialDatasByClassify(classify).ToList();
+                    }
+                    ViewData["currClassify"] = classify;
+                }
+                ViewBag.SourceURL = Url.Content(CLASSIFYICONPATH);
+                ViewData["blogs"] = blogs;
+                ViewData["classifyList"] = classifyList;
             }
-            ViewBag.SourceURL = Url.Content(CLASSIFYICONPATH);
-            ViewData["blogs"] = blogs;
-            ViewData["classifyList"] = classifyList;
             return View();
         }
 
@@ -291,6 +311,49 @@ namespace Said.Controllers
                 return ResponseResult(1);
             }
         }
+
+
+
+        /// <summary>
+        /// 分页获取blog列表
+        /// </summary>
+        /// <param name="limit">个数</param>
+        /// <param name="offset">数据开始位置</param>
+        /// <param name="search"></param>
+        /// <param name="sort"></param>
+        /// <param name="order"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetBlogList(int limit, int offset)
+        {
+            var page = new Page
+            {
+                PageNumber = offset / limit + 1,
+                PageSize = limit
+            };
+            //防止有人恶意频繁读取更多数据
+            if (limit > PageLimit)
+            {
+                limit = PageLimit;
+            }
+            var res = BlogApplication.FindPartialDatasByPage(page);
+            return Json(new
+            {
+                //hasNextPage = res.HasNextPage,
+                //hasPreviousPage = res.HasPreviousPage,
+                total = res.Count,
+                rows = res.Select(m => new
+                {
+                    id = m.BlogId,
+                    title = m.BTitle,
+                    summary = m.BSummaryTrim,
+                    cname = m.Classify.CName,
+                    pv = m.BPV,
+                    date = m.Date
+                })
+            }, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

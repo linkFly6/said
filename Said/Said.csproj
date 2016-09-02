@@ -212,12 +212,18 @@
     <Content Include="Content\back\images\showMsg\error.png" />
     <Content Include="Content\back\images\showMsg\ok.png" />
     <Content Include="Content\font\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\images\Said-wap-logo-txt-1.png" />
+    <Content Include="Content\images\Said-wap-logo2.png" />
     <Content Include="Content\javascript\article.js" />
     <Content Include="Content\javascript\blog.index.js" />
     <Content Include="Content\javascript\home.index.js" />
     <Content Include="Content\style\bloglist.css" />
+    <Content Include="Content\wap\javascript\article.index.js" />
+    <Content Include="Content\wap\javascript\blog.index.js" />
     <Content Include="Content\wap\javascript\article.js" />
+    <Content Include="Content\wap\javascript\global.js" />
     <Content Include="Content\wap\javascript\index.js" />
+    <Content Include="Content\wap\style\article.index.css" />
     <Content Include="Content\widget\avalon\avalon.mobile.js" />
     <Content Include="Content\widget\avalon\groupInput.js" />
     <Content Include="Content\widget\avalon\popup.js" />
@@ -290,8 +296,6 @@
     <Content Include="Content\images\nav-close.png" />
     <Content Include="Content\images\nav-icon_search.png" />
     <Content Include="Content\images\night-sky.jpg" />
-    <Content Include="Content\images\not-blog.gif" />
-    <Content Include="Content\images\o_bg-clouds.png" />
     <Content Include="Content\images\o_bg.png" />
     <Content Include="Content\images\sad-nav-template2.jpg" />
     <Content Include="Content\images\said-banner.jpg" />
@@ -312,7 +316,6 @@
     <Content Include="Content\images\sidebar-bg.jpg" />
     <Content Include="Content\images\test-said-img.jpg" />
     <Content Include="Content\images\testImg-Paramore.Ps.jpg" />
-    <Content Include="Content\images\tiny.gif" />
     <Content Include="Content\images\UEDImg\0150427135119.jpg" />
     <Content Include="Content\images\UEDImg\1164878.jpg" />
     <Content Include="Content\images\UEDImg\20150514110936.jpg" />
@@ -345,7 +348,6 @@
     <Content Include="Content\images\UEDImg\20140730222859.jpg" />
     <Content Include="Content\images\UEDImg\Venice-Italy3.jpg" />
     <Content Include="Content\images\UEDImg\X.js.png" />
-    <Content Include="Content\images\work_tool_001.png" />
     <Content Include="Content\widget\jquery-2.1.1.js" />
     <Content Include="Content\javascript\require.config.js" />
     <Content Include="Content\javascript\blog.js" />
@@ -495,7 +497,6 @@
     <Content Include="Content\wap\style\layout.css.map" />
     <Content Include="Content\back\style\login.css.map" />
     <Content Include="Content\wap\javascript\require.config.js" />
-    <Content Include="Content\wap\style\sass\wap.scss" />
     <Content Include="Content\wap\style\sass\koala-config.json" />
     <Content Include="Content\wap\style\wap.css.map" />
     <Content Include="Content\wap\style\sass\index.scss" />
@@ -526,6 +527,8 @@
     <None Include="Properties\PublishProfiles\Said.pubxml" />
     <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Blog\Article.cshtml" />
+    <Content Include="Views\Said\Index.Mobile.cshtml" />
+    <Content Include="Views\Blog\Index.Mobile.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

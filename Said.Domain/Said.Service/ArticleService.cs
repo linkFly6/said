@@ -33,10 +33,18 @@ namespace Said.Service
 
 
         /// <summary>
-        /// 贪婪分页查询
+        /// 贪婪分页查询，为提升性能，只返回关键属性：
+        /// SaidId
+        /// STitle
+        /// SSummaryTrim
+        /// Date
+        /// Image => { IName, IFileName }
+        /// SPV
+        /// Likes
+        /// Song => { SongName, SongFileName, SongArtist, SongAlbum, Image => { IFileName,IName  } }
         /// </summary>
         /// <returns></returns>
-        IPagedList<Article> FindByDateDesc(Page page, Expression<Func<Article, bool>> where, Expression<Func<Article, DateTime>> order);
+        IPagedList<Article> FindByPartialDatasDateDesc(Page page);
 
 
         /// <summary>
@@ -56,11 +64,19 @@ namespace Said.Service
         IEnumerable<Article> FindAll<T>(Expression<Func<Article, T>> order);
 
         /// <summary>
-        /// 贪婪获取指定个数的文章列表
+        /// 获取指定个数的文章列表，为提升性能，仅获取这些关键属性：
+        /// SaidId
+        /// STitle
+        /// SSummaryTrim
+        /// Date
+        /// Image => { IName, IFileName }
+        /// SPV
+        /// Likes
+        /// Song => { SongName, SongFileName, SongArtist, SongAlbum, Image => { IFileName,IName  } }
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
-        IEnumerable<Article> GetByTop(int top);
+        IEnumerable<Article> GetByTopPartialDatas(int top);
 
 
         /// <summary>
@@ -144,25 +160,103 @@ namespace Said.Service
 
 
         /// <summary>
-        /// 贪婪分页查询
+        /// 贪婪分页查询，为提升性能，只返回关键属性：
+        /// SaidId
+        /// STitle
+        /// SSummaryTrim
+        /// Date
+        /// Image => { IName, IFileName }
+        /// SPV
+        /// Likes
+        /// Song => { SongName, SongFileName, SongArtist, SongAlbum, Image => { IFileName,IName  } }
         /// </summary>
         /// <returns></returns>
-        public IPagedList<Article> FindByDateDesc(Page page, Expression<Func<Article, bool>> where, Expression<Func<Article, DateTime>> order)
+        public IPagedList<Article> FindByPartialDatasDateDesc(Page page)
         {
-            var results = Context.Article.Include("Image").Include("Song.Image").OrderByDescending(order).Where(where).GetPage(page).ToList();
-            int total = Context.Article.Count(where);
-            return new StaticPagedList<Article>(results, page.PageNumber, page.PageSize, total);
+
+            return base.GetPage(page,
+                                   m => m.IsDel == 0,
+                                   m => m.Date,
+                                   m => new
+                                   {
+                                       id = m.SaidId,
+                                       title = m.STitle,
+                                       Summary = m.SSummaryTrim,
+                                       song = new { name = m.Song.SongName, artist = m.Song.SongArtist, album = m.Song.SongAlbum, img = m.Song.Image.IFileName },
+                                       img = m.Image.IName,
+                                       date = m.Date,
+                                       pv = m.SPV,
+                                       likes = m.Likes,
+
+                                   }, m => new Article
+                                   {
+                                       SaidId = m.id,
+                                       STitle = m.title,
+                                       SSummaryTrim = m.Summary,
+                                       Date = m.date,
+                                       Image = new Image { IName = m.img, IFileName = m.img },
+                                       SPV = m.pv,
+                                       Likes = m.likes,
+                                       Song = new Song
+                                       {
+                                           SongName = m.song.name,
+                                           SongFileName = m.song.name,
+                                           SongArtist = m.song.artist,
+                                           SongAlbum = m.song.album,
+                                           Image = new Image { IFileName = m.song.img, IName = m.song.img }
+                                       }
+                                   });
         }
 
 
         /// <summary>
-        /// 贪婪获取指定个数的文章列表
+        /// 获取指定个数的文章列表，为提升性能，仅获取这些关键属性：
+        /// SaidId
+        /// STitle
+        /// SSummaryTrim
+        /// Date
+        /// Image => { IName, IFileName }
+        /// SPV
+        /// Likes
+        /// Song => { SongName, SongFileName, SongArtist, SongAlbum, Image => { IFileName,IName  } }
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
-        public IEnumerable<Article> GetByTop(int top)
+        public IEnumerable<Article> GetByTopPartialDatas(int top)
         {
-            return Context.Article.Include("Image").OrderByDescending(m => m.Date).Take(top);
+            return (from m in Context.Article
+                        //join i in Context.Image on m.ImageId equals i.ImageId
+                    orderby m.Date descending
+                    where m.IsDel == 0
+                    select new
+                    {
+                        Id = m.SaidId,
+                        title = m.STitle,
+                        Summary = m.SSummaryTrim,
+                        date = m.Date,
+                        song = new { name = m.Song.SongName, artist = m.Song.SongArtist, album = m.Song.SongAlbum, img = m.Song.Image.IFileName },
+                        img = m.Image.IName,
+                        pv = m.SPV,
+                        like = m.Likes
+                    }).ToList().Select(m => new Article
+                    {
+                        SaidId = m.Id,
+                        STitle = m.title,
+                        SSummaryTrim = m.Summary,
+                        Date = m.date,
+                        Image = new Image { IName = m.img, IFileName = m.img },
+                        SPV = m.pv,
+                        Likes = m.like,
+                        Song = new Song
+                        {
+                            SongName = m.song.name,
+                            SongFileName = m.song.name,
+                            SongArtist = m.song.artist,
+                            SongAlbum = m.song.album,
+                            Image = new Image { IFileName = m.song.img, IName = m.song.img }
+                        }
+                    }).Take(top);
+            //return Context.Article.Include("Image").OrderByDescending(m => m.Date).Take(top);
         }
 
         /// <summary>
