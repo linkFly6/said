@@ -194,6 +194,12 @@ namespace Said.IServices
 
         #region 提交
         int Submit();
+
+        /// <summary>
+        /// 移除实体在Entity Framework中的cache
+        /// </summary>
+        /// <param name="entity"></param>
+        void RemoveEntityCache(T entity);
         #endregion
     }
 }

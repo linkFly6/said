@@ -108,7 +108,7 @@ namespace Said.Service
         /// <returns></returns>
         IEnumerable<Article> IArticleService.GetByKeywords(Page page, string keywords)
         {
-            return base.GetPage(page,
+            return base.GetPageDesc(page,
                                     a => a.STitle.Contains(keywords)
                                         || a.SSummary.Contains(keywords)
                                             || a.SContext.Contains(keywords)
@@ -174,7 +174,7 @@ namespace Said.Service
         public IPagedList<Article> FindByPartialDatasDateDesc(Page page)
         {
 
-            return base.GetPage(page,
+            return base.GetPageDesc(page,
                                    m => m.IsDel == 0,
                                    m => m.Date,
                                    m => new

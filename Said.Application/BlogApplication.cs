@@ -224,6 +224,15 @@ namespace Said.Application
         }
 
         /// <summary>
+        /// 查找（跳过缓存）
+        /// </summary>
+        /// <returns></returns>
+        public static Blog FindNoCache(string id)
+        {
+            return Context.FindNoCache(m => m.BlogId == id);
+        }
+
+        /// <summary>
         /// 查找Said的文件名
         /// </summary>
         /// <param name="fileName"></param>

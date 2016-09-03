@@ -7,11 +7,12 @@
     string SourceMusicDir = Said.Common.ConfigInfo.SourceMusicPath;
     bool userLike = (bool)ViewData["userLike"];
 }
+
 <div class="banner">
-    <div class="banner-bg" style="background-image:url(@(SourceSaidImage)@(Model.Image.IFileName));"></div>
+    <div class="banner-bg cover" style="background-image:url(@(SourceSaidImage)@(Model.Image.IFileName));"></div>
 </div>
-<section class="content">
-    <div class="displaybox music-player">
+<section class="said-box">
+    <div class="music-player">
         <div class="info">
             <h3>@Model.Song.SongName</h3>
             <div class="album">
@@ -23,28 +24,26 @@
             <a href="javascript:;" class="play-btn palyer-stop" id="said-player-stop" style="display: none;"><i class="fa fa-stop fa-2x"></i></a>
         </div>
     </div>
-    <article class="music-content" id="said-content">
+    <article class="article-content" id="said-content">
         <h1 class="blog-title">@Model.STitle</h1>
         <section class="blog-content">@(new HtmlString(Model.SHTML))</section>
     </article>
     <section class="blog-more-info">
         <div class="blog-more-head">
-            <div class="displaybox">
-                <div class="info-date"><time>@Model.Date.ToString("yyyy/MM/dd HH:mm")</time></div>
-                <div class="info-like">
-                    <a href="javascript:;" class="@(userLike?"likeIt":string.Empty)" data-like="@(userLike?"true":"false")" title="我喜欢" id="said-like">
-                        <!--fa-heart--><i class="fa @(userLike?"fa-heart":"fa-heart-o") "></i><span class="like-sum" id="likeCount">@Model.Likes</span>
-                    </a>
-                </div>
+            <div class="info-like">
+                <time class="info-date">@Model.Date.ToString("yyyy/MM/dd HH:mm")</time>
+                <a href="javascript:;" class="@(userLike?"likeIt":string.Empty)" data-like="@(userLike?"true":"false")" title="我喜欢" id="said-like">
+                    <i class="fa @(userLike?"fa-heart":"fa-heart-o") "></i><span class="like-sum" id="likeCount">@Model.Likes</span>
+                </a>
             </div>
             <ul class="blog-info">
-                <li><a href="/" class="blog-info-more">查看更多我的文章</a></li>
-                <li><a class="licenses licenses-cc" href="@Url.Action("Cl", "Home", new {url= "http://creativecommons.org/licenses/by/3.0/cn/",sgs= "m-s-licenses1" })">CC BY 3.0 CN</a></li>
-                <li><a class="licenses-link" href="@Url.Action("Cl", "Home", new {url= "http://creativecommons.org/licenses/by/3.0/cn/",sgs= "m-s-licenses2" })">本文采用创作共用署名3.0中国大陆版许可证（Creative Commons Attribution 3.0 China Mainland License）授权</a></li>
+                <li>
+                    <a class="licenses licenses-cc" href="@Url.Action("Cl", "Home", new {url= "http://creativecommons.org/licenses/by/3.0/cn/",sgs= "m-s-licenses" })">CC BY 3.0 CN</a>
+                </li>
+                <li><a href="/said" class="blog-info-more">查看更多我的文章</a></li>
             </ul>
         </div>
-        <section class="music-song"></section>
-        <audio id="said-player" height="0" width="0" loop></audio><!--autoplay="autoplay"-->
+        <audio id="said-player" height="0" width="0" loop=""></audio><!--autoplay="autoplay"-->
     </section>
 </section>
 

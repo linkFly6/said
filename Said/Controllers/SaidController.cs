@@ -20,7 +20,7 @@ namespace Said.Controllers
         /// <summary>
         /// 一页数据个数
         /// </summary>
-        private static readonly int PageLimit = 1;
+        private static readonly int PageLimit = 10;
         //
         // GET: /Said/
 

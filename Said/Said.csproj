@@ -529,6 +529,7 @@
     <Content Include="Views\Blog\Article.cshtml" />
     <Content Include="Views\Said\Index.Mobile.cshtml" />
     <Content Include="Views\Blog\Index.Mobile.cshtml" />
+    <Content Include="Views\Blog\Article.Mobile.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

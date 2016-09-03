@@ -225,7 +225,7 @@ namespace Said
             bundles.Add(new StyleBundle("~/static/wap/article.css").Include("~/Content/wap/style/article.css"));
 
             //blog
-            bundles.Add(new StyleBundle("~/static/wap/blog.css").Include("~/Content/wap/style/blog.css"));
+            bundles.Add(new StyleBundle("~/static/wap/github.css").Include("~/Content/widget/highlight/github.css"));
 
             #endregion
 
@@ -248,7 +248,6 @@ namespace Said
 
             //blog
             bundles.Add(new ScriptBundle("~/static/wap/blog.index.js").Include("~/Content/wap/javascript/blog.index.js"));
-            bundles.Add(new ScriptBundle("~/static/wap/blog.js").Include("~/Content/wap/javascript/blog.js"));
 
 
             #endregion

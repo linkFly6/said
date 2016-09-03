@@ -2,11 +2,12 @@
     a {
         color: #28a1c5;
     }
+
+    background-color: #fff;
 }
 
 .blog {
     font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "WenQuanYi Micro Hei", "Microsoft Yahei", sans-serif;
-    background-color: #fff;
 
     .blog-content.codeFont {
         /*font-size: 14px;*/
@@ -16,8 +17,8 @@
     }
 }
 
-.music-content {
-    padding: 0 15px 55px;
+.article-content {
+    padding: 0 15px 20px;
 
 
 
@@ -90,40 +91,98 @@
                 margin: 0;
             }
         }
+
+        ul {
+            padding-left: 1em;
+
+            li {
+                list-style: disc;
+            }
+        }
+
+        ol {
+            padding-left: 1em;
+
+            li {
+                list-style: decimal;
+            }
+        }
+
+        table {
+            width: 100%;
+            background: #FFF;
+            margin: 1em 0;
+            border: 1px solid rgba(34,36,38,.15);
+            box-shadow: none;
+            border-radius: .28571429rem;
+            text-align: left;
+            color: rgba(0,0,0,.87);
+            border-collapse: separate;
+            border-spacing: 0;
+
+            thead tr:first-child > th:first-child {
+                border-radius: .28571429rem 0 0;
+                border-left: none;
+            }
+
+            thead tr:first-child > th:last-child {
+                border-radius: 0 .28571429rem 0 0;
+            }
+
+            tbody tr > td:first-child {
+                border-left: none;
+            }
+
+            tbody tr:first-child > td {
+                border-top: none;
+            }
+
+            th {
+                padding: .3em 1em;
+                background: #F9FAFB;
+                text-align: inherit;
+                color: rgba(0,0,0,.87);
+                vertical-align: inherit;
+                font-weight: 700;
+                border-bottom: 1px solid rgba(34,36,38,.1);
+                border-left: 1px solid rgba(34,36,38,.1);
+            }
+
+            td {
+                padding: .5em 1em;
+                border-left: 1px solid rgba(34,36,38,.1);
+                border-top: 1px solid rgba(34,36,38,.1);
+            }
+        }
     }
 }
 
+//文章下面的更多
 .blog-more-info {
     padding: 15px;
 }
 
+
 .blog-more-head {
     font-size: 13px;
 
-    .displaybox {
-        padding: 10px 0;
-    }
-
-    .info-date, .info-like {
-        -webkit-flex: 1;
-        flex: 1;
-    }
-    /*.info-date {
-    }*/
     .info-like {
         text-align: right;
+        padding-top: 18px;
+        overflow: hidden;
 
-        .info-cate {
-            margin-right: 12px;
-            color: #555;
+        .info-date {
+            float: left;
         }
 
-        time {
+        .info-date, .info-cate {
             color: #999;
+            padding-left: 10px;
         }
 
         a {
             color: red;
+            padding-left: 10px;
 
             &.likeIt {
                 color: #dd5862;
@@ -140,7 +199,7 @@
 
 .blog-info {
     text-align: center;
-
+    display: block;
 
 
     li {
@@ -152,6 +211,68 @@
     }
 }
 
+
+//文章下面的评论
+.comments {
+    &:before {
+        content: '';
+        display: block;
+        height: 10px;
+        background-color: #f8f8f8;
+    }
+
+    .c-label {
+        display: block;
+        padding: 12px 0 12px 20px;
+        border-bottom: 1px solid #ececec;
+    }
+
+    .c-list {
+
+        .c-item:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .c-item {
+        font-size: 14px;
+        padding: 12px 0 12px 20px;
+        border-bottom: 1px solid #ececec;
+
+        .c-user, .c-date {
+            display: inline-block;
+        }
+
+        .c-user {
+            width: 70%;
+
+            .fa {
+                color: #999;
+            }
+        }
+
+        .c-date {
+            color: #999;
+            text-align: right;
+            width: 25%;
+        }
+
+        .c-txt {
+            color: #999;
+        }
+
+        .c-item {
+            padding: 5px 0 5px 20px;
+        }
+
+        .c-context {
+            padding: 5px 0;
+        }
+    }
+}
+
+
+//音乐
 %ellipsis {
     overflow: hidden;
     white-space: nowrap;

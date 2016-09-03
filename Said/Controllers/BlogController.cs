@@ -291,21 +291,56 @@ namespace Said.Controllers
         {
             if (this.AdminId != null && !string.IsNullOrWhiteSpace(commentId))
             {
-                return SaidCommon.Transaction(() =>
+                try
                 {
-                    var comment = CommentApplication.Find(commentId);
-                    if (commentId != null)
-                    {
-                        //标记删除
-                        comment.IsDel = 1;
-                        if (comment.Blog.BComment > 0)
-                            comment.Blog.BComment--;
-                        if (CommentApplication.Update(comment) > 0)
-                            return ResponseResult();
-                    }
-                    return ResponseResult(2);
-                });
+                    return SaidCommon.Transaction(() =>
+                            {
+                                var comment = CommentApplication.FindNoCache(commentId);
+                                if (comment != null)
+                                {
+                                    //标记删除
+                                    comment.IsDel = 1;
+                                    //if (comment.Blog.BComment > 0)
+                                    //    comment.Blog.BComment--;
 
+                                    if (CommentApplication.Update(comment) > 0)
+                                    {
+
+                                        /*
+                                            这个bug仍然没搞定：
+
+                                            Attaching an entity of type 'Said.Models.Blog' failed because another entity of the same type already has the same primary key value. This can happen when using the 'Attach' method or setting the state of an entity to 'Unchanged' or 'Modified' if any entities in the graph have conflicting key values. This may be because some entities are new and have not yet received database-generated key values. In this case use the 'Add' method or the 'Added' entity state to track the graph and then set the state of non-new entities to 'Unchanged' or 'Modified' as appropriate.
+
+                                            参见这里：
+                                            http://stackoverflow.com/questions/23201907/asp-net-mvc-attaching-an-entity-of-type-modelname-failed-because-another-ent
+
+                                            EF对每个查询有缓存，这里的改动是EF缓存实体里的改动，改动的blog包含在两个实体中（blog和comment.blog），导致了EF上下文不一致，才出现了这个问题
+                                            这个问题尚未解决
+                                        */
+
+                                        var blog = BlogApplication.FindNoCache(comment.BlogId);
+                                        if (blog.BComment > 0)
+                                            blog.BComment--;
+                                        if (BlogApplication.Update(blog) > 0)
+                                        {
+                                            return ResponseResult();
+                                        }
+                                        else
+                                            throw new Exception("删除评论失败，修改Blog对象异常");
+                                    }
+                                    else {
+                                        logManager.Error(new { msg = "删除评论失败", blogId = comment.BlogId, commentId = comment.CommentId });
+                                        throw new Exception("删除评论失败");
+                                    }
+                                }
+                                return ResponseResult(2);
+                            });
+                }
+                catch (Exception e)
+                {
+                    logManager.Error(e);
+                    return ResponseResult(1);
+                }
             }
             else {
                 return ResponseResult(1);
@@ -352,6 +387,47 @@ namespace Said.Controllers
                     date = m.Date
                 })
             }, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        /// <summary>
+        /// 用户Like一篇Blog
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult LikeArticle(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return ResponseResult(1, "文章信息不正确");
+            }
+            Blog blog = BlogApplication.Find(id);
+
+            if (blog == null)
+            {
+                return ResponseResult(2, "文章信息不正确");
+            }
+            //更新文章的结果
+            int updateArticle = 0;
+            //防止多线程修改
+            lock (@obj)
+            {
+                blog.Likes++;
+                updateArticle = BlogApplication.Update(blog);
+            }
+            if (updateArticle < 0)
+            {
+                return ResponseResult(4, "修改文章信息失败");
+            }
+            return UserLikeApplication.Add(new UserLike
+            {
+                Date = DateTime.Now,
+                UserId = this.UserId,
+                LikeType = 1,
+                UserLikeId = SaidCommon.GUID,
+                LikeArticleId = id
+            }) > 0 ? ResponseResult() : ResponseResult(3, "添加Like信息异常");
         }
 
         #endregion

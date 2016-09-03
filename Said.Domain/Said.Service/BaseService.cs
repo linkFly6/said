@@ -385,6 +385,16 @@ namespace Said.IServices
 
 
         /// <summary>
+        /// 移除实体在Entity Framework中的cache
+        /// </summary>
+        /// <param name="entity"></param>
+        public void RemoveEntityCache(T entity)
+        {
+           Context.Entry(entity).State = EntityState.Modified;
+        }
+
+
+        /// <summary>
         /// 提交并保存数据
         /// </summary>
         /// <returns></returns>

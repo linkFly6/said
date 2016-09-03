@@ -690,7 +690,7 @@
             if (result === void 0) {
                 return sourceHTML;
             }
-            return ['<pre class="', preClass, '">', '<code class"', result.className, '">', result.innerHTML, '</code>', '</pre>'].join('');
+            return ['<pre class="', preClass, '">', '<code class="', result.className, '">', result.innerHTML, '</code>', '</pre>'].join('');
         });
     }
     /*

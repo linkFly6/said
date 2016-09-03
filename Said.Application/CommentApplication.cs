@@ -40,6 +40,16 @@ namespace Said.Application
             return Context.Get(m => m.CommentId == id && m.IsDel == 0);
         }
 
+        /// <summary>
+        /// 根据ID查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Comment FindNoCache(string id)
+        {
+            return Context.FindNocahe(m => m.CommentId == id && m.IsDel == 0);
+        }
+
 
         /// <summary>
         /// 修改一条评论

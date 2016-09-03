@@ -59,8 +59,6 @@
 }
 
 #content {
-    padding: 30px 0 0 0;
-    margin-bottom: 0;
     overflow: hidden;
 }
 
@@ -75,8 +73,7 @@
     }
     //中间正文
     .b-m {
-        max-width: 900px;
-        min-width: 640px;
+        width: 900px;
         float: left;
     }
     //右侧导航
@@ -104,6 +101,7 @@
     /*max-width: 255px;*/
     position: absolute;
     z-index: 4;
+    background-color: #fff;
 
     &.fixed {
         position: fixed;
@@ -125,6 +123,10 @@
         z-index: 1;
         top: 0;
         left: 0;
+        -moz-transition: height linear .3s,top linear .3s;
+        -o-transition: height linear .3s,top linear .3s;
+        -webkit-transition: height linear .3s,top linear .3s;
+        transition: height linear .3s,top linear .3s;
     }
 
     .an-c {
@@ -136,7 +138,7 @@
         border-left: 3px solid #EEE;
 
         ul {
-            padding-left: 15px;
+            padding-left: 2em;
         }
     }
 
@@ -144,8 +146,11 @@
         position: relative;
         z-index: 6;
 
+
         li {
             line-height: 2;
+            /*padding-left: 1em;*/
+            list-style: disc;
         }
 
         a {
@@ -356,12 +361,21 @@
 
 
     ul {
-        padding-left: 2em;
+        padding-left: 1em;
+
+        li {
+            list-style: disc;
+        }
     }
 
-    li {
-        list-style: disc;
+    ol {
+        padding-left: 1em;
+
+        li {
+            list-style: decimal;
+        }
     }
+
 
     p, ul, ol, dl, table, pre, blockquote {
         margin-top: 0;

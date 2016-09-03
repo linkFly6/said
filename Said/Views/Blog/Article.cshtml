@@ -107,14 +107,12 @@
                                                     {
                                                         <a href="/" class="ct-name _canchor" target="_blank" title="管理员" data-admin="true" data-anthor="@(i+1)">linkFly</a><i class="fa fa-user-secret admin" title="管理员"></i>
                                                     }
+                                                    else if (!string.IsNullOrEmpty(comment.User.Site))//有输入站点
+                                                    {
+                                                        <a title="访问Ta的站点" href="@Url.Action("Cl", "Home", new {url= comment.User.Site,sgs="b-c-"+(i+1) })" class="ct-name _canchor" data-anthor="@(i+1)" target="_blank">@comment.User.Name</a>
+                                                    }
                                                     else {
-                                                        if (!string.IsNullOrEmpty(comment.User.Site))//有输入站点
-                                                        {
-                                                            <a title="访问Ta的站点" href="@Url.Action("Cl", "Home", new {url= comment.User.Site,sgs="b-c-"+(i+1) })" class="ct-name _canchor" data-anthor="@(i+1)" target="_blank">@comment.User.Name</a>
-                                                        }
-                                                        else {
-                                                            <span class="ct-name _canchor" data-anthor="@(i+1)">@comment.User.Name</span>
-                                                        }
+                                                        <span class="ct-name _canchor" data-anthor="@(i+1)">@comment.User.Name</span>
                                                     }
                                                 </div>
                                                 <div class="ct-context"><p>@comment.Context</p></div>
@@ -147,8 +145,12 @@
                                                                 <li class="cr-item">
                                                                     <div class="cr-content">
                                                                         <div class="ct-top">
-                                                                            <a href="#@(i+1)-@(j+1)" name="@(i+1)-@(j+1)" title="锚点引用" class="anchor" target="_blank"><i class="fa fa-link"></i></a>
-                                                                            @if (reply.User.Site != string.Empty)//有输入站点
+                                                                            <a href="#@(i+1)-@(j+1)" name="@(i+1)-@(j+1)" title="锚点引用" class="anchor"><i class="fa fa-link"></i></a>
+                                                                            @if (reply.User.Rule == 1)
+                                                                            {
+                                                                                <a href="/" class="ct-name _ranchor" target="_blank" title="管理员" data-admin="true" data-anthor="@(i+1)">linkFly</a><i class="fa fa-user-secret admin" title="管理员"></i>
+                                                                            }
+                                                                            else if (reply.User.Site != string.Empty)//有输入站点
                                                                             {
                                                                                 <a href="@Url.Action("Cl", "Home", new {url= reply.User.Site,sgs=string.Format("b-c-{0}-{1}",i+1,j+1) })" class="ct-name _ranchor">@reply.User.Name</a>
                                                                             }
@@ -243,24 +245,24 @@
                 <!--fixed-->
                 <div class="nav-title">目录</div>
                 <div class="an-c">
-                    <div class="nav-bg">&nbsp;</div>
+                    <div class="nav-bg" style="display:none;">&nbsp;</div>
                     <div class="an-body">
                         <ul class="anb-box">
-                            <li class="active"><a href="#articleHeader0">Promise应对的问题</a></li>
-                            <li><a href="#articleHeader1">Promise的解决</a></li>
-                            <li><a href="#articleHeader2">ECMAScript 6 Promise</a></li>
-                            <li style="list-style:none;">
-                                <ul>
-                                    <li><a href="#articleHeader3">Promise.prototype.then</a></li>
-                                    <li><a href="#articleHeader3">Promise.constructor</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#articleHeader4">参考和引用</a>
-                            </li>
-                            <li><a href="#articleHeader5">Promise/A+规范</a></li>
-                            <li><a href="#articleHeader6">ECMAScript 6 入门 - Promise对象</a></li>
-                            <li><a href="#articleHeader7">Promise启示录</a></li>
+                            @*<li class="active"><a href="#articleHeader0">Promise应对的问题</a></li>
+                                <li><a href="#articleHeader1">Promise的解决</a></li>
+                                <li>
+                                    <a href="#articleHeader2">ECMAScript 6 Promise</a>
+                                    <ul>
+                                        <li><a href="#articleHeader3">Promise.prototype.then</a></li>
+                                        <li><a href="#articleHeader3">Promise.constructor</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#articleHeader4">参考和引用</a>
+                                </li>
+                                <li><a href="#articleHeader5">Promise/A+规范</a></li>
+                                <li><a href="#articleHeader6">ECMAScript 6 入门 - Promise对象</a></li>
+                                <li><a href="#articleHeader7">Promise启示录</a></li>*@
                         </ul>
                     </div>
                 </div>

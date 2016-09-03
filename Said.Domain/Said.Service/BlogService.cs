@@ -32,6 +32,12 @@ namespace Said.Service
         /// <returns></returns>
         IEnumerable<Blog> GetAllBlogFileName();
 
+        /// <summary>
+        /// 查找一条，跳过缓存
+        /// </summary>
+        /// <returns></returns>
+        Blog FindNoCache(Expression<Func<Blog, bool>> where);
+
 
         /// <summary>
         /// 获取所有文章列表（仅获取关键属性）
@@ -131,7 +137,7 @@ namespace Said.Service
         /// <returns></returns>
         IEnumerable<Blog> IBlogService.GetByKeywords(Page page, string keywords)
         {
-            return base.GetPage(page,
+            return base.GetPageDesc(page,
                                     a => a.BTitle.Contains(keywords)
                                         || a.BSummary.Contains(keywords)
                                             || a.BContext.Contains(keywords),
@@ -207,7 +213,7 @@ namespace Said.Service
 
             **/
 
-            return base.GetPage(page,
+            return base.GetPageDesc(page,
                                     m => (m.BTitle.Contains(keywords) || m.BContext.Contains(keywords)) && m.IsDel == 0,
                                     m => m.Date,
                                     m => new
@@ -376,7 +382,7 @@ namespace Said.Service
         public IPagedList<Blog> GetPartialDatasByPage(Page page)
         {
 
-            return base.GetPage(page,
+            return base.GetPageDesc(page,
                                    m => m.IsDel == 0,
                                    m => m.Date,
                                    m => new
@@ -526,6 +532,15 @@ namespace Said.Service
             //        Date = m.Date,
             //        BSummaryTrim = m.BSummaryTrim
             //    });
+        }
+
+        /// <summary>
+        /// 查找一条，跳过缓存
+        /// </summary>
+        /// <returns></returns>
+        public Blog FindNoCache(Expression<Func<Blog, bool>> where)
+        {
+            return Context.Blog.AsNoTracking().Where(where).FirstOrDefault();
         }
     }
 }

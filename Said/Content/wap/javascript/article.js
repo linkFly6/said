@@ -3,43 +3,45 @@
         //like按钮
         var $like = $('#said-like');
 
-        var $player = $('#said-player'),//播放器
-            playerElem = $player[0],
-            isLoaded = false,//是否已经加载过资源文件
-            $playBtn = $('#said-player-play'),//播放
-            $stopBtn = $('#said-player-stop'),//停止
-            togglePlay = function (isPlay) {//切换显示播放按钮
-                if (isPlay) {
-                    $playBtn.hide();
-                    $stopBtn.show();
-                } else {
-                    $playBtn.show();
-                    $stopBtn.hide();
+        if (playerSrc) {
+            var $player = $('#said-player'),//播放器
+                playerElem = $player[0],
+                isLoaded = false,//是否已经加载过资源文件
+                $playBtn = $('#said-player-play'),//播放
+                $stopBtn = $('#said-player-stop'),//停止
+                togglePlay = function (isPlay) {//切换显示播放按钮
+                    if (isPlay) {
+                        $playBtn.hide();
+                        $stopBtn.show();
+                    } else {
+                        $playBtn.show();
+                        $stopBtn.hide();
+                    }
+                };
+            //停止
+            $stopBtn.on('click', function () {
+                playerElem.pause();
+                playerElem.currentTime = 0;
+                togglePlay(false);
+            });
+            //播放
+            $playBtn.on('click', function () {
+                if (!isLoaded) {
+                    playerElem.src = playerSrc;
+                    isLoaded = true;
                 }
-            };
-        //停止
-        $stopBtn.on('click', function () {
-            playerElem.pause();
-            playerElem.currentTime = 0;
-            togglePlay(false);
-        });
-        //播放
-        $playBtn.on('click', function () {
-            if (!isLoaded) {
-                playerElem.src = playerSrc;
-                isLoaded = true;
-            }
-            playerElem.play();
-            togglePlay(true);
-        });
-        //允许播放
-        $player.on('play', function () {
-            togglePlay(true);
-        });
-        //播放结束
-        $player.on('ended', function () {
-            togglePlay(false);
-        });
+                playerElem.play();
+                togglePlay(true);
+            });
+            //允许播放
+            $player.on('play', function () {
+                togglePlay(true);
+            });
+            //播放结束
+            $player.on('ended', function () {
+                togglePlay(false);
+            });
+        }
 
         if (!$like.data('like')) {//用户没有like这篇文章
             var lockSubmit = false;
@@ -47,7 +49,7 @@
                 if (lockSubmit) return;
                 lockSubmit = true;
                 $.ajax({
-                    url: '/Said/LikeArticle',
+                    url: playerSrc ? '/said/LikeArticle' : '/blog/LikeArticle',
                     type: "post",
                     dataType: "json",
                     data: { id: saidId } //注意对内容进行编码

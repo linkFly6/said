@@ -68,7 +68,7 @@ namespace Said.Common
         /// <returns></returns>
         public static bool CheckUri(string uri)
         {
-            return !string.IsNullOrWhiteSpace(uri) && uri.Trim().Length <= 60 || regHTTPSite.IsMatch(uri.Trim());
+            return !string.IsNullOrWhiteSpace(uri) && uri.Trim().Length <= 60 && regHTTPSite.IsMatch(uri.Trim());
         }
 
         /// <summary>
