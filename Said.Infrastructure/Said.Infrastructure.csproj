@@ -100,48 +100,14 @@
     <Compile Include="Said.Models\Models\Reply.cs" />
     <Compile Include="Said.Models\Models\Song.cs" />
     <Compile Include="Said.Models\Models\Tag.cs" />
-    <Compile Include="Said.Models\Models\UML\SaidModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SaidModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Said.Models\Models\UML\SaidModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SaidModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Said.Models\Models\UML\SaidModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SaidModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Said.Models\Models\User.cs" />
     <Compile Include="Said.Models\Models\UserLike.cs" />
     <Compile Include="Said.Models\Models\UserRecord.cs" />
     <Compile Include="Said.Models\Models\UserSession.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Said.Models\Models\UML\SaidModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SaidModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="Said.Models\Models\UML\SaidModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SaidModel.edmx</DependentUpon>
-      <LastGenOutput>SaidModel.Context.cs</LastGenOutput>
-    </None>
-    <None Include="Said.Models\Models\UML\SaidModel.edmx.diagram">
-      <DependentUpon>SaidModel.edmx</DependentUpon>
-    </None>
-    <None Include="Said.Models\Models\UML\SaidModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>SaidModel.edmx</DependentUpon>
-      <LastGenOutput>SaidModel.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
