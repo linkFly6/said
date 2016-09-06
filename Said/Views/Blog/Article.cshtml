@@ -36,8 +36,8 @@
                     <div class="l-author">
                         <div>作者：linkFly</div>
                         <div>原文：<a href="@Url.Action("Cl", "Home", new {url= string.Format("http://tasaid.com/blog/{0}.html", Model.BlogId),sgs="blog-dec" })">@(string.Format("http://tasaid.com/blog/{0}.html", Model.BlogId))</a></div>
-                        <div>出处：<a href="@Url.Action("Cl", "Home", new {url= string.Format("http://tasaid.com", Model.BlogId),sgs="blog-"+Model.BlogId })">http://tasaid.com</a></div>
-                        <div>声明：转载相关授权请<a href="javascript:;">点击这里</a>。请尊重作者的辛勤劳动成果。</div>
+                        <div>出处：<a href="@Url.Action("Cl", "Home", new {url= "http://tasaid.com",sgs="blog-"+Model.BlogId })">http://tasaid.com</a></div>
+                        <div>声明：转载相关授权请<a href="//tasaid.com/Blog/20160906231305.html" target="_blank">点击这里</a>。请尊重作者的辛勤劳动成果。</div>
                     </div>
                 </div>
             </article>
@@ -268,7 +268,6 @@
                 </div>
 
             </nav>
-
         </div>
 
 

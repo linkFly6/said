@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/favicon.ico" />
     @Scripts.Render("~/static/w/requirejs.js")
-    @Html.InlineScripts("~/static/back/js/config")
+    @Html.InlineScripts("~/static/back/js/config.js")
     @{
         string actionName = ViewContext.RouteData.Values["action"].ToString();
         string controllerName = ViewContext.RouteData.Values["controller"].ToString();
@@ -219,7 +219,7 @@
     </section>
     <section id="said-page-mask"><section id="said-mask-box"></section></section>
     <footer></footer>
-    @Scripts.Render("~/static/back/js/global")
+    @Scripts.Render("~/static/back/js/global.js")
     <script>
         var dateNow = '@Said.Common.SaidCommon.GetTimeStamp()';
     </script>

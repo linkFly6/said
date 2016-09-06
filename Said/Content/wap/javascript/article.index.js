@@ -61,12 +61,12 @@
                             $nextTxt.html('点击加载更多');
                         }
                     } else {
-                        $nextPage.show();
+                        $nextBtn.show();
                         $nextTxt.html('加载失败，点击重新加载');
                     }
                 }).fail(function () {
                     $nextBtn.show();
-                    $nextPageText.html('加载失败，点击重新加载');
+                    $nextTxt.html('加载失败，点击重新加载');
                 }).always(function () {
                     $saidLoading.hide();
                 })

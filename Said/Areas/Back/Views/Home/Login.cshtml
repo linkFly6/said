@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Said - Login</title>
-    @Styles.Render("~/static/back/css/global.css", "~/static/back/css/login")
+    @Styles.Render("~/static/back/css/global.css", "~/static/back/css/login.css")
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/favicon.ico" />
     @Scripts.Render("~/static/w/requirejs.js")
-    @Html.InlineScripts("~/static/back/js/config")
+    @Html.InlineScripts("~/static/back/js/config.js")
 </head>
 <body>
     <section class="login-content">
@@ -41,6 +41,6 @@
         <span class="login-msg-txt">错误消息</span>
         <div class="login-msg-bg"></div>
     </div>
-    @Scripts.Render("~/static/back/js/home.login")
+    @Scripts.Render("~/static/back/js/home.login.js")
 </body>
 </html>

@@ -33,9 +33,9 @@
                     </section>
                     <div class="l-author">
                         <div>作者：linkFly</div>
-                        <div>原文：<a href="http://www.cnblogs.com/silin6/p/4288967.html">http://www.cnblogs.com/silin6/p/4288967.html</a></div>
-                        <div>出处：<a href="http://www.cnblogs.com/silin6/">www.cnblogs.com/silin6/</a></div>
-                        <div>声明：嘿！你都拷走上面那么一大段了，我觉得你应该也不介意顺便拷走这一小段，希望你能够在每一次的引用中都保留这一段声明，尊重作者的辛勤劳动成果，本文与博客园共享。</div>
+                        <div>原文：<a href="http://tasaid.com/blog/20160906231305.html">http://tasaid.com/blog/20160906231305.html</a></div>
+                        <div>出处：<a href="http://tasaid.com">http://tasaid.com/</a></div>
+                        <div>声明：转载相关授权请<a href="//tasaid.com/Blog/20160906231305.html" target="_blank">点击这里</a>。请尊重作者的辛勤劳动成果。</div>
                     </div>
                 </div>
             </article>
@@ -98,24 +98,24 @@
                 <!--fixed-->
                 <div class="nav-title">目录</div>
                 <div class="an-c">
-                    <div class="nav-bg">&nbsp;</div>
+                    <div class="nav-bg" style="display:none;">&nbsp;</div>
                     <div class="an-body">
                         <ul class="anb-box">
-                            <li class="active"><a href="#articleHeader0">Promise应对的问题</a></li>
-                            <li><a href="#articleHeader1">Promise的解决</a></li>
-                            <li><a href="#articleHeader2">ECMAScript 6 Promise</a></li>
-                            <li style="list-style:none;">
-                                <ul>
-                                    <li><a href="#articleHeader3">Promise.prototype.then</a></li>
-                                    <li><a href="#articleHeader3">Promise.constructor</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#articleHeader4">参考和引用</a>
-                            </li>
-                            <li><a href="#articleHeader5">Promise/A+规范</a></li>
-                            <li><a href="#articleHeader6">ECMAScript 6 入门 - Promise对象</a></li>
-                            <li><a href="#articleHeader7">Promise启示录</a></li>
+                            @*<li class="active"><a href="#articleHeader0">Promise应对的问题</a></li>
+                                <li><a href="#articleHeader1">Promise的解决</a></li>
+                                <li>
+                                    <a href="#articleHeader2">ECMAScript 6 Promise</a>
+                                    <ul>
+                                        <li><a href="#articleHeader3">Promise.prototype.then</a></li>
+                                        <li><a href="#articleHeader3">Promise.constructor</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#articleHeader4">参考和引用</a>
+                                </li>
+                                <li><a href="#articleHeader5">Promise/A+规范</a></li>
+                                <li><a href="#articleHeader6">ECMAScript 6 入门 - Promise对象</a></li>
+                                <li><a href="#articleHeader7">Promise启示录</a></li>*@
                         </ul>
                     </div>
                 </div>
@@ -132,19 +132,9 @@
 }
 
 @section FootJs{
+    @Scripts.Render("~/static/back/js/blog.preview.js")
     <script>
-        $(function () {
-            var $nav = $('#a-nav'),
-                $main = $('#blog-main'),
-                mainTop = $main.offset().top,
-                windowHeight = window.innerHeight;
-            $(window).on('scroll', function () {
-                if (window.scrollY > mainTop) {
-                    $nav.addClass('fixed');
-                } else
-                    $nav.removeClass('fixed');
-            });
-        });
+        require(['blog.preview'], function (view) { view(); });
 
     </script>
 }

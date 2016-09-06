@@ -94,11 +94,11 @@
     </div>
 </div>
 @section Css{
-    @Styles.Render("~/static/back/css/image.index")
+    @Styles.Render("~/static/back/css/image.index.css")
 }
 
 @section FootJs{
-    @Scripts.Render("~/static/back/js/image.index")
+    @Scripts.Render("~/static/back/js/image.index.js")
     <script>
         var Action = {
             getImageList: '@Url.Action("GetImagesList", "Image")',

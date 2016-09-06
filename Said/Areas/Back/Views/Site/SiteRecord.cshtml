@@ -45,7 +45,7 @@
     </div>
 </div>
 @section Css{
-    @Styles.Render("~/static/back/css/saidCenter", "~/static/back/css/bootstrap-date", "~/static/back/css/bootstrap-table")
+    @Styles.Render("~/static/back/css/saidCenter.css", "~/static/back/css/bootstrap-date.css", "~/static/back/css/bootstrap-table.css")
     <style>
         /*boostrap-table的列表后加载出来，会造成页面出横向滚动条，是因为页面的宽度计算有问题（数据加载的多，会出竖向滚动条，竖向滚动条占据了空间，导致页面上的元素宽度计算不正确，从而出现横向滚动条），所以特殊处理下样式*/
         .main-context { overflow: hidden; }
@@ -53,7 +53,7 @@
     </style>
 }
 @section FootJs{
-    @Scripts.Render("~/static/back/js/home.siterecord")
+    @Scripts.Render("~/static/back/js/home.siterecord.js")
     <script>
         var Action = {
             article: '@Url.Action("Said", "Home")',

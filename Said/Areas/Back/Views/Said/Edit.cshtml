@@ -144,7 +144,7 @@
                         <div class="col-md-4">
                             <div class="summay-img">
                                 <div class="thumbnail">
-                                    <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '../../Content/Images/UEDImg/demo-img6.jpg') + ')'"></div>
+                                    <div class="summay-img-item" ms-css-background-image="'url(' + (imgSrc ? imgSrc : '/Content/Images/UEDImg/demo-img6.jpg') + ')'"></div>
                                 </div>
                             </div>
                         </div>
@@ -242,10 +242,10 @@
     }
 </div>
 @section Css{
-    @Styles.Render("~/static/back/css/said.add")
+    @Styles.Render("~/static/back/css/said.add.css")
 }
 @section FootJs{
-    @Scripts.Render("~/static/back/js/said.edit")
+    @Scripts.Render("~/static/back/js/said.edit.js")
     <script type="text/javascript">
         var saidId = '@Model.SaidId',
             oldFileName = '@Model.SName',

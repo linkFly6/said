@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using log4net;
+using PagedList;
 using Said.Application;
 using Said.Common;
 using Said.Controllers.Filters;
@@ -15,6 +16,8 @@ namespace Said.Controllers
     [UserFilterAttribute]
     public class SaidController : BaseController
     {
+        private static readonly ILog logManager = LogManager.GetLogger(typeof(BlogController));
+
         object @obj = new object();
 
         /// <summary>
@@ -53,6 +56,8 @@ namespace Said.Controllers
                 ViewData["articles"] = list.ToList();
                 ViewData["pageIndex"] = index;
                 ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
+
+
             }
             return View();
         }

@@ -65,35 +65,35 @@ namespace Said
 
 
             #region 插件样式
-            bundles.Add(new StyleBundle("~/static/back/css/bootstrap-table").Include("~/Content/widget/bootstrap/bootstrap-table/bootstrap-table.css"));
-            bundles.Add(new StyleBundle("~/static/back/css/bootstrap-date").Include("~/Content/widget/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/bootstrap-table.css").Include("~/Content/widget/bootstrap/bootstrap-table/bootstrap-table.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/bootstrap-date.css").Include("~/Content/widget/bootstrap/bootstrap-datetimepicker/bootstrap-datetimepicker.css"));
             #endregion
 
 
             #region 业务相关
             //通用资源显示样式
-            bundles.Add(new StyleBundle("~/static/back/css/saidCenter").Include("~/Content/back/Style/saidCenter.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/saidCenter.css").Include("~/Content/back/Style/saidCenter.css"));
 
             //新增blog/said
-            bundles.Add(new StyleBundle("~/static/back/css/said.add").Include("~/Content/back/Style/addSaid.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/said.add.css").Include("~/Content/back/Style/addSaid.css"));
 
             //分类
-            bundles.Add(new StyleBundle("~/static/back/css/classify").Include("~/Content/back/Style/classify.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/classify.css").Include("~/Content/back/Style/classify.css"));
 
             //首页
-            bundles.Add(new StyleBundle("~/static/back/css/home").Include("~/Content/back/Style/index.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/home.css").Include("~/Content/back/Style/index.css"));
 
             //登录
-            bundles.Add(new StyleBundle("~/static/back/css/login")
+            bundles.Add(new StyleBundle("~/static/back/css/login.css")
                    .Include(
                         "~/Content/Style/Global.css",
                         "~/Content/Back/Style/login.css"));
 
             //图片和资源通用样式
-            bundles.Add(new StyleBundle("~/static/back/css/image.index").Include("~/Content/back/Style/imagesCenter.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/image.index.css").Include("~/Content/back/Style/imagesCenter.css"));
 
             //页面配置
-            bundles.Add(new StyleBundle("~/static/back/css/pageconfig").Include("~/Content/back/Style/pageConfig.css"));
+            bundles.Add(new StyleBundle("~/static/back/css/pageconfig.css").Include("~/Content/back/Style/pageConfig.css"));
 
             #endregion
 
@@ -106,10 +106,10 @@ namespace Said
             #region 后台业务JS
 
             //require配置
-            bundles.Add(new ScriptBundle("~/static/back/js/config").Include("~/Content/back/javaScript/require.config.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/config.js").Include("~/Content/back/javaScript/require.config.js"));
 
             //全站后台通用js
-            bundles.Add(new ScriptBundle("~/static/back/js/global").Include(
+            bundles.Add(new ScriptBundle("~/static/back/js/global.js").Include(
                     "~/Content/widget/jquery-2.1.1.js",
                     "~/Content/widget/so/so.js",
                     "~/Content/widget/avalon/avalon.mobile.js",
@@ -118,40 +118,42 @@ namespace Said
 
             #region 业务相关
             //新增blog
-            bundles.Add(new ScriptBundle("~/static/back/js/blog.add").Include("~/Content/back/javaScript/blog.add.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/blog.add.js").Include("~/Content/back/javaScript/blog.add.js"));
             //编辑blog
-            bundles.Add(new ScriptBundle("~/static/back/js/blog.edit").Include("~/Content/back/javaScript/blog.edit.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/blog.edit.js").Include("~/Content/back/javaScript/blog.edit.js"));
             //blog列表
-            bundles.Add(new ScriptBundle("~/static/back/js/blog.index").Include("~/Content/back/javaScript/blog.index.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/blog.index.js").Include("~/Content/back/javaScript/blog.index.js"));
+            //预览blog
+            bundles.Add(new ScriptBundle("~/static/back/js/blog.preview.js").Include("~/Content/back/javaScript/blog.preview.js"));
 
             //分类
-            bundles.Add(new ScriptBundle("~/static/back/js/classify.index").Include("~/Content/back/javaScript/classify.index.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/classify.index.js").Include("~/Content/back/javaScript/classify.index.js"));
 
             //登录
-            bundles.Add(new ScriptBundle("~/static/back/js/home.login").Include("~/Content/back/javaScript/home.login.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/home.login.js").Include("~/Content/back/javaScript/home.login.js"));
 
             //图片资源
-            bundles.Add(new ScriptBundle("~/static/back/js/image.index").Include("~/Content/back/javaScript/image.index.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/image.index.js").Include("~/Content/back/javaScript/image.index.js"));
 
 
             //音乐资源
-            bundles.Add(new ScriptBundle("~/static/back/js/music.index").Include("~/Content/back/javaScript/music.index.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/music.index.js").Include("~/Content/back/javaScript/music.index.js"));
 
 
             //新增Said
-            bundles.Add(new ScriptBundle("~/static/back/js/said.add").Include("~/Content/back/javaScript/said.add.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/said.add.js").Include("~/Content/back/javaScript/said.add.js"));
             //编辑said
-            bundles.Add(new ScriptBundle("~/static/back/js/said.edit").Include("~/Content/back/javaScript/said.edit.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/said.edit.js").Include("~/Content/back/javaScript/said.edit.js"));
             //Said列表
-            bundles.Add(new ScriptBundle("~/static/back/js/said.index").Include("~/Content/back/javaScript/said.index.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/said.index.js").Include("~/Content/back/javaScript/said.index.js"));
 
 
             //页面配置
-            bundles.Add(new ScriptBundle("~/static/back/js/home.config").Include("~/Content/back/javaScript/home.config.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/home.config.js").Include("~/Content/back/javaScript/home.config.js"));
 
 
             //站点配置
-            bundles.Add(new ScriptBundle("~/static/back/js/home.siterecord").Include("~/Content/back/javaScript/home.siterecord.js"));
+            bundles.Add(new ScriptBundle("~/static/back/js/home.siterecord.js").Include("~/Content/back/javaScript/home.siterecord.js"));
             #endregion
 
 

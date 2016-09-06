@@ -164,11 +164,11 @@
 
 </div>
 @section Css{
-    @Styles.Render("~/static/back/css/image.index", "~/static/back/css/bootstrap-date")
+    @Styles.Render("~/static/back/css/image.index.css", "~/static/back/css/bootstrap-date.css")
 }
 
 @section FootJs{
-    @Scripts.Render("~/static/back/js/music.index")
+    @Scripts.Render("~/static/back/js/music.index.js")
     <script>
         var Action = {
             getList: '@Url.Action("GetAllMusicList", "Music")',

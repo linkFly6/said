@@ -22,7 +22,7 @@ namespace Said.Controllers.Filters
                 SaidRecordCommon.SetAdmindId(HttpContext.Current);
                 SaidRecordCommon.Add(HttpContext.Current);
             }
-            
+
         }
 
         /// <summary>

@@ -24,7 +24,7 @@
                     </li>
                     <li>
                         <div class="music-song-summary"><a title="Artist" class="music-song-link" target="_blank" href="@Url.Action("Cl", "Home", new { url = "http://www.sogou.com/web?ie=utf8&query=" + Url.Encode(Model.Song.SongArtist), sgs = "s-q-"+Model.SaidId })">@Model.Song.SongArtist</a></div>
-                        <div class="music-song-summary"><a title="Album" class="music-song-link" target="_blank" href="@Url.Action("Cl", "Home", new { url = "http://www.sogou.com/web?ie=utf8&query=" + Model.Song.SongAlbum, sgs = "s-q-"+Model.SaidId })">@Model.Song.SongAlbum</a></div>
+                        <div class="music-song-summary"><a title="Album" class="music-song-link" target="_blank" href="@Url.Action("Cl", "Home", new { url = "http://www.sogou.com/web?ie=utf8&query=" + Url.Encode(Model.Song.SongAlbum), sgs = "s-q-"+Model.SaidId })">@Model.Song.SongAlbum</a></div>
                     </li>
                 </ul>
             </dd>

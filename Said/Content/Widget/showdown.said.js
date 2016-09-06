@@ -1139,7 +1139,8 @@
             }
 
             url = showdown.helper.escapeCharacters(url, '*_', false);
-            var result = '<a href="' + url + '"';
+            //http://tasaid.com/Home/Cl?url=https%3A%2F%2Fgithub.com%2FlinkFly6%2FSaid&sgs=blog-link
+            var result = '<a href="//tasaid.com/Home/Cl?url=' + encodeURIComponent(url) + '&sgs=blog-link" target="_blank"';
 
             if (title !== '' && title !== null) {
                 title = title.replace(/"/g, '&quot;');
@@ -1257,7 +1258,8 @@
             if (/^www\./i.test(link)) {
                 link = link.replace(/^www\./i, 'http://www.');
             }
-            return '<a href="' + link + '">' + lnkTxt + '</a>';
+            //http://tasaid.com/Home/Cl?url=https%3A%2F%2Fgithub.com%2FlinkFly6%2FSaid&sgs=blog-link
+            return '<a href="//tasaid.com/Home/Cl?url=' + encodeURIComponent(link) + '&sgs=blog-link">' + lnkTxt + '</a>';
         }
 
         function replaceMail(wholeMatch, m1) {
