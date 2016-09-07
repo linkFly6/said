@@ -207,11 +207,10 @@
 
 .blog-article {
     position: relative;
+}
 
-
-    .html {
-        font: 200 18px/2 "Lantinghei SC","Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-    }
+.html {
+    font: 200 18px/2 "Lantinghei SC","Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 }
 
 
@@ -299,6 +298,7 @@
         background-color: rgba(0,0,0,0.04);
         border-radius: 3px;
     }
+
 
     table {
         width: 100%;
@@ -397,6 +397,10 @@
         background-color: #f8f8f8;
         border-left: 4px solid #56a1d6;
 
+        ul, ol {
+            margin-bottom: 0;
+        }
+
         p:last-child {
             margin-bottom: 0;
         }
@@ -409,6 +413,7 @@
 
         li {
             list-style: disc;
+            padding: 3px 0;
         }
     }
 
@@ -417,6 +422,7 @@
 
         li {
             list-style: decimal;
+            padding: 3px 0;
         }
     }
 

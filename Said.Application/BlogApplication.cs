@@ -138,12 +138,12 @@ namespace Said.Application
             return SaidCommon.Transaction(() =>
             {
                 IList<BlogTags> blogTags = BlogTagsApplication.UpdateBlogTags(blog, tags);
-                if (BlogTagsApplication.AddLists(blogTags) <= 0)
+                if (Add(blog) <= 0)
                 {
-                    throw new Exception("新增标签关系异常");
+                    throw new Exception("新增Blog异常");
                 }
                 //新增BlogTags完毕,新增Blog
-                return Add(blog);
+                return BlogTagsApplication.AddLists(blogTags);
             });
         }
 

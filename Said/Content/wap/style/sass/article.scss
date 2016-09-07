@@ -19,13 +19,12 @@
 
 .article-content {
     padding: 0 15px 20px;
-
-
+    font-size: 14px;
 
     .blog-title {
         padding: 20px 0;
         word-break: break-word;
-        font-size: 32px;
+        font-size: 24px;
         color: #2f2f2f;
         border-bottom: 1px solid #e8e8e8;
     }
@@ -41,10 +40,19 @@
             margin: 0 auto;
         }
 
+        h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        li {
+            margin: .3em 0;
+        }
+
         p {
             /*padding: 20px 0;*/
             /*font-size: 14px;*/
-            font-size: 17px;
+            font-size: 14px;
             line-height: 1.5em;
             font-weight: 400;
             color: #555;
@@ -67,9 +75,14 @@
             font-size: 90%;
             padding: 2px 6px;
             margin: 0 2px;
+            overflow-wrap: normal;
+            white-space: inherit;
+            word-wrap: normal;
         }
 
         .highlight-source {
+            overflow-x: auto;
+
             code {
                 padding: 1em;
             }
@@ -94,6 +107,7 @@
 
         ul {
             padding-left: 1em;
+            margin: 1em 0;
 
             li {
                 list-style: disc;
@@ -102,6 +116,7 @@
 
         ol {
             padding-left: 1em;
+            margin: 1em 0;
 
             li {
                 list-style: decimal;
