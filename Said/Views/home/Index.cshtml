@@ -91,7 +91,7 @@
                         <li class="blog-item">
                             <div class="b-main">
                                 <h2 class="b-title said-ellipsis">
-                                    <a href="blog.html" class="b-title">@item.BTitle</a>
+                                    <a href="@string.Format("/blog/{0}.html",item.BlogId)" class="b-title">@item.BTitle</a>
                                 </h2>
                                 <div class="b-summary">
                                     <p>@(new HtmlString(item.BSummaryTrim))</p>
