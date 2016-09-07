@@ -318,7 +318,7 @@ namespace Said.Controllers
                                             这个问题尚未解决
                                         */
 
-                                        var blog = BlogApplication.FindNoCache(comment.BlogId);
+                                        var blog = BlogApplication.Find(comment.BlogId);
                                         if (blog.BComment > 0)
                                             blog.BComment--;
                                         if (BlogApplication.Update(blog) > 0)

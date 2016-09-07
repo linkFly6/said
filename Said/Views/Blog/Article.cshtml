@@ -31,7 +31,7 @@
             <article class="blog-article">
                 <div class="html">
                     <section class="blog-content">
-                        <div class="html">@(new HtmlString(Model.BHTML))</div>
+                        <div id="blog-context">@(new HtmlString(Model.BHTML))</div>
                     </section>
                     <div class="l-author">
                         <div>作者：linkFly</div>
@@ -269,11 +269,18 @@
 
             </nav>
         </div>
-
-
     </section>
-
 </section>
+
+<div id="previewImg">
+    <div class="pre-box" id="pre-box">
+        <a class="img-link" id="pre-link" href="javascript:;" target="_blank"><img id="pre-img" src="" title="点击查看大图"></a>
+        <div class="btn-box">
+            <a class="said-btn said-btn-default" target="_blank" href="javascript:;" id="pre-btn">查看原图</a>
+        </div>
+    </div>
+</div>
+
 @section Css{
     @Styles.Render("~/static/said/blog.css")
 }

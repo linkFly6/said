@@ -28,17 +28,8 @@ namespace Said.Areas.Back.Controllers
             ViewBag.Title = "添加Blog - Said后台管理系统 ";
             //初始化页面需要的数据
             ViewData["ClassifysList"] = ClassifyApplication.Find();
-            ViewData["Tags"] = TagApplication.Find();
             ViewData["TagList"] = TagApplication.Find();
-            //TOD 这个方法跟踪进去，有TODO
-            var test = BlogApplication.GetAllBlogFileName().ToList<Blog>();
-            //TODO 添加成功了之后要检查文件名是否读出来了
-            foreach (Blog item in test)
-            {
-                Console.Write(item.BName);
-            }
-            ViewData["BlogFiles"] = test;
-
+            ViewData["BlogFiles"] = BlogApplication.GetAllBlogFileName().ToList();
             return View();
         }
 
@@ -47,7 +38,7 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return View("Error");
-            var model = BlogApplication.Find(id);
+            var model = BlogApplication.FindNoCacheById(id);
             if (model == null)
             {
                 return RedirectToAction("Index", new
@@ -59,7 +50,7 @@ namespace Said.Areas.Back.Controllers
             ViewData["ClassifysList"] = ClassifyApplication.Find();
             ViewData["TagList"] = TagApplication.Find().ToList();
             ViewData["BlogFiles"] = BlogApplication.GetAllBlogFileName().ToList();
-            ViewData["BlogTags"] = BlogTagsApplication.FindByBlogId(model.BlogId).ToList();
+            ViewData["BlogTags"] = BlogTagsApplication.FindByBlogIdNoCache(model.BlogId).ToList();
             return View(model);
         }
 
@@ -114,8 +105,11 @@ namespace Said.Areas.Back.Controllers
             string validateResult = BlogApplication.ValidateAndCorrectSubmit(model);
             if (validateResult == null)
             {
-                BlogApplication.AddBlog(model, tags);
-                return ResponseResult(new { id = model.BlogId });
+                if (BlogApplication.AddBlog(model, tags) > 0)
+                {
+                    return ResponseResult(new { id = model.BlogId });
+                }
+                return ResponseResult(2);
             }
             else
             {
@@ -222,7 +216,8 @@ namespace Said.Areas.Back.Controllers
                             throw new Exception("删除文章失败（删除Blog和标签对应的关系失败）");
                         };
                     }
-                    if (BlogApplication.DeleteBlog(model) > 0) {
+                    if (BlogApplication.DeleteBlog(model) > 0)
+                    {
                         return ResponseResult();
                     }
                     else {

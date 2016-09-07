@@ -347,6 +347,8 @@
 
     return function (blogId) {
         $(function () {
+            //全局通用
+            var $body = $('body');
             //滚动菜单
             var $nav = $('#a-nav'),
                 $navBg = $nav.find('.nav-bg'),//导航背景（偏移到当前项的）
@@ -395,8 +397,7 @@
 
             var titleIndexValues = [],
                 //[ { value, height } ]
-                _lastNavTop = 0,
-                $body = $(document.body);
+                _lastNavTop = 0;
             $navList.html(navHTMLs.join('')).find('>li>a').each(function () {
                 var $this = $(this),
                     height = $this.height(),
@@ -474,6 +475,7 @@
                 }
             }, 200);//进行函数节流
 
+
             $(window).on('scroll', function () {
                 if (window.scrollY > mainTop) {
                     $nav.addClass('fixed');
@@ -481,6 +483,33 @@
                     $nav.removeClass('fixed');
                 titleScroll(window.scrollY);
             }).trigger('scroll');
+
+
+
+
+            // ========================== 预览
+            var $imgs = $('#blog-context').find('img'),
+                $imgLinks = $('#pre-link,#pre-btn'),
+                $preImg = $('#pre-img'),
+                $pre = $('#previewImg');
+
+            $imgs.each(function (_, img) {
+                var $img = $(img), src = $img.attr('src');
+                $img.on('click', function () {
+                    $body.addClass('lock');
+                    $preImg.attr('src', src);
+                    $imgLinks.attr('href', src);
+                    $pre.css('display', 'flex');
+                });
+            });
+            $imgLinks.on('click', function (e) {
+                e.stopPropagation();
+            });
+            $pre.on('click', function () {
+                $body.removeClass('lock');
+                $pre.css('display', 'none');
+            });
+
 
             //评论
             var $commentContent = $('#comment-content'),//评论栏容器

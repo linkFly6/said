@@ -33,10 +33,17 @@ namespace Said.Service
         IEnumerable<Blog> GetAllBlogFileName();
 
         /// <summary>
-        /// 查找一条，跳过缓存
+        /// 查找一条，跳过缓存，不Blog所有外键数据
         /// </summary>
         /// <returns></returns>
         Blog FindNoCache(Expression<Func<Blog, bool>> where);
+
+
+        /// <summary>
+        /// 查找一条，跳过缓存，包含Blog所有外键数据
+        /// </summary>
+        /// <returns></returns>
+        Blog FindNoCacheInclude(Expression<Func<Blog, bool>> where);
 
 
         /// <summary>
@@ -541,6 +548,15 @@ namespace Said.Service
         public Blog FindNoCache(Expression<Func<Blog, bool>> where)
         {
             return Context.Blog.AsNoTracking().Where(where).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 查找一条，跳过缓存，包含Blog所有外键数据
+        /// </summary>
+        /// <returns></returns>
+        public Blog FindNoCacheInclude(Expression<Func<Blog, bool>> where)
+        {
+            return Context.Blog.AsNoTracking().Include("Classify").Where(where).FirstOrDefault();
         }
     }
 }

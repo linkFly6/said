@@ -5,8 +5,8 @@
 }
 
 @*<div class="page-header">
-    <h3>图片管理&nbsp;&nbsp;<small>&gt;&nbsp;管理每一张美轮美奂并且精致的图片</small><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></h3>
-</div>*@
+        <h3>图片管理&nbsp;&nbsp;<small>&gt;&nbsp;管理每一张美轮美奂并且精致的图片</small><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></h3>
+    </div>*@
 <ol class="breadcrumb">
     <li><a href="/Back">Home</a></li>
     <li>资源管理</li>
@@ -108,7 +108,7 @@
             Source = {
                 thumbnail: [
                     '@ConfigInfo.SourceSystemThumbnailPath',
-                    '@ConfigInfo.SourceBlogThumbnailPath',
+                    '@ConfigInfo.SourceBlogPath',
                     '@ConfigInfo.SourceMusicThumbnailPath',
                     '@ConfigInfo.SourceSaidThumbnailPath',
                     '@ConfigInfo.SourceIconsPath',
@@ -126,7 +126,7 @@
                     '@ConfigInfo.SourceSystemPath',
                     '@ConfigInfo.SourceSystemPath'
                 ],
-                typeName: ['系统图片', '日志', '音乐', 'Said', 'Icon', '页面', '无', '其他'],
+                typeName: ['系统图片', 'Blog', '音乐', 'Said', 'Icon', '页面', '无', '其他'],
                 maxImageSize: '@ConfigInfo.SizeSystem',
                 filters: ['jpg', 'jpeg', 'jpe', 'bmp', 'png', 'gif'/*, 'image/png', 'image/bmp', 'image/gif', 'image/jpeg'*/]
             };

@@ -129,19 +129,22 @@ namespace Said.Application
         /// <param name="blog"></param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public static Blog AddBlog(Blog blog, IList<Tag> tags)
+        public static int AddBlog(Blog blog, IList<Tag> tags)
         {
             //先调用ValidateAndCorrectSubmit验证更合理
             blog.BlogId = string.IsNullOrWhiteSpace(blog.BName) ? FileCommon.CreateFileNameByTime() : blog.BName;
             blog.Date = DateTime.Now;
             //进行事务添加
-            SaidCommon.Transaction(() =>
+            return SaidCommon.Transaction(() =>
             {
                 IList<BlogTags> blogTags = BlogTagsApplication.UpdateBlogTags(blog, tags);
-                Add(blog);
-                BlogTagsApplication.AddLists(blogTags);
+                if (BlogTagsApplication.AddLists(blogTags) <= 0)
+                {
+                    throw new Exception("新增标签关系异常");
+                }
+                //新增BlogTags完毕,新增Blog
+                return Add(blog);
             });
-            return blog;
         }
 
 
@@ -159,7 +162,7 @@ namespace Said.Application
             //进行事务添加
             return SaidCommon.Transaction(() =>
             {
-                if (BlogTagsApplication.DeleteByBlogId(blog.BlogId) <= 0)
+                if (BlogTagsApplication.DeleteByBlogId(blog.BlogId) < 0)
                 {
                     throw new Exception("删除原Blog和标签关系异常");
                 }
@@ -221,6 +224,15 @@ namespace Said.Application
         public static Blog Find(string id)
         {
             return Context.GetById(id);
+        }
+
+        /// <summary>
+        /// 查找一条，无缓存并包含所有外键数据
+        /// </summary>
+        /// <returns></returns>
+        public static Blog FindNoCacheById(string id)
+        {
+            return Context.FindNoCacheInclude(m => m.BlogId == id);
         }
 
         /// <summary>

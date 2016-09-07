@@ -390,7 +390,7 @@ namespace Said.IServices
         /// <param name="entity"></param>
         public void RemoveEntityCache(T entity)
         {
-           Context.Entry(entity).State = EntityState.Modified;
+            Context.Entry(entity).State = EntityState.Modified;
         }
 
 
@@ -403,5 +403,76 @@ namespace Said.IServices
             return Context.Commit();
         }
 
+        /// <summary>
+        /// 无缓存查询（查询结果禁止修改）
+        /// 注意，使用无缓存查询性能为略微提升（因为Entity Framework不会跟踪它的状态），但是查询出来的对象不允许修改，一旦修改会导致EF缓存中数据和数据库中的数据不对应
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <returns></returns>
+        public IEnumerable<T> FindListNoCache(Expression<Func<T, bool>> where)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*
+
+        /// <summary>
+        /// 无缓存查询（查询结果禁止修改）
+        /// 注意，使用无缓存查询性能为略微提升（因为Entity Framework不会跟踪它的状态），但是查询出来的对象不允许修改，一旦修改会导致EF缓存中数据和数据库中的数据不对应
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <returns></returns>
+        public IEnumerable<T> FindListNoCache<TOrder>(Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 无缓存查询，并指定包含的外键属性（查询结果禁止修改）
+        /// 注意，使用无缓存查询性能为略微提升（因为Entity Framework不会跟踪它的状态），但是查询出来的对象不允许修改，一旦修改会导致EF缓存中数据和数据库中的数据不对应
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <param name="includes">指定包含的外键属性</param>
+        /// <returns></returns>
+        public IEnumerable<T> FindListNoCache<TOrder>(Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order, params string[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 无缓存查询一条数据（查询结果禁止修改）
+        /// 注意，使用无缓存查询性能为略微提升（因为Entity Framework不会跟踪它的状态），但是查询出来的对象不允许修改，一旦修改会导致EF缓存中数据和数据库中的数据不对应
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <returns></returns>
+        public T FindNoCache<TOrder>(Expression<Func<T, bool>> where, Expression<Func<T, TOrder>> order)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 无缓存查询一条数据（查询结果禁止修改）
+        /// 注意，使用无缓存查询性能为略微提升（因为Entity Framework不会跟踪它的状态），但是查询出来的对象不允许修改，一旦修改会导致EF缓存中数据和数据库中的数据不对应
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <returns></returns>
+        public T FindNoCache(Expression<Func<T, bool>> where)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 无缓存查询一条数据，并指定包含的外键属性（查询结果禁止修改）
+        /// 注意，使用无缓存查询性能为略微提升（因为Entity Framework不会跟踪它的状态），但是查询出来的对象不允许修改，一旦修改会导致EF缓存中数据和数据库中的数据不对应
+        /// </summary>
+        /// <param name="where">查询条件</param>
+        /// <param name="includes">指定包含的外键属性</param>
+        /// <returns></returns>
+        public T FindNoCache(Expression<Func<T, bool>> where, params string[] includes)
+        {
+            throw new NotImplementedException();
+        }
+
+    */
     }
 }

@@ -51,6 +51,16 @@ namespace Said.Application
         }
 
         /// <summary>
+        /// 查找一个Blog对应的BlogTags关系
+        /// </summary>
+        /// <param name="blogId">要查找的BlogId</param>
+        /// <returns></returns>
+        public static IEnumerable<BlogTags> FindByBlogIdNoCache(string blogId)
+        {
+            return Context.FindListNoCacheInclude(m => m.BlogId == blogId, "Tag");
+        }
+
+        /// <summary>
         /// 根据TagId获取一组BlogTags
         /// </summary>
         /// <param name="tagId"></param>

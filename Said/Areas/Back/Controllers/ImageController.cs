@@ -101,13 +101,17 @@ namespace Said.Areas.Back.Controllers
             string resourcePath = string.Empty,
                    thumbnailPath = string.Empty;
             int maxSize = 102400;
+            bool isCut = true;//是否裁剪图片
             switch (type)
             {
                 case ImageType.Blog:
                     {
                         maxSize = ConfigInfo.SizeBlogImage;
                         resourcePath = ConfigInfo.SourceBlogPath;
-                        thumbnailPath = ConfigInfo.SourceBlogThumbnailPath;
+                        //Blog不用生成缩略图，也不需要裁剪
+                        isCut = false;
+
+                        //thumbnailPath = ConfigInfo.SourceBlogThumbnailPath;
                     }
                     break;
                 case ImageType.Music:
@@ -146,7 +150,7 @@ namespace Said.Areas.Back.Controllers
                     break;
             }
             //分析上传的文件信息，返回解析得到的结果
-            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, maxSize, resourcePath, thumbnailPath, type);
+            return UploadImage(Request.Files["uploadFile"], ConfigInfo.ImageFileterArray, maxSize, resourcePath, thumbnailPath, type, isCut);
         }
         #endregion
 
@@ -162,9 +166,12 @@ namespace Said.Areas.Back.Controllers
         /// <param name="maxSize"></param>
         /// <param name="dirPath"></param>
         /// <param name="type"></param>
+        /// <param name="isCut">是否不需要裁剪</param>
         /// <returns></returns>
-        private JsonResult UploadImage(HttpPostedFileBase file, Array filters, int maxSize, string dirPath, string thumbnailPath, ImageType type)
+        private JsonResult UploadImage(HttpPostedFileBase file, Array filters, int maxSize, string dirPath, string thumbnailPath, ImageType type, bool isCut)
         {
+            //TODO  这里要支持不裁剪！！！！！
+
             //分析上传的文件信息，返回解析得到的结果
             Dictionary<string, string> result = Save(file, ConfigInfo.ImageFileterArray, maxSize, dirPath);
             int intImageType = (int)type;
@@ -172,18 +179,22 @@ namespace Said.Areas.Back.Controllers
                 return Json(new { code = 1, msg = result["msg"] });
             //裁剪图片
             var isCurOk = true;
-            if (type == ImageType.Music)//音乐需要特殊的裁剪
+            if (isCut)
             {
-                isCurOk = ImageCommon.CutImg(result["path"], 200, 200);
+                if (type == ImageType.Music)//音乐需要特殊的裁剪
+                {
+                    isCurOk = ImageCommon.CutImg(result["path"], 200, 200);
+                }
+                else
+                {
+                    isCurOk = ImageCommon.CutImg(result["path"]);
+                }
+                if (!isCurOk)
+                {
+                    return Json(new { code = 3, msg = "裁剪图片失败" });
+                }
             }
-            else
-            {
-                isCurOk = ImageCommon.CutImg(result["path"]);
-            }
-            if (!isCurOk)
-            {
-                return Json(new { code = 3, msg = "裁剪图片失败" });
-            }
+
             if (string.Empty != thumbnailPath)//不需要生成缩略图
             {
                 isCurOk = ImageCommon.MakeThumbnail(result["path"], Server.MapPath(thumbnailPath) + result["name"]);
@@ -192,8 +203,6 @@ namespace Said.Areas.Back.Controllers
                     return Json(new { code = 4, msg = "生成缩略图失败" });
                 }
             }
-
-
             Image model = new Image
             {
                 //TODO   -  UserID
@@ -202,7 +211,7 @@ namespace Said.Areas.Back.Controllers
                 Type = type,
                 ReferenceCount = 0,
                 ISize = file.ContentLength,//TODO 这里要显示裁剪字节信息，不能用原始的
-                ImageId = Guid.NewGuid().ToString().Replace("-", ""),
+                ImageId = SaidCommon.GUID,
                 IName = result["name"]
             };
             if (ImageApplication.Add(model) > 0)
