@@ -116,7 +116,7 @@
     @Styles.Render("~/static/wap/article.css", "~/static/wap/github.css")
 }
 @section FootJs{
-    @Scripts.Render("~/static/wap/article.js");
+    @Scripts.Render("~/static/wap/article.js")
     <script type="text/javascript">
         require(['article'], function (view) {
             view("@Model.BlogId");

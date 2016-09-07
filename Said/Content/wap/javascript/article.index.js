@@ -42,7 +42,7 @@
                         var htmls = [];
                         data.rows.forEach(function (item) {
                             htmls.push(_.format(htmlTemplates, {
-                                url: actionBase + item.id + '.html',
+                                url: actionBase + item.url + '.html',
                                 base: imgBase,
                                 img: item.img,
                                 title: _.escapeHTML(item.title),

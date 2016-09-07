@@ -59,10 +59,10 @@
     }*@
 
 @section FootJs{
-    @Scripts.Render("~/static/wap/article.index.js");
+    @Scripts.Render("~/static/wap/article.index.js")
     <script>
         require(['article.index'], function (view) {
-            view(@maxPage,@limit,'@Url.Action("GetSaidList", "Said")','/blog/','@saidResourcePath');
+            view(@maxPage,@limit,'@Url.Action("GetSaidList", "Said")','/said/','@saidResourcePath');
         });
     </script>
 }

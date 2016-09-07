@@ -41,13 +41,13 @@
         }
 
         h2, h3, h4, h5, h6 {
-            border-bottom: 1px solid #eee;
             margin-top: 25px;
             padding-bottom: 10px;
         }
 
         h2 {
             font-size: 1.75em;
+            border-bottom: 1px solid #eee;
         }
 
         h3 {
@@ -79,7 +79,6 @@
             color: #555;
             letter-spacing: 1px;
             /*margin: 0 0 20px 0;*/
-            margin: 1.5em 0;
             word-break: break-word;
             white-space: pre-wrap;
             text-align: justify;
@@ -121,14 +120,18 @@
             border-left: 4px solid #999;
             background-color: #f6f6f6;
 
+
             p {
                 margin: 0;
             }
         }
 
+        .highlight-source, pre, blockquote, ul, ol, table, p, h4, h5 {
+            margin: 1.5em 0;
+        }
+
         ul {
             padding-left: 1em;
-            margin: 1em 0;
 
             li {
                 list-style: disc;
@@ -137,7 +140,6 @@
 
         ol {
             padding-left: 1em;
-            margin: 1em 0;
 
             li {
                 list-style: decimal;
@@ -147,7 +149,6 @@
         table {
             width: 100%;
             background: #FFF;
-            margin: 1em 0;
             border: 1px solid rgba(34,36,38,.15);
             box-shadow: none;
             border-radius: .28571429rem;
