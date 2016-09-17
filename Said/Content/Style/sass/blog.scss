@@ -260,6 +260,7 @@
         background-color: #f7f7f7;
         border-radius: 3px;
 
+        // chrome 代码中，横向滚动条重写
         &::-webkit-scrollbar {
             height: 10px;
         }
