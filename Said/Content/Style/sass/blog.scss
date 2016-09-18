@@ -259,7 +259,6 @@
         font-size: 85%;
         background-color: #f7f7f7;
         border-radius: 3px;
-
         // chrome 代码中，横向滚动条重写
         &::-webkit-scrollbar {
             height: 10px;
@@ -354,6 +353,25 @@
         /*font-weight: bold;*/
         line-height: 1.4;
         /*font-weight: normal;*/
+        .hash {
+            font-size: 20px;
+            float: left;
+            margin-left: -24px;
+            color: #8b8b8b;
+            visibility: hidden;
+            padding-right: 5px;
+            /*-moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);*/
+            margin-right: 0;
+            line-height: 1em;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
     }
 
     hr {
@@ -365,6 +383,10 @@
         font-size: 2em;
         line-height: 1.2;
         border-bottom: 1px solid #eee;
+
+        .hash {
+            line-height: 2.2em;
+        }
     }
 
     h2 {
@@ -372,24 +394,46 @@
         font-size: 1.75em;
         line-height: 1.225;
         border-bottom: 1px solid #eee;
+
+        .hash {
+            line-height: 1.9em;
+        }
     }
 
     h3 {
         font-size: 1.5em;
         line-height: 1.43;
+
+        .hash {
+            line-height: 1.9em;
+        }
     }
 
     h4 {
         font-size: 1.25em;
+
+        .hash {
+            line-height: 1.5em;
+        }
     }
 
     h5 {
         font-size: 1em;
+
+        .hash {
+            line-height: 1.4em;
+            font-size: 18px;
+        }
     }
 
     h6 {
         font-size: 1em;
         color: #777;
+
+        .hash {
+            line-height: 1.5em;
+            font-size: 16px;
+        }
     }
 
     blockquote {
@@ -408,6 +452,22 @@
     }
 
 
+    kbd {
+        display: inline-block;
+        margin: -3px .1em 0;
+        padding: .1em .6em;
+        font-size: 11px;
+        line-height: 1.4;
+        color: #242729;
+        text-shadow: 0 1px 0 #FFF;
+        background-color: #e1e3e5;
+        border: 1px solid #adb3b9;
+        font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
+        border-radius: 3px;
+        box-shadow: 0 1px 0 rgba(12,13,14,0.2),0 0 0 2px #FFF inset;
+        white-space: nowrap;
+        vertical-align: middle;
+    }
 
     ul {
         padding-left: 1em;
