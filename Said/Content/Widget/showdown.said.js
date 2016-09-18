@@ -1823,7 +1823,6 @@
 
     showdown.subParser('headers', function (text, options, globals) {
         'use strict';
-
         text = globals.converter._dispatch('headers.before', text, options, globals);
 
         var prefixHeader = options.prefixHeaderId,
@@ -1840,19 +1839,22 @@
             setextRegexH2 = (options.smoothLivePreview) ? /^(.+)[ \t]*\n-{2,}[ \t]*\n+/gm : /^(.+)[ \t]*\n-+[ \t]*\n+/gm;
 
         text = text.replace(setextRegexH1, function (wholeMatch, m1) {
-
+            var titleId = headerId(m1);//linkFly追加
             var spanGamut = showdown.subParser('spanGamut')(m1, options, globals),
-                hID = (options.noHeaderId) ? '' : ' id="' + headerId(m1) + '"',
+                hID = (options.noHeaderId) ? '' : ' id="' + titleId + '"',
                 hLevel = headerLevelStart,
-                hashBlock = '<h' + hLevel + hID + '>' + spanGamut + '</h' + hLevel + '>';
+                //linkFly 修改 - 显示title的hash
+                hashBlock = '<h' + hLevel + hID + '><a class="fa fa-link hash" aria-hidden="true" href="#' + titleId + '" name="' + titleId + '"></a><span>' + spanGamut + '</span></h' + hLevel + '>';
             return showdown.subParser('hashBlock')(hashBlock, options, globals);
         });
 
         text = text.replace(setextRegexH2, function (matchFound, m1) {
+            var titleId = headerId(m1);//linkFly追加
             var spanGamut = showdown.subParser('spanGamut')(m1, options, globals),
-                hID = (options.noHeaderId) ? '' : ' id="' + headerId(m1) + '"',
+                hID = (options.noHeaderId) ? '' : ' id="' + titleId + '"',
                 hLevel = headerLevelStart + 1,
-              hashBlock = '<h' + hLevel + hID + '>' + spanGamut + '</h' + hLevel + '>';
+                //linkFly 修改 - 显示title的hash
+              hashBlock = '<h' + hLevel + hID + '><a class="fa fa-link hash" aria-hidden="true" href="#' + titleId + '" name="' + titleId + '"></a><span>' + spanGamut + '</span></h' + hLevel + '>';
             return showdown.subParser('hashBlock')(hashBlock, options, globals);
         });
 
@@ -1864,10 +1866,12 @@
         //  ###### Header 6
         //
         text = text.replace(/^(#{1,6})[ \t]*(.+?)[ \t]*#*\n+/gm, function (wholeMatch, m1, m2) {
+            var titleId = headerId(m2);//linkFly追加
             var span = showdown.subParser('spanGamut')(m2, options, globals),
                 hID = (options.noHeaderId) ? '' : ' id="' + headerId(m2) + '"',
                 hLevel = headerLevelStart - 1 + m1.length,
-                header = '<h' + hLevel + hID + '>' + span + '</h' + hLevel + '>';
+                //linkFly 修改 - 显示title的hash
+                header = '<h' + hLevel + hID + '><a class="fa fa-link hash" aria-hidden="true" href="#' + titleId + '" name="' + titleId + '"></a><span>' + span + '</span></h' + hLevel + '>';
 
             return showdown.subParser('hashBlock')(header, options, globals);
         });

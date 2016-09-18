@@ -368,7 +368,7 @@
             $titles.each(function (i) {
                 var $title = $(this),
                     top = parseInt($title.offset().top - $title.height()),//title距离顶部的距离
-                    titleHtml = $title.html(),
+                    titleHtml = $title.children().last().html(),
                     tagName = $title.prop('tagName');//H2,H3
                 if (tagName === 'H3') {//h3
                     if (lastTitle == null) return;//如果前几个标签是h3（所以lastTitle为null），则忽略
@@ -444,7 +444,7 @@
                 };
 
 
-            
+
             var titleScroll = _.throttle(function (scrollValue) {
                 //倒序循环，取最大的值
                 var i = titleTopLastIndex,
