@@ -279,6 +279,7 @@
             font-size: 16px;
             margin: 1em 0px 1em;
             background-color: #f7f7f7;
+            padding: 0;
         }
     }
 
@@ -291,8 +292,7 @@
 
     code {
         font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        padding-top: 0.2em;
-        padding-bottom: 0.2em;
+        padding: .2em .3em;
         margin: 0;
         font-size: 85%;
         background-color: rgba(0,0,0,0.04);
