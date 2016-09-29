@@ -94,9 +94,8 @@
                         }
                     }(),
                     check: function () {
-                        var temp;
                         return ['sTitle', 'sContext', 'sImg', 'sSummary'].every(function (key) {
-                            temp = errorHash[key];
+                            var temp = errorHash[key];
                             return checkEmptyValue(key, temp[0], temp[1]);
                         });
                     },

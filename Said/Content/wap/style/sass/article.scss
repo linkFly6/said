@@ -21,6 +21,10 @@
     padding: 0 15px 20px;
     font-size: 14px;
 
+    .hljs {
+        overflow-x: auto;
+    }
+
     .blog-title {
         padding: 20px 0;
         word-break: break-word;
@@ -43,6 +47,10 @@
         h2, h3, h4, h5, h6 {
             margin-top: 25px;
             padding-bottom: 10px;
+
+            .hash {
+                display: none;
+            }
         }
 
         h2 {

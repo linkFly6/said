@@ -174,9 +174,8 @@
                 }(),
                 check: function () {
                     vmBlog.submitState = true;
-                    var temp;
                     return ['bTitle', 'bContext', 'classify', 'bSummary'].every(function (key) {
-                        temp = errorHash[key];
+                        var temp = errorHash[key];
                         return checkEmptyValue(key, temp[0], temp[1]);
                     });
                 },

@@ -23,6 +23,12 @@ html {
     //添加lock Class之后会锁住滚动条
     &.lock {
         overflow: hidden;
+        position: absolute;
+
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
     }
 }
 
