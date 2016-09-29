@@ -270,6 +270,30 @@ $playerBar: #dbdbdb;
         font-family: Consolas,Menlo,Monaco,Consolas,"Courier New",monospace;
     }
 
+    a {
+        position: relative;
+        color: #4078c0;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            display: block;
+            bottom: -5px;
+            width: 100%;
+            height: 1px;
+            background-color: currentColor;
+            transform: scale(0);
+            transition: transform 0.5s;
+            -webkit-transform: scale(0);
+            -webkit-transition: transform 0.5s;
+        }
+
+        &:hover::after {
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+    }
 
     blockquote {
         margin: 0 0 25px 0;
