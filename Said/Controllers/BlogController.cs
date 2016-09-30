@@ -45,6 +45,7 @@ namespace Said.Controllers
                 ViewData["blogs"] = list.ToList();
                 ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
                 ViewData["limit"] = PageLimit;
+                return View("Article.Mobile");
             }
             else
             {
