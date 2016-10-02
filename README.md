@@ -14,7 +14,7 @@ Said - 听说
 
 个人博客站 - 《[听说](http://www.tasaid.com/)》：
 - [首页](http://www.tasaid.com/)
-- [blog(正在开发中)](http://www.cnblogs.com/silin6/)
+- [blog)](https://tasaid.com/Blog)
 - [听说](http://tasaid.com/said)
 - [项目](http://tasaid.com/projects)
 - 实验室(正在开发中)
@@ -37,6 +37,8 @@ Said - 听说
 
  - 署名
  - 禁止商业演绎
+ 
+ 
  
  如果您希望特殊授权，请联系作者 [linkFly](linkFly6@live.com) 单独授权，则可以不必遵循以上授权协议。
 
