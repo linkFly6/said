@@ -226,6 +226,16 @@ namespace Said.Application
             return Context.GetById(id);
         }
 
+
+        /// <summary>
+        /// 查找
+        /// </summary>
+        /// <returns></returns>
+        public static Blog FindByIdIncludes(string id)
+        {
+            return Context.FindInclude(m => m.BlogId == id && m.IsDel == 0, "Classify");
+        }
+
         /// <summary>
         /// 查找一条，无缓存并包含所有外键数据
         /// </summary>

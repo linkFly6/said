@@ -45,6 +45,13 @@ namespace Said.Service
         /// <returns></returns>
         Blog FindNoCacheInclude(Expression<Func<Blog, bool>> where);
 
+        /// <summary>
+        /// 查找一条，包含传入的外键项
+        /// </summary>
+        /// <param name="includes">要包含的项</param>
+        /// <returns></returns>
+        Blog FindInclude(Expression<Func<Blog, bool>> where, params string[] includes);
+
 
         /// <summary>
         /// 获取所有文章列表（仅获取关键属性）
@@ -557,6 +564,16 @@ namespace Said.Service
         public Blog FindNoCacheInclude(Expression<Func<Blog, bool>> where)
         {
             return Context.Blog.AsNoTracking().Include("Classify").Where(where).FirstOrDefault();
+        }
+
+        public Blog FindInclude(Expression<Func<Blog, bool>> where, params string[] includes)
+        {
+            var results = Context.Blog.Include(includes[0]);
+            for (int i = 1; i < includes.Length; i++)
+            {
+                results = results.Include(includes[i]);
+            }
+            return results.Where(where).FirstOrDefault();
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Said.Controllers
             {
                 return RedirectToAction("Index", "Blog", new { controller = "Home", sgs = "blog", refer = Request.Url.AbsoluteUri });
             }
-            var model = BlogApplication.Find(id);
+            var model = BlogApplication.FindByIdIncludes(id);
             if (model == null)
                 return RedirectToAction("NotFound", "Home", new { sgs = "BlogNotFound", url = Request.Url.AbsoluteUri });
             model.BPV++;
