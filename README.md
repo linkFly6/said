@@ -40,5 +40,5 @@ Said - 听说
  
  
  
- 如果您希望特殊授权，请联系作者 [linkFly](linkFly6@live.com) 单独授权，则可以不必遵循以上授权协议。
+ 如果您希望特殊授权，请联系作者 [linkFly](mailto:linkFly6@live.com) 单独授权，则可以不必遵循以上授权协议。
 
