@@ -14,7 +14,7 @@ Said - 听说
 
 个人博客站 - 《[听说](http://www.tasaid.com/)》：
 - [首页](http://www.tasaid.com/)
-- [blog)](https://tasaid.com/Blog)
+- [blog](https://tasaid.com/Blog)
 - [听说](http://tasaid.com/said)
 - [项目](http://tasaid.com/projects)
 - 实验室(正在开发中)
