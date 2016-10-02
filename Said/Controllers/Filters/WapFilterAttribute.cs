@@ -11,7 +11,7 @@ namespace Said.Controllers.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            string requestPath = HttpContext.Current.Request.Url.PathAndQuery;
+            //string requestPath = HttpContext.Current.Request.Url.PathAndQuery;
             //var temp = new System.Web.Routing.RouteValueDictionary();
             //temp.Add("action", filterContext.RouteData.Values["action"].ToString());
             //temp.Add("controller", filterContext.RouteData.Values["controller"].ToString());

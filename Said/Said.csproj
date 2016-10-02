@@ -154,6 +154,7 @@
     <Compile Include="Controllers\Attrbute\NoFilter.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BlogController.cs" />
+    <Compile Include="Controllers\Filters\CopyrightFilterAttribute.cs" />
     <Compile Include="Controllers\Filters\AdminFilterAttribute.cs" />
     <Compile Include="Controllers\Filters\UserFilterAttribute.cs" />
     <Compile Include="Controllers\Filters\WapFilterAttribute.cs" />
@@ -377,6 +378,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Source\Sys\Images\Icons\default.png" />
+    <Content Include="Content\images\said-copyright.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

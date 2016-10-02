@@ -25,33 +25,33 @@ namespace Said.Controllers.Filters
 
         }
 
-        /// <summary>
-        /// 加载action后
-        /// </summary>
-        /// <param name="filterContext"></param>
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            base.OnActionExecuted(filterContext);
-        }
+        ///// <summary>
+        ///// 加载action后
+        ///// </summary>
+        ///// <param name="filterContext"></param>
+        //public override void OnActionExecuted(ActionExecutedContext filterContext)
+        //{
+        //    base.OnActionExecuted(filterContext);
+        //}
 
 
-        /// <summary>
-        /// 在action返回前执行
-        /// </summary>
-        /// <param name="filterContext"></param>
-        public override void OnResultExecuting(ResultExecutingContext filterContext)
-        {
-            base.OnResultExecuting(filterContext);
-        }
+        ///// <summary>
+        ///// 在action返回前执行
+        ///// </summary>
+        ///// <param name="filterContext"></param>
+        //public override void OnResultExecuting(ResultExecutingContext filterContext)
+        //{
+        //    base.OnResultExecuting(filterContext);
+        //}
 
-        /// <summary>
-        /// 在action方法返回后执行
-        /// </summary>
-        /// <param name="filterContext"></param>
-        public override void OnResultExecuted(ResultExecutedContext filterContext)
-        {
-            base.OnResultExecuted(filterContext);
-        }
+        ///// <summary>
+        ///// 在action方法返回后执行
+        ///// </summary>
+        ///// <param name="filterContext"></param>
+        //public override void OnResultExecuted(ResultExecutedContext filterContext)
+        //{
+        //    base.OnResultExecuted(filterContext);
+        //}
 
     }
 }

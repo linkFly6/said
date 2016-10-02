@@ -29,5 +29,14 @@ Said - 听说
 
 
 
+## 版权
 
+[Said](https://github.com/linkFly6/Said) 项目代码和内容均采用 [知识共享署名3.0 ( CC Attribution-NonCommercial )](https://creativecommons.org/licenses/by-nc/3.0/) 许可，并且 [Said](https://github.com/linkFly6/Said) 项目和代码还采用 [GPL](http://choosealicense.com/licenses/gpl-3.0/) 协议。
+
+您必须遵循以下要求(包括但不局限于)：
+
+ - 署名
+ - 禁止商业演绎
+ 
+ 如果您希望特殊授权，请联系作者 [linkFly](linkFly6@live.com) 单独授权，则可以不必遵循以上授权协议。
 
