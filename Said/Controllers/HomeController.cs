@@ -93,7 +93,7 @@ namespace Said.Controllers
             }
             catch (Exception e)
             {
-                logManager.Error("跳转Error", e.InnerException);
+                logManager.Error("跳转Error\n请求url：" + url, e.InnerException);
             }
             return Redirect(url);
         }

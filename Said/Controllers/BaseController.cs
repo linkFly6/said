@@ -11,6 +11,10 @@ namespace Said.Controllers
 {
     public class BaseController : Controller
     {
+        //protected override void OnException(ExceptionContext filterContext)
+        //{
+                
+        //}
 
         //这个控制器可以定义顶层控制器的行为
 

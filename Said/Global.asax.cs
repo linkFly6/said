@@ -85,11 +85,11 @@ namespace Said
             logManager.Info("资源文件夹创建完毕");
         }
 
-        protected void Application_Error(object sender, EventArgs e)
-        {
-            // 异常对象HttpContext.Current.Error
-            logManager.Error("程序发生未捕获异常\n请求url：" + HttpContext.Current.Request.Url.AbsoluteUri, HttpContext.Current.Error);
-        }
+        //protected void Application_Error(object sender, EventArgs e)
+        //{
+        //    // 异常对象HttpContext.Current.Error
+        //    logManager.Error("程序发生未捕获异常\n请求url：" + HttpContext.Current.Request.Url.AbsoluteUri, HttpContext.Current.Error);
+        //}
     }
 
 }

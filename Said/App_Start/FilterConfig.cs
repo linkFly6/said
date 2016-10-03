@@ -8,7 +8,8 @@ namespace Said
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add(new GlobalHandleErrorAttribute());
+            //filters.Add(new HandleErrorAttribute());
             //filters.Add(new CopyrightFilterAttribute());
             //filters.Add(new UserFilterAttribute());//这里的注册是全局过滤器，会作用在整个站点下
         }
