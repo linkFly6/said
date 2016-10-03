@@ -1,5 +1,6 @@
 ﻿using log4net;
 using Said.Common;
+using Said.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace Said.Controllers.Filters
                     sb.AppendFormat("\n   [{0}] {1}", key, filterContext.RequestContext.HttpContext.Request.Headers[key]);
                 };
             }
+            sb.AppendFormat("\n【IP】{0}", HttpHelper.GetIP(HttpContext.Current));
             logManager.Error(sb.ToString(), filterContext.Exception);
         }
     }
