@@ -1666,7 +1666,7 @@
             codeblock = codeblock.replace(/^\n+/g, ''); // trim leading newlines
             codeblock = codeblock.replace(/\n+$/g, ''); // trim trailing whitespace
 
-            //linkFlyĞÂÔö - 2016-08-21 18:46:44 ÒòÎªÒª×¢Èëhighlight.js£¬ĞèÒª×¢Èë¶ÔÓ¦µÄclass
+            //linkFlyæ–°å¢ - 2016-08-21 18:46:44 å› ä¸ºè¦æ³¨å…¥highlight.jsï¼Œéœ€è¦æ³¨å…¥å¯¹åº”çš„class
             codeblock = "<pre class='highlight highlight-source'><code" + (language ? " class=\"" + language + '"' : "") + ">" + codeblock + end + "</code></pre>";
             //codeblock = '<pre><code' + (language ? ' class="' + language + ' language-' + language + '"' : '') + '>' + codeblock + end + '</code></pre>';
 
@@ -1839,21 +1839,21 @@
             setextRegexH2 = (options.smoothLivePreview) ? /^(.+)[ \t]*\n-{2,}[ \t]*\n+/gm : /^(.+)[ \t]*\n-+[ \t]*\n+/gm;
 
         text = text.replace(setextRegexH1, function (wholeMatch, m1) {
-            var titleId = headerId(m1);//linkFly×·¼Ó
+            var titleId = headerId(m1);//linkFlyè¿½åŠ 
             var spanGamut = showdown.subParser('spanGamut')(m1, options, globals),
                 hID = (options.noHeaderId) ? '' : ' id="' + titleId + '"',
                 hLevel = headerLevelStart,
-                //linkFly ĞŞ¸Ä - ÏÔÊ¾titleµÄhash
+                //linkFly ä¿®æ”¹ - æ˜¾ç¤ºtitleçš„hash
                 hashBlock = '<h' + hLevel + hID + '><a class="fa fa-link hash" aria-hidden="true" href="#' + titleId + '" name="' + titleId + '"></a><span>' + spanGamut + '</span></h' + hLevel + '>';
             return showdown.subParser('hashBlock')(hashBlock, options, globals);
         });
 
         text = text.replace(setextRegexH2, function (matchFound, m1) {
-            var titleId = headerId(m1);//linkFly×·¼Ó
+            var titleId = headerId(m1);//linkFlyè¿½åŠ 
             var spanGamut = showdown.subParser('spanGamut')(m1, options, globals),
                 hID = (options.noHeaderId) ? '' : ' id="' + titleId + '"',
                 hLevel = headerLevelStart + 1,
-                //linkFly ĞŞ¸Ä - ÏÔÊ¾titleµÄhash
+                //linkFly ä¿®æ”¹ - æ˜¾ç¤ºtitleçš„hash
               hashBlock = '<h' + hLevel + hID + '><a class="fa fa-link hash" aria-hidden="true" href="#' + titleId + '" name="' + titleId + '"></a><span>' + spanGamut + '</span></h' + hLevel + '>';
             return showdown.subParser('hashBlock')(hashBlock, options, globals);
         });
@@ -1866,17 +1866,34 @@
         //  ###### Header 6
         //
         text = text.replace(/^(#{1,6})[ \t]*(.+?)[ \t]*#*\n+/gm, function (wholeMatch, m1, m2) {
-            var titleId = headerId(m2);//linkFly×·¼Ó
+            var titleId = headerId(m2);//linkFlyè¿½åŠ 
             var span = showdown.subParser('spanGamut')(m2, options, globals),
                 hID = (options.noHeaderId) ? '' : ' id="' + headerId(m2) + '"',
                 hLevel = headerLevelStart - 1 + m1.length,
-                //linkFly ĞŞ¸Ä - ÏÔÊ¾titleµÄhash
+                //linkFly ä¿®æ”¹ - æ˜¾ç¤ºtitleçš„hash
                 header = '<h' + hLevel + hID + '><a class="fa fa-link hash" aria-hidden="true" href="#' + titleId + '" name="' + titleId + '"></a><span>' + span + '</span></h' + hLevel + '>';
 
             return showdown.subParser('hashBlock')(header, options, globals);
         });
 
         function headerId(m) {
+            /*
+                linkFly - 2016-10-05 02:32:28
+                è¿™é‡Œç”¨æ¥ç”Ÿæˆ header titleçš„ï¼Œè¿™é‡Œåšäº†æ­£åˆ™åªå–è‹±æ–‡åšidï¼Œè¿™é‡Œå¤„ç†ä¸‹ï¼Œtitleæ˜¯å•¥å°±ç”¨å•¥åšidï¼Œæ‰€ä»¥åŸé€»è¾‘åºŸé™¤
+            */
+            //linkFly æ–°å¢çš„ä»£ç ï¼š
+            var title = m;
+            if (prefixHeader === true) {
+                prefixHeader = 'section';
+            }
+
+            if (showdown.helper.isString(prefixHeader)) {
+                return prefixHeader + title;
+            }
+            return title;
+            //linkFly æ–°å¢çš„ä»£ç ç»“æŸ
+
+
             var title, escapedId = m.replace(/[^\w]/g, '').toLowerCase();
 
             if (globals.hashLinkCounts[escapedId]) {
@@ -2302,9 +2319,9 @@
         // Do hard breaks:
         //text = text.replace(/  +\n/g, " <br />\n");
         /*
-            linkFlyĞŞ¸Ä - 2016-08-21 03:46:22£º
-            1. Ô­showdownµÄ×ö·¨µÄµ±×îºóÓĞÁ½¸ö¿Õ¸ñµÄÊ±ºò²Å²åÈë<br/>£¬ĞŞ¸ÄÓï·¨Îª1¸ö¿Õ¸ñµÄÊ±ºò¼´²åÈë</br>
-            2. Ô­showdown½«"\n"Ìæ»»ÎªÁË"<br/>\n"£¬µ¼ÖÂÁË»»ĞĞµÄHTMLÃ¿Ò»ĞĞÇ°Ãæ¶¼»¹ÓĞÒ»¸ö\n£¬ÔÚÒ³ÃæÉÏÈç¹ûÉèÖÃÁËcssÑùÊ½white-space:pre-wrap£¬ä¯ÀÀÆ÷»á½âÎöÕâ¸ö\n£¬»áÔì³É»»ĞĞµÄÔªËØÇ°Ãæ£¨ÉÏÒ»¸öÔªËØÊÇ<br/>µÄÊ±ºò£©»á¶à³öÒ»¸ö¿Õ¸ñ
+            linkFlyä¿®æ”¹ - 2016-08-21 03:46:22ï¼š
+            1. åŸshowdownçš„åšæ³•çš„å½“æœ€åæœ‰ä¸¤ä¸ªç©ºæ ¼çš„æ—¶å€™æ‰æ’å…¥<br/>ï¼Œä¿®æ”¹è¯­æ³•ä¸º1ä¸ªç©ºæ ¼çš„æ—¶å€™å³æ’å…¥</br>
+            2. åŸshowdownå°†"\n"æ›¿æ¢ä¸ºäº†"<br/>\n"ï¼Œå¯¼è‡´äº†æ¢è¡Œçš„HTMLæ¯ä¸€è¡Œå‰é¢éƒ½è¿˜æœ‰ä¸€ä¸ª\nï¼Œåœ¨é¡µé¢ä¸Šå¦‚æœè®¾ç½®äº†cssæ ·å¼white-space:pre-wrapï¼Œæµè§ˆå™¨ä¼šè§£æè¿™ä¸ª\nï¼Œä¼šé€ æˆæ¢è¡Œçš„å…ƒç´ å‰é¢ï¼ˆä¸Šä¸€ä¸ªå…ƒç´ æ˜¯<br/>çš„æ—¶å€™ï¼‰ä¼šå¤šå‡ºä¸€ä¸ªç©ºæ ¼
         */
         text = text.replace(/\n/g, "<br />");
 
