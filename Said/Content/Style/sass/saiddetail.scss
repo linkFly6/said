@@ -232,7 +232,7 @@ $playerBar: #dbdbdb;
 
 .blog-title {
     padding: 0 45px;
-    font: 2.4em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana;
+    font: 2.4em STHeiti,"proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana;
     line-height: 2em;
     border-bottom: 1px dashed #CCC;
     color: #666;
@@ -241,7 +241,7 @@ $playerBar: #dbdbdb;
 .blog-content {
     padding: 45px;
     //"Hiragino Sans GB","Microsoft YaHei",helvetica,"WenQuanYi Micro Hei",sans-serif
-    font-family: "Microsoft YaHei", 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
+    font-family: STHeiti,"Microsoft YaHei", 'Source Sans Pro', 'Helvetica Neue', Arial, sans-serif;
     /*padding: 10px;*/
     font-size: 16px;
     text-align: justify;

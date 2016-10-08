@@ -45,7 +45,7 @@ namespace Said.Controllers
                 ViewData["blogs"] = list.ToList();
                 ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
                 ViewData["limit"] = PageLimit;
-                return View("Article.Mobile");
+                return View();
             }
             else
             {
@@ -95,7 +95,7 @@ namespace Said.Controllers
             ViewData["comments"] = CommentApplication.FindByBlogId(model.BlogId).ToList();
             ViewBag.UserId = this.UserId;
             ViewBag.AdminId = this.AdminId;
-            return View(model);
+            return Request.Browser.IsMobileDevice ? View("Article.Mobile", model) : View(model);
         }
 
         #endregion

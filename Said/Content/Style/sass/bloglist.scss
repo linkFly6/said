@@ -366,7 +366,7 @@
         a {
             display: block;
             padding-left: 42px;
-            font: 1.6em "proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana;
+            font: 1.6em STHeiti,"proxima-nova",微软雅黑,Tahoma,Helvetica,"Lucida Grande",Georgia,Verdana;
             line-height: 2em;
             overflow: hidden;
             white-space: nowrap;
@@ -422,7 +422,7 @@
 
             a, i {
                 font-family: inherit;
-                font: 14px/24px "Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif;
+                font: 14px/24px STHeiti,"Helvetica Neue",Helvetica,Arial,'Microsoft Yahei',sans-serif;
             }
 
             &.link:hover {
