@@ -3,6 +3,7 @@ using PagedList;
 using Said.Application;
 using Said.Common;
 using Said.Controllers.Filters;
+using Said.Helper;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -19,6 +20,12 @@ namespace Said.Controllers
         private static readonly ILog logManager = LogManager.GetLogger(typeof(BlogController));
 
         object @obj = new object();
+
+
+        /// <summary>
+        /// 延迟执行函数
+        /// </summary>
+        private LazyFunc<Article, int> lazyArticle = new LazyFunc<Article, int>();
 
         /// <summary>
         /// 一页数据个数
@@ -62,6 +69,7 @@ namespace Said.Controllers
             return View();
         }
 
+
         #region Pages
         /// <summary>
         /// Said文章页
@@ -76,12 +84,34 @@ namespace Said.Controllers
                 return RedirectToAction("Index", "Said", new { controller = "Home", sgs = "article", refer = Request.Url.AbsoluteUri });
             }
             ViewData["NavigatorIndex"] = 2;
-            var model = ArticleApplication.Find(id);
+            var model = CacheHelper.GetCache(id) as Article;
+            if (model == null)
+                model = ArticleApplication.Find(id.Trim());
             if (model == null)
                 return RedirectToAction("NotFound", "Home", new { sgs = "ArticleNotFound", url = Request.Url.AbsoluteUri });
             model.SPV++;
-            //要确定之类是否要加锁
-            ArticleApplication.Update(model);
+            // TODO 这里要不要换成时间的，比如 2000 ms 后自动执行一下？这样就不用一直更新 cache 了
+            CacheHelper.SetCache(model.SaidId, model);
+            // 为了性能，延迟到一定次数后再执行
+            lazyArticle.Lazy(model, models =>
+            {
+                try
+                {
+                    if (models.Count > 0)
+                    {
+                        lock (@obj)
+                        {
+                            ArticleApplication.Update(models.Last());
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    logManager.Error("延迟更新 Blog 失败\n", e.InnerException);
+                }
+                return 0;
+            });
             ViewData["userLike"] = UserLikeApplication.ExistsLike(model.SaidId, this.UserId, 0) == null ? false : true;
             return View(model);
         }

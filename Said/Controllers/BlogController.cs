@@ -3,6 +3,7 @@ using PagedList;
 using Said.Application;
 using Said.Common;
 using Said.Controllers.Filters;
+using Said.Helper;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -23,6 +24,11 @@ namespace Said.Controllers
         /// 一页数据个数
         /// </summary>
         private static readonly int PageLimit = 10;
+
+        /// <summary>
+        /// 延迟执行函数
+        /// </summary>
+        private static LazyFunc<Blog, int> lazyBlog = new LazyFunc<Blog, int>();
 
 
         /// <summary>
@@ -86,11 +92,36 @@ namespace Said.Controllers
             {
                 return RedirectToAction("Index", "Blog", new { controller = "Home", sgs = "blog", refer = Request.Url.AbsoluteUri });
             }
-            var model = BlogApplication.FindByIdIncludes(id);
+            // 先读 cache
+            var model = CacheHelper.GetCache(id.Trim()) as Blog;
+            if (model == null)
+                model = BlogApplication.FindByIdIncludes(id);
             if (model == null)
                 return RedirectToAction("NotFound", "Home", new { sgs = "BlogNotFound", url = Request.Url.AbsoluteUri });
             model.BPV++;
-            BlogApplication.Update(model);
+            // TODO 这里要不要换成时间的，比如 2000 ms 后自动执行一下？这样就不用一直更新 cache 了
+            CacheHelper.SetCache(model.BlogId, model);
+            // 为了性能，延迟到一定次数后再执行
+            lazyBlog.Lazy(model, models =>
+            {
+                try
+                {
+                    if (models.Count > 0)
+                    {
+                        lock (@obj)
+                        {
+                            BlogApplication.Update(models.Last());
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                    logManager.Error("延迟更新 Said 失败\n", e.InnerException);
+                }
+                return 0;
+            });
+
             ViewData["userLike"] = UserLikeApplication.ExistsLike(model.BlogId, this.UserId, 1) == null ? false : true;
             ViewData["comments"] = CommentApplication.FindByBlogId(model.BlogId).ToList();
             ViewBag.UserId = this.UserId;

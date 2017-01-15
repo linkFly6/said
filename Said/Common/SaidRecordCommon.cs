@@ -103,17 +103,38 @@ namespace Said.Common
         {
             HttpCookie cookie = context.Request.Cookies.Get("uid");
             string userId = string.Empty;
-            if (cookie == null || cookie.Value == null ||
-                //没有用户ID，并且验证cookie合法 => 用户id是否存在，否则直接创建一个
-                (noCache ?
-                !UserApplication.ExistsNoCache(cookie.Value) ://配置了跳过缓存
-                !UserApplication.Exists(cookie.Value)))//EF默认有缓存，检索用户是否存在*应该*更快
-            {
+            string cookieValue = string.Empty;
 
+            // 没有用户ID，并且验证cookie合法 => 用户id是否存在，否则直接创建一个
+            if (cookie != null && cookie.Value != null && cookie.Value.Trim().Length <= 40/*said 中 md5 生成的 uuid 只有32位*/)
+            {
+                cookieValue = cookie.Value.Trim();
+
+                // 第二层检测，如果从 cache 里面没有检测到 uid
+                if (CacheHelper.GetCache(cookieValue) != null)
+                {
+                    userId = cookieValue;
+                }
+                // 从数据库查询检测，并将数据库结果缓存
+                if (userId == string.Empty && (noCache ?
+                            UserApplication.ExistsNoCache(cookie.Value) :// 配置了跳过缓存
+                            UserApplication.Exists(cookie.Value)))// EF默认有缓存，检索用户是否存在*应该*更快 
+                {
+                    // 确认是合法的 cookie
+                    userId = cookieValue;
+                    // 放入缓存
+                    CacheHelper.SetCache(cookieValue, userId);
+                }
+            }
+
+            // 还没有找到 uid，则重新生成一个
+            if (string.Empty == userId)
+            {
                 cookie = new HttpCookie("uid");
+                userId = SaidCommon.GUID;
                 User user = new User
                 {
-                    UserID = userId = SaidCommon.GUID,
+                    UserID = userId,
                     EMail = string.Empty,
                     Name = string.Empty,
                     Date = DateTime.Now,
@@ -133,10 +154,6 @@ namespace Said.Common
                     cookie.Expires = DateTime.Now.AddYears(1);
                     context.Response.Cookies.Add(cookie);
                 }
-            }
-            else
-            {
-                userId = cookie.Value;
             }
             context.Session["userId"] = userId;
             return userId;

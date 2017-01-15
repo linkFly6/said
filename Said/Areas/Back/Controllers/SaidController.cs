@@ -1,5 +1,6 @@
 ﻿using Said.Application;
 using Said.Common;
+using Said.Helper;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -192,9 +193,17 @@ namespace Said.Areas.Back.Controllers
                 model.SIsTop = newModel.SIsTop;
                 model.SReprint = newModel.SReprint;
             }
-            return ArticleApplication.Update(model) > 0 ?
-                ResponseResult() :
-                ResponseResult(2, "更新到数据库异常");
+
+            if (ArticleApplication.Update(model) > 0)
+            {
+                // 清理 cache，因为前台读取的时候引用了 cache
+                if (CacheHelper.GetCache(model.SaidId) != null)
+                    CacheHelper.RemoveAllCache(model.SaidId);
+                return ResponseResult();
+            }
+            else {
+                return ResponseResult(2, "更新到数据库异常");
+            }
         }
 
         #endregion

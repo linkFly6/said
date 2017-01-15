@@ -11,20 +11,11 @@ namespace Said.Common
     {
 
         /// <summary>
-        /// 创建一个对象ID（新增对象的时候）  * 该API会逐渐私有化，请使用SaidCommon.GUID *
-        /// </summary>
-        /// <returns></returns>
-        public static string CreateId()
-        {
-            return Guid.NewGuid().ToString().Replace("-", "");
-        }
-
-        /// <summary>
         /// 获取一个符合Said要求的GUID（剔除"-"号），作为新增对象使用，每次获取都会生成
         /// </summary>
         public static string GUID
         {
-            get { return CreateId(); }
+            get { return Guid.NewGuid().ToString().Replace("-", ""); }
         }
 
         /// <summary>  

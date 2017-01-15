@@ -150,6 +150,7 @@
     <Compile Include="Common\ImageCommon.cs" />
     <Compile Include="Common\IPRange.cs" />
     <Compile Include="Common\JavaScriptCommon.cs" />
+    <Compile Include="Common\LazyFunc.cs" />
     <Compile Include="Common\SaidRecordCommon.cs" />
     <Compile Include="Controllers\Attrbute\NoFilter.cs" />
     <Compile Include="Controllers\BaseController.cs" />

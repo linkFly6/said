@@ -1,5 +1,6 @@
 ﻿using Said.Application;
 using Said.Common;
+using Said.Helper;
 using Said.Models;
 using Said.Models.Data;
 using System;
@@ -140,7 +141,12 @@ namespace Said.Areas.Back.Controllers
             if (validateResult == null)
             {
                 if (BlogApplication.EditBlog(newModel, model, tags) > 0)
+                {
+                    // 清理 cache，因为前台读取的时候引用了 cache
+                    if (CacheHelper.GetCache(model.BlogId) != null)
+                        CacheHelper.RemoveAllCache(model.BlogId);
                     return ResponseResult(new { id = newModel.BlogId });
+                }
                 else
                     return ResponseResult(2, "修改Blog失败");
             }
