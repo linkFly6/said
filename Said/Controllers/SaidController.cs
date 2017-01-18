@@ -23,11 +23,6 @@ namespace Said.Controllers
 
 
         /// <summary>
-        /// 延迟执行函数
-        /// </summary>
-        private LazyFunc<Article, int> lazyArticle = new LazyFunc<Article, int>();
-
-        /// <summary>
         /// 一页数据个数
         /// </summary>
         private static readonly int PageLimit = 10;
@@ -90,29 +85,36 @@ namespace Said.Controllers
             if (model == null)
                 return RedirectToAction("NotFound", "Home", new { sgs = "ArticleNotFound", url = Request.Url.AbsoluteUri });
             model.SPV++;
-            // TODO 这里要不要换成时间的，比如 2000 ms 后自动执行一下？这样就不用一直更新 cache 了
-            CacheHelper.SetCache(model.SaidId, model);
+
+            string cacheKey = string.Format("{0}_spv", model.SaidId);
+
+            int pvCount = CacheHelper.GetCache(cacheKey) == null ? 0 : (int)CacheHelper.GetCache(cacheKey);
+            pvCount++;
+
+            model.SPV += pvCount;
+
             // 为了性能，延迟到一定次数后再执行
-            lazyArticle.Lazy(model, models =>
+
+            if (pvCount >= 5)
             {
                 try
                 {
-                    if (models.Count > 0)
+                    lock (@obj)
                     {
-                        lock (@obj)
-                        {
-                            articleApplication.Update(models.Last());
-                            articleApplication.Commit();
-                        }
+                        articleApplication.Update(model);
+                        articleApplication.Commit();
+                        pvCount = 0;
                     }
                 }
                 catch (Exception e)
                 {
 
-                    logManager.Error("延迟更新 Blog 失败\n", e);
+                    logManager.Error("延迟更新 Said 失败\n", e);
                 }
-                return 0;
-            });
+            }
+
+            CacheHelper.SetCache(cacheKey, pvCount);
+
             ViewData["userLike"] = userLikeApplication.ExistsLike(model.SaidId, this.UserId, 0) == null ? false : true;
             return View(model);
         }

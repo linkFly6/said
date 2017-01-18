@@ -26,12 +26,6 @@ namespace Said.Controllers
         private static readonly int PageLimit = 10;
 
         /// <summary>
-        /// 延迟执行函数
-        /// </summary>
-        private static LazyFunc<Blog, int> lazyBlog = new LazyFunc<Blog, int>();
-
-
-        /// <summary>
         /// 分类的Icon路径
         /// </summary>
         private readonly string CLASSIFYICONPATH = "~/Source/Sys/Images/Icons/";
@@ -80,6 +74,7 @@ namespace Said.Controllers
             return View();
         }
 
+
         /// <summary>
         /// Blog文章页
         /// </summary>
@@ -93,35 +88,38 @@ namespace Said.Controllers
                 return RedirectToAction("Index", "Blog", new { controller = "Home", sgs = "blog", refer = Request.Url.AbsoluteUri });
             }
             // 先读 cache
-            var model = CacheHelper.GetCache(id.Trim()) as Blog;
-            if (model == null)
-                model = blogApplication.FindByIdIncludes(id);
+            Blog model = blogApplication.FindByIdIncludes(id);
             if (model == null)
                 return RedirectToAction("NotFound", "Home", new { sgs = "BlogNotFound", url = Request.Url.AbsoluteUri });
             model.BPV++;
-            // TODO 这里要不要换成时间的，比如 2000 ms 后自动执行一下？这样就不用一直更新 cache 了
-            CacheHelper.SetCache(model.BlogId, model);
-            // 为了性能，延迟到一定次数后再执行
-            lazyBlog.Lazy(model, models =>
+
+            string cacheKey = string.Format("{0}_bpv", model.BlogId);
+
+            int pvCount = CacheHelper.GetCache(cacheKey) == null ? 0 : (int)CacheHelper.GetCache(cacheKey);
+            pvCount++;
+
+            model.BPV += pvCount;
+
+
+            // 为了性能，延迟到5次后再执行
+            if (pvCount >= 5)
             {
                 try
                 {
-                    if (models.Count > 0)
+                    lock (@obj)
                     {
-                        lock (@obj)
-                        {
-                            blogApplication.Update(models.Last());
-                        }
+                        blogApplication.Update(model);
+                        blogApplication.Commit();
+                        pvCount = 0;
                     }
                 }
                 catch (Exception e)
                 {
 
-                    logManager.Error("延迟更新 Said 失败\n", e);
+                    logManager.Error("延迟更新 Blog 失败\n", e);
                 }
-                return 0;
-            });
-
+            }
+            CacheHelper.SetCache(cacheKey, pvCount);
             ViewData["userLike"] = userLikeApplication.ExistsLike(model.BlogId, this.UserId, 1) == null ? false : true;
             ViewData["comments"] = commentApplication.FindByBlogId(model.BlogId).ToList();
             ViewBag.UserId = this.UserId;
