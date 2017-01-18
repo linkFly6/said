@@ -14,35 +14,11 @@ namespace Said.Application
     /// <summary>
     /// 使用静态类为让它变得更加晦涩，如果需要静态类的语法则可以使用单例模式实现
     /// </summary>
-    public static class ArticleApplication
+    public class ArticleApplication : BaseApplication<Article, IArticleService>
     {
 
-        private static IArticleService service;
-        public static IArticleService Context
+        public ArticleApplication() : base(new ArticleService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new ArticleService(new Domain.Said.Data.DatabaseFactory())); }
-        }
-
-        /// <summary>
-        /// 添加一篇文章
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Add(Article model)
-        {
-            Context.Add(model);
-            return service.Submit();
-        }
-
-        /// <summary>
-        /// 修改一篇文章
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Update(Article model)
-        {
-            Context.Update(model);
-            return service.Submit();
         }
 
 
@@ -52,16 +28,16 @@ namespace Said.Application
         /// </summary>
         /// <param name="model">要验证的model</param>
         /// <returns>返回null表示验证成功，否则返回验证失败的字符串，用,号分割</returns>
-        public static string ValidateAndCorrectSubmit(Article model)
+        public string ValidateAndCorrectSubmit(Article model, SongApplication songApplication, ImageApplication imageApplication)
         {
             StringBuilder str = new StringBuilder();
             //防止tag有HTML标签，修正
             if (!string.IsNullOrWhiteSpace(model.STag))
                 model.STag = HTMLCommon.HTMLTrim(model.STag);
             //model.Song = SongApplication.Context.GetById(model.SongId);//检索有没有歌曲信息
-            if (SongApplication.Context.GetById(model.SongId) == null)
+            if (songApplication.FindById(model.SongId) == null)
                 str.Append("歌曲信息不正确(不可获取),");
-            if (ImageApplication.Context.GetById(model.ImageId) == null)
+            if (imageApplication.FindById(model.ImageId) == null)
                 str.Append("缩略图信息不正确(不可获取),");
 
             foreach (var validateResult in model.Validate())
@@ -106,22 +82,12 @@ namespace Said.Application
 
 
         #region 查询
-        /// <summary>
-        /// 查找
-        /// </summary>
-        /// <returns></returns>
-        public static Article Find(string id)
-        {
-            return Context.GetById(id);
-        }
-
-
 
         /// <summary>
         /// 查询全部文章
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Article> Find()
+        public IEnumerable<Article> Find()
         {
             return Context.GetManyDesc(m => m.IsDel == 0, m => m.Date);
         }
@@ -131,7 +97,7 @@ namespace Said.Application
         /// 查询全部文章（贪婪查询）
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Article> FindAll()
+        public IEnumerable<Article> FindAllList()
         {
             return Context.FindByWhereDateDesc(m => m.IsDel == 0, m => m.Date);
         }
@@ -140,7 +106,7 @@ namespace Said.Application
         /// 查询全部文章（贪婪查询）
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Article> FindAllByDateDesc()
+        public IEnumerable<Article> FindAllByDateDesc()
         {
             return Context.FindAll(m => m.Date);
         }
@@ -150,7 +116,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static Article FindByFileName(string fileName)
+        public Article FindByFileName(string fileName)
         {
             return Context.Get(m => m.SName == fileName);
         }
@@ -160,7 +126,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="fileName">要检索的文件名称</param>
         /// <returns>返回SaidID列表</returns>
-        public static IEnumerable<string> FindSaidIdByFileName(string fileName)
+        public IEnumerable<string> FindSaidIdByFileName(string fileName)
         {
             return Context.GetSaidIdByFileName(fileName);
         }
@@ -171,7 +137,7 @@ namespace Said.Application
         /// 查找所有Said的文件名称（用于防止重名的业务）
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<string> FindAllFileNames()
+        public IEnumerable<string> FindAllFileNames()
         {
             return Context.GetFileNames();
         }
@@ -181,7 +147,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="page">分页对象</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Article> Find(Models.Data.Page page)
+        public new IPagedList<Article> FindByPage(Models.Data.Page page)
         {
             return Context.GetPageDesc(page, m => m.STitle != null, m => m.Date);
         }
@@ -199,7 +165,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
-        public static IEnumerable<Article> GetByTop(int top)
+        public IEnumerable<Article> GetByTop(int top)
         {
             return Context.GetByTopPartialDatas(top);
         }
@@ -217,7 +183,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="page">分页对象</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Article> FindByDateDesc(Models.Data.Page page)
+        public IPagedList<Article> FindByDateDesc(Models.Data.Page page)
         {
             return Context.FindByPartialDatasDateDesc(page);
         }
@@ -228,7 +194,7 @@ namespace Said.Application
         /// <param name="page">分页对象</param>
         /// <param name="keywords">要查询的关键字</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Article> Find(Models.Data.Page page, string keywords)
+        public IPagedList<Article> Find(Models.Data.Page page, string keywords)
         {
             return Context.GetPageDesc(page, m => m.STitle.Contains(keywords) || m.SContext.Contains(keywords), m => m.Date);
         }
@@ -241,11 +207,10 @@ namespace Said.Application
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static int Delete(Article model)
+        public void LogicDelete(Article model)
         {
             model.IsDel = 1;
             Context.Update(model);
-            return Context.Submit();
         }
 
 
@@ -254,10 +219,9 @@ namespace Said.Application
         /// </summary>
         /// <param name="id">要删除的文章id</param>
         /// <returns></returns>
-        public static int RealDelete(string id)
+        public void RealDelete(string id)
         {
             Context.Delete(m => m.SaidId == id);
-            return Context.Submit();
         }
 
         #endregion

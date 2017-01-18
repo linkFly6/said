@@ -11,16 +11,12 @@ namespace Said.Application
     /// <summary>
     /// 管理员操作中心
     /// </summary>
-    public static class AdminApplication
+    public class AdminApplication : BaseApplication<Admin, IAdminService>
     {
-        #region 上下文
-        private static IAdminService service;
-
-        public static IAdminService Context
+        public AdminApplication() : base(new AdminService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new AdminService(new Domain.Said.Data.DatabaseFactory())); }
         }
-        #endregion
+
 
         /// <summary>
         /// 获取用户
@@ -28,7 +24,7 @@ namespace Said.Application
         /// <param name="name">用户名</param>
         /// <param name="password">用户密码</param>
         /// <returns></returns>
-        public static Admin Get(string name, string password)
+        public Admin Get(string name, string password)
         {
             return Context.Get(m => m.Name.ToLower() == name.ToLower() && m.Password == password);
         }
@@ -38,7 +34,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="adminId"></param>
         /// <returns></returns>
-        public static Admin Get(string adminId)
+        public Admin Get(string adminId)
         {
             return Context.Get(m => m.AdminId == adminId);
         }

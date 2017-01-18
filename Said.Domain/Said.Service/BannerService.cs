@@ -26,7 +26,7 @@ namespace Said.Service
     /// </summary>
     public class BannerService : BaseService<Banner>, IBannerService
     {
-        public BannerService(DatabaseFactory factory)
+        public BannerService(SaidDbContext factory)
             : base(factory)
         {
 

@@ -18,12 +18,12 @@ namespace Said.Areas.Back.Controllers
 
         public ActionResult Index()
         {
-            ViewData["Classify"] = ClassifyApplication.Find();
+            ViewData["Classify"] = classifyApplication.FindAll();
             string[] iconsFilePath = FileCommon.GetFileNames(Server.MapPath(ICONPATH));
             if (iconsFilePath != null)
                 for (int i = 0; i < iconsFilePath.Length; i++)
                     iconsFilePath[i] = FileCommon.getFileName(iconsFilePath[i]);
-            ViewData["Tags"] = TagApplication.Find();
+            ViewData["Tags"] = tagApplication.FindAll();
             ViewBag.SourceURL = Url.Content(ICONPATH);
             ViewData["iconFiles"] = iconsFilePath;
             return View();
@@ -47,7 +47,7 @@ namespace Said.Areas.Back.Controllers
 
 
             name = HttpUtility.UrlDecode(name).Trim();
-            if (ClassifyApplication.FindByName(name) != null)
+            if (classifyApplication.FindByName(name) != null)
                 return ResponseResult(4, "该分类已经存在！");
             Classify model = new Classify
             {
@@ -60,7 +60,8 @@ namespace Said.Areas.Back.Controllers
                 Date = DateTime.Now,
                 IsDel = 0
             };
-            return ClassifyApplication.Add(model) > 0 ?
+            classifyApplication.Add(model);
+            return classifyApplication.Commit() ?
                 ResponseResult(model.ClassifyId) :
                 ResponseResult(3, "服务器删除异常");
         }
@@ -83,20 +84,21 @@ namespace Said.Areas.Back.Controllers
             //TODO 检测特殊字符，例如.,啊之类的
             name = HttpUtility.UrlDecode(name).Trim();
             imgName = imgName.Trim();
-            Classify model = ClassifyApplication.Find(id);
+            Classify model = classifyApplication.FindById(id);
             if (model == null)
                 return ResponseResult(4, "没有找到该分类信息");
             if (model.CIcon == imgName.Trim() && model.CName == name.Trim())//没有改动直接编辑成功
                 ResponseResult();
 
             //验证
-            Classify oldModel = ClassifyApplication.FindByName(name);
+            Classify oldModel = classifyApplication.FindByName(name);
             //找到分类名称已经存在的model
             if (oldModel != null && oldModel.ClassifyId != model.ClassifyId)
                 return ResponseResult(6, "该分类已经存在");
             model.CIcon = imgName;
             model.CName = name;
-            return ClassifyApplication.Update(model) > 0 ?
+            classifyApplication.Update(model);
+            return classifyApplication.Commit() ?
                 ResponseResult() :
                 ResponseResult(5, "服务器编辑异常");
         }
@@ -105,7 +107,8 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "要删除的数据标志不正确");
-            return ClassifyApplication.Delete(id) > 0 ?
+            classifyApplication.Delete(id);
+            return classifyApplication.Commit() ?
                 ResponseResult() :
                 ResponseResult(2, "服务器删除异常");
         }
@@ -123,7 +126,7 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(name))
                 return ResponseResult(1, "标签不允许为空");
-            if (TagApplication.FindByName(name) != null)
+            if (tagApplication.FindByName(name) != null)
                 return ResponseResult(2, "标签已存在");
             var model = new Tag
             {
@@ -133,7 +136,8 @@ namespace Said.Areas.Back.Controllers
                 TagName = name.Trim(),
                 IsDel = 0
             };
-            return TagApplication.Add(model) > 0 ?
+            tagApplication.Add(model);
+            return tagApplication.Commit() ?
                 ResponseResult(model.TagId) :
                 ResponseResult(3, "服务器异常");
         }
@@ -151,19 +155,20 @@ namespace Said.Areas.Back.Controllers
             if (string.IsNullOrWhiteSpace(name))
                 return ResponseResult(2, "标签名不允许为空");
             name = name.Trim();
-            var model = TagApplication.Find(id.Trim());
+            var model = tagApplication.FindById(id.Trim());
             if (model == null)
                 return ResponseResult(3, "没有找到要修改的标签信息");
             if (model.TagName == name)//没有改动直接编辑成功
                 ResponseResult();
 
             //验证
-            var existsTag = TagApplication.FindByName(name);
+            var existsTag = tagApplication.FindByName(name);
             //找到标签名称已经存在的model
             if (existsTag != null && existsTag.TagId != model.TagId)
                 return ResponseResult(4, "标签已存在");
             model.TagName = name;
-            return TagApplication.Update(model) > 0 ?
+            tagApplication.Update(model);
+            return tagApplication.Commit() ?
                 ResponseResult() :
                 ResponseResult(5, "服务器异常");
         }
@@ -177,23 +182,25 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "要删除的标签标志不正确");
-            var model = TagApplication.Find(id);
+            var model = tagApplication.FindById(id);
             if (model == null)
                 return ResponseResult(2, "没有找到要删除的标签信息");
             try
             {
                 return SaidCommon.Transaction(() =>
                 {
-                    var blogTags = BlogTagsApplication.FindByTagId(model.TagId);
+                    var blogTags = blogTagsApplication.FindByTagId(model.TagId);
                     if (blogTags != null && blogTags.Count() > 0)
                     {
-                        if (BlogTagsApplication.DeleteByBlogTagId(model.TagId) <= 0)
-                        {
-                            throw new Exception("删除标签失败，删除标签和Blog对应的关系失败");
-                        }
+                        blogTagsApplication.DeleteByBlogTagId(model.TagId);
+                        //if (!blogTagsApplication.Commit())
+                        //{
+                        //    throw new Exception("删除标签失败，删除标签和Blog对应的关系失败");
+                        //}
                     }
 
-                    if (TagApplication.Delete(id) > 0)
+                    tagApplication.Delete(id);
+                    if (tagApplication.Commit())
                         return ResponseResult();
                     throw new Exception("删除标签失败，服务器异常");
                 });

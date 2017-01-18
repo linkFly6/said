@@ -58,6 +58,8 @@ namespace Said.Common
             //});
         }
 
+
+
         /// <summary>
         /// 设置管理员信息，如果当前用户是管理员的话，则给session的adminId设置为管理员ID，否则不设置session
         /// </summary>
@@ -74,7 +76,7 @@ namespace Said.Common
                 AdminRecord record = CacheHelper.GetCache(recordId) as AdminRecord;//检测cache是否有
                 if (record == null)
                 {
-                    record = AdminRecordApplication.Get(recordId);//从数据库查询
+                    record = new AdminRecordApplication().FindById(recordId);//从数据库查询
                     if (record != null)//从cookie中查出来了，放入cache
                     {
                         CacheHelper.SetCache(recordId, record.Admin);
@@ -104,6 +106,7 @@ namespace Said.Common
             HttpCookie cookie = context.Request.Cookies.Get("uid");
             string userId = string.Empty;
             string cookieValue = string.Empty;
+            var userApplication = new UserApplication();
 
             // 没有用户ID，并且验证cookie合法 => 用户id是否存在，否则直接创建一个
             if (cookie != null && cookie.Value != null && cookie.Value.Trim().Length <= 40/*said 中 md5 生成的 uuid 只有32位*/)
@@ -117,8 +120,8 @@ namespace Said.Common
                 }
                 // 从数据库查询检测，并将数据库结果缓存
                 if (userId == string.Empty && (noCache ?
-                            UserApplication.ExistsNoCache(cookie.Value) :// 配置了跳过缓存
-                            UserApplication.Exists(cookie.Value)))// EF默认有缓存，检索用户是否存在*应该*更快 
+                            userApplication.ExistsNoCache(cookie.Value) :// 配置了跳过缓存
+                            userApplication.Exists(cookie.Value)))// EF默认有缓存，检索用户是否存在*应该*更快 
                 {
                     // 确认是合法的 cookie
                     userId = cookieValue;
@@ -127,33 +130,42 @@ namespace Said.Common
                 }
             }
 
-            // 还没有找到 uid，则重新生成一个
-            if (string.Empty == userId)
+            try
             {
-                cookie = new HttpCookie("uid");
-                userId = SaidCommon.GUID;
-                User user = new User
+                // 还没有找到 uid，则重新生成一个
+                if (string.Empty == userId)
                 {
-                    UserID = userId,
-                    EMail = string.Empty,
-                    Name = string.Empty,
-                    Date = DateTime.Now,
-                    //如果是管理员则种下管理员的GUID，否则重新生成一个普通用户的GUID
-                    SecretKey = context.Session["adminId"] != null ? context.Session["adminId"] as string : SaidCommon.GUID,
-                    //管理员则标记上管理员身份
-                    Rule = context.Session["adminId"] != null ? 1 : 0,
-                    IsSubscribeComments = true,
-                    Site = string.Empty
-                };
-                if (UserApplication.Add(user) > 0)
-                {
-                    cookie.Name = "uid";
-                    cookie.Value = userId;
-                    //cookie.Values.Add("id", userId);
-                    cookie.Path = "/";
-                    cookie.Expires = DateTime.Now.AddYears(1);
-                    context.Response.Cookies.Add(cookie);
+                    cookie = new HttpCookie("uid");
+                    userId = SaidCommon.GUID;
+                    User user = new User
+                    {
+                        UserID = userId,
+                        EMail = string.Empty,
+                        Name = string.Empty,
+                        Date = DateTime.Now,
+                        //如果是管理员则种下管理员的GUID，否则重新生成一个普通用户的GUID
+                        SecretKey = context.Session["adminId"] != null ? context.Session["adminId"] as string : SaidCommon.GUID,
+                        //管理员则标记上管理员身份
+                        Rule = context.Session["adminId"] != null ? 1 : 0,
+                        IsSubscribeComments = true,
+                        Site = string.Empty
+                    };
+                    userApplication.Add(user);
+                    if (userApplication.Commit())
+                    {
+                        cookie.Name = "uid";
+                        cookie.Value = userId;
+                        //cookie.Values.Add("id", userId);
+                        cookie.Path = "/";
+                        cookie.Expires = DateTime.Now.AddYears(1);
+                        context.Response.Cookies.Add(cookie);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                logManager.Error("获取用户信息发生异常", e);
+                throw e;
             }
             context.Session["userId"] = userId;
             return userId;
@@ -169,37 +181,40 @@ namespace Said.Common
         /// <param name="record">统计信息对象</param>
         public static void AddRecord(UserRecord record, HttpContext context)
         {
-            //异步根据IP获取地址
-            Task.Run(() =>
-            {
-                lock (@lock)
-                {
-                    string[] address = GetAddress(record.IP);
-                    //string[] address = GetAddress("124.127.118.59");
-                    record.Country = address[0];
-                    record.Province = address[1];
-                    record.City = address[2];
-                    try
-                    {
-                        if (UserRecordApplication.Add(record) <= 0)
-                        {
-                            throw new Exception("插入用户记录异常");
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        /*
-                            发生异常的话，这里可能是用户的cookie是伪造的，数据库中并没有真实的用户信息，所以重新生成一个
-                            在之前的逻辑中使用了GetUserID()去检测用户是否存在，但是因为EF有缓存策略，可能导致检测到的用户是有缓存的，所以这里再重新获取一下用户ID，并且标记跳过缓存
 
-                            -- 后更新：
-                            这里拿到Session是为null的，因为是异步任务，而重新获取用户ID是主要注入Session的，这样会导致业务出问题，所以还是放弃这里
-                            详情参见Said buglog: https://github.com/linkFly6/Said/issues/7
-                        */
-                        logManager.Error(string.Format("用户ID：{0}", record.UserID), e.InnerException);//这时候抛出Log
+            //异步根据IP获取地址
+            //Task.Run(() =>
+            //{
+            //lock (@lock)
+            {
+                string[] address = GetAddress(record.IP);
+                //string[] address = GetAddress("124.127.118.59");
+                record.Country = address[0];
+                record.Province = address[1];
+                record.City = address[2];
+                try
+                {
+                    var userRecordApplication = new UserRecordApplication();
+                    userRecordApplication.Add(record);
+                    if (!userRecordApplication.Commit())
+                    {
+                        throw new Exception("插入用户记录异常");
                     }
                 }
-            });
+                catch (Exception e)
+                {
+                    /*
+                        发生异常的话，这里可能是用户的cookie是伪造的，数据库中并没有真实的用户信息，所以重新生成一个
+                        在之前的逻辑中使用了GetUserID()去检测用户是否存在，但是因为EF有缓存策略，可能导致检测到的用户是有缓存的，所以这里再重新获取一下用户ID，并且标记跳过缓存
+
+                        -- 后更新：
+                        这里拿到Session是为null的，因为是异步任务，而重新获取用户ID是主要注入Session的，这样会导致业务出问题，所以还是放弃这里
+                        详情参见Said buglog: https://github.com/linkFly6/Said/issues/7
+                    */
+                    logManager.Error(string.Format("用户ID：{0}", record.UserID), e);//这时候抛出Log
+                }
+            }
+            //});
 
         }
 

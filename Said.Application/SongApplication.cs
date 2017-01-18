@@ -9,22 +9,19 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
-    public static class SongApplication
+    public class SongApplication : BaseApplication<Song, ISongService>
     {
-        private static ISongService service;
 
-        public static ISongService Context
+        public SongApplication() : base(new SongService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new SongService(new Domain.Said.Data.DatabaseFactory())); }
         }
-
 
         /// <summary>
         /// 验证音乐
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static string ValidateAndCorrectSubmit(Song model)
+        public string ValidateAndCorrectSubmit(Song model, ImageApplication imageApplication)
         {
             if (string.IsNullOrWhiteSpace(model.SongName))
             {
@@ -60,7 +57,7 @@ namespace Said.Application
              *  http://q.cnblogs.com/q/43962/
              */
             //model.Image = ImageApplication.Find(model.ImageId);
-            Image image = ImageApplication.Find(model.ImageId);
+            Image image = imageApplication.FindById(model.ImageId);
             if (image == null)
             {
                 return "歌曲不正确（不可获取）";
@@ -69,50 +66,14 @@ namespace Said.Application
             {
                 //更新引用
                 image.ReferenceCount += 1;
-                ImageApplication.Update(image);
+                imageApplication.Update(image);
+                if (!imageApplication.Commit())
+                {
+                    return "删除歌曲图片异常";
+                }
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="song">实体</param>
-        /// <returns></returns>
-        public static int Add(Song song)
-        {
-            //if (string.IsNullOrEmpty())
-            //    song.SongId = new Guid().ToString();
-            //if (service.Submit() < 1)
-            //    return string.Empty;
-            //return song.SongId;
-            Context.Add(song);
-            return Context.Submit();
-        }
-
-        /// <summary>
-        /// 删除（物理删除）
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Delete(Song model)
-        {
-            Context.Delete(model);
-            return service.Submit();
-        }
-
-
-        /// <summary>
-        /// 修改
-        /// </summary>
-        /// <param name="song"></param>
-        /// <returns></returns>
-        public static int Update(Song song)
-        {
-            if (string.IsNullOrEmpty(song.SongId)) return -1;
-            service.Update(song);
-            return service.Submit();
         }
 
         #region 查询
@@ -121,43 +82,16 @@ namespace Said.Application
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static Song FindByFileName(string fileName)
+        public Song FindByFileName(string fileName)
         {
             return Context.Get(m => m.SongFileName == fileName);
-        }
-
-        /// <summary>
-        /// 根据长ID查找一个分类
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Song Find(long id)
-        {
-            return Context.GetById(id);
-        }
-        /// <summary>
-        /// 根据ID查找一个分类
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Song Find(string id)
-        {
-            return Context.GetById(id);
-        }
-        /// <summary>
-        /// 无条件查询全部
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<Song> Find()
-        {
-            return Context.GetAll();
         }
 
         /// <summary>
         /// 无条件查询全部，并按照时间倒序排列
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Song> FindToList()
+        public IEnumerable<Song> FindToList()
         {
             return Context.GetAllDesc(m => m.Date);
         }
@@ -166,7 +100,7 @@ namespace Said.Application
         /// 无条件贪婪查询全部，并按照时间倒序排列
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Song> FindAllByDesc()
+        public IEnumerable<Song> FindAllByDesc()
         {
             return Context.FindAllByDesc();
         }
@@ -176,7 +110,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="page"></param>
         /// <returns></returns>
-        public static IPagedList<Song> FindToList(Models.Data.Page page)
+        public IPagedList<Song> FindToList(Models.Data.Page page)
         {
             return Context.GetPageDesc(page, m => m.IsDel == 0, m => m.Date);
         }
@@ -188,7 +122,7 @@ namespace Said.Application
         /// <param name="page"></param>
         /// <param name="keywords">查询关键字</param>
         /// <returns></returns>
-        public static IPagedList<Song> FindToList(Models.Data.Page page, string keywords)
+        public IPagedList<Song> FindToList(Models.Data.Page page, string keywords)
         {
             return Context.GetPageDesc(page, m => m.IsDel == 0 && (m.SongName.Contains(keywords) || m.SongArtist.Contains(keywords) || m.SongAlbum.Contains(keywords)), m => m.Date);
         }

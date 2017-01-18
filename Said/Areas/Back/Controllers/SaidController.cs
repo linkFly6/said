@@ -19,7 +19,7 @@ namespace Said.Areas.Back.Controllers
         public ActionResult Index()
         {
             //TODO 注意检测贪婪查询
-            ViewData["articles"] = ArticleApplication.FindAll().ToList();
+            ViewData["articles"] = articleApplication.FindAllList().ToList();
             return View();
         }
 
@@ -30,9 +30,9 @@ namespace Said.Areas.Back.Controllers
         {
             ViewBag.Title = "添加一篇Said";
             //初始化歌曲数据
-            ViewData["ClassifysList"] = ClassifyApplication.Find();
-            ViewData["SongsList"] = SongApplication.FindAllByDesc().ToList<Song>();
-            ViewData["FileNames"] = ArticleApplication.FindAllFileNames().ToList<string>();
+            ViewData["ClassifysList"] = classifyApplication.FindAll();
+            ViewData["SongsList"] = songApplication.FindAllByDesc().ToList();
+            ViewData["FileNames"] = articleApplication.FindAllFileNames().ToList();
 
 
             //ViewData["TagList"] = TagApplication.Find();
@@ -48,7 +48,7 @@ namespace Said.Areas.Back.Controllers
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            var model = ArticleApplication.Find(id);
+            var model = articleApplication.FindById(id);
             if (model == null)
             {
                 return RedirectToAction("Index", new
@@ -56,8 +56,8 @@ namespace Said.Areas.Back.Controllers
                     formUrl = Request.Url.AbsoluteUri
                 });
             }
-            ViewData["SongsList"] = SongApplication.FindAllByDesc().ToList<Song>();
-            ViewData["FileNames"] = ArticleApplication.FindAllFileNames().ToList<string>();
+            ViewData["SongsList"] = songApplication.FindAllByDesc().ToList();
+            ViewData["FileNames"] = articleApplication.FindAllFileNames().ToList();
             return View(model);
         }
         #endregion
@@ -101,7 +101,7 @@ namespace Said.Areas.Back.Controllers
                 model.SName = string.Empty;
 
             //验证，需要validateSubmit方法矫正歌曲等数据，如果没有id则生成一个id
-            string vdResult = ArticleApplication.ValidateAndCorrectSubmit(model);
+            string vdResult = articleApplication.ValidateAndCorrectSubmit(model, songApplication, imageApplication);
 
             //TODO 这里要新增图片引用
             if (vdResult == null)
@@ -118,7 +118,8 @@ namespace Said.Areas.Back.Controllers
                 */
                 //model.SaidId = SaidCommon.GUID;
                 model.SaidId = model.SName;
-                return ArticleApplication.Add(model) > 0 ?
+                articleApplication.Add(model);
+                return articleApplication.Commit() ?
                     ResponseResult(0, model.SaidId) :
                     ResponseResult(2, "添加到数据库异常");
             }
@@ -135,7 +136,7 @@ namespace Said.Areas.Back.Controllers
             string saidId = form["SaidId"];
             if (string.IsNullOrWhiteSpace(saidId))
                 return ResponseResult(-1, "要编辑的文章ID不正确（无法获取）");
-            Article model = ArticleApplication.Find(saidId);
+            Article model = articleApplication.FindById(saidId);
             if (model == null)
                 return ResponseResult(-2, "没有从数据库中检索到要编辑的文章ID");
             Article newModel = new Article
@@ -170,8 +171,7 @@ namespace Said.Areas.Back.Controllers
             //对应模型ID
             newModel.SaidId = model.SaidId;
             //验证
-            ArticleApplication.ValidateAndCorrectSubmit(newModel);
-            string vdResult = ArticleApplication.ValidateAndCorrectSubmit(model);
+            string vdResult = articleApplication.ValidateAndCorrectSubmit(model, songApplication, imageApplication);
             //TODO 这里要减去图片引用
 
             if (vdResult == null)
@@ -193,8 +193,8 @@ namespace Said.Areas.Back.Controllers
                 model.SIsTop = newModel.SIsTop;
                 model.SReprint = newModel.SReprint;
             }
-
-            if (ArticleApplication.Update(model) > 0)
+            articleApplication.Update(model);
+            if (articleApplication.Commit())
             {
                 // 清理 cache，因为前台读取的时候引用了 cache
                 if (CacheHelper.GetCache(model.SaidId) != null)
@@ -225,7 +225,7 @@ namespace Said.Areas.Back.Controllers
                 PageNumber = offset / limit + 1,
                 PageSize = limit
             };
-            var res = ArticleApplication.Find(page);
+            var res = articleApplication.FindByPage(page);
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,
@@ -245,10 +245,11 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult Delete(string id)
         {
-            Article model = ArticleApplication.Find(id);
+            Article model = articleApplication.FindById(id);
             if (model == null)
                 return ResponseResult(1, "要删除的文章不存在（数据库未检索到该文章ID）");
-            return ArticleApplication.Delete(model) > 0 ?
+            articleApplication.LogicDelete(model);
+            return articleApplication.Commit() ?
                 ResponseResult()
                 : ResponseResult(2, "从数据库中删除文章失败");
         }
@@ -260,10 +261,11 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult RealDelete(string id)
         {
-            Article model = ArticleApplication.Find(id);
+            Article model = articleApplication.FindById(id);
             if (model == null)
                 return ResponseResult(1, "要删除的文章不存在（数据库未检索到该文章ID）");
-            return ArticleApplication.RealDelete(model.SaidId) > 0 ?
+            articleApplication.RealDelete(model.SaidId);
+            return articleApplication.Commit() ?
                 ResponseResult()
                 : ResponseResult(2, "从数据库中删除文章失败");
         }

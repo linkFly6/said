@@ -28,7 +28,7 @@ namespace Said.Service
     public class BlogTagsService : BaseService<BlogTags>, IBlogTagsService
     {
 
-        public BlogTagsService(DatabaseFactory factory)
+        public BlogTagsService(SaidDbContext factory)
             : base(factory)
         {
 

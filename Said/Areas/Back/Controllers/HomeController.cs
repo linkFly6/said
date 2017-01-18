@@ -52,7 +52,7 @@ namespace Said.Areas.Back.Controllers
                 Url = Request.Url.AbsoluteUri,
                 Address = string.Empty,
                 UserAgent = HttpContext.Request.UserAgent,
-                AdminRecordId = Guid.NewGuid().ToString().Replace("-", "")
+                AdminRecordId = SaidCommon.GUID
             };
             if (HttpContext.Request.UrlReferrer != null)
             {
@@ -70,19 +70,21 @@ namespace Said.Areas.Back.Controllers
             //    AdminRecordApplication.Add(record);
             //    return ResponseResult(6, "登录异常");
             //}
-            Admin admin = AdminApplication.Get(name, newPwd);
+            Admin admin = adminApplication.Get(name, newPwd);
             if (admin == null)
             {
                 record.Description = string.Format("请求登录失败，输入的用户名:{0}，密码:{1}", name, pwd);
                 record.OperationType = OperationType.Warning;
-                AdminRecordApplication.Add(record);
+                adminRecordApplication.Add(record);
+                adminRecordApplication.Commit();
                 return ResponseResult(3, "用户名或密码不正确");
             }
             //record.AdminId = admin.AdminId;
             record.AdminId = admin.AdminId;
             record.Description = string.Format("管理员【{0}】登录", admin.Name);
 
-            if (AdminRecordApplication.Add(record) > 0)
+            adminRecordApplication.Add(record);
+            if (adminRecordApplication.Commit())
             {
                 //放到缓存池
                 CacheHelper.SetCache(record.AdminRecordId, admin);
@@ -102,7 +104,7 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 return ResponseResult(1, "不是合法的文件名");
-            var res = SongApplication.FindByFileName(fileName.Trim());
+            var res = songApplication.FindByFileName(fileName.Trim());
             if (res != null)
                 return ResponseResult(2, "存在重复项", new { name = res.SongName });
             return ResponseResult();
@@ -116,7 +118,7 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 return ResponseResult(1, "不是合法的文件名");
-            var res = ArticleApplication.FindByFileName(fileName.Trim());
+            var res = articleApplication.FindByFileName(fileName.Trim());
             if (res != null)
                 return ResponseResult(2, "存在重复项", new { name = res.STitle });
             return ResponseResult();

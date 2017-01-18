@@ -9,19 +9,10 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
-    public class BlogTagsApplication
+    public class BlogTagsApplication : BaseApplication<BlogTags, IBlogTagsService>
     {
-        private static IBlogTagsService service;
-        public static IBlogTagsService Context
+        public BlogTagsApplication() : base(new BlogTagsService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new BlogTagsService(new Domain.Said.Data.DatabaseFactory())); }
-        }
-
-
-        public static int Add(BlogTags model)
-        {
-            Context.Add(model);
-            return Context.Submit();
         }
 
         /// <summary>
@@ -29,13 +20,13 @@ namespace Said.Application
         /// </summary>
         /// <param name="models"></param>
         /// <returns></returns>
-        public static int AddLists(IList<BlogTags> models)
+        public void AddLists(IList<BlogTags> models)
         {
             foreach (var item in models)
             {
                 Context.Add(item);
             }
-            return Context.Submit();
+            //return Context.Submit();
         }
 
 
@@ -45,7 +36,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="blogId">要查找的BlogId</param>
         /// <returns></returns>
-        public static IEnumerable<BlogTags> FindByBlogId(string blogId)
+        public IEnumerable<BlogTags> FindByBlogId(string blogId)
         {
             return Context.GetMany(m => m.BlogId == blogId);
         }
@@ -55,7 +46,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="blogId">要查找的BlogId</param>
         /// <returns></returns>
-        public static IEnumerable<BlogTags> FindByBlogIdNoCache(string blogId)
+        public IEnumerable<BlogTags> FindByBlogIdNoCache(string blogId)
         {
             return Context.FindListNoCacheInclude(m => m.BlogId == blogId, "Tag");
         }
@@ -65,7 +56,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="tagId"></param>
         /// <returns></returns>
-        public static IEnumerable<BlogTags> FindByTagId(string tagId)
+        public IEnumerable<BlogTags> FindByTagId(string tagId)
         {
             return Context.GetMany(m => m.TagId == tagId);
         }
@@ -75,10 +66,9 @@ namespace Said.Application
         /// </summary>
         /// <param name="blogId">要操作删除的BlogId</param>
         /// <returns></returns>
-        public static int DeleteByBlogId(string blogId)
+        public void DeleteByBlogId(string blogId)
         {
             Context.Delete(m => m.BlogId == blogId);
-            return Context.Submit();
         }
 
 
@@ -87,10 +77,9 @@ namespace Said.Application
         /// </summary>
         /// <param name="tagId">要操作删除的tagId</param>
         /// <returns></returns>
-        public static int DeleteByBlogTagId(string tagId)
+        public void DeleteByBlogTagId(string tagId)
         {
             Context.Delete(m => m.TagId == tagId);
-            return Context.Submit();
         }
 
 
@@ -100,10 +89,10 @@ namespace Said.Application
         /// <param name="blog"></param>
         /// <param name="tags">Blog对应的标签对象</param>
         /// <returns></returns>
-        public static IList<BlogTags> UpdateBlogTags(Blog blog, IList<Tag> tags)
+        public IList<BlogTags> UpdateBlogTags(Blog blog, IList<Tag> tags, TagApplication tagApplication)
         {
             var selectTagIds = tags.Where(tag => !string.IsNullOrWhiteSpace(tag.TagId)).Select(m => m.TagId);//得到要查询的Tag name列表（把为null的tag的tagId过滤掉，因为前端传递过来的tag，如果是新增的，则为null），然后进行数据库查询
-            IEnumerable<Tag> existTags = TagApplication.FindListByTagIdList(selectTagIds.ToArray());//从数据库中查询到已存在的Tag
+            IEnumerable<Tag> existTags = tagApplication.FindListByTagIdList(selectTagIds.ToArray());//从数据库中查询到已存在的Tag
             IList<Tag> addTags = tags.Where(tag =>
             {
                 //前端传递过来，新增的tag的tagId都是null，同时去数据库中检测，如果发现有新增的项数据库中并没有
@@ -118,10 +107,13 @@ namespace Said.Application
             }).ToList();
             if (addTags.Count() > 0)
             {
-                if (TagApplication.AddList(addTags) < 1)
-                {
+                //if (tagApplication.AddList(addTags) < 1)
+                //{
+                //    throw new Exception("新增Tag失败");
+                //}
+                tagApplication.AddList(addTags);
+                if (!tagApplication.Commit())
                     throw new Exception("新增Tag失败");
-                }
             }
             if (existTags != null && existTags.Count() > 0 && addTags.Count() > 0)
                 tags = existTags.Concat(addTags).ToList();//Concat参考：http://www.cnblogs.com/heyuquan/p/Linq-to-Objects.html

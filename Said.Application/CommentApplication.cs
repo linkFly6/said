@@ -9,33 +9,19 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
-    public class CommentApplication
+    public class CommentApplication : BaseApplication<Comment, ICommentServicee>
     {
-        private static ICommentServicee service;
-        public static ICommentServicee Context
+
+        public CommentApplication() : base(new CommentService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new CommentService(new Domain.Said.Data.DatabaseFactory())); }
         }
-
-        /// <summary>
-        /// 新增一条评论
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Add(Comment model)
-        {
-            Context.Add(model);
-            return service.Submit();
-        }
-
-
 
         /// <summary>
         /// 根据ID查询
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Comment Find(string id)
+        public Comment Find(string id)
         {
             return Context.Get(m => m.CommentId == id && m.IsDel == 0);
         }
@@ -45,21 +31,9 @@ namespace Said.Application
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Comment FindNoCache(string id)
+        public Comment FindNoCache(string id)
         {
             return Context.FindNocahe(m => m.CommentId == id && m.IsDel == 0);
-        }
-
-
-        /// <summary>
-        /// 修改一条评论
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Update(Comment model)
-        {
-            Context.Update(model);
-            return service.Submit();
         }
 
         /// <summary>
@@ -67,7 +41,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="blogId">要检索的文件名称</param>
         /// <returns>返回SaidID列表</returns>
-        public static IEnumerable<Comment> FindByBlogId(string blogId)
+        public IEnumerable<Comment> FindByBlogId(string blogId)
         {
             return Context.FindAllInfo(m => m.BlogId == blogId && m.IsDel == 0, m => m.Date);
         }
@@ -77,7 +51,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public static string CheckContext(string value)
+        public string CheckContext(string value)
         {
             if (string.IsNullOrWhiteSpace(value) || value.Trim().Length > 140)
             {

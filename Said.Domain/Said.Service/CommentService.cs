@@ -37,8 +37,8 @@ namespace Said.Service
     public class CommentService : BaseService<Comment>, ICommentServicee
     {
 
-        public CommentService(DatabaseFactory factory)
-            : base(factory)
+        public CommentService(SaidDbContext context)
+            : base(context)
         {
 
         }

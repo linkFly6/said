@@ -13,8 +13,22 @@ namespace Said.Controllers
     {
         //protected override void OnException(ExceptionContext filterContext)
         //{
-                
+
         //}
+        protected AdminApplication adminApplication = new AdminApplication();
+        protected AdminRecordApplication adminRecordApplication = new AdminRecordApplication();
+        protected ArticleApplication articleApplication = new ArticleApplication();
+        protected BlogApplication blogApplication = new BlogApplication();
+        protected BlogTagsApplication blogTagsApplication = new BlogTagsApplication();
+        protected ClassifyApplication classifyApplication = new ClassifyApplication();
+        protected CommentApplication commentApplication = new CommentApplication();
+        protected ImageApplication imageApplication = new ImageApplication();
+        protected ReplyApplicaiton replyApplicaiton = new ReplyApplicaiton();
+        protected SongApplication songApplication = new SongApplication();
+        protected TagApplication tagApplication = new TagApplication();
+        protected UserApplication userApplication = new UserApplication();
+        protected UserLikeApplication userLikeApplication = new UserLikeApplication();
+        protected UserRecordApplication userRecordApplication = new UserRecordApplication();
 
         //这个控制器可以定义顶层控制器的行为
 
@@ -31,7 +45,7 @@ namespace Said.Controllers
         {
             get
             {
-                return UserApplication.Find(UserId);
+                return userApplication.FindById(UserId);
             }
         }
 

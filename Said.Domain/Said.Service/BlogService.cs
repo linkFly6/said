@@ -137,8 +137,8 @@ namespace Said.Service
     /// </summary>
     public class BlogService : BaseService<Blog>, IBlogService
     {
-        public BlogService(DatabaseFactory factory)
-            : base(factory)
+        public BlogService(SaidDbContext context)
+            : base(context)
         {
 
         }

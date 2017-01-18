@@ -26,8 +26,8 @@ namespace Said.Controllers
         //[WapFilterAttribute]
         public ActionResult Index()
         {
-            ViewData["articleList"] = ArticleApplication.GetByTop(3).ToList();
-            ViewData["blogList"] = BlogApplication.FindPartialDatasByTop(3).ToList();
+            ViewData["articleList"] = articleApplication.GetByTop(3).ToList();
+            ViewData["blogList"] = blogApplication.FindPartialDatasByTop(3).ToList();
             //dipslay mode - 直接访问域名：http://tasaid.com ，无法自动识别到mobile，需要访问 http://tasaid.com/home/index 才可以自动识别mobile，所以手动修正这个问题
             return Request.Browser.IsMobileDevice ? View("Index.Mobile") : View();
         }
@@ -93,7 +93,7 @@ namespace Said.Controllers
             }
             catch (Exception e)
             {
-                logManager.Error("跳转Error\n请求url：" + url, e.InnerException);
+                logManager.Error("跳转Error\n请求url：" + url, e);
             }
             return Redirect(url);
         }

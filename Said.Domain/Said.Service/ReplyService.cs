@@ -22,8 +22,8 @@ namespace Said.Service
     public class ReplyService : BaseService<Reply>, IReplyService
     {
 
-        public ReplyService(DatabaseFactory factory)
-            : base(factory)
+        public ReplyService(SaidDbContext context)
+            : base(context)
         {
 
         }

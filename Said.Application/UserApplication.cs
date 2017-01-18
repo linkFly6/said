@@ -13,53 +13,22 @@ namespace Said.Application
     /// <summary>
     /// User处理程序
     /// </summary>
-    public static class UserApplication
+    public class UserApplication : BaseApplication<User, IUserService>
     {
-        private static IUserService service;
-        public static IUserService Context
+
+        private static Regex regSite = new Regex(@"^((https|http|ftp|rtsp|mms)?://)?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-z_!~*'()-]+\.)*([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.[a-z]{2,6})(:[0-9]{1,4})?((/?)|(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$");
+        private static Regex regEmail = new Regex(@"^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$");
+
+        public UserApplication() : base(new UserService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new UserService(new Domain.Said.Data.DatabaseFactory())); }
         }
-
-        /// <summary>
-        /// 添加一个User
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Add(User model)
-        {
-            Context.Add(model);
-            return service.Submit();
-        }
-
-        /// <summary>
-        /// 修改用户
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Update(User model)
-        {
-            Context.Update(model);
-            return service.Submit();
-        }
-
-
-        /// <summary>
-        /// 查找User
-        /// </summary>
-        /// <returns></returns>
-        public static User Find(string id)
-        {
-            return Context.GetById(id);
-        }
-
 
         /// <summary>
         /// 验证用户是否存在
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static bool Exists(string id)
+        public bool Exists(string id)
         {
             return Context.Exists(id);
         }
@@ -70,16 +39,10 @@ namespace Said.Application
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static bool ExistsNoCache(string id)
+        public bool ExistsNoCache(string id)
         {
             return Context.ExistsNoCache(m => m.UserID == id);
         }
-
-
-        private static Regex regSite = new Regex(@"^((https|http|ftp|rtsp|mms)?://)?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-z_!~*'()-]+\.)*([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.[a-z]{2,6})(:[0-9]{1,4})?((/?)|(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$");
-        private static Regex regEmail = new Regex(@"^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$");
-
-
 
         /// <summary>
         /// 检测用户昵称是否正确（要求value不为null）
@@ -130,7 +93,7 @@ namespace Said.Application
         ///<param name="user">包含userId的用户信息</param>
         ///<param name="databaseUser">从数据库中查阅出来，经过修剪处理后的用户信息，如果验证通过，则它是有数据的</param>
         /// <returns>没有错误信息则返回null，否则返回错误信息</returns>
-        public static string CheckAndTrimInput(User user, out User databaseUser)
+        public string CheckAndTrimInput(User user, out User databaseUser)
         {
             databaseUser = null;
             string validateResult = null;
@@ -158,7 +121,7 @@ namespace Said.Application
             }
             else
                 user.EMail = null;
-            databaseUser = Find(user.UserID);
+            databaseUser = base.FindById(user.UserID);
             if (databaseUser == null) return "没有找到当前用户信息";
             /**
                 当数据库的用户信息没有数据，而这次验证的用户也没有用户数据，则判定当前用户验证失败

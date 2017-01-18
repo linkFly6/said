@@ -46,7 +46,7 @@ namespace Said.Controllers
             //wap访问
             if (Request.Browser.IsMobileDevice)
             {
-                IPagedList<Blog> list = BlogApplication.FindPartialDatasByPage(new Page { PageNumber = 1, PageSize = PageLimit });
+                IPagedList<Blog> list = blogApplication.FindPartialDatasByPage(new Page { PageNumber = 1, PageSize = PageLimit });
                 ViewData["total"] = list.TotalItemCount;
                 ViewData["blogs"] = list.ToList();
                 ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
@@ -56,20 +56,20 @@ namespace Said.Controllers
             else
             {
                 ViewData["NavigatorIndex"] = 1;
-                var classifyList = ClassifyApplication.Find();
+                var classifyList = classifyApplication.FindAllDesc();
                 IEnumerable<Blog> blogs = null;
                 if (string.IsNullOrWhiteSpace(cate))
                 {
 
-                    blogs = BlogApplication.FindPartialDatas().ToList();
+                    blogs = blogApplication.FindPartialDatas().ToList();
                 }
                 else
                 {//带分类查询
-                    var classify = ClassifyApplication.Find(cate);
+                    var classify = classifyApplication.FindById(cate);
                     //TODO 所有带参数查询的地方，应该对参数格式做校验，比如md5的，就用正则识别一下格式是否正确
                     if (classify != null)
                     {
-                        blogs = BlogApplication.FindPartialDatasByClassify(classify).ToList();
+                        blogs = blogApplication.FindPartialDatasByClassify(classify).ToList();
                     }
                     ViewData["currClassify"] = classify;
                 }
@@ -95,7 +95,7 @@ namespace Said.Controllers
             // 先读 cache
             var model = CacheHelper.GetCache(id.Trim()) as Blog;
             if (model == null)
-                model = BlogApplication.FindByIdIncludes(id);
+                model = blogApplication.FindByIdIncludes(id);
             if (model == null)
                 return RedirectToAction("NotFound", "Home", new { sgs = "BlogNotFound", url = Request.Url.AbsoluteUri });
             model.BPV++;
@@ -110,20 +110,20 @@ namespace Said.Controllers
                     {
                         lock (@obj)
                         {
-                            BlogApplication.Update(models.Last());
+                            blogApplication.Update(models.Last());
                         }
                     }
                 }
                 catch (Exception e)
                 {
 
-                    logManager.Error("延迟更新 Said 失败\n", e.InnerException);
+                    logManager.Error("延迟更新 Said 失败\n", e);
                 }
                 return 0;
             });
 
-            ViewData["userLike"] = UserLikeApplication.ExistsLike(model.BlogId, this.UserId, 1) == null ? false : true;
-            ViewData["comments"] = CommentApplication.FindByBlogId(model.BlogId).ToList();
+            ViewData["userLike"] = userLikeApplication.ExistsLike(model.BlogId, this.UserId, 1) == null ? false : true;
+            ViewData["comments"] = commentApplication.FindByBlogId(model.BlogId).ToList();
             ViewBag.UserId = this.UserId;
             ViewBag.AdminId = this.AdminId;
             return Request.Browser.IsMobileDevice ? View("Article.Mobile", model) : View(model);
@@ -151,7 +151,7 @@ namespace Said.Controllers
             context = UrlCommon.Decode(context);
             if (string.IsNullOrWhiteSpace(blogId)) return ResponseResult(1, "用户评论：文章不正确");
             //验证输入的文本
-            string validateContextResultString = CommentApplication.CheckContext(context);
+            string validateContextResultString = commentApplication.CheckContext(context);
             if (validateContextResultString != null) return ResponseResult(1, validateContextResultString);
 
             //事务需要对源进行监听，这里从数据库中获取了Blog，需要让事务监听到
@@ -160,7 +160,7 @@ namespace Said.Controllers
                 return SaidCommon.Transaction(() =>
                 {
                     //从数据库检索Blog是否存在
-                    var blog = BlogApplication.Find(blogId.Trim());
+                    var blog = blogApplication.FindById(blogId.Trim());
                     if (blog == null) throw new Exception("用户评论：文章不正确");
                     //准备数据
                     var inputUser = new User
@@ -174,18 +174,20 @@ namespace Said.Controllers
                         SecretKey = this.AdminId
                     };
                     User user = null;
-                    string validateUserResultString = UserApplication.CheckAndTrimInput(inputUser, out user);
+                    string validateUserResultString = userApplication.CheckAndTrimInput(inputUser, out user);
                     if (validateUserResultString != null) return ResponseResult(8, validateUserResultString);
                     blog.BComment++;
-                    if (BlogApplication.Update(blog) <= 0)
-                    {
-                        throw new Exception("用户评论：日志修改失败");
-                    }
+                    blogApplication.Update(blog);
+                    //if (!blogApplication.Commit())
+                    //{
+                    //    throw new Exception("用户评论：日志修改失败");
+                    //}
                     //这里拿到的user是已经修剪处理好的user了
-                    if (UserApplication.Update(user) <= 0)
-                    {
-                        throw new Exception("用户评论：用户信息修改失败");
-                    }
+                    userApplication.Update(user);
+                    //if (!userApplication.Commit())
+                    //{
+                    //    throw new Exception("用户评论：用户信息修改失败");
+                    //}
                     Comment comment = new Comment
                     {
                         BlogId = blog.BlogId,
@@ -195,7 +197,8 @@ namespace Said.Controllers
                         Context = context,
                         UserId = user.UserID
                     };
-                    if (CommentApplication.Add(comment) <= 0)
+                    commentApplication.Add(comment);
+                    if (!commentApplication.Commit())
                     {
                         throw new Exception("用户评论：评论失败");
                     }
@@ -205,7 +208,7 @@ namespace Said.Controllers
             }
             catch (Exception e)
             {
-                logManager.Error(e.InnerException);
+                logManager.Error(e);
                 return ResponseResult(1, "评论失败");
             }
         }
@@ -233,7 +236,7 @@ namespace Said.Controllers
             if (string.IsNullOrWhiteSpace(blogId)) return ResponseResult(1, "文章不正确");
             if (string.IsNullOrWhiteSpace(commentId) && string.IsNullOrWhiteSpace(replyId)) return ResponseResult(1, "要回复的评论不正确");
             //验证输入的文本
-            string validateContextResultString = CommentApplication.CheckContext(context);
+            string validateContextResultString = commentApplication.CheckContext(context);
             if (validateContextResultString != null) return ResponseResult(1, validateContextResultString);
 
             //事务需要对源进行监听，这里从数据库中获取了Blog，需要让事务监听到
@@ -242,7 +245,7 @@ namespace Said.Controllers
                 return SaidCommon.Transaction(() =>
                 {
                     //从数据库检索Blog是否存在
-                    var blog = BlogApplication.Find(blogId.Trim());
+                    var blog = blogApplication.FindById(blogId.Trim());
                     if (blog == null) throw new Exception("用户回复：文章不正确");
                     //准备数据
                     var inputUser = new User
@@ -257,28 +260,30 @@ namespace Said.Controllers
 
                     if (!string.IsNullOrWhiteSpace(replyId))//如果有针对回复的ID，则以回复ID为准
                     {
-                        toReply = ReplyApplicaiton.Find(replyId);
+                        toReply = replyApplicaiton.Find(replyId);
                         if (toReply == null) throw new Exception("用户回复：回复的信息不正确");
                         if (toReply.UserId == this.UserId) throw new Exception("用户不允许回复自己的评论");
                     }
                     else {//否则以评论ID为准
-                        comment = CommentApplication.Find(commentId);
+                        comment = commentApplication.Find(commentId);
                         if (comment == null) throw new Exception("用户回复：回复的评论不正确");
                         if (comment.UserId == this.UserId) throw new Exception("用户不允许回复自己的评论");
                     }
                     User user = null;
-                    string validateUserResultString = UserApplication.CheckAndTrimInput(inputUser, out user);
+                    string validateUserResultString = userApplication.CheckAndTrimInput(inputUser, out user);
                     if (validateUserResultString != null) return ResponseResult(8, validateUserResultString);
                     blog.BComment++;
-                    if (BlogApplication.Update(blog) <= 0)
-                    {
-                        throw new Exception("用户回复：日志修改失败");
-                    }
+                    blogApplication.Update(blog);
+                    //if (!blogApplication.Commit())
+                    //{
+                    //    throw new Exception("用户回复：日志修改失败");
+                    //}
                     //这里拿到的user是已经修剪处理好的user了
-                    if (UserApplication.Update(user) <= 0)
-                    {
-                        throw new Exception("用户回复：用户信息修改失败");
-                    }
+                    userApplication.Update(user);
+                    //if (!userApplication.Commit())
+                    //{
+                    //    throw new Exception("用户回复：用户信息修改失败");
+                    //}
 
                     Reply reply = new Reply
                     {
@@ -292,7 +297,8 @@ namespace Said.Controllers
                         ReplyType = toReply == null ? 0 : 1,
                         ToReplyId = toReply == null ? null : toReply.ReplyId
                     };
-                    if (ReplyApplicaiton.Add(reply) <= 0)
+                    replyApplicaiton.Add(reply);
+                    if (!replyApplicaiton.Commit())
                     {
                         throw new Exception("用户回复：添加回复对象失败");
 
@@ -307,7 +313,7 @@ namespace Said.Controllers
             }
             catch (Exception e)
             {
-                logManager.Error(e.InnerException);
+                logManager.Error(e);
                 return ResponseResult(3, "评论失败");
             }
 
@@ -327,7 +333,7 @@ namespace Said.Controllers
                 {
                     return SaidCommon.Transaction(() =>
                             {
-                                var comment = CommentApplication.FindNoCache(commentId);
+                                var comment = commentApplication.FindNoCache(commentId);
                                 if (comment != null)
                                 {
                                     //标记删除
@@ -335,7 +341,8 @@ namespace Said.Controllers
                                     //if (comment.Blog.BComment > 0)
                                     //    comment.Blog.BComment--;
 
-                                    if (CommentApplication.Update(comment) > 0)
+                                    commentApplication.Update(comment);
+                                    if (commentApplication.Commit())
                                     {
 
                                         /*
@@ -350,10 +357,11 @@ namespace Said.Controllers
                                             这个问题尚未解决
                                         */
 
-                                        var blog = BlogApplication.Find(comment.BlogId);
+                                        var blog = blogApplication.FindById(comment.BlogId);
                                         if (blog.BComment > 0)
                                             blog.BComment--;
-                                        if (BlogApplication.Update(blog) > 0)
+                                        blogApplication.Update(blog);
+                                        if (blogApplication.Commit())
                                         {
                                             return ResponseResult();
                                         }
@@ -403,7 +411,7 @@ namespace Said.Controllers
             {
                 limit = PageLimit;
             }
-            var res = BlogApplication.FindPartialDatasByPage(page);
+            var res = blogApplication.FindPartialDatasByPage(page);
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,
@@ -434,32 +442,34 @@ namespace Said.Controllers
             {
                 return ResponseResult(1, "文章信息不正确");
             }
-            Blog blog = BlogApplication.Find(id);
+            Blog blog = blogApplication.FindById(id);
 
             if (blog == null)
             {
                 return ResponseResult(2, "文章信息不正确");
             }
             //更新文章的结果
-            int updateArticle = 0;
+            bool updateArticleResult = false;
             //防止多线程修改
             lock (@obj)
             {
                 blog.Likes++;
-                updateArticle = BlogApplication.Update(blog);
+                blogApplication.Update(blog);
+                updateArticleResult = blogApplication.Commit();
             }
-            if (updateArticle < 0)
+            if (!updateArticleResult)
             {
                 return ResponseResult(4, "修改文章信息失败");
             }
-            return UserLikeApplication.Add(new UserLike
+            userLikeApplication.Add(new UserLike
             {
                 Date = DateTime.Now,
                 UserId = this.UserId,
                 LikeType = 1,
                 UserLikeId = SaidCommon.GUID,
                 LikeArticleId = id
-            }) > 0 ? ResponseResult() : ResponseResult(3, "添加Like信息异常");
+            });
+            return userLikeApplication.Commit() ? ResponseResult() : ResponseResult(3, "添加Like信息异常");
         }
 
         #endregion

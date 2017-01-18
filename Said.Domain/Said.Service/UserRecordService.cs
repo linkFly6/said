@@ -22,8 +22,8 @@ namespace Said.Service
     #region Service
     public class UserRecordService : BaseService<UserRecord>, IUserRecordService
     {
-        public UserRecordService(DatabaseFactory factory)
-            : base(factory)
+        public UserRecordService(SaidDbContext context)
+            : base(context)
         { }
 
     }

@@ -36,7 +36,7 @@ namespace Said
             //强制检测移动端
             DisplayModeProvider.Instance.Modes.Insert(0, new DefaultDisplayMode("Mobile")
             {
-                ContextCondition = (context => regMobile.IsMatch(HttpContext.Current.Request.UserAgent))
+                ContextCondition = (context => regMobile.IsMatch(HttpContext.Current.Request != null ? HttpContext.Current.Request.UserAgent ?? "" : ""))
             });
 
             //regMobile.IsMatch(HttpContext.Current.Request.UserAgent);

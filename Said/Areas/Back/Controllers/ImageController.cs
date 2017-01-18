@@ -44,7 +44,7 @@ namespace Said.Areas.Back.Controllers
             IPagedList<Image> res = null;
             if (string.IsNullOrEmpty(imageType) || imageType == "-1")
             {
-                res = ImageApplication.FindToList(page);
+                res = imageApplication.FindToList(page);
             }
             else
             {
@@ -52,10 +52,10 @@ namespace Said.Areas.Back.Controllers
                 if (Enum.TryParse<ImageType>(imageType, out imgType))
                 {
                     //转换成功，查询类别
-                    res = ImageApplication.FindToList(page, imgType);
+                    res = imageApplication.FindToList(page, imgType);
                 }
                 else
-                    res = ImageApplication.FindToList(page);//转换失败，查询全部
+                    res = imageApplication.FindToList(page);//转换失败，查询全部
             }
             return Json(new
             {
@@ -214,7 +214,8 @@ namespace Said.Areas.Back.Controllers
                 ImageId = SaidCommon.GUID,
                 IName = result["name"]
             };
-            if (ImageApplication.Add(model) > 0)
+            imageApplication.Add(model);
+            if (imageApplication.Commit())
                 return Json(new
                 {
                     code = 0,
@@ -292,7 +293,7 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "没有数据");
-            Image image = ImageApplication.Find(id);
+            Image image = imageApplication.FindById(id);
             if (image == null)
                 return ResponseResult(2, "没有找到图片");
             if (image.ReferenceCount > 0)
@@ -316,9 +317,16 @@ namespace Said.Areas.Back.Controllers
                     path = ConfigInfo.SourceSystemPath;
                     break;
             }
-            FileCommon.Remove(Server.MapPath(path + image.IFileName));
-            ImageApplication.Delete(image);
-            return ResponseResult();
+            imageApplication.Delete(image);
+            if (imageApplication.Commit())
+            {
+                FileCommon.Remove(Server.MapPath(path + image.IFileName));
+                return ResponseResult();
+            }
+            else {
+                return ResponseResult(2, "删除图片异常");
+            }
+
         }
         #endregion
     }

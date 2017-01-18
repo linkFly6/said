@@ -12,6 +12,7 @@ namespace Said.Controllers.Filters
 {
     public class AdminFilterAttribute : ActionFilterAttribute, IActionFilter
     {
+        private AdminRecordApplication adminRecordApplication = new AdminRecordApplication();
         #region 过滤逻辑
 
 
@@ -43,7 +44,7 @@ namespace Said.Controllers.Filters
             //没有记录 && 从数据库读不到记录
             if (CacheHelper.GetCache(recordId) == null)
             {
-                AdminRecord record = AdminRecordApplication.Get(recordId);
+                AdminRecord record = adminRecordApplication.Get(recordId);
                 if (record != null)
                 {
                     CacheHelper.SetCache(recordId, record.Admin);

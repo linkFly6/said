@@ -37,8 +37,8 @@ namespace Said.Service
     public class ClassifyService : BaseService<Classify>, IClassifyService
     {
 
-        public ClassifyService(DatabaseFactory factory)
-            : base(factory)
+        public ClassifyService(SaidDbContext context)
+            : base(context)
         {
 
         }

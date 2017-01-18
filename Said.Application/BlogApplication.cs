@@ -14,58 +14,31 @@ namespace Said.Application
     /// <summary>
     /// 使用静态类为让它变得更加晦涩，如果需要静态类的语法则可以使用单例模式实现
     /// </summary>
-    public static class BlogApplication
+    public class BlogApplication : BaseApplication<Blog, IBlogService>
     {
 
-        private static IBlogService service;
-        public static IBlogService Context
+        public BlogApplication() : base(new BlogService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new BlogService(new Domain.Said.Data.DatabaseFactory())); }
         }
-
-        /// <summary>
-        /// 添加一篇文章
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Add(Blog model)
-        {
-            Context.Add(model);
-            return service.Submit();
-        }
-
 
         /// <summary>
         /// 根据文章文件名称，获取该文件名称对应的BlogId（列表），用于检索文件重名业务
         /// </summary>
         /// <param name="fileName">要检索的文件名称</param>
         /// <returns>返回SaidID列表</returns>
-        public static IEnumerable<string> FindBlogIdByFileName(string fileName)
+        public IEnumerable<string> FindBlogIdByFileName(string fileName)
         {
             return Context.GetBlogIdByFileName(fileName);
         }
-
-        /// <summary>
-        /// 修改Blog
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Update(Blog model)
-        {
-            Context.Update(model);
-            return service.Submit();
-        }
-
 
         /// <summary>
         /// 逻辑删除一个Blog（修改isDelete），该删除操作仅为逻辑删除，仍然可以在数据库中检索到数据
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static int LogicDelete(Blog model)
+        public void LogicDelete(Blog model)
         {
             Context.Del(model);
-            return Context.Submit();
         }
 
 
@@ -75,7 +48,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="model">要验证的model</param>
         /// <returns>返回null表示验证成功，否则返回验证失败的字符串，用,号分割</returns>
-        public static string ValidateAndCorrectSubmit(Blog model)
+        public string ValidateAndCorrectSubmit(Blog model, ClassifyApplication classifyContext)
         {
             StringBuilder str = new StringBuilder();
             //防止tag有HTML标签，修正
@@ -84,7 +57,7 @@ namespace Said.Application
                 //validateResult.MemberNames//这个要搞懂怎么用，或许能让提示信息更全一点
                 str.Append(validateResult.ErrorMessage + ",");
             }
-            if (ClassifyApplication.Context.GetById(model.ClassifyId) == null)
+            if (classifyContext.FindById(model.ClassifyId) == null)
                 str.Append("分类信息不正确,");
             if (str.Length > 0)
                 str.Length--;//StringBuilder的length可以用于裁剪字符串？
@@ -96,7 +69,7 @@ namespace Said.Application
 
                     //开始矫正数据
                     //没有文件名或文件名不合法，则生成一个新的文件名
-                    if (string.IsNullOrWhiteSpace(model.BName) || BlogApplication.FindByFileName(model.BName.Trim()) != null)
+                    if (string.IsNullOrWhiteSpace(model.BName) || FindByFileName(model.BName.Trim()) != null)
                         model.BName = FileCommon.CreateFileNameByTime();
                 }
                 else {
@@ -129,22 +102,19 @@ namespace Said.Application
         /// <param name="blog"></param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public static int AddBlog(Blog blog, IList<Tag> tags)
+        public void AddBlog(Blog blog, IList<Tag> tags, BlogTagsApplication blogTagsApplication, TagApplication tagApplication)
         {
             //先调用ValidateAndCorrectSubmit验证更合理
             blog.BlogId = string.IsNullOrWhiteSpace(blog.BName) ? FileCommon.CreateFileNameByTime() : blog.BName;
             blog.Date = DateTime.Now;
-            //进行事务添加
-            return SaidCommon.Transaction(() =>
+            IList<BlogTags> blogTags = blogTagsApplication.UpdateBlogTags(blog, tags, tagApplication);
+            Add(blog);
+            if (!Commit())
             {
-                IList<BlogTags> blogTags = BlogTagsApplication.UpdateBlogTags(blog, tags);
-                if (Add(blog) <= 0)
-                {
-                    throw new Exception("新增Blog异常");
-                }
-                //新增BlogTags完毕,新增Blog
-                return BlogTagsApplication.AddLists(blogTags);
-            });
+                throw new Exception("新增Blog异常");
+            }
+            //新增BlogTags完毕,新增Blog
+            blogTagsApplication.AddLists(blogTags);
         }
 
 
@@ -155,42 +125,39 @@ namespace Said.Application
         /// /// <param name="blog">要修改的Blog</param>
         /// <param name="tags"></param>
         /// <returns></returns>
-        public static int EditBlog(Blog newBlog, Blog blog, IList<Tag> tags)
+        public void EditBlog(Blog newBlog, Blog blog, IList<Tag> tags, TagApplication tagApplication, BlogTagsApplication blogTagsApplication)
         {
             //先调用ValidateAndCorrectSubmit验证更合理
             newBlog.Date = DateTime.Now;
             //进行事务添加
-            return SaidCommon.Transaction(() =>
-            {
-                if (BlogTagsApplication.DeleteByBlogId(blog.BlogId) < 0)
-                {
-                    throw new Exception("删除原Blog和标签关系异常");
-                }
-                IList<BlogTags> blogTags = BlogTagsApplication.UpdateBlogTags(blog, tags);
-                //对齐Blog对象
-                blog.BTitle = newBlog.BTitle;
-                blog.BContext = newBlog.BContext;
-                blog.BSummary = newBlog.BSummary;
-                blog.BSummaryTrim = newBlog.BSummaryTrim;
-                blog.BHTML = newBlog.BHTML;
-                blog.BScript = newBlog.BScript;
-                blog.BReprint = newBlog.BReprint;
-                //blog.BPV = newBlog.BPV;
-                //blog.Likes = newBlog.Likes;
-                blog.BName = newBlog.BName;
-                blog.BLastCommentUser = newBlog.BLastCommentUser;
-                blog.BLastComment = newBlog.BLastComment;
-                blog.BIsTop = newBlog.BIsTop;
-                blog.BImgTrim = newBlog.BImgTrim;
-                blog.BImg = newBlog.BImg;
-                //blog.BComment = newBlog.BComment;
-                //blog.BClick = newBlog.BClick;
-                blog.ClassifyId = newBlog.ClassifyId;
-                blog.BName = newBlog.BName;
-                Update(blog);
-                BlogTagsApplication.AddLists(blogTags);
-                return 1;
-            });
+            blogTagsApplication.DeleteByBlogId(blog.BlogId);
+            //if (!blogTagsApplication.Commit())
+            //{
+            //    throw new Exception("删除原Blog和标签关系异常");
+            //}
+            IList<BlogTags> blogTags = blogTagsApplication.UpdateBlogTags(blog, tags, tagApplication);
+            //对齐Blog对象
+            blog.BTitle = newBlog.BTitle;
+            blog.BContext = newBlog.BContext;
+            blog.BSummary = newBlog.BSummary;
+            blog.BSummaryTrim = newBlog.BSummaryTrim;
+            blog.BHTML = newBlog.BHTML;
+            blog.BScript = newBlog.BScript;
+            blog.BReprint = newBlog.BReprint;
+            //blog.BPV = newBlog.BPV;
+            //blog.Likes = newBlog.Likes;
+            blog.BName = newBlog.BName;
+            blog.BLastCommentUser = newBlog.BLastCommentUser;
+            blog.BLastComment = newBlog.BLastComment;
+            blog.BIsTop = newBlog.BIsTop;
+            blog.BImgTrim = newBlog.BImgTrim;
+            blog.BImg = newBlog.BImg;
+            //blog.BComment = newBlog.BComment;
+            //blog.BClick = newBlog.BClick;
+            blog.ClassifyId = newBlog.ClassifyId;
+            blog.BName = newBlog.BName;
+            Update(blog);
+            blogTagsApplication.AddLists(blogTags);
         }
 
 
@@ -204,34 +171,22 @@ namespace Said.Application
         /// </summary>
         /// <param name="blog"></param>
         /// <returns></returns>
-        public static int DeleteBlog(Blog blog)
+        public void DeleteBlog(Blog blog, BlogTagsApplication blogTagsApplication)
         {
-            return SaidCommon.Transaction(() =>
-            {
-                Context.Delete(blog);
-                BlogTagsApplication.DeleteByBlogId(blog.BlogId);
-                return Context.Submit();
-            });
+            Context.Delete(blog);
+            blogTagsApplication.DeleteByBlogId(blog.BlogId);
         }
         #endregion
 
 
         #region 查询
-        /// <summary>
-        /// 查找
-        /// </summary>
-        /// <returns></returns>
-        public static Blog Find(string id)
-        {
-            return Context.GetById(id);
-        }
 
 
         /// <summary>
         /// 查找
         /// </summary>
         /// <returns></returns>
-        public static Blog FindByIdIncludes(string id)
+        public Blog FindByIdIncludes(string id)
         {
             return Context.FindInclude(m => m.BlogId == id && m.IsDel == 0, "Classify");
         }
@@ -240,7 +195,7 @@ namespace Said.Application
         /// 查找一条，无缓存并包含所有外键数据
         /// </summary>
         /// <returns></returns>
-        public static Blog FindNoCacheById(string id)
+        public Blog FindNoCacheById(string id)
         {
             return Context.FindNoCacheInclude(m => m.BlogId == id);
         }
@@ -249,7 +204,7 @@ namespace Said.Application
         /// 查找（跳过缓存）
         /// </summary>
         /// <returns></returns>
-        public static Blog FindNoCache(string id)
+        public Blog FindNoCache(string id)
         {
             return Context.FindNoCache(m => m.BlogId == id);
         }
@@ -259,7 +214,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static Blog FindByFileName(string fileName)
+        public Blog FindByFileName(string fileName)
         {
             return Context.Get(m => m.BName == fileName);
         }
@@ -269,7 +224,7 @@ namespace Said.Application
         /// 无条件查询全部（按时间排序）
         /// </summary>
         /// <returns>未被标记删除的结果集</returns>
-        public static IEnumerable<Blog> Find()
+        public IEnumerable<Blog> Find()
         {
             return Context.GetManyDesc(m => m.IsDel == 0, m => m.Date);
         }
@@ -280,7 +235,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="classify">分类对象</param>
         /// <returns>未被标记删除的结果集</returns>
-        public static IEnumerable<Blog> FindByClassify(Classify classify)
+        public IEnumerable<Blog> FindByClassify(Classify classify)
         {
             return Context.GetManyDesc(m => m.IsDel == 0 && m.ClassifyId == classify.ClassifyId, m => m.Date);
         }
@@ -290,7 +245,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="classifyId">分类ID</param>
         /// <returns>未被标记删除的结果集</returns>
-        public static IEnumerable<Blog> FindByClassify(string classifyId)
+        public IEnumerable<Blog> FindByClassify(string classifyId)
         {
             return Context.GetManyDesc(m => m.IsDel == 0 && m.ClassifyId == classifyId, m => m.Date);
         }
@@ -302,7 +257,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="page">分页对象</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Blog> Find(Page page)
+        public IPagedList<Blog> Find(Page page)
         {
             return Context.GetPage(page, m => m.BTitle != null, m => m.Date);
         }
@@ -313,7 +268,7 @@ namespace Said.Application
         /// <param name="page">分页对象</param>
         /// <param name="keywords">要查询的关键字</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Blog> Find(Page page, string keywords)
+        public IPagedList<Blog> Find(Page page, string keywords)
         {
             return Context.GetPage(page, m => m.BTitle.Contains(keywords) || m.BContext.Contains(keywords), m => m.Date);
         }
@@ -325,7 +280,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static IEnumerable<Blog> FindAllToListSectionByKeywords(string keywords)
+        public IEnumerable<Blog> FindAllToListSectionByKeywords(string keywords)
         {
             return Context.FindAllToListSectionByKeywords(keywords);
         }
@@ -337,7 +292,7 @@ namespace Said.Application
         /// <param name="page"></param>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static IPagedList<Blog> FindToListSectionByKeywords(Page page, string keywords)
+        public IPagedList<Blog> FindToListSectionByKeywords(Page page, string keywords)
         {
             return Context.FindToListSectionByKeywords(page, keywords);
         }
@@ -346,7 +301,7 @@ namespace Said.Application
         /// 分页查询列表，仅包含关键数据：BTitle,BSummary,CName,BDate,BPV,BComment
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Blog> FindAllToListSection()
+        public IEnumerable<Blog> FindAllToListSection()
         {
             return Context.FindAllToListSection();
         }
@@ -356,7 +311,7 @@ namespace Said.Application
         /// 查找全部Blog的文件名（仅可访问属性：BName）
         /// </summary>
         /// <returns>返回的数据仅仅可以访问属性：BName</returns>
-        public static IEnumerable<Blog> GetAllBlogFileName()
+        public IEnumerable<Blog> GetAllBlogFileName()
         {
             return Context.GetAllBlogFileName();
         }
@@ -371,7 +326,7 @@ namespace Said.Application
         /// BPV
         /// </summary>
         /// <returns>返回的数据仅仅可以访问属性：BName</returns>
-        public static IPagedList<Blog> FindPartialDatasByPage(Page page)
+        public IPagedList<Blog> FindPartialDatasByPage(Page page)
         {
             return Context.GetPartialDatasByPage(page);
         }
@@ -387,7 +342,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
-        public static IEnumerable<Blog> FindPartialDatasByTop(int top)
+        public IEnumerable<Blog> FindPartialDatasByTop(int top)
         {
             return Context.GetPartialDatasByTop(top);
         }
@@ -404,7 +359,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
-        public static IEnumerable<Blog> FindPartialDatas()
+        public IEnumerable<Blog> FindPartialDatas()
         {
             return Context.GetAllPartialDatas();
         }
@@ -420,7 +375,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
-        public static IEnumerable<Blog> FindPartialDatasByClassify(string classifyId)
+        public IEnumerable<Blog> FindPartialDatasByClassify(string classifyId)
         {
             return Context.GetAllPartialDatasByClassifyId(classifyId);
         }
@@ -436,7 +391,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="top">要获取的个数</param>
         /// <returns></returns>
-        public static IEnumerable<Blog> FindPartialDatasByClassify(Classify classify)
+        public IEnumerable<Blog> FindPartialDatasByClassify(Classify classify)
         {
             return Context.GetAllPartialDatasByClassifyId(classify.ClassifyId);
         }

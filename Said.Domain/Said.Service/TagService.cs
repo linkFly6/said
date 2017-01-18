@@ -22,8 +22,8 @@ namespace Said.Service
     public class TagService : BaseService<Tag>, ITagService
     {
 
-        public TagService(DatabaseFactory factory)
-            : base(factory)
+        public TagService(SaidDbContext context)
+            : base(context)
         {
 
         }

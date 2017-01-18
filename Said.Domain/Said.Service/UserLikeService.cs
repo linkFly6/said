@@ -36,8 +36,8 @@ namespace Said.Service
     public class UserLikeService : BaseService<UserLike>, IUserLikeService
     {
 
-        public UserLikeService(DatabaseFactory factory)
-            : base(factory)
+        public UserLikeService(SaidDbContext context)
+            : base(context)
         {
 
         }

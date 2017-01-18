@@ -26,8 +26,8 @@ namespace Said.Service
     public class SongService : BaseService<Song>, ISongService
     {
 
-        public SongService(DatabaseFactory factory)
-            : base(factory)
+        public SongService(SaidDbContext context)
+            : base(context)
         {
 
         }

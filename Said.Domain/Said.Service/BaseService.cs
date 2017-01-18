@@ -19,13 +19,9 @@ namespace Said.IServices
     public class BaseService<T> : IService<T> where T : BaseModel
     {
         /// <summary>
-        /// 数据库上下文工厂
-        /// </summary>
-        protected DatabaseFactory Factory;
-        /// <summary>
         /// 数据库实体上下文
         /// </summary>
-        private SaidDbContext context;
+        protected SaidDbContext Context;
         /// <summary>
         /// 相应实体存储单元
         /// </summary>
@@ -33,9 +29,9 @@ namespace Said.IServices
         /// <summary>
         /// 数据库连接
         /// </summary>
-        public BaseService(DatabaseFactory factory)
+        public BaseService(SaidDbContext context)
         {
-            Factory = factory;
+            Context = context;
             dbset = Context.Set<T>();
         }
 
@@ -125,7 +121,7 @@ namespace Said.IServices
         }
         #endregion
 
-        protected SaidDbContext Context { get { return context ?? (context = Factory.Get()); } }
+
 
         #region linq通用
 
@@ -145,7 +141,7 @@ namespace Said.IServices
         public virtual void Update(T model)
         {
             dbset.Attach(model);
-            context.Entry(model).State = EntityState.Modified;
+            Context.Entry(model).State = EntityState.Modified;
         }
 
         /// <summary>

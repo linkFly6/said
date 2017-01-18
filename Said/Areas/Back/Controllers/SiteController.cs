@@ -31,7 +31,7 @@ namespace Said.Areas.Back.Controllers
 
         public ActionResult PageConfig()
         {
-            ViewData["models"] = BannerApplication.GetAll();
+            ViewData["models"] = bannerApplication.FindAllDesc(m => m.Date);
             return View();
         }
 
@@ -66,15 +66,16 @@ namespace Said.Areas.Back.Controllers
                 return ResponseResult(1, "参数不正确");
             }
             model = model.DecodeModel() as Banner;
-            string errorMsg = BannerApplication.ValidateAndCorrectSubmit(model);
+            string errorMsg = bannerApplication.ValidateAndCorrectSubmit(model, imageApplication);
             if (!string.IsNullOrEmpty(errorMsg))
                 return ResponseResult(1, errorMsg);
             model.HTML = UrlCommon.Decode(model.HTML);
             model.BannerId = SaidCommon.GUID;
             model.Date = DateTime.Now;
-            if (BannerApplication.Add(model) > 0)
+            bannerApplication.Add(model);
+            imageApplication.AddReferenceCount(model.ImageId);
+            if (bannerApplication.Commit())
             {
-                ImageApplication.AddReferenceCount(model.ImageId);
                 return ResponseResult(model);
             }
             else
@@ -95,8 +96,10 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "要删除的数据标志不正确");
-            var model = BannerApplication.Get(id);
-            if (model != null && BannerApplication.Delete(model) > 0)
+            var model = bannerApplication.FindById(id);
+            if (model == null) ResponseResult(3, "没有找到要删除的数据");
+            bannerApplication.Delete(model);
+            if (bannerApplication.Commit())
             {
                 logManager.InfoFormat(
                     @"管理员删除了一条Banner：
@@ -136,7 +139,7 @@ namespace Said.Areas.Back.Controllers
             //处理更多的参数，因为Action不允许重载：DateTime startDate, DateTime endDate
             if (string.IsNullOrWhiteSpace(Request["startDate"]) || string.IsNullOrWhiteSpace(Request["endDate"]))
             {
-                res = UserRecordApplication.Find(page);
+                res = userRecordApplication.FindByPageDesc(page);
             }
             else
             {
@@ -146,11 +149,11 @@ namespace Said.Areas.Back.Controllers
                     DateTime startDate = ConvertHelper.GetTimeByString(Request["startDate"].Trim());
                     DateTime endDate = ConvertHelper.GetTimeByString(Request["endDate"].Trim());
                     endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 999);
-                    res = UserRecordApplication.Find(page, startDate, endDate);
+                    res = userRecordApplication.FindByTimeSpan(page, startDate, endDate);
                 }
                 catch (Exception e)
                 {
-                    logManager.InfoFormat("不正确的请求Url：{0}", Request.RawUrl, e.InnerException);
+                    logManager.InfoFormat("不正确的请求Url：{0}", Request.RawUrl, e);
                     return Json(new
                     {
                         total = 0,

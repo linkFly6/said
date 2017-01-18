@@ -11,45 +11,11 @@ namespace Said.Application
     /// <summary>
     /// 分类逻辑中心
     /// </summary>
-    public static class ClassifyApplication
+    public class ClassifyApplication : BaseApplication<Classify, IClassifyService>
     {
-        private static IClassifyService service;
-        public static IClassifyService Context
-        {
-            get { return service ?? (service = new ClassifyService(new Domain.Said.Data.DatabaseFactory())); }
-        }
 
-        /// <summary>
-        /// 添加
-        /// </summary>
-        /// <param name="song">实体</param>
-        /// <returns></returns>
-        public static int Add(Classify model)
+        public ClassifyApplication() : base(new ClassifyService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            Context.Add(model);
-            return Context.Submit();
-        }
-
-        /// <summary>
-        /// 编辑
-        /// </summary>
-        /// <param name="model">实体</param>
-        /// <returns></returns>
-        public static int Update(Classify model)
-        {
-            Context.Update(model);
-            return Context.Submit();
-        }
-
-        /// <summary>
-        /// 根据对象删除
-        /// </summary>
-        /// <param name="model">实体对象</param>
-        /// <returns>返回受影响的行数</returns>
-        public static int Delete(Classify model)
-        {
-            Context.Delete(model);
-            return Context.Submit();
         }
 
         /// <summary>
@@ -57,17 +23,16 @@ namespace Said.Application
         /// </summary>
         /// <param name="id">ID</param>
         /// <returns>返回受影响的行数</returns>
-        public static int Delete(string id)
+        public void Delete(string id)
         {
             Context.Delete(m => m.ClassifyId == id);
-            return Context.Submit();
         }
         /// <summary>
         /// 获取一个指定名称的分类对象
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static Classify FindByName(string name)
+        public Classify FindByName(string name)
         {
             return Context.Get(m => m.CName == name);
         }
@@ -77,38 +42,10 @@ namespace Said.Application
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static IEnumerable<Classify> FindListByName(string name)
+        public IEnumerable<Classify> FindListByName(string name)
         {
             return Context.GetMany(m => m.CName == name);
         }
 
-        
-
-        /// <summary>
-        /// 根据长ID查找一个分类
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Classify Find(long id)
-        {
-            return Context.GetById(id);
-        }
-        /// <summary>
-        /// 根据ID查找一个分类
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Classify Find(string id)
-        {
-            return Context.GetById(id);
-        }
-        /// <summary>
-        /// 无条件查询全部
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<Classify> Find()
-        {
-            return Context.GetAll();
-        }
     }
 }

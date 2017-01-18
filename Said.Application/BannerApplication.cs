@@ -9,78 +9,19 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
-    public class BannerApplication
+    public class BannerApplication : BaseApplication<Banner, IBannerService>
     {
-        //不要使用service，因为它可能没有被初始化
-        private static IBannerService service;
-        public static IBannerService Context
+        public BannerApplication() : base(new BannerService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new BannerService(new Domain.Said.Data.DatabaseFactory())); }
-        }
-
-        /// <summary>
-        /// 添加一个Banner
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Add(Banner model)
-        {
-            Context.Add(model);
-            return Context.Submit();
         }
 
         /// <summary>
         /// 获取指定数量的横幅（日期倒序）
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Banner> GetTop(int count)
+        public IEnumerable<Banner> GetTop(int count)
         {
             return Context.GetTop(count);
-        }
-
-        /// <summary>
-        /// 删除一个Banner
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static int Delete(string id)
-        {
-            Context.Delete(m => m.BannerId == id);
-            return Context.Submit();
-        }
-
-
-        /// <summary>
-        /// 删除一个Banner
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Delete(Banner model)
-        {
-            Context.Delete(model);
-            return Context.Submit();
-        }
-
-        /// <summary>
-        /// 获取一个Banner对象
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public static Banner Get(string id)
-        {
-            return Context.Get(m => m.BannerId == id);
-        }
-
-
-
-
-        /// <summary>
-        /// 获取所有的横幅对象（日期倒序）
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<Banner> GetAll()
-        {
-            return Context.GetAllDesc(m => m.Date);
         }
 
         /// <summary>
@@ -89,7 +30,7 @@ namespace Said.Application
         /// <param name="page">分页对象</param>
         /// <param name="keywords">要查询的关键字</param>
         /// <returns>返回封装后的IPagedList对象</returns>
-        public static IPagedList<Banner> Find(Models.Data.Page page, string keywords)
+        public IPagedList<Banner> Find(Models.Data.Page page, string keywords)
         {
             return Context.GetPage(page, m => m.Description.Contains(keywords), m => m.Date);
         }
@@ -102,7 +43,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public static string ValidateAndCorrectSubmit(Banner model)
+        public string ValidateAndCorrectSubmit(Banner model, ImageApplication imageApplication)
         {
             if (model == null) return "服务器接收的数据不正确";
             if (string.IsNullOrWhiteSpace(model.Link))
@@ -115,7 +56,7 @@ namespace Said.Application
             {
                 return "Banner图片不正确";
             }
-            if (ImageApplication.Find(model.ImageId) == null)
+            if (imageApplication.FindById(model.ImageId) == null)
             {
                 return "没有找到正确的Banner图片";
             }

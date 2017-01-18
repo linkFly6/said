@@ -12,24 +12,11 @@ namespace Said.Application
     /// <summary>
     /// 图片逻辑中心
     /// </summary>
-    public class ImageApplication
+    public class ImageApplication : BaseApplication<Image, IImageService>
     {
-        private static IImageService service;
-        public static IImageService Context
-        {
-            get { return service ?? (service = new ImageService(new Domain.Said.Data.DatabaseFactory())); }
-        }
 
-
-        /// <summary>
-        /// 添加一张图片
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Add(Image model)
+        public ImageApplication() : base(new ImageService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            Context.Add(model);
-            return service.Submit();
         }
 
 
@@ -38,14 +25,14 @@ namespace Said.Application
         /// </summary>
         /// <param name="id">要操作的图片ID</param>
         /// <returns></returns>
-        public static int MinusReferenceCount(string id)
+        public bool MinusReferenceCount(string id)
         {
             Image model = Context.GetById(id);
             if (model == null || model.ReferenceCount <= 0)
-                return -1;
+                return false;
             model.ReferenceCount -= 1;
             Context.Update(model);
-            return service.Submit();
+            return true;
         }
 
         /// <summary>
@@ -53,38 +40,16 @@ namespace Said.Application
         /// </summary>
         /// <param name="id">要操作的图片ID</param>
         /// <returns></returns>
-        public static int AddReferenceCount(string id)
+        public bool AddReferenceCount(string id)
         {
             Image model = Context.GetById(id);
             if (model == null || model.ReferenceCount <= 0)
-                return -1;
+                return false;
             model.ReferenceCount += 1;
             Context.Update(model);
-            return service.Submit();
+            return true;
         }
 
-
-        /// <summary>
-        /// 修改图片
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Update(Image model)
-        {
-            Context.Update(model);
-            return service.Submit();
-        }
-
-        /// <summary>
-        /// 删除图片（物理删除）
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Delete(Image model)
-        {
-            Context.Delete(model);
-            return service.Submit();
-        }
 
         #region 逻辑
 
@@ -93,19 +58,11 @@ namespace Said.Application
 
         #region 查询
         /// <summary>
-        /// 查找
-        /// </summary>
-        /// <returns></returns>
-        public static Image Find(string id)
-        {
-            return Context.GetById(id);
-        }
-        /// <summary>
         /// 根据图片的文件名查找
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static Image FindByFileName(string fileName)
+        public Image FindByFileName(string fileName)
         {
             return Context.Get(m => m.IFileName == fileName);
         }
@@ -126,7 +83,7 @@ namespace Said.Application
         /// <param name="page"></param>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static IPagedList<Image> FindToList(Models.Data.Page page)
+        public IPagedList<Image> FindToList(Models.Data.Page page)
         {
             return Context.GetPageDesc(page, m => m.IsDel == 0, m => m.Date);
         }
@@ -137,7 +94,7 @@ namespace Said.Application
         /// <param name="page"></param>
         /// <param name="keywords"></param>
         /// <returns></returns>
-        public static IPagedList<Image> FindToList(Models.Data.Page page, ImageType type)
+        public IPagedList<Image> FindToList(Models.Data.Page page, ImageType type)
         {
             return Context.GetPageDesc(page, m => m.IsDel == 0 && m.Type == type, m => m.Date);
         }

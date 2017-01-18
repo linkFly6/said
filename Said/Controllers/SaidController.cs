@@ -39,7 +39,7 @@ namespace Said.Controllers
             //wap访问
             if (Request.Browser.IsMobileDevice)
             {
-                IPagedList<Article> list = ArticleApplication.FindByDateDesc(new Page { PageNumber = 1, PageSize = PageLimit });
+                IPagedList<Article> list = articleApplication.FindByDateDesc(new Page { PageNumber = 1, PageSize = PageLimit });
                 ViewData["total"] = list.TotalItemCount;
                 ViewData["articles"] = list.ToList();
                 ViewData["maxPage"] = list.TotalItemCount % PageLimit == 0 ? list.TotalItemCount / PageLimit : list.TotalItemCount / PageLimit + 1;
@@ -58,7 +58,7 @@ namespace Said.Controllers
                     PageNumber = index,
                     PageSize = PageLimit
                 };
-                IPagedList<Article> list = ArticleApplication.FindByDateDesc(page);
+                IPagedList<Article> list = articleApplication.FindByDateDesc(page);
                 ViewData["total"] = list.TotalItemCount;
                 ViewData["articles"] = list.ToList();
                 ViewData["pageIndex"] = index;
@@ -86,7 +86,7 @@ namespace Said.Controllers
             ViewData["NavigatorIndex"] = 2;
             var model = CacheHelper.GetCache(id) as Article;
             if (model == null)
-                model = ArticleApplication.Find(id.Trim());
+                model = articleApplication.FindById(id.Trim());
             if (model == null)
                 return RedirectToAction("NotFound", "Home", new { sgs = "ArticleNotFound", url = Request.Url.AbsoluteUri });
             model.SPV++;
@@ -101,18 +101,19 @@ namespace Said.Controllers
                     {
                         lock (@obj)
                         {
-                            ArticleApplication.Update(models.Last());
+                            articleApplication.Update(models.Last());
+                            articleApplication.Commit();
                         }
                     }
                 }
                 catch (Exception e)
                 {
 
-                    logManager.Error("延迟更新 Blog 失败\n", e.InnerException);
+                    logManager.Error("延迟更新 Blog 失败\n", e);
                 }
                 return 0;
             });
-            ViewData["userLike"] = UserLikeApplication.ExistsLike(model.SaidId, this.UserId, 0) == null ? false : true;
+            ViewData["userLike"] = userLikeApplication.ExistsLike(model.SaidId, this.UserId, 0) == null ? false : true;
             return View(model);
         }
         #endregion
@@ -130,32 +131,35 @@ namespace Said.Controllers
             {
                 return ResponseResult(1, "文章信息不正确");
             }
-            Article article = ArticleApplication.Find(id);
+            Article article = articleApplication.FindById(id);
 
             if (article == null)
             {
                 return ResponseResult(2, "文章信息不正确");
             }
             //更新文章的结果
-            int updateArticle = 0;
+            bool updateArticleResult = true;
             //防止多线程修改
             lock (@obj)
             {
                 article.Likes++;
-                updateArticle = ArticleApplication.Update(article);
+                articleApplication.Update(article);
+                updateArticleResult = articleApplication.Commit();
             }
-            if (updateArticle < 0)
+            if (!updateArticleResult)
             {
                 return ResponseResult(4, "修改文章信息失败");
             }
-            return UserLikeApplication.Add(new UserLike
+            userLikeApplication.Add(new UserLike
             {
                 Date = DateTime.Now,
                 UserId = this.UserId,
                 LikeType = 0,
                 UserLikeId = SaidCommon.GUID,
                 LikeArticleId = id
-            }) > 0 ? ResponseResult() : ResponseResult(3, "添加Like信息异常");
+            });
+            return userLikeApplication.Commit() ?
+                 ResponseResult() : ResponseResult(3, "添加Like信息异常");
         }
 
 
@@ -180,7 +184,7 @@ namespace Said.Controllers
             };
             if (limit > PageLimit)
                 limit = PageLimit;
-            var res = ArticleApplication.FindByDateDesc(page);
+            var res = articleApplication.FindByDateDesc(page);
             return Json(new
             {
                 //hasNextPage = res.HasNextPage,

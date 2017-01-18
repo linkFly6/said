@@ -8,44 +8,18 @@ using System.Threading.Tasks;
 
 namespace Said.Application
 {
-    public class ReplyApplicaiton
+    public class ReplyApplicaiton : BaseApplication<Reply, IReplyService>
     {
-        private static IReplyService service;
-        public static IReplyService Context
+        public ReplyApplicaiton() : base(new ReplyService(Domain.Said.Data.DatabaseFactory.Get()))
         {
-            get { return service ?? (service = new ReplyService(new Domain.Said.Data.DatabaseFactory())); }
         }
-
-
-        /// <summary>
-        /// 新增一条针对评论的评论
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Add(Reply model)
-        {
-            Context.Add(model);
-            return service.Submit();
-        }
-
-        /// <summary>
-        /// 修改一条针对评论的评论
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        public static int Update(Reply model)
-        {
-            Context.Add(model);
-            return service.Submit();
-        }
-
 
         /// <summary>
         /// 根据ID查找
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Reply Find(string id)
+        public Reply Find(string id)
         {
             return Context.Get(m => m.ReplyId == id && m.IsDel == 0);
         }
@@ -56,7 +30,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="blogId">要检索的文章ID</param>
         /// <returns>返回SaidID列表</returns>
-        public static IEnumerable<Reply> FindByBlogId(string blogId)
+        public IEnumerable<Reply> FindByBlogId(string blogId)
         {
             return Context.GetMany(m => m.BlogId == blogId && m.IsDel == 0, m => m.Date);
         }
@@ -66,7 +40,7 @@ namespace Said.Application
         /// </summary>
         /// <param name="commentId">要检索的主评论ID</param>
         /// <returns>返回SaidID列表</returns>
-        public static IEnumerable<Reply> FindByCommentId(string commentId)
+        public IEnumerable<Reply> FindByCommentId(string commentId)
         {
             return Context.GetMany(m => m.CommentId == commentId && m.IsDel == 0, m => m.Date);
         }

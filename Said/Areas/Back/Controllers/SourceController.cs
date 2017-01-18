@@ -161,7 +161,7 @@ namespace Said.Areas.Back.Controllers
             IPagedList<Image> res = null;
             if (string.IsNullOrEmpty(imgType) || imgType == "-1")
             {
-                res = ImageApplication.FindToList(page);
+                res = imageApplication.FindByPageDesc(page);
             }
             else
             {
@@ -169,10 +169,10 @@ namespace Said.Areas.Back.Controllers
                 if (Enum.TryParse<ImageType>(imgType, out imageType))
                 {
                     //转换成功，查询类别
-                    res = ImageApplication.FindToList(page, imageType);
+                    res = imageApplication.FindToList(page, imageType);
                 }
                 else
-                    res = ImageApplication.FindToList(page);//转换失败，查询全部
+                    res = imageApplication.FindToList(page);//转换失败，查询全部
             }
             return Json(new
             {
@@ -195,7 +195,7 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "没有数据");
-            Image image = ImageApplication.Find(id);
+            Image image = imageApplication.FindById(id);
             if (image == null)
                 return ResponseResult(2, "没有找到图片");
             image.IsDel = 1;
@@ -219,7 +219,8 @@ namespace Said.Areas.Back.Controllers
             }
             FileCommon.Move(path + image.IFileName, string.Format("{0}${1}-${2}-${3}", ConfigInfo.SourceSystemDelete, image.ImageId, image.IFileName, image.Type));
             //更新到数据库，改动了isDel
-            ImageApplication.Update(image);
+            imageApplication.Update(image);
+            imageApplication.Commit();
             return ResponseResult();
         }
         #endregion
@@ -235,7 +236,7 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "没有数据");
-            Image image = ImageApplication.Find(id);
+            Image image = imageApplication.FindById(id);
             if (image == null)
                 return ResponseResult(2, "没有找到图片");
             image.IsDel = 1;
@@ -258,7 +259,8 @@ namespace Said.Areas.Back.Controllers
                     break;
             }
             FileCommon.Remove(path + image.IFileName);
-            ImageApplication.Delete(image);
+            imageApplication.Delete(image);
+            imageApplication.Commit();
             return ResponseResult();
         }
         #endregion
@@ -328,7 +330,8 @@ namespace Said.Areas.Back.Controllers
                 ImageId = Guid.NewGuid().ToString().Replace("-", ""),
                 IName = result["name"]
             };
-            if (ImageApplication.Add(model) > 0)
+            imageApplication.Add(model);
+            if (imageApplication.Commit())
                 return Json(new
                 {
                     code = 0,

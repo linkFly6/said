@@ -14,8 +14,21 @@ namespace Said.Areas.Back.Controllers
     public class BaseController : Controller
     {
         //这个控制器可以定义顶层控制器的行为
-
-
+        protected AdminApplication adminApplication = new AdminApplication();
+        protected AdminRecordApplication adminRecordApplication = new AdminRecordApplication();
+        protected ArticleApplication articleApplication = new ArticleApplication();
+        protected BannerApplication bannerApplication = new BannerApplication();
+        protected BlogApplication blogApplication = new BlogApplication();
+        protected BlogTagsApplication blogTagsApplication = new BlogTagsApplication();
+        protected ClassifyApplication classifyApplication = new ClassifyApplication();
+        protected CommentApplication commentApplication = new CommentApplication();
+        protected ImageApplication imageApplication = new ImageApplication();
+        protected ReplyApplicaiton replyApplicaiton = new ReplyApplicaiton();
+        protected SongApplication songApplication = new SongApplication();
+        protected TagApplication tagApplication = new TagApplication();
+        protected UserApplication userApplication = new UserApplication();
+        protected UserLikeApplication userLikeApplication = new UserLikeApplication();
+        protected UserRecordApplication userRecordApplication = new UserRecordApplication();
         public BaseController()
         {
 
@@ -33,7 +46,7 @@ namespace Said.Areas.Back.Controllers
             if (admin == null)
             {
                 //从数据库中查询
-                AdminRecord record = AdminRecordApplication.Get(recordCookie.Value);
+                AdminRecord record = adminRecordApplication.Get(recordCookie.Value);
                 if (record == null) return null;
                 admin = record.Admin;
                 CacheHelper.SetCache(recordCookie.Value, admin);

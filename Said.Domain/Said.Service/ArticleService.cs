@@ -94,8 +94,8 @@ namespace Said.Service
     {
 
 
-        public ArticleService(DatabaseFactory factory)
-            : base(factory)
+        public ArticleService(SaidDbContext context)
+            : base(context)
         {
 
         }

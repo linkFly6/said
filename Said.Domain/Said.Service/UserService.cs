@@ -28,8 +28,8 @@ namespace Said.Service
     public class UserService : BaseService<User>, IUserService
     {
 
-        public UserService(DatabaseFactory factory)
-            : base(factory)
+        public UserService(SaidDbContext context)
+            : base(context)
         {
         }
 

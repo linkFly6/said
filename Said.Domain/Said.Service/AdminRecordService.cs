@@ -40,8 +40,8 @@ namespace Said.Service
     /// </summary>
     public class AdminRecordService : BaseService<AdminRecord>, IAdminRecordService
     {
-        public AdminRecordService(DatabaseFactory factory)
-            : base(factory)
+        public AdminRecordService(SaidDbContext context)
+            : base(context)
         {
 
 

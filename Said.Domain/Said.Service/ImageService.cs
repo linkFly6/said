@@ -23,8 +23,8 @@ namespace Said.Service
     /// </summary>
     public class ImageService : BaseService<Image>, IImageService
     {
-        public ImageService(DatabaseFactory factory)
-            : base(factory)
+        public ImageService(SaidDbContext context)
+            : base(context)
         {
 
         }

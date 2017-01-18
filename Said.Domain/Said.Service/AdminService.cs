@@ -28,8 +28,8 @@ namespace Said.Service
     public class AdminService : BaseService<Admin>, IAdminService
     {
 
-        public AdminService(DatabaseFactory factory)
-            : base(factory)
+        public AdminService(SaidDbContext context)
+            : base(context)
         {
 
         }

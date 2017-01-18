@@ -41,11 +41,11 @@ namespace Said.Areas.Back.Controllers
             IPagedList<Song> res = null;
             if (string.IsNullOrWhiteSpace(keywords))
             {
-                res = SongApplication.FindToList(page);
+                res = songApplication.FindToList(page);
             }
             else
             {
-                res = SongApplication.FindToList(page, keywords);
+                res = songApplication.FindToList(page, keywords);
             }
             return Json(new
             {
@@ -60,7 +60,7 @@ namespace Said.Areas.Back.Controllers
         /// <returns></returns>
         public JsonResult GetAllMusicList()
         {
-            var res = SongApplication.FindAllByDesc().ToList<Song>();
+            var res = songApplication.FindAllByDesc().ToList();
             var jsonResult = Json(new
             {
                 total = res.Count,
@@ -93,7 +93,7 @@ namespace Said.Areas.Back.Controllers
         [HttpPost]
         public JsonResult Add(Song model, string ReleaseDate)
         {
-            string errorMsg = SongApplication.ValidateAndCorrectSubmit(model);
+            string errorMsg = songApplication.ValidateAndCorrectSubmit(model, imageApplication);
             if (errorMsg != null)
                 return ResponseResult(1, errorMsg);
             if (string.IsNullOrWhiteSpace(ReleaseDate))
@@ -102,7 +102,8 @@ namespace Said.Areas.Back.Controllers
             model.Date = DateTime.Now;
             model.SongLikeCount = 0;
             model.ReleaseDate = ConvertHelper.GetTime(ReleaseDate);
-            return SongApplication.Add(model) > 0 ?
+            songApplication.Add(model);
+            return songApplication.Commit() ?
                 ResponseResult(model.SongId) :
                 ResponseResult(2, "插入到数据库失败");
         }
@@ -224,15 +225,15 @@ namespace Said.Areas.Back.Controllers
         {
             if (string.IsNullOrWhiteSpace(id))
                 return ResponseResult(1, "没有数据");
-            Song model = SongApplication.Find(id);
+            Song model = songApplication.FindById(id);
             if (model == null)
                 return ResponseResult(2, "没有找到音乐对象");
             if (model.ReferenceCount > 0)
                 return ResponseResult(3, "歌曲被引用，无法删除");
             FileCommon.Remove(Server.MapPath(ConfigInfo.SourceMusicPath + model.SongFileName));
-            ImageApplication.MinusReferenceCount(model.ImageId);
-            SongApplication.Delete(model);
-            return ResponseResult();
+            imageApplication.MinusReferenceCount(model.ImageId);
+            songApplication.Delete(model);
+            return songApplication.Commit() ? ResponseResult() : ResponseResult(2, "删除失败");
         }
         #endregion
 
