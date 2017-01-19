@@ -186,10 +186,10 @@
                                 <span class="title">站点配置</span>
                             </a>
                         </li>
-                        <li title="监控整个站点的健康状态">
-                            <a href="javascript:;">
+                        <li title="查看站点日志" class="@(actionName == "SiteLog" && controllerName == "Site" ? "active" : "")">
+                            <a href="@Url.Action("SiteLog", "Site")">
                                 <i class="fa fa-connectdevelop"></i>
-                                <span class="title">活动监控</span>
+                                <span class="title">站点日志</span>
                             </a>
                         </li>
                         <li title="设置访问白名单和黑名单">

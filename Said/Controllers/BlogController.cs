@@ -397,7 +397,7 @@ namespace Said.Controllers
         /// <param name="order"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetBlogList(int limit, int offset)
+        public JsonResult GetBlogList(int limit = 10, int offset = 0)
         {
             var page = new Page
             {

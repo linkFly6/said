@@ -95,6 +95,11 @@ namespace Said
             //页面配置
             bundles.Add(new StyleBundle("~/static/back/css/pageconfig.css").Include("~/Content/back/Style/pageConfig.css"));
 
+            
+
+            //站点日志
+            bundles.Add(new StyleBundle("~/static/back/css/home.sitelog.css").Include("~/Content/back/Style/home.sitelog.css"));
+
             #endregion
 
             //
@@ -154,6 +159,9 @@ namespace Said
 
             //站点配置
             bundles.Add(new ScriptBundle("~/static/back/js/home.siterecord.js").Include("~/Content/back/javaScript/home.siterecord.js"));
+
+            //站点日志
+            bundles.Add(new ScriptBundle("~/static/back/js/home.sitelog.js").Include("~/Content/back/javaScript/home.sitelog.js"));
             #endregion
 
 

@@ -7,6 +7,7 @@ using Said.Models;
 using Said.Models.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -46,7 +47,15 @@ namespace Said.Areas.Back.Controllers
         }
 
 
-
+        public ActionResult SiteLog()
+        {
+            // 得到所有的Error日志和Info 日志，然后前端自己去计算交集
+            DirectoryInfo errorLogFolder = new DirectoryInfo(Server.MapPath("~/System/Log/Error"));
+            DirectoryInfo infoLogFolder = new DirectoryInfo(Server.MapPath("~/System/Log/Info"));
+            ViewData["errorLogFiles"] = errorLogFolder.GetFiles();
+            ViewData["infoLogFiles"] = infoLogFolder.GetFiles();
+            return View();
+        }
 
 
         #endregion
