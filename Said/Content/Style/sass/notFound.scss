@@ -76,6 +76,13 @@ html, body {
         text-shadow: 0 0 20px #CCC;
     }
 
+    h2 {
+        line-height: 1.5;
+        font-size: 2rem;
+        color: #fafafa;
+        text-shadow: 0 0 20px #CCC;
+    }
+
     h3 {
         color: #fafafa;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
@@ -84,10 +91,16 @@ html, body {
     }
 
     .context {
-        padding: 30px 0;
-        line-height: 1.618;
+        padding: 15px 0 30px;
+        line-height: 2;
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
         color: #fafafa;
+
+        a {
+            color: #fafafa;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+            text-decoration: underline;
+        }
     }
 
     .go {
@@ -98,6 +111,7 @@ html, body {
         color: #fff;
         opacity: 0.6;
         @include prefixer(transition,all 0.4s ease-in 0s);
+
         &:hover {
             opacity: 1;
             box-shadow: 0 1px 20px white;

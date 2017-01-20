@@ -68,6 +68,14 @@ namespace Said
                 namespaces: new string[] { "Said.Controllers" }
             );
 
+            routes.MapRoute(
+                name: "saidServerError",
+                url: "{code}",
+                defaults: new { controller = "Home", action = "Error" },
+                constraints: new { code = @"^error(.html)?$" },
+                namespaces: new string[] { "Said.Controllers" }
+            );
+
             //about
             routes.MapRoute(
                 name: "about",

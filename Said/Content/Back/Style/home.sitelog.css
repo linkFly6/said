@@ -1,3 +1,10 @@
-
-
-/*# sourceMappingURL=home.sitelog.css.map */
+.l-title {
+  text-align: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #CCC;
+  font-size: 1.4rem; }
+  .l-title.blue {
+    border-color: #20A0FF; }
+  .l-title.red {
+    border-color: #FF4949; }

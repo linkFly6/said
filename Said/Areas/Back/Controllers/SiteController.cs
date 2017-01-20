@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -55,6 +56,44 @@ namespace Said.Areas.Back.Controllers
             ViewData["errorLogFiles"] = errorLogFolder.GetFiles();
             ViewData["infoLogFiles"] = infoLogFolder.GetFiles();
             return View();
+        }
+
+
+        // 匹配 20170120.txt
+        private Regex RegLogFile = new Regex(@"^\d{8}\.txt$");
+
+        /// <summary>
+        /// 下载日志文件
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        public ActionResult DownLoad(string type = "", string file = "")
+        {
+            if (!RegLogFile.IsMatch(file.Trim()))
+            {
+                return RedirectToAction("NotFound", "Home", new { sgs = "fileInfoError", url = Request.Url.AbsoluteUri, Area = "" });
+            }
+            string rootPath = "~/System/Log";
+            string directory = string.Empty;
+            switch (type)
+            {
+                case "0":// info
+                    directory = "Info";
+                    break;
+                case "1":// error
+                    directory = "Error";
+                    break;
+                default:
+                    return RedirectToAction("NotFound", "Home", new { sgs = "logFileNotFound", url = Request.Url.AbsoluteUri, Area = "" });
+            }
+            string filePath = Server.MapPath(string.Format("{0}/{1}/{2}", rootPath, directory, file));
+            if (!FileCommon.Exists(filePath))
+            {
+                return RedirectToAction("NotFound", "Home", new { sgs = "logFileNotFound2", url = Request.Url.AbsoluteUri, Area = "" });
+            }
+            // 拼接出 Said-Error-20170121.txt 这样的格式
+            return File(filePath, "text/plain", string.Format("Said-{0}Log-{1}", directory, file));
         }
 
 

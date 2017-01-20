@@ -1,1 +1,15 @@
-﻿
+﻿.l-title {
+    text-align: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #CCC;
+    font-size: 1.4rem;
+
+    &.blue {
+        border-color: #20A0FF;
+    }
+
+    &.red {
+        border-color: #FF4949;
+    }
+}

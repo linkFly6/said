@@ -9,20 +9,39 @@
     <li><a href="/Back">Home</a></li>
     <li>站点中心</li>
     <li>站点日志</li>
-    @*<li class="g-help"><a href="javascript:;" id="said-help-btn" title="帮助"><i class="fa fa-question-circle"></i></a></li>*@
 </ol>
 
-<div ms-controller="vmPage">
-    <div class="bs-table">
-        <div class="navbar-form navbar-left table-tool" id="custom-bar">
-            <div class="data-form">
-                <input readonly="" autocomplete="off" class="form-control" ms-dom="queryDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
-                <button class="btn btn-success" ms-click="toggleShowStatus(true)">&#12288;新增&#12288;</button>
-            </div>
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="l-title red">错误日志</div>
         </div>
-        <table data-toolbar="#custom-bar" id="btTable" class="table table-hover table-striped" data-striped="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
+        <div class="col-md-6">
+            <div class="l-title blue">常规日志</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" ms-controller="vmError">
+            <div class="navbar-form navbar-left table-tool" id="error-bar">
+                <div class="data-form">
+                    <input readonly="" autocomplete="off" class="form-control" ms-dom="queryDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
+                    <button class="btn btn-default" ms-click="clear">清空日期条件</button>
+                </div>
+            </div>
+            <table data-toolbar="#error-bar" ms-dom="btTable" class="table table-hover table-striped" data-striped="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
+        </div>
+        <div class="col-md-6" ms-controller="vmInfo">
+            <div class="navbar-form navbar-left table-tool" id="info-bar">
+                <div class="data-form">
+                    <input readonly="" autocomplete="off" class="form-control" ms-dom="queryDate" data-date-today-btn="true" data-date-language="zh-CN" data-date-format="yyyy-mm-dd" placeholder="筛选日期" value="" size="16">
+                    <button class="btn btn-default" ms-click="clear">清空日期条件</button>
+                </div>
+            </div>
+            <table data-toolbar="#info-bar" ms-dom="btTable" class="table table-hover table-striped" data-striped="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true"></table>
+        </div>
     </div>
 </div>
+<iframe id="downLoadIframe" style="display:none;"></iframe>
 
 @section Css{
     @Styles.Render("~/static/back/css/home.sitelog.css", "~/static/back/css/bootstrap-table.css", "~/static/back/css/bootstrap-date.css")
@@ -50,7 +69,7 @@
     </script>
     <script>
         var Action = {
-            DownLoad: '@Url.Action("DownLoad", "Site")',
+            downLoadUrl: '@Url.Action("DownLoad", "Site")',
         };
 
         require(['home.sitelog'], function (view) {

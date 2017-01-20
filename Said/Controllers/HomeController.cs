@@ -42,9 +42,18 @@ namespace Said.Controllers
             return View();
         }
 
+        /// <summary>
+        /// 服务器异常
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Error()
+        {
+            return View();
+        }
+
 
         /// <summary>
-        /// 404
+        /// about
         /// </summary>
         /// <returns></returns>
         public ActionResult About()

@@ -1,150 +1,107 @@
-﻿define('home.sitelog', ['jquery', 'so', 'avalon', 'sweetalert', 'dialog', 'bsTable', 'source', 'bs-date'], function ($, so, avalon, sweetalert, dialog) {
+﻿define('home.sitelog', ['jquery', 'so', 'avalon', 'sweetalert', 'dialog', 'bsTable', 'source', 'bs-date'], function ($, so, avalon, sweetalert) {
 
     var database = so.Database('back.sitelog');
+    var regDateStr = /^(\d{4})(\d{2})(\d{2})$/;
+    var iframeTemplate = '<iframe style="display:none;" src="${0}"></iframe>';
+
+    var renderPage = function (viewModel, datas, downLoadUrl) {
+        datas.forEach(function (item) {
+            var dateStr = item.Name.split('.')[0];
+            var regResult = dateStr.match(/^(\d{4})(\d{2})(\d{2})$/);
+            item.date = new Date(+regResult[1], regResult[2] - 1, regResult[3]);
+        });
+
+        //获取与国际通用UTC时间的分钟差（北京 = -480m = 8h）
+        var timezoneOffset = new Date().getTimezoneOffset();//datatimepicker组件使用的国际通用UTC时间，和北京时间相差8个小时，所以要修正时间差，获取
+        var dateInput = $(viewModel.elem.queryDate).datetimepicker({
+            minView: 'month',//bootstrap-datetimepicker:#1677
+            endDate: new Date
+        }).on('changeDate', function (e) {
+            var selectDate = so.parseDate(e.date.getTime());//因为要修正时间，但是不能直接修改组件内置对象的时间，所以copy一个副本
+            //修正UTC时间（分钟）差
+            selectDate.setMinutes(timezoneOffset);
+            //重置时间到23:59:59
+            selectDate.setHours(23, 59, 59, 0);
+            var data = datas.filter(function (data) {
+                var timeSpan = selectDate.getTime() - data.date.getTime();
+                return timeSpan <= 864e5 && timeSpan >= 0;
+            });
+            $btTable.bootstrapTable('load', data);
+        });
+        // error 表格
+        var $btTable = $(viewModel.elem.btTable).bootstrapTable({
+            columns: [
+             {
+                 field: 'Name',
+                 title: '文件名',
+                 visible: true,
+                 sortable: true,
+                 formatter: function (value, row, index) {
+                     return so.format('<a data-url="${0}&file=${1}" data-file="${1}" href="javascript:;" class="data-download" target="_blank" title="点击下载日志文件">${2}</a>', downLoadUrl, encodeURIComponent(value), value);
+                 }
+             },
+             {
+                 field: 'LastWriteTime',
+                 title: '最后修改日期',
+                 valign: 'middle',
+                 sortable: true,
+                 formatter: function (value, row, index) {
+                     //console.log(row); //row可以访问到数据
+                     //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
+                     return so.dateFormat(new Date(value), 'yyyy-MM-dd HH:mm');
+                 }
+             },
+             {
+                 field: 'Length',
+                 title: '文件大小 (kb)',
+                 valign: 'middle',
+                 sortable: true,
+                 formatter: function (value, row, index) {
+                     return (value / 1024).toFixed(2) + ' kb';
+                 }
+             }
+            ],
+            data: datas
+        }).on('click', '.data-download', function (e) {
+            var data = this.dataset, $this = $(this);
+            sweetalert({
+                title: data.file,
+                text: '确定下载该文件',
+                type: 'info',
+                showCancelButton: true,
+                //confirmButtonColor: "#DD6B55",
+                confirmButtonText: '确认',
+                cancelButtonText: '取消',
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $('#downLoadIframe').attr('src', data.url);
+                }
+            });
+        });
+        return $btTable;
+    }
 
     return function (ErrorLogDatas, InfoLogDatas, Action) {
-
-        //var dataList = [];
-        // 主要数组
-        //var mainList = ErrorLogDatas.length > InfoLogDatas.length ? ErrorLogDatas : InfoLogDatas;
-        //// 次要数组
-        //var minorList = ErrorLogDatas.length >= InfoLogDatas.length ? InfoLogDatas : ErrorLogDatas;
-
-        //var dataRowTemplate = {
-        //    error: {
-        //        name: '',
-        //        lastWriteTime: '',
-        //        size: ''
-        //    },
-        //    info: {
-        //        name: '',
-        //        lastWriteTime: '',
-        //        size: ''
-        //    }
-        //};
-
-        //var fileKeys = {};
-
-        //ErrorLogDatas.forEach(function (item) {
-        //    fileKeys[item.Name] = true;
-        //});
-
-        //InfoLogDatas.forEach(function (item) {
-        //    fileKeys[item.Name] = true;
-        //});
-
-        //Object.keys(fileKeys).sort(function (a, b) {
-        //    var aName = a.split('.')[0];
-        //    var bname = b.split('.')[1];
-        //    return b - a;
-        //}).forEach(function (key) {
-        //    var row = {
-        //        error: {
-        //            name: '',
-        //            lastWriteTime: '',
-        //            size: ''
-        //        },
-        //        info: {
-        //            name: '',
-        //            lastWriteTime: '',
-        //            size: ''
-        //        }
-        //    };
-        //    ErrorLogDatas.forEach(function (item) {
-        //        if (key === item.Name) {
-
-        //        }
-        //    })
-        //});
-
-        // 数组合并
-        //mainList.forEach(function (mainItem) {
-        //    var row = so.extend({}, dataRowTemplate);
-        //    row[mainItem.type] = {
-        //        name: mainItem.Name,
-        //        lastWriteTime: mainItem.LastWriteTime,
-        //        size: mainItem.Length
-        //    };
-        //    while (minorList.length) {
-        //        var minorItem = minorList.shift();
-        //        if (minorItem.Name === mainItem.Name) {
-        //            row[minorItem.type] = {
-        //                name: minorItem.Name,
-        //                lastWriteTime: minorItem.LastWriteTime,
-        //                size: minorItem.Length
-        //            };
-        //            dataList.push(row);
-        //        } else {
-        //            var childRow = so.extend({}, dataRowTemplate);
-        //            childRow[minorItem.type] = {
-        //                name: minorItem.Name,
-        //                lastWriteTime: minorItem.LastWriteTime,
-        //                size: minorItem.Length
-        //            };
-        //            dataList.push(childRow);
-        //            return true;
-        //        }
-        //    }
-        //    return true;
-        //});
-
         $(function () {
-            var vmPage = avalon.define({
-                $id: 'vmPage'
+            var vmError = avalon.define({
+                $id: 'vmError',
+                clear: function () {
+                    $errorTable.bootstrapTable('load', ErrorLogDatas);
+                }
+            });
+
+            var vmInfo = avalon.define({
+                $id: 'vmInfo',
+                clear: function () {
+                    $infoTable.bootstrapTable('load', InfoLogDatas);
+                }
             });
 
             avalon.scan();
-            //获取与国际通用UTC时间的分钟差（北京 = -480m = 8h）
-            var timezoneOffset = new Date().getTimezoneOffset();//datatimepicker组件使用的国际通用UTC时间，和北京时间相差8个小时，所以要修正时间差，获取
-            var dateInput = $(vmPage.elem.queryDate).datetimepicker({
-                minView: 'month',//bootstrap-datetimepicker:#1677
-                endDate: new Date
-            }).on('changeDate', function (e) {
-                var selectDate = so.parseDate(e.date.getTime());//因为要修正时间，但是不能直接修改组件内置对象的时间，所以copy一个副本
-                //修正UTC时间（分钟）差
-                selectDate.setMinutes(timezoneOffset);
-                //重置时间到23:59:59
-                selectDate.setHours(23, 59, 59, 0);
-                var data = PageDatas.filter(function (data) {
-                    return so.parseDate(data.Date).getTime() <= selectDate.getTime();
-                });
-                $btTable.bootstrapTable('load', data);
-            });
-            var $btTable = $('#btTable').bootstrapTable({
-                columns: [
-                 { field: 'Name', title: '文件名', visible: true, },
-                 {
-                     field: 'LastWriteTime',
-                     title: '最后修改日期',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         //console.log(row); //row可以访问到数据
-                         //return ['<a target="_black" href="', Action.article, '">', value, '</a>'].join('');
-                         console.log(value);
-                         return [so.dateFormat(new Date(value), 'yyyy-MM-dd HH:mm')].join('');
-                     }
-                 },
-                 {
-                     field: 'Length',
-                     title: '文件大小 (kb)',
-                     valign: 'middle',
-                     sortable: true,
-                     formatter: function (value, row, index) {
-                         return (value / 1024).toFixed(2) + ' kb';
-                     }
-                 }],
-                data: ErrorLogDatas
-            }).on('click', '.data-delete', function (e) {
-                var data = this.dataset, $this = $(this);
-                dialog('您确定要删除该Bannner么？').on(function () {
-                    $this.attr('disabled', 'disabled').html('删除中');
-                    vmPage.remove(data.id, function () {
-                        $this.length && $this.removeAttr('disabled');
-                    });
-                }).show();
-            });
-        })
+
+            var $errorTable = renderPage(vmError, ErrorLogDatas, Action.downLoadUrl + '?type=1');
+            var $infoTable = renderPage(vmInfo, InfoLogDatas, Action.downLoadUrl + '?type=0');
+        });
     }
 
 });

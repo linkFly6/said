@@ -33,7 +33,7 @@ namespace Said.Common
         }
         #endregion
 
-        #region 检测一个文件/文件夹路径，当路径以"/"结尾则检测文件夹
+        #region 检测文件/文件夹路径
         /// <summary>
         /// 检测一个文件/文件夹路径，当路径以"/"结尾则检测文件夹
         /// </summary>
@@ -46,6 +46,16 @@ namespace Said.Common
                 path.EndsWith("/") || path.EndsWith("\\") ?
                 Directory.Exists(path) :
                 File.Exists(path);
+        }
+
+        /// <summary>
+        /// 检测一个文件是否存在
+        /// </summary>
+        /// <param name="path">要检测的路径，当路径以"/"结尾则检测文件夹，否则检测文件</param>
+        /// <returns>文件/文件夹是否存在</returns>
+        public static bool ExistsFile(string path)
+        {
+            return File.Exists(path);
         }
         #endregion
 

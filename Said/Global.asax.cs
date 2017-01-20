@@ -31,7 +31,6 @@ namespace Said
         protected void Application_Start()
         {
             MvcHandler.DisableMvcResponseHeader = false;
-            logManager.Info("应用程序开始");
 
             //强制检测移动端
             DisplayModeProvider.Instance.Modes.Insert(0, new DefaultDisplayMode("Mobile")
@@ -55,25 +54,14 @@ namespace Said
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            logManager.Info("载入配置文件");
             //加载配置文件
             ConfigTable.LoadConfig(Server.MapPath("~/config.json"));
-            StringBuilder sb = new StringBuilder("载入配置文件成功\n");
-            sb.AppendLine("配置文件内容：\n");
-            foreach (string key in ConfigTable.Table.Config.Keys)
-            {
-                sb.AppendFormat("{0} : {1} \n", key, ConfigTable.Table.Config[key]);
-            }
-            logManager.Info(sb.ToString());
 
             /*默认加载IP查询库*/
-            logManager.Info("载入IP查询库");
             Said.Helper.IP.Load(Server.MapPath(ConfigTable.Table[ConfigEnum.SourceDataIP]));
 
 
             //启动的时候创建所有路径
-            logManager.Info("开始创建资源文件夹");
-            logManager.InfoFormat(string.Format("测试文件夹路径：{0}", ConfigInfo.SourceBlogPath));
             FileCommon.ExistsCreate(Server.MapPath(ConfigInfo.SourceBlogPath));
             FileCommon.ExistsCreate(Server.MapPath(ConfigInfo.SourceBlogThumbnailPath));
             FileCommon.ExistsCreate(Server.MapPath(ConfigInfo.SourceIconsPath));
@@ -82,7 +70,6 @@ namespace Said
             FileCommon.ExistsCreate(Server.MapPath(ConfigInfo.SourceSaidThumbnailPath));
             FileCommon.ExistsCreate(Server.MapPath(ConfigInfo.SourceSystemPath));
             FileCommon.ExistsCreate(Server.MapPath(ConfigInfo.SourceSystemThumbnailPath));
-            logManager.Info("资源文件夹创建完毕");
         }
 
         //protected void Application_Error(object sender, EventArgs e)
