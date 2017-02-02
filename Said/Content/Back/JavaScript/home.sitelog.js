@@ -61,6 +61,8 @@
                  }
              }
             ],
+            pageSize: 100,
+            pageList: [100, 300, 1000],
             data: datas
         }).on('click', '.data-download', function (e) {
             var data = this.dataset, $this = $(this);
