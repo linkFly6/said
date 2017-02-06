@@ -147,6 +147,7 @@
     <Compile Include="Areas\Back\Controllers\SiteController.cs" />
     <Compile Include="Areas\Back\Controllers\SourceController.cs" />
     <Compile Include="Common\ConfigInfo.cs" />
+    <Compile Include="Common\EmailCommon.cs" />
     <Compile Include="Common\ImageCommon.cs" />
     <Compile Include="Common\IPRange.cs" />
     <Compile Include="Common\JavaScriptCommon.cs" />
@@ -380,9 +381,11 @@
     <Content Include="Content\widget\underscore.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="NewFile.txt" />
     <Content Include="robots.txt" />
     <Content Include="Source\Sys\Images\Icons\default.png" />
     <Content Include="Content\images\said-copyright.png" />
+    <Content Include="System\templates\replyTemplate.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

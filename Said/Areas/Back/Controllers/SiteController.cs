@@ -174,8 +174,9 @@ namespace Said.Areas.Back.Controllers
         /// <param name="offset">页面请求数据个数</param>
         /// <param name="startDate">可略：要查询记录的开始时间</param>
         /// <param name="endDate">可略：要查询记录的结束时间</param>
+        /// <param name="filterType">不可略，查询类型：0 ： 默认查询，过滤所有的冗余数据 1： 不过滤阿里云云盾的数据</param>
         /// <returns></returns>
-        public JsonResult GetRecord(int limit, int offset/*, string search = null, string sort = null, string order = null*/)
+        public JsonResult GetRecord(int limit, int offset, int filterType /*, string search = null, string sort = null, string order = null*/)
         {
 
             var page = new Page
@@ -187,7 +188,7 @@ namespace Said.Areas.Back.Controllers
             //处理更多的参数，因为Action不允许重载：DateTime startDate, DateTime endDate
             if (string.IsNullOrWhiteSpace(Request["startDate"]) || string.IsNullOrWhiteSpace(Request["endDate"]))
             {
-                res = userRecordApplication.FindByPageDesc(page);
+                res = userRecordApplication.FindByPageDesc(filterType, page);
             }
             else
             {
@@ -197,7 +198,7 @@ namespace Said.Areas.Back.Controllers
                     DateTime startDate = ConvertHelper.GetTimeByString(Request["startDate"].Trim());
                     DateTime endDate = ConvertHelper.GetTimeByString(Request["endDate"].Trim());
                     endDate = new DateTime(endDate.Year, endDate.Month, endDate.Day, 23, 59, 59, 999);
-                    res = userRecordApplication.FindByTimeSpan(page, startDate, endDate);
+                    res = userRecordApplication.FindByTimeSpan(filterType, page, startDate, endDate);
                 }
                 catch (Exception e)
                 {

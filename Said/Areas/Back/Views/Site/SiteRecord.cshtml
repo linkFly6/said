@@ -39,6 +39,7 @@
             </div>
             <button type="button" class="btn btn-default" ms-click="query()">按时间查询</button>
             <button type="button" class="btn btn-default" ms-click="clearDate()">清除时间</button>
+            <button type="button" class="btn btn-primary" ms-class="active:containerAliyun" ms-click="toggleAliyun" title="阿里云服务器云盾会尝试在CPU空闲的时候扫描漏洞，UA 为 Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;Alibaba.Security.Heimdall.3980811)">{{ containerAliyun ? '包含阿里云数据': '不包含阿里云数据' }}</button>
         </div>
         <!--data-search="true"-->
         <table id="btTable" class="table table-hover table-striped" data-toolbar="#toolbar" data-url="/Back/Site/GetRecord" data-striped="true" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-pagination="true" data-side-pagination="server"></table>

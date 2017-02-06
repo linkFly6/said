@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Said.Common\Common\Convert\ConvertHelper.cs" />
+    <Compile Include="Said.Common\Common\Email\EmailHelper.cs" />
     <Compile Include="Said.Common\Common\Encrypt\DEncrypt.cs" />
     <Compile Include="Said.Common\Common\Encrypt\DESEncrypt.cs" />
     <Compile Include="Said.Common\Common\Encrypt\Encrypt.cs" />
