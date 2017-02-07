@@ -311,7 +311,7 @@ namespace Said.Controllers
             }
             catch (Exception e)
             {
-                logManager.Error(e);
+                logManager.Error("用户评论失败", e);
                 return ResponseResult(3, "评论失败");
             }
 
