@@ -381,7 +381,6 @@
     <Content Include="Content\widget\underscore.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="NewFile.txt" />
     <Content Include="robots.txt" />
     <Content Include="Source\Sys\Images\Icons\default.png" />
     <Content Include="Content\images\said-copyright.png" />

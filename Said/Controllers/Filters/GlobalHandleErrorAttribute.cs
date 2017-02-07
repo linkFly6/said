@@ -25,17 +25,17 @@ namespace Said.Controllers.Filters
         public override void OnException(ExceptionContext filterContext)
         {
             StringBuilder sb = new StringBuilder("发生全局未捕获异常");
-            sb.AppendFormat("\n【Url】{0}", filterContext.RequestContext.HttpContext.Request.Url);
-            sb.AppendFormat("\n【Referrer】{0}", filterContext.RequestContext.HttpContext.Request.UrlReferrer);
+            sb.AppendFormat("{1}【Url】{0}", filterContext.RequestContext.HttpContext.Request.Url, Environment.NewLine);
+            sb.AppendFormat("{1}【Referrer】{0}", filterContext.RequestContext.HttpContext.Request.UrlReferrer, Environment.NewLine);
             if (filterContext.RequestContext.HttpContext.Request.Headers != null)
             {
-                sb.Append("\n【Header】");
+                sb.AppendFormat("{1}【Header】", Environment.NewLine);
                 foreach (var key in filterContext.RequestContext.HttpContext.Request.Headers.AllKeys)
                 {
-                    sb.AppendFormat("\n   [{0}] {1}", key, filterContext.RequestContext.HttpContext.Request.Headers[key]);
+                    sb.AppendFormat("{2}   [{0}] {1}", key, filterContext.RequestContext.HttpContext.Request.Headers[key], Environment.NewLine);
                 };
             }
-            sb.AppendFormat("\n【IP】{0}", HttpHelper.GetIP(HttpContext.Current));
+            sb.AppendFormat("{1}【IP】{0}", HttpHelper.GetIP(HttpContext.Current), Environment.NewLine);
             logManager.Error(sb.ToString(), filterContext.Exception);
         }
     }

@@ -27,7 +27,7 @@
             foreach (var item in blogs)
             {
 
-                Write(new HtmlString(string.Format(@"blogDatas.push({{
+                Write(Html.Raw(string.Format(@"blogDatas.push({{
                         BlogId: '{0}',
                         BTitle: '{1}',
                         BPV: '{2}',

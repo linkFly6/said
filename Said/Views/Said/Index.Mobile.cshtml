@@ -32,9 +32,9 @@
                         <div class="item-article">
                             <h2>@item.STitle</h2>
                             <div class="item-music said-ellipsis">
-                                <i class="fa fa-music"></i>@item.Song.SongName@(new HtmlString("&nbsp;-&nbsp;"))@item.Song.SongArtist
+                                <i class="fa fa-music"></i>@item.Song.SongName@Html.Raw("&nbsp;-&nbsp;")@item.Song.SongArtist
                             </div>
-                            <div class="article-txt line-clamp line2">@(new HtmlString(item.SSummaryTrim))</div>
+                            <div class="article-txt line-clamp line2">@Html.Raw(item.SSummaryTrim)</div>
                             <div class="item-more">
                                 <span class="fa fa-eye"><i class="globalFont">@item.SPV</i></span>
                                 <time class="fa fa-calendar-o time"><i class="globalFont">@SaidCommon.DateToLocalOrDay(item.Date)</i></time>
@@ -43,10 +43,10 @@
                     </div>
                 </a>
             }
-        }
+                            }
     </div>
     @if (maxPage > 1)
-    {
+                            {
         <div class="said-next">
             <a id="said-nextPage" class="next-page" href="javascript:;"><span>点击加载更多</span><i class="fa fa-caret-down"></i></a>
             <span id="said-loading" class="next-page" style="display:none;">加载中<i class="fa fa-circle-o-notch fa-spin"></i></span>

@@ -18,15 +18,13 @@
     <meta name="author" content="linkFly" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/static/wap/css/global.css")
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="bookmark" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/content/images/icons/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon-precomposed" href="/content/images/icons/favicon.png"/>
     @Scripts.Render("~/static/w/requirejs.js")
     @Html.InlineScripts("~/static/wap/config.js")
     @{
         string actionName = ViewContext.RouteData.Values["action"].ToString();
         string controllerName = ViewContext.RouteData.Values["controller"].ToString();
-
     }
     @{
         if (IsSectionDefined("Css"))
@@ -65,13 +63,13 @@
                 <nav class="menu-container">
                     <ul class="menu">
                         <li>
-                            <a href="/said">听&#183;说</a>
+                            <a href="/said">听说</a>
                         </li>
                         <li>
                             <a href="/blog">Blog</a>
                         </li>
                         <li>
-                            <a href="/about">关&nbsp;&nbsp;于</a>
+                            <a href="/about">关于</a>
                         </li>
                         <li>
                             <a href="@Url.Action("Cl", "Home", new {url= "http://m.weibo.cn/u/1874981845",sgs="blog-dec" })">@@为你聚焦半世纪</a>

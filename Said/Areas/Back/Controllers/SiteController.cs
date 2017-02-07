@@ -202,7 +202,7 @@ namespace Said.Areas.Back.Controllers
                 }
                 catch (Exception e)
                 {
-                    logManager.InfoFormat("不正确的请求Url：{0}", Request.RawUrl, e);
+                    logManager.InfoFormat("不正确的请求Url{1}【请求Url】{0}", Request.RawUrl, Environment.NewLine, e);
                     return Json(new
                     {
                         total = 0,

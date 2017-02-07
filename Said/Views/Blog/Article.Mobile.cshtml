@@ -12,7 +12,7 @@
 <section class="said-box">
     <article class="article-content" id="said-content">
         <h1 class="blog-title">@Model.BTitle</h1>
-        <section class="blog-content">@(new HtmlString(Model.BHTML))</section>
+        <section class="blog-content">@Html.Raw(Model.BHTML)</section>
     </article>
     <section class="blog-more-info">
         <div class="blog-more-head">

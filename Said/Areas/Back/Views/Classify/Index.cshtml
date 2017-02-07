@@ -102,21 +102,21 @@
             foreach (var item in Classifs)
             {
 
-                Write(new HtmlString(string.Format("PageDatas.classify.push({{ CName: '{0}',CIcon: '{1}',ClassifyId: '{2}'}});", item.CName, item.CIcon, item.ClassifyId)));
+                Write(Html.Raw(string.Format("PageDatas.classify.push({{ CName: '{0}',CIcon: '{1}',ClassifyId: '{2}'}});", item.CName, item.CIcon, item.ClassifyId)));
             }
         }
         @if (tags != null)
         {
             foreach (var item in tags)
             {
-                Write(new HtmlString(string.Format("PageDatas.tags.push({{ TTagName: '{0}',TTagId: '{1}'}});", item.TagName, item.TagId)));
+                Write(Html.Raw(string.Format("PageDatas.tags.push({{ TTagName: '{0}',TTagId: '{1}'}});", item.TagName, item.TagId)));
             }
         }
         @if (list != null)
             {
                 foreach (var item in list)
                 {
-                    Write(new HtmlString(string.Format("PageDatas.imgs.push('{0}');", item)));
+                    Write(Html.Raw(string.Format("PageDatas.imgs.push('{0}');", item)));
                 }
             }
         require(['classify.index'], function (view) {

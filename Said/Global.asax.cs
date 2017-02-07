@@ -30,6 +30,7 @@ namespace Said
 
         protected void Application_Start()
         {
+            logManager.Info("应用程序启动");
             MvcHandler.DisableMvcResponseHeader = false;
 
             //强制检测移动端
@@ -58,7 +59,7 @@ namespace Said
             ConfigTable.LoadConfig(Server.MapPath("~/config.json"));
 
             /*默认加载IP查询库*/
-            Said.Helper.IP.Load(Server.MapPath(ConfigTable.Table[ConfigEnum.SourceDataIP]));
+            Helper.IP.Load(Server.MapPath(ConfigTable.Table[ConfigEnum.SourceDataIP]));
 
 
             //启动的时候创建所有路径

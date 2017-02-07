@@ -30,9 +30,9 @@
                         <div class="item-article">
                             <h2>@item.STitle</h2>
                             <div class="item-music said-ellipsis">
-                                <i class="fa fa-music"></i>@item.Song.SongName@(new HtmlString("&nbsp;-&nbsp;"))@item.Song.SongArtist
+                                <i class="fa fa-music"></i>@item.Song.SongName@Html.Raw("&nbsp;-&nbsp;")@item.Song.SongArtist
                             </div>
-                            <div class="article-txt line-clamp line2">@(new HtmlString(item.SSummaryTrim))</div>
+                            <div class="article-txt line-clamp line2">@Html.Raw(item.SSummaryTrim)</div>
                             <div class="item-more">
                                 <span class="fa fa-eye"><i class="globalFont">@item.SPV</i></span>
                                 <time class="fa fa-calendar-o time"><i class="globalFont">@SaidCommon.DateToLocalOrDay(item.Date)</i></time>
@@ -58,7 +58,7 @@
                     <div class="item-context">
                         <div class="item-article">
                             <h2>@item.BTitle</h2>
-                            <div class="article-txt line-clamp line2">@(new HtmlString(item.BSummaryTrim))</div>
+                            <div class="article-txt line-clamp line2">@Html.Raw(item.BSummaryTrim)</div>
                             <div class="item-more">
                                 <span class="cate">@item.Classify.CName</span>
                                 <span class="fa fa-eye"><i class="globalFont">@item.BPV</i></span>
@@ -68,7 +68,7 @@
                     </div>
                 </a>
             }
-        }
+                            }
         <div class="said-more">
             <a href="/blog" class="said-more-link">查看更多Blog</a>
         </div>

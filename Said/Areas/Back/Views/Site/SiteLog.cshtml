@@ -56,14 +56,14 @@
         {
             foreach (var item in errorLogFiles)
             {
-                Write(new HtmlString(string.Format("ErrorLogDatas.push({{ 'Name': '{0}', LastWriteTime: '{1}', Length: '{2}',Type: 'error' }});",item.Name,item.LastWriteTime, item.Length)));
+                Write(Html.Raw(string.Format("ErrorLogDatas.push({{ 'Name': '{0}', LastWriteTime: '{1}', Length: '{2}',Type: 'error' }});",item.Name,item.LastWriteTime, item.Length)));
             }
         }
         @if (infoLogFiles != null && infoLogFiles.Length > 0)
         {
             foreach (var item in infoLogFiles)
             {
-                Write(new HtmlString(string.Format("InfoLogDatas.push({{ 'Name': '{0}', LastWriteTime: '{1}', Length: '{2}',Type: 'info' }});", item.Name, item.LastWriteTime, item.Length)));
+                Write(Html.Raw(string.Format("InfoLogDatas.push({{ 'Name': '{0}', LastWriteTime: '{1}', Length: '{2}',Type: 'info' }});", item.Name, item.LastWriteTime, item.Length)));
             }
         }
     </script>

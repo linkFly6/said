@@ -116,7 +116,7 @@ namespace Said.Controllers
                 catch (Exception e)
                 {
 
-                    logManager.Error("延迟更新 Blog 失败\n", e);
+                    logManager.Error(string.Format("延迟更新 Blog 失败{0}", Environment.NewLine), e);
                 }
             }
             CacheHelper.SetCache(cacheKey, pvCount);

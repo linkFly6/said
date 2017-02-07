@@ -182,21 +182,21 @@
         {
             foreach (var item in ClassifysList)
             {
-                Write(new HtmlString(string.Format("DataCenter.classifyDatas.push({{query:'{0}',name:'{0}',data:'{1}'}});", item.CName,item.ClassifyId)));
+                Write(Html.Raw(string.Format("DataCenter.classifyDatas.push({{query:'{0}',name:'{0}',data:'{1}'}});", item.CName,item.ClassifyId)));
             }
         }
         @if (TagList != null)
         {
             foreach (var item in TagList)
             {
-                Write(new HtmlString(string.Format("DataCenter.tags.push({{query:'{0}',name:'{0}',data:'{1}'}});", item.TagName,item.TagId)));
+                Write(Html.Raw(string.Format("DataCenter.tags.push({{query:'{0}',name:'{0}',data:'{1}'}});", item.TagName,item.TagId)));
             }
         }
         @if (BlogFiles != null)
         {
             foreach (var item in BlogFiles)
             {
-                Write(new HtmlString(string.Format("DataCenter.files.push('{0}');", item.BName)));
+                Write(Html.Raw(string.Format("DataCenter.files.push('{0}');", item.BName)));
             }
         }
 

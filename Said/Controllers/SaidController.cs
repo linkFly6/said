@@ -108,8 +108,7 @@ namespace Said.Controllers
                 }
                 catch (Exception e)
                 {
-
-                    logManager.Error("延迟更新 Said 失败\n", e);
+                    logManager.Error(string.Format("延迟更新 Said 失败{0}", Environment.NewLine), e);
                 }
             }
 

@@ -63,7 +63,7 @@
                             <li class="blog-item">
                                 <div class="module-img-con" style="background-image: url(@saidResourcePath@item.Image.IFileName);">
                                     <div class="module-mask">
-                                        <div class="module-summary">@(new HtmlString(item.SSummaryTrim))</div>
+                                        <div class="module-summary">@Html.Raw(item.SSummaryTrim)</div>
                                     </div>
                                 </div>
                                 <div class="module-info">
@@ -94,7 +94,7 @@
                                     <a href="@string.Format("/blog/{0}.html",item.BlogId)" class="b-title">@item.BTitle</a>
                                 </h2>
                                 <div class="b-summary">
-                                    <p>@(new HtmlString(item.BSummaryTrim))</p>
+                                    <p>@Html.Raw(item.BSummaryTrim)</p>
                                 </div>
                                 <footer class="b-footer">
                                     <a class="b-info link fa fa-th-large" title="分类" href="@Url.Action("Index","Blog", new { cate = item.ClassifyId })">&nbsp;<span class="b-cate">@item.Classify.CName</span></a>

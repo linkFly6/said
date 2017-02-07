@@ -292,7 +292,7 @@
             if (SongsList != null) {
                 foreach (Said.Models.Song item in SongsList)
                 {
-                    Write(new HtmlString(string.Format("DataCenter.songs.push({{ name: \"{0}\", query: \"{0}{1}\", data: {{ id: \"{2}\", name: \"{0}\", album:\"{3}\", artist:\"{1}\", fileName: \"{4}\", img: \"{5}\" }}}});",
+                    Write(Html.Raw(string.Format("DataCenter.songs.push({{ name: \"{0}\", query: \"{0}{1}\", data: {{ id: \"{2}\", name: \"{0}\", album:\"{3}\", artist:\"{1}\", fileName: \"{4}\", img: \"{5}\" }}}});",
                         item.SongName,item.SongArtist,item.SongId,item.SongAlbum,item.SongFileName,item.Image.IFileName
                         )));
                 }
@@ -300,7 +300,7 @@
             if(AllFileNames!=null){
                 foreach (string fileName in AllFileNames)
 	            {
-                    Write(new HtmlString(string.Format("DataCenter.files.push('{0}');",fileName)));
+                    Write(Html.Raw(string.Format("DataCenter.files.push('{0}');",fileName)));
 	            }
             }
         }

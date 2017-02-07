@@ -26,8 +26,7 @@ namespace Said.Controllers
         //[WapFilterAttribute]
         public ActionResult Index()
         {
-            //EmailCommon.TestSendEmail();
-
+            //EmailCommon.SendReplyEmail("silin6@vip.qq.com", "这是Said 发送来的邮件", "<p style='color:red;'>尝试以下的 XSS <a href='https://baidu.com'>这是一条链接&nbsp;</a></p>", "<tr>昵称注入</tr>", "https://www.sogou.com/", "这是一篇我也不知道是啥的文章", "https://wap.sogou.com");
             ViewData["articleList"] = articleApplication.GetByTop(3).ToList();
             ViewData["blogList"] = blogApplication.FindPartialDatasByTop(3).ToList();
             //dipslay mode - 直接访问域名：http://tasaid.com ，无法自动识别到mobile，需要访问 http://tasaid.com/home/index 才可以自动识别mobile，所以手动修正这个问题
@@ -104,7 +103,7 @@ namespace Said.Controllers
             }
             catch (Exception e)
             {
-                logManager.Error("跳转Error\n请求url：" + url, e);
+                logManager.Error(string.Format("跳转Error{0}【请求url】{1}", Environment.NewLine, url), e);
             }
             return Redirect(url);
         }

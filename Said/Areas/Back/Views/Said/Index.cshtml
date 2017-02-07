@@ -41,7 +41,7 @@
             foreach (var item in Articles)
             {
 
-                Write(new HtmlString(string.Format(@"articlesDatas.push({{
+                Write(Html.Raw(string.Format(@"articlesDatas.push({{
                         SaidId: '{0}',
                         STitle: '{1}',
                         STag: '{2}',

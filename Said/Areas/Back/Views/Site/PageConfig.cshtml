@@ -94,7 +94,7 @@
         {
             foreach (var item in Models)
             {
-                Write(new HtmlString(string.Format("PageDatas.push({0});", JavaScriptCommon.Serialize(item))));
+                Write(Html.Raw(string.Format("PageDatas.push({0});", JavaScriptCommon.Serialize(item))));
             }
         }
     </script>

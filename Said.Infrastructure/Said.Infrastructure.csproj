@@ -57,7 +57,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Said.Common\Common\Convert\ConvertHelper.cs" />
-    <Compile Include="Said.Common\Common\Email\EmailHelper.cs" />
     <Compile Include="Said.Common\Common\Encrypt\DEncrypt.cs" />
     <Compile Include="Said.Common\Common\Encrypt\DESEncrypt.cs" />
     <Compile Include="Said.Common\Common\Encrypt\Encrypt.cs" />
@@ -85,6 +84,7 @@
     <Compile Include="Said.Common\Config\ConfigTable.cs" />
     <Compile Include="Said.Models\BaseModel.cs" />
     <Compile Include="Said.Common\Common\ModelCommon.cs" />
+    <Compile Include="Said.Common\Common\Email\Mailer.cs" />
     <Compile Include="Said.Models\Data\Page.cs" />
     <Compile Include="Said.Models\Models\Address.cs" />
     <Compile Include="Said.Models\Models\Admin.cs" />

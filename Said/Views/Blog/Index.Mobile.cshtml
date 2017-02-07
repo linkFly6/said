@@ -31,7 +31,7 @@
                     <div class="item-context">
                         <div class="item-article">
                             <h2>@item.BTitle</h2>
-                            <div class="article-txt line-clamp line2">@(new HtmlString(item.BSummaryTrim))</div>
+                            <div class="article-txt line-clamp line2">@Html.Raw(item.BSummaryTrim)</div>
                             <div class="item-more">
                                 <span class="cate">@item.Classify.CName</span>
                                 <span class="fa fa-eye"><i class="globalFont">@item.BPV</i></span>

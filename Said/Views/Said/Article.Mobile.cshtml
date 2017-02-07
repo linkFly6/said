@@ -26,7 +26,7 @@
     </div>
     <article class="article-content" id="said-content">
         <h1 class="blog-title">@Model.STitle</h1>
-        <section class="blog-content">@(new HtmlString(Model.SHTML))</section>
+        <section class="blog-content">@Html.Raw(Model.SHTML)</section>
     </article>
     <section class="blog-more-info">
         <div class="blog-more-head">
