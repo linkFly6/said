@@ -49,8 +49,8 @@ namespace Said.Common
         /// </summary>
         /// <param name="toEmailAddress">收件人</param>
         /// <param name="emailTitle">邮件标题</param>
-        /// <param name="emailBody">邮件正文</param>
-        /// <param name="nickName">收件人昵称</param>
+        /// <param name="emailBody">邮件正文（已经做过XSS攻击防御）</param>
+        /// <param name="nickName">收件人昵称（已经做过XSS攻击防御）</param>
         /// <param name="titleLink">邮件模板中的标题链接</param>
         /// <param name="title">邮件模板中的文章标题</param>
         /// <param name="moreLink">邮件模板中的查看更多</param>

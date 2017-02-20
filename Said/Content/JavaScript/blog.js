@@ -364,7 +364,6 @@
                 navHTMLs = [],
                 _currCount = 0;
 
-
             $titles.each(function (i) {
                 var $title = $(this),
                     top = parseInt($title.offset().top - $title.height()),//title距离顶部的距离
@@ -487,7 +486,7 @@
 
 
 
-            // ========================== 预览
+            // ========================== 预览图片
             var $imgs = $('#blog-context').find('img'),
                 $imgLinks = $('#pre-link,#pre-btn'),
                 $preImg = $('#pre-img'),
@@ -509,7 +508,7 @@
                 $body.removeClass('lock');
                 $pre.css('display', 'none');
             });
-
+            
 
             //评论
             var $commentContent = $('#comment-content'),//评论栏容器
@@ -517,13 +516,13 @@
             $commentForm.on('submit', function (e) {
                 return false;
             });
-
-
+            
+            
             //评论
             var commentInput = new CommentInput(blogId, $('#comment-form')),
-                $commentList = $('#comment-list')//评论列表的容器=> ul
+                $commentList = $('#comment-list');//评论列表的容器=> ul
+            
             commentInput.on('said.commitOK', function (e, result, data) {
-                console.log(arguments);
                 //评论成功，获取当前楼层
                 var anthorNum = $commentList.children().length + 1,
                     html = CommonComments.renderCommentHTML(result.data.id, data.nickName, data.site, data.context, result.data.king, anthorNum);
@@ -574,7 +573,7 @@
                 anthor: 0,
                 inputShow: false,//回复的输入框是否已经显示
                 toReply: null
-            };
+            };            
             var replyInput = new CommentInput(blogId, $('#reply-form')),
                 hideOldInputBox = function () {
                     //已经在别的地方显示

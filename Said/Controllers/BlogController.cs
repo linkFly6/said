@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security.AntiXss;
 
 namespace Said.Controllers
 {
@@ -176,16 +177,8 @@ namespace Said.Controllers
                     if (validateUserResultString != null) return ResponseResult(8, validateUserResultString);
                     blog.BComment++;
                     blogApplication.Update(blog);
-                    //if (!blogApplication.Commit())
-                    //{
-                    //    throw new Exception("用户评论：日志修改失败");
-                    //}
                     //这里拿到的user是已经修剪处理好的user了
                     userApplication.Update(user);
-                    //if (!userApplication.Commit())
-                    //{
-                    //    throw new Exception("用户评论：用户信息修改失败");
-                    //}
                     Comment comment = new Comment
                     {
                         BlogId = blog.BlogId,
@@ -200,7 +193,8 @@ namespace Said.Controllers
                     {
                         throw new Exception("用户评论：评论失败");
                     }
-
+                    // 发送邮件
+                    EmailCommon.SendReplyEmail("linkFly6@live.com", string.Format("Said - 用户评论了文章《{0}》", blog.BTitle), context, "linkFly", string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme), blog.BTitle, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme));
                     return ResponseResult(new { king = this.AdminId != null, id = comment.CommentId });
                 });
             }
@@ -255,33 +249,31 @@ namespace Said.Controllers
                     };
                     Reply toReply = null;
                     Comment comment = null;
+                    string toUserEmail = string.Empty;
+                    string toUserNickName = string.Empty;
 
                     if (!string.IsNullOrWhiteSpace(replyId))//如果有针对回复的ID，则以回复ID为准
                     {
                         toReply = replyApplicaiton.Find(replyId);
                         if (toReply == null) throw new Exception("用户回复：回复的信息不正确");
                         if (toReply.UserId == this.UserId) throw new Exception("用户不允许回复自己的评论");
+                        toUserEmail = toReply.User.EMail;
+                        toUserNickName = toReply.User.Name;
                     }
                     else {//否则以评论ID为准
                         comment = commentApplication.Find(commentId);
                         if (comment == null) throw new Exception("用户回复：回复的评论不正确");
                         if (comment.UserId == this.UserId) throw new Exception("用户不允许回复自己的评论");
+                        toUserEmail = comment.User.EMail;
+                        toUserNickName = comment.User.Name;
                     }
                     User user = null;
                     string validateUserResultString = userApplication.CheckAndTrimInput(inputUser, out user);
                     if (validateUserResultString != null) return ResponseResult(8, validateUserResultString);
                     blog.BComment++;
                     blogApplication.Update(blog);
-                    //if (!blogApplication.Commit())
-                    //{
-                    //    throw new Exception("用户回复：日志修改失败");
-                    //}
                     //这里拿到的user是已经修剪处理好的user了
                     userApplication.Update(user);
-                    //if (!userApplication.Commit())
-                    //{
-                    //    throw new Exception("用户回复：用户信息修改失败");
-                    //}
 
                     Reply reply = new Reply
                     {
@@ -299,8 +291,9 @@ namespace Said.Controllers
                     if (!replyApplicaiton.Commit())
                     {
                         throw new Exception("用户回复：添加回复对象失败");
-
                     }
+                    // 发送邮件
+                    EmailCommon.SendReplyEmail(toUserEmail, string.Format("Said - 您在文章《{0}》的评论中收到新的回复", blog.BTitle), context, toUserNickName, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme), blog.BTitle, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme));
                     return ResponseResult(new
                     {
                         king = this.AdminId != null,

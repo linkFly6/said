@@ -44,7 +44,7 @@
             <section class="blog-more-info">
                 <div class="blog-more-head">
                     <div class="blog-comment-txt">
-                        <span>评论(@Model.BComment)</span>
+                        <span><a name="comment"></a>评论(@Model.BComment)</span>
                     </div>
                     <ul class="blog-info afterClear">
                         <li class="bi-l">
@@ -62,13 +62,14 @@
                             <form action="/" class="comment-form" id="comment-form" onsubmit="return false;" spellcheck="false">
                                 <ul class="blog-comment-info">
                                     <li>
-                                        <input placeholder="昵称" class="form-control" name="nickName" />
+                                        <input placeholder="昵称" class="form-control" name="nickName" @Html.Raw(ViewBag.AdminId != null ? "readonly" : null) @Html.Raw(ViewBag.AdminId != null ? "value='linkFly'" : null) />
                                     </li>
                                     <li>
-                                        <input type="email" placeholder="Email" class="form-control" name="email" />
+                                        <input type="email" placeholder="Email" class="form-control" name="email" @Html.Raw(ViewBag.AdminId != null ? "readonly" : null) @Html.Raw(ViewBag.AdminId != null ? "value='linkFly6@live.com'" : null) />
                                     </li>
                                     <li>
-                                        <input type="url" placeholder="您的站点" class="form-control" name="site" />
+                                        @*@Html.Raw(ViewBag.AdminId != null ? "readonly" : null) @Html.Raw(ViewBag.AdminId != null ? string.Format("value='{0}://{1}?sgs=comment'", Request.Url.Scheme, Request.Url.Authority) : null)*@
+                                        <input type="url" placeholder="您的站点" class="form-control" name="site" @Html.Raw(ViewBag.AdminId != null ? "readonly" : null)/>
                                     </li>
                                     <li>
                                         <input type="checkbox" name="remember" id="cmt-remember" checked /><label for="cmt-remember">下次自动填写</label>
@@ -210,13 +211,13 @@
             <form action="/" class="comment-form" name="reply-form" spellcheck="false">
                 <ul class="blog-comment-info" style="">
                     <li>
-                        <input placeholder="名称" name="nickName" class="form-control">
+                        <input placeholder="名称" name="nickName" class="form-control" @Html.Raw(ViewBag.AdminId != null ? "readonly" : null) @Html.Raw(ViewBag.AdminId != null ? "value='linkFly'" : null)>
                     </li>
                     <li>
-                        <input type="email" placeholder="Email" name="email" class="form-control">
+                        <input type="email" placeholder="Email" name="email" class="form-control" @Html.Raw(ViewBag.AdminId != null ? "readonly" : null) @Html.Raw(ViewBag.AdminId != null ? "value='linkFly6@live.com'" : null)>
                     </li>
                     <li>
-                        <input type="url" placeholder="您的站点" name="site" class="form-control">
+                        <input type="url" placeholder="您的站点" name="site" class="form-control" @Html.Raw(ViewBag.AdminId != null ? "readonly" : null)>
                     </li>
                     <li>
                         <input type="checkbox" name="remember" id="reply-remember" checked><label for="reply-remember">下次自动填写</label>
