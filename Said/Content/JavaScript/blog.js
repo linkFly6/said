@@ -227,6 +227,7 @@
         data.blogId = this.blogId;
         data.context = this.$context.val().trim();
 
+        Umeng.event('blog：' + this.blogId, '评论', '用户对日志进行了评论：' + JSON.stringify(data) , 1, 'ct-submit');
 
         $.ajax({
             url: commentId || replyId ? '/blog/reply' : '/blog/comment',
@@ -403,9 +404,12 @@
                     top = $this.data('top');
                 titleIndexValues.push({ value: _lastNavTop, height: height });
                 _lastNavTop += height;
+                // 1 级分类
                 $this.on('click', function () {
+                    Umeng.event('blog：' + blogId, '目录1级菜单', '目录1级菜单', 0, '_nav-i');
                     $body.stop().animate({ scrollTop: top }, 300);
                 });
+                // 2 级分类
                 if ($this.next().length > 0) {
                     var lastValue = titleIndexValues[titleIndexValues.length - 1];
                     lastValue.child = [];
@@ -416,6 +420,7 @@
                         lastValue.child.push({ value: _lastNavTop, height: height });
                         _lastNavTop += height;
                         $this.on('click', function () {
+                            Umeng.event('blog：' + blogId, '目录2级菜单', '目录2级菜单', 0, '_nav-i');
                             $body.stop().animate({ scrollTop: top }, 300);
                         });
                     });
@@ -508,7 +513,7 @@
                 $body.removeClass('lock');
                 $pre.css('display', 'none');
             });
-            
+
 
             //评论
             var $commentContent = $('#comment-content'),//评论栏容器
@@ -516,12 +521,12 @@
             $commentForm.on('submit', function (e) {
                 return false;
             });
-            
-            
+
+
             //评论
             var commentInput = new CommentInput(blogId, $('#comment-form')),
                 $commentList = $('#comment-list');//评论列表的容器=> ul
-            
+
             commentInput.on('said.commitOK', function (e, result, data) {
                 //评论成功，获取当前楼层
                 var anthorNum = $commentList.children().length + 1,
@@ -534,6 +539,7 @@
 
             //删除评论
             $commentList.on('click', '._commentDelete', function () {
+                Umeng.event('blog：' + blogId, '删除评论', '管理员点击了删除了评论', 2, '_commentDelete');
                 var $this = $(this);
                 if ($this.data('lock') == true) return false;
                 if (confirm('您确定删除该条评论么？该删除操作为逻辑删除。') && confirm('请再次确认是否删除该条评论，该删除操作为逻辑删除，可以在数据库恢复记录。')) {
@@ -573,7 +579,7 @@
                 anthor: 0,
                 inputShow: false,//回复的输入框是否已经显示
                 toReply: null
-            };            
+            };
             var replyInput = new CommentInput(blogId, $('#reply-form')),
                 hideOldInputBox = function () {
                     //已经在别的地方显示
@@ -700,6 +706,7 @@
                 var lockSubmit = false;
                 $like.on('click', function () {
                     if (lockSubmit) return;
+                    Umeng.event('blog：' + blogId, '用户 Like 日志', '用户 Like 了日志 - ' + blogId, 0, 'fa-heart');
                     lockSubmit = true;
                     $.ajax({
                         url: '/Blog/LikeArticle',

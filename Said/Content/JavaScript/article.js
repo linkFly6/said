@@ -26,6 +26,7 @@
 
         //停止
         $stopBtn.on('click', function () {
+            Umeng.event('said：' + saidId, '音乐停止', '用户点击了音乐停止', 1, 'palyer-stop');
             playerElem.pause();
             playerElem.currentTime = 0;
             updateProgress(0);
@@ -33,6 +34,7 @@
         });
         //播放
         $playBtn.on('click', function () {
+            Umeng.event('said：' + saidId, '音乐播放', '用户点击了音乐播放', 0, 'play-btn');
             playerElem.play();
             togglePlay(false);
         });
@@ -79,6 +81,7 @@
             var lockSubmit = false;
             $like.on('click', function () {
                 if (lockSubmit) return;
+                Umeng.event('said：' + saidId, '用户 Like Said', '用户 Like 了 Said - ' + saidId, 0, 'fa-heart');
                 lockSubmit = true;
                 $.ajax({
                     url: '/Said/LikeArticle',

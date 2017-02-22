@@ -41,9 +41,11 @@
     $arrows.each(function (i) {
         var func = i ?
             function () {//向右
+                Umeng.event('轮播图', '向右', '无', 0, 'arrow-right');
                 return currBannerIndex == maxBannerIndex ? 0 : currBannerIndex + 1;
             } :
             function () {//向左
+                Umeng.event('轮播图', '向左', '无', 0, 'arrow-left');
                 return currBannerIndex == 0 ? maxBannerIndex : currBannerIndex - 1;
             };
         $(this).on('click', function () {
