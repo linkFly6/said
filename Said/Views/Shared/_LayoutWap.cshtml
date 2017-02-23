@@ -19,7 +19,7 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/static/wap/css/global.css")
     <link rel="shortcut icon" href="/content/images/icons/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon-precomposed" href="/content/images/icons/favicon.png"/>
+    <link rel="apple-touch-icon-precomposed" href="/content/images/icons/favicon.png" />
     @Scripts.Render("~/static/w/requirejs.js")
     @Html.InlineScripts("~/static/wap/config.js")
     @{
@@ -108,5 +108,6 @@
             @RenderSection("FootJs")
         }
     }
+    <img src="//c.cnzz.com/wapstat.php?siteid=1260021113&r=@(Request.UrlReferrer != null && "" != Request.UrlReferrer.ToString() ?  Url.Encode(Request.UrlReferrer.ToString()) : "")&rnd=@(new Random().Next(0x7fffffff).ToString())" />
 </body>
 </html>

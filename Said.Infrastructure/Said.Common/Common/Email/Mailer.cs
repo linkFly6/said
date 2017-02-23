@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Said.Common
 {
+
     /// <summary>
     /// 发件对象
     /// </summary>
@@ -179,7 +180,8 @@ namespace Said.Common
 
             // 邮件客户端 ，参见这里：https://msdn.microsoft.com/zh-cn/library/system.net.mail.smtpclient.aspx
             // 如果一个账户需要发多个邮件的话不应该释放 client，因为开启一个 TLS 会话开销很大
-            using (SmtpClient client = new SmtpClient("smtp.qq.com", 587))
+
+            using (SmtpClient client = new SmtpClient(host, port))
             {
                 client.EnableSsl = true;
                 // 同步调用 client.send 超时时间
@@ -207,8 +209,6 @@ namespace Said.Common
                     message.Dispose();
                 }
             }
-
-
         }
 
 
@@ -250,7 +250,7 @@ namespace Said.Common
 
             // 邮件客户端 ，参见这里：https://msdn.microsoft.com/zh-cn/library/system.net.mail.smtpclient.aspx
             // 如果一个账户需要发多个邮件的话不应该释放 client，因为开启一个 TLS 会话开销很大
-            using (SmtpClient client = new SmtpClient("smtp.qq.com", 587))
+            using (SmtpClient client = new SmtpClient(host, port))
             {
                 client.EnableSsl = true;
                 // 同步调用 client.send 超时时间

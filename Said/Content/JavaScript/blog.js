@@ -227,7 +227,7 @@
         data.blogId = this.blogId;
         data.context = this.$context.val().trim();
 
-        Umeng.event('blog：' + this.blogId, '评论', '用户对日志进行了评论：' + JSON.stringify(data) , 1, 'ct-submit');
+        Umeng.event('blog：' + this.blogId, '评论', '用户对日志进行了评论：' + JSON.stringify(data), 1, 'ct-submit');
 
         $.ajax({
             url: commentId || replyId ? '/blog/reply' : '/blog/comment',
@@ -241,6 +241,7 @@
                 return;
             }
             //记住cookie
+            cookieData.context = '';
             if (me.$remember.prop('checked')) {
                 _.cookie('u', cookieData);
                 me.$commentBox.trigger('said.rememberCookie');
@@ -250,8 +251,6 @@
             me.$commentBox.trigger('said.commitOK', [result, data]);
             //清空掉
             me.$context.val('');
-            cookieData.context = '';
-
         }).fail(function (xhr) {
             me.$commentBox.trigger('said.commitError', xhr, data);
         }).always(function () {

@@ -194,7 +194,7 @@ namespace Said.Controllers
                         throw new Exception("用户评论：评论失败");
                     }
                     // 发送邮件
-                    EmailCommon.SendReplyEmail("linkFly6@live.com", string.Format("Said - 用户评论了文章《{0}》", blog.BTitle), context, "linkFly", string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme), blog.BTitle, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme));
+                    EmailCommon.SendReplyEmailAsync("linkfly@vip.qq.com", string.Format("Said - 用户评论了文章《{0}》", blog.BTitle), context, "linkFly", string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme), blog.BTitle, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme));
                     return ResponseResult(new { king = this.AdminId != null, id = comment.CommentId });
                 });
             }
@@ -293,7 +293,7 @@ namespace Said.Controllers
                         throw new Exception("用户回复：添加回复对象失败");
                     }
                     // 发送邮件
-                    EmailCommon.SendReplyEmail(toUserEmail, string.Format("Said - 您在文章《{0}》的评论中收到新的回复", blog.BTitle), context, toUserNickName, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme), blog.BTitle, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme));
+                    EmailCommon.SendReplyEmailAsync(toUserEmail, string.Format("Said - 您在文章《{0}》的评论中收到新的回复", blog.BTitle), context, toUserNickName, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme), blog.BTitle, string.Format("{2}://{0}/blog/{1}.html?sgs=email-more#comment", Request.Url.Authority, blog.BlogId, Request.Url.Scheme));
                     return ResponseResult(new
                     {
                         king = this.AdminId != null,

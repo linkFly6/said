@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Security.AntiXss;
@@ -13,6 +14,11 @@ namespace Said.Common
     /// </summary>
     public class EmailCommon
     {
+
+        /// <summary>
+        /// 异步队列锁
+        /// </summary>
+        private static readonly object @lock = new object();
         /// <summary>
         /// 配置的发件人邮箱
         /// </summary>
@@ -71,10 +77,47 @@ namespace Said.Common
                 return false;
             }
         }
-    }
 
-    public enum EmailTemplateName
-    {
-        Reply = 0
+        /// <summary>
+        /// 发送一封回复邮件
+        /// </summary>
+        /// <param name="toEmailAddress">收件人</param>
+        /// <param name="emailTitle">邮件标题</param>
+        /// <param name="emailBody">邮件正文（已经做过XSS攻击防御）</param>
+        /// <param name="nickName">收件人昵称（已经做过XSS攻击防御）</param>
+        /// <param name="titleLink">邮件模板中的标题链接</param>
+        /// <param name="title">邮件模板中的文章标题</param>
+        /// <param name="moreLink">邮件模板中的查看更多</param>
+        /// <returns></returns>
+        public static void SendReplyEmailAsync(string toEmailAddress, string emailTitle, string emailBody, string nickName, string titleLink, string title, string moreLink)
+        {
+
+            string emailHTML = FileCommon.ReadToString(HttpContext.Current.Server.MapPath(emailFromReplyTemplatePath));
+            string emailContent = emailHTML.Replace("{nickName}", AntiXssEncoder.HtmlEncode(nickName, false)).Replace("{titleLink}", titleLink).Replace("{title}", title).Replace("{body}", AntiXssEncoder.HtmlEncode(emailBody, false)).Replace("{moreLink}", moreLink);
+
+            Task.Run(() =>
+            {
+
+                lock (@lock)
+                {
+                    try
+                    {
+                        Mailer.SendEmail(emailSmtpServerHost, emailSmtpServerPort, emailFromAddress, emailFromAddress, emailFromPwd, toEmailAddress, emailTitle, emailContent, 100);
+                    }
+                    catch (Exception e)
+                    {
+                        logManager.Error(string.Format("发送邮件异常(catch){2}【收件人】{0}{2}【邮件正文】{2}{1}", toEmailAddress, emailContent, Environment.NewLine), e);
+                    }
+                }
+            });
+            //Mailer.SendEmailAsync(emailSmtpServerHost, emailSmtpServerPort, emailFromAddress, emailFromAddress, emailFromPwd, toEmailAddress, emailTitle, emailContent, 100, (sender, e) =>
+            //{
+            //    if (e.Error != null)
+            //    {
+            //        logManager.Error(string.Format("发送邮件异常(async){2}【收件人】{0}{2}【邮件正文】{2}{1}", toEmailAddress, emailContent, Environment.NewLine), e.Error);
+            //    }
+            //});
+        }
+
     }
 }
