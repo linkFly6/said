@@ -10,6 +10,9 @@
             var regResult = dateStr.match(/^(\d{4})(\d{2})(\d{2})$/);
             item.date = new Date(+regResult[1], regResult[2] - 1, regResult[3]);
         });
+        datas.sort(function (a, b) {
+            return b.date - a.date;
+        });
 
         //获取与国际通用UTC时间的分钟差（北京 = -480m = 8h）
         var timezoneOffset = new Date().getTimezoneOffset();//datatimepicker组件使用的国际通用UTC时间，和北京时间相差8个小时，所以要修正时间差，获取
