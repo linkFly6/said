@@ -14,7 +14,7 @@
                     </div>
                 </a>
     */
-    var htmlTemplates = '<a class="said-item" href="/blog/${url}.html"><div class="item-context"><div class="item-article"><h2>${title}</h2><div class="article-txt line-clamp line2">${summary}</div><div class="item-more"><span class="cate">${classify}</span><span class="fa fa-eye"><i class="globalFont">${pv}</i></span>&nbsp;<time class="fa fa-calendar-o time"><i class="globalFont">${date}</i></time></div></div></div></a>';
+    var htmlTemplates = '<a class="said-item" href="${url}"><div class="item-context"><div class="item-article"><h2>${title}</h2><div class="article-txt line-clamp line2">${summary}</div><div class="item-more"><span class="cate">${classify}</span><span class="fa fa-eye"><i class="globalFont">${pv}</i></span>&nbsp;<time class="fa fa-calendar-o time"><i class="globalFont">${date}</i></time></div></div></div></a>';
     var load = function (currrPageIndex, limit, requestUrl) {
         return $.ajax({
             url: requestUrl,
@@ -40,7 +40,7 @@
                         var htmls = [];
                         data.rows.forEach(function (item) {
                             htmls.push(_.format(htmlTemplates, {
-                                url: actionBase + item.id,
+                                url: actionBase + item.id + '.html',
                                 title: _.escapeHTML(item.title),
                                 summary: item.summary,
                                 classify: item.cname,
