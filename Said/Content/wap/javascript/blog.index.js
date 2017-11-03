@@ -40,7 +40,7 @@
                         var htmls = [];
                         data.rows.forEach(function (item) {
                             htmls.push(_.format(htmlTemplates, {
-                                url: actionBase + item.id + '.html',
+                                url: actionBase + item.id,
                                 title: _.escapeHTML(item.title),
                                 summary: item.summary,
                                 classify: item.cname,
