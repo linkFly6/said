@@ -1,34 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es5",
     "module": "commonjs",
-    "lib": [
-      "es5",
-      "esnext"
-    ],
-    "outDir": "../output.server",
+    "target": "es6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
     "sourceMap": true,
-    "strict": true,
-    "isolatedModules": false,
-    "experimentalDecorators": true,
-    // 加上源数据
-    "emitDecoratorMetadata": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "removeComments": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "allowJs": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
-    // "allowUnreachableCode": true,
-    // "allowUnusedLabels": true,
-    "allowJs": true,
-    "listFiles": true,
-    "baseUrl": "."
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ]
+    }
   },
   "include": [
-    "**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
-  "compileOnSave": false
+    "src/**/*"
+  ]
 }

@@ -195,11 +195,5 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
-/Said/System/Log
-/Said/Source/Said
-/Said/Source/Sys
-/Said/Source/Blog
-/Said/UED
-
-
 .DS_Store
+dist/

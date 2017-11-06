@@ -2,6 +2,7 @@
  * Module dependencies.
  */
 import * as express from 'express'
+import * as device from 'express-device'
 import * as compression from 'compression'  // compresses requests
 import * as session from 'express-session'
 import * as bodyParser from 'body-parser'
@@ -23,6 +24,7 @@ const MongoStore = mongo(session)
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
 dotenv.config({ path: '.env.example' })
+
 
 
 /**
@@ -66,6 +68,7 @@ app.use(compression())
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(device.capture())
 app.use(expressValidator())
 app.use(session({
   resave: true,
@@ -88,13 +91,13 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   // After successful login, redirect back to the intended page
   if (!req.user &&
-      req.path !== '/login' &&
-      req.path !== '/signup' &&
-      !req.path.match(/^\/auth/) &&
-      !req.path.match(/\./)) {
+    req.path !== '/login' &&
+    req.path !== '/signup' &&
+    !req.path.match(/^\/auth/) &&
+    !req.path.match(/\./)) {
     req.session.returnTo = req.path
   } else if (req.user &&
-      req.path == '/account') {
+    req.path == '/account') {
     req.session.returnTo = req.path
   }
   next()
