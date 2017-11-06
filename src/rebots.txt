@@ -1,0 +1,8 @@
+# Robots.txt file from http://www.tasaid.com
+
+User-agent: *
+
+Disallow: /*.jpg$
+Disallow: /*.jpeg$
+Disallow: /*.gif$
+Disallow: /*.png$

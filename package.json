@@ -1,13 +1,13 @@
 {
-  "name": "express-typescript-starter",
-  "version": "0.1.0",
-  "description": "A starting point for Node.js express apps with TypeScript",
+  "name": "said",
+  "version": "0.0.1",
+  "description": "said 采用 node 技术架构重写",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "git@github.com:linkFly6/said.git"
   },
-  "author": "Bowden Kelly",
-  "license": "MIT",
+  "author": "linkFly6@live.com",
+  "license": "GPL",
   "scripts": {
     "start": "npm run build && npm run watch",
     "build": "npm run build-sass && npm run build-ts && npm run tslint && npm run copy-static-assets",
@@ -94,6 +94,6 @@
     "supertest": "^2.0.1",
     "ts-jest": "^19.0.8",
     "tslint": "^5.0.0",
-    "typescript": "^2.4.0"
+    "typescript": "^2.6.1"
   }
 }
