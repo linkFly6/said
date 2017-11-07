@@ -6,7 +6,6 @@ import * as device from 'express-device'
 import * as compression from 'compression'  // compresses requests
 import * as session from 'express-session'
 import * as bodyParser from 'body-parser'
-import * as logger from 'morgan'
 import * as errorHandler from 'errorhandler'
 import * as lusca from 'lusca'
 import * as dotenv from 'dotenv'
@@ -15,7 +14,11 @@ import * as flash from 'express-flash'
 import * as path from 'path'
 import * as mongoose from 'mongoose'
 import * as passport from 'passport'
+import * as log from './utils/log'
+
 import expressValidator = require('express-validator')
+
+
 
 
 const MongoStore = mongo(session)
@@ -56,8 +59,6 @@ mongoose.connection.on('error', () => {
   process.exit()
 })
 
-
-
 /**
  * Express configuration.
  */
@@ -65,7 +66,9 @@ app.set('port', process.env.PORT || 3000)
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'pug')
 app.use(compression())
-app.use(logger('dev'))
+
+app.use(log.Log4js.connectLogger(log.accessLogger, { level: log.accessLogger.level }))
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(device.capture())
