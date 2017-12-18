@@ -12,6 +12,13 @@ import { ApplicationRequestHandler, Express } from 'express-serve-static-core'
  */
 export const allSignature: object = {}
 
+
+/**
+ * 默认 symbol，用于只定义装饰器，但没有装饰器参数的场景，通过这个默认值识别出装饰器
+ */
+export const defaultSymbol = Symbol()
+
+
 export class Filter {
   public token: string
   public use: ApplicationRequestHandler<Express>
@@ -43,7 +50,8 @@ export const signatureWithOption = <T>(
  */
 export const signature = (
   token: string,
-  defaultValue: any,
+  // 注意这里，存在只定义装饰器但是没有参数的场景，需要识别出来
+  defaultValue: any = defaultSymbol,
   use?: ApplicationRequestHandler<Express>) => {
   const symbolKey = Symbol()
   allSignature[symbolKey] = { token, use }
