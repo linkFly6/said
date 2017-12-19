@@ -45,48 +45,6 @@ export let post = function (target: any, propertyKey: string) {
 }
 
 /**
- * auth 认证 metadata Key
- */
-export const symbolAuthKey = Symbol.for('design:auth')
-/**
- * auth 认证
- * @example @auth('token')
- */
-export let auth = (authKey: string) => {
-  return function (target: any, propertyKey: string) {
-    // ada 的 auth 可以传字符串，字符串用来表示从参数里面取哪个字段
-    Reflect.defineMetadata(symbolAuthKey, authKey, target, propertyKey)
-  }
-}
-
-/**
- * 是否挂载用户信息 metadata Key
- */
-export const symbolTokenKey = Symbol.for('design:token')
-/**
- * 是否挂载用户信息，如果配置配置 @path，则会对路由路径产生影响
- * @example @token
- */
-export let token = function (target: any, propertyKey: string) {
-  Reflect.defineMetadata(symbolTokenKey, 'token', target, propertyKey)
-}
-
-
-/**
- * 路由代理 metadata Key
- */
-export const symbolProxyKey = Symbol.for('design:proxy')
-/**
- * 路由代理
- * @example @proxy({ ... })
- */
-export let proxy = (proxy: () => any) => {
-  return function (target: any, propertyKey: string) {
-    Reflect.defineMetadata(symbolProxyKey, proxy, target, propertyKey)
-  }
-}
-
-/**
  * 完整配置路由 metadata Key
  */
 export const sysmbolRouterConfigProxyKey = Symbol.for('design:routerConfig')
@@ -97,7 +55,6 @@ export const sysmbolRouterConfigProxyKey = Symbol.for('design:routerConfig')
 export let router = (config: {
   path?: string
   method?: string
-  auth?: boolean | string
   formdata?: boolean,
 }) => {
   return function (target: any, propertyKey: string) {
