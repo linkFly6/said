@@ -1,4 +1,6 @@
 import { ApplicationRequestHandler, Express } from 'express-serve-static-core'
+import { Route } from './models'
+import { Express } from 'express'
 
 
 /**
@@ -6,25 +8,60 @@ import { ApplicationRequestHandler, Express } from 'express-serve-static-core'
  * 用户自己生成装饰器，token 表示 url 前缀，然后在使用这些装饰器的时候自动补上前缀，从而导致命中中间件
  */
 
+let keyIndex = 0
+
+
+/**
+ * 所有 filter 挂载的 key
+ */
+const allKeys: string[] = []
 
 /**
  * 所有 filters，属性名是动态生成的 symbolKey，值是对应的方法
  */
-export const allSignature: object = {}
+export const allSignature: { [prop: string]: Filter } = {}
 
 
 /**
  * 默认 symbol，用于只定义装饰器，但没有装饰器参数的场景，通过这个默认值识别出装饰器
  */
-export const defaultSymbol = Symbol()
+export const defaultSymbol = `signature_default_${+new Date}${keyIndex}`
 
 
 export class Filter {
-  public token: string
+  /**
+   * 路由前缀
+   */
+  public token = ''
+  /**
+   * 中间件
+   */
   public use: ApplicationRequestHandler<Express>
-  constructor(token: string, use: ApplicationRequestHandler<Express>) {
+  /**
+   * http method
+   */
+  public method: string
+  /**
+   * 配置生成
+   */
+  public handler: <T>(option: T, route: Route) => Route | null = null
+
+  /**
+   * 过滤器
+   * @param token express 委托的路由
+   * @param use express 中间件
+   * @param method Http method
+   * @param handle 配置生成的时候会调用该函数，该函数需要返回一个 Route 对象
+   */
+  constructor(
+    token: string, use: ApplicationRequestHandler<any>, method = 'all',
+    handler?: <T>(option: T, route: Route) => Route) {
     this.token = token
     this.use = use
+    this.method = method
+    if (handler) {
+      this.handler = handler
+    }
   }
 }
 
@@ -32,14 +69,13 @@ export class Filter {
  * 给 filter 签名生成自己的装饰器
  * @param filter
  */
-export const signatureWithOption = <T>(
-  token: string,
-  use?: ApplicationRequestHandler<Express>) => {
-  const symbolKey = Symbol()
-  allSignature[symbolKey] = new Filter(token, use)
+export const signatureWithOption = <T>(filter: Filter) => {
+  const key = `signatureWithOption_${+new Date}${keyIndex++}`
+  allKeys.push(key)
+  allSignature[key] = filter
   return (option: T) => {
     return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
-      Reflect.defineMetadata(symbolKey, option, target, propertyKey)
+      Reflect.defineMetadata(key, option, target, propertyKey)
     }
   }
 }
@@ -49,13 +85,38 @@ export const signatureWithOption = <T>(
  * @param filter
  */
 export const signature = (
-  token: string,
+  filter: Filter,
   // 注意这里，存在只定义装饰器但是没有参数的场景，需要识别出来
-  defaultValue: any = defaultSymbol,
-  use?: ApplicationRequestHandler<Express>) => {
-  const symbolKey = Symbol()
-  allSignature[symbolKey] = { token, use }
+  defaultValue: any = defaultSymbol) => {
+  const key = `signature_${+new Date}${keyIndex++}`
+  allKeys.push(key)
+  allSignature[key] = filter
   return function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<Function>) {
-    Reflect.defineMetadata(symbolKey, defaultValue, target, propertyKey)
+    Reflect.defineMetadata(key, defaultValue, target, propertyKey)
   }
+}
+
+
+
+/**
+ * 根据 key 获取 Filter 配置和 options
+ * @param key 
+ */
+export const getFilterAndOptions = (target: any) => {
+  let res: Array<{ options: any, filter: Filter }> = []
+  let targetKeys = Reflect.getMetadataKeys(target)
+  let keys = targetKeys.filter((key: string) => {
+    return !!~allKeys.findIndex(k => k == key)
+  })
+  if (keys) {
+    res = keys.map(key => {
+      const options = Reflect.getMetadata(key, target)
+      const filter = allSignature[key]
+      return {
+        options: options === defaultSymbol ? null : options,
+        filter,
+      }
+    })
+  }
+  return res
 }
