@@ -42,6 +42,7 @@ import * as contactController from './controllers/contact'
  * API keys and Passport configuration.
  */
 import * as passportConfig from './config/passport'
+import { Request } from 'express'
 
 /**
  * Create Express server.
@@ -106,6 +107,15 @@ app.use((req, res, next) => {
   next()
 })
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
+
+
+
+app.use((req: Request) => {
+  
+})
+
+
+
 
 /**
  * Primary app routes.
