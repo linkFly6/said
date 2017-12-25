@@ -15,9 +15,10 @@
         "node_modules/*",
         "src/types/*"
       ]
-    }
+    },
+    "listFiles": true
   },
   "include": [
-    "src/**/*"
+    "./src/**/*"
   ]
 }
