@@ -15,7 +15,7 @@
     "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"bgMagenta.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve\"",
     "test": "jest --forceExit",
     "build-ts": "tsc --locale zh-CN",
-    "watch-ts": "tsc -w",
+    "watch-ts": "tsc -w --locale zh-CN -p ./src",
     "build-sass": "node-sass src/public/css/main.scss dist/public/css/main.css",
     "watch-sass": "node-sass -w src/public/css/main.scss dist/public/css/main.css",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
