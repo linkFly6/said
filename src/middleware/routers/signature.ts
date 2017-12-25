@@ -1,6 +1,6 @@
-import { ApplicationRequestHandler, Express } from 'express-serve-static-core'
-import { Route } from './models'
-import { Express } from 'express'
+import { ApplicationRequestHandler } from 'express-serve-static-core'
+import { Route, Filter } from './models'
+
 
 
 /**
@@ -28,42 +28,7 @@ export const allSignature: { [prop: string]: Filter } = {}
 export const defaultSymbol = `signature_default_${+new Date}${keyIndex}`
 
 
-export class Filter {
-  /**
-   * 路由前缀
-   */
-  public token = ''
-  /**
-   * 中间件
-   */
-  public use: ApplicationRequestHandler<Express>
-  /**
-   * http method
-   */
-  public method: string
-  /**
-   * 配置生成
-   */
-  public handler: <T>(option: T, route: Route) => Route | null = null
 
-  /**
-   * 过滤器
-   * @param token express 委托的路由
-   * @param use express 中间件
-   * @param method Http method
-   * @param handle 配置生成的时候会调用该函数，该函数需要返回一个 Route 对象
-   */
-  constructor(
-    token: string, use: ApplicationRequestHandler<any>, method = 'all',
-    handler?: <T>(option: T, route: Route) => Route) {
-    this.token = token
-    this.use = use
-    this.method = method
-    if (handler) {
-      this.handler = handler
-    }
-  }
-}
 
 /**
  * 给 filter 签名生成自己的装饰器

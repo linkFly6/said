@@ -54,10 +54,15 @@ const routerMount = (app: Express | Router) => {
   }
   Object.keys(allSignature).forEach(key => {
     let filter = allSignature[key]
+    /**
+     * 没有中间件逻辑
+     */
+    if (!filter.token && !filter.use) {
+      return
+    }
     if (!app[filter.method]) {
       throw `[router:method]Property method does not support this value:${filter.method}`
     }
-
     app[filter.method](filter.token, filter.use)
   })
 

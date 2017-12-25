@@ -1,4 +1,13 @@
-import { Request, Response, NextFunction, Router } from 'express'
+import {
+  Request,
+  Response,
+  NextFunction,
+  Router,
+  Express,
+  RequestHandler,
+  ErrorRequestHandler,
+  IRouterMatcher
+} from 'express'
 
 export class Route {
   /**
@@ -100,4 +109,43 @@ export abstract class ActionHandler<BHR, EHR> {
    * 后置处理，可以自行包装结果
    */
   abstract onResultExecuted: (err: RouterError | Error | null, req: Request, route: Route) => EHR | RouterError | null
+}
+
+
+
+export class Filter {
+  /**
+   * 路由前缀
+   */
+  public token?= ''
+  /**
+   * 中间件
+   */
+  public use?: RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>
+  /**
+   * http method
+   */
+  public method: string
+  /**
+   * 配置生成
+   */
+  public handler?: <T>(option: T, route: Route) => Route | null = null
+
+  /**
+   * 过滤器
+   * @param token express 委托的路由
+   * @param use express 中间件
+   * @param method Http method
+   * @param handle 配置生成的时候会调用该函数，该函数需要返回一个 Route 对象
+   */
+  constructor(
+    token?: string, use?: RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>, method = 'all',
+    handler?: <T>(option: T, route: Route) => Route) {
+    this.token = token
+    this.use = use
+    this.method = method
+    if (handler) {
+      this.handler = handler
+    }
+  }
 }

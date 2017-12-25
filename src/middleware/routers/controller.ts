@@ -163,11 +163,11 @@ export const createController = <BHR, EHR>(options: RouterOptions<BHR, EHR>, con
       if (configs.length) {
         route = configs.reduce((router, config) => {
           if (typeof config.filter.handler === 'function') {
-            let temp = config.filter.handler(config.options, router)
-            if (!(route instanceof Route)) {
-              throw `[Filter:handle]Filter handle needs to return the Route object, route: ${temp.path}`
+            let newRoute = config.filter.handler(config.options, router)
+            if (!(newRoute instanceof Route)) {
+              throw `[Filter:handle]Filter handle needs to return the Route object, route: ${JSON.stringify(newRoute)}`
             }
-            return temp
+            return newRoute
           }
           return router
         }, route)
