@@ -7,7 +7,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "allowJs": true,
+    // "allowJs": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "paths": {
@@ -15,10 +15,9 @@
         "node_modules/*",
         "src/types/*"
       ]
-    },
-    "listFiles": true
+    }
   },
   "include": [
-    "./src/**/*"
+    "src/**/*"
   ]
 }

@@ -14,25 +14,26 @@ const createConfig = function (basePath: string): Configuration {
       },
       access: {
         type: 'dateFile',
-        fileName: `${basePath}/access`,
+        filename: `${basePath}/access.log`,
         category: 'access',
       },
       info: {
         type: 'dateFile',
-        fileName: `${basePath}/info`,
+        filename: `${basePath}/info.log`,
         category: 'info'
       },
       error: {
         type: 'dateFile',
-        fileName: `${basePath}/error`,
+        filename: `${basePath}/error.log`,
         category: 'error'
       }
     },
     categories: {
+      default: { appenders: ['info'], level: 'info' },
       debug: { appenders: ['debug'], level: 'debug' },
       access: { appenders: ['access'], level: 'all' },
-      info: { appenders: ['access'], level: 'info' },
-      error: { appenders: ['access'], level: 'error' },
+      info: { appenders: ['info'], level: 'info' },
+      error: { appenders: ['error'], level: 'error' },
     }
   }
   /**

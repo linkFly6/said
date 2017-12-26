@@ -1,9 +1,10 @@
 import * as log4js from 'log4js'
 import { Logger } from 'log4js'
 import createConfig from '../config/log-config'
+import * as path from 'path'
 
 
-log4js.configure(createConfig(__dirname))
+log4js.configure(createConfig(path.resolve('./logs')))
 
 interface ILog {
   namespace: string
