@@ -16,6 +16,8 @@ import * as path from 'path'
 import * as mongoose from 'mongoose'
 import * as passport from 'passport'
 import * as log from './utils/log'
+import router from './middleware/routers'
+import { actionHandler } from './applications/router'
 
 import expressValidator = require('express-validator')
 
@@ -109,6 +111,12 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 
+
+router({
+  app: app,
+  handler: actionHandler,
+  root: path.join(__dirname, 'controllers')
+})
 
 /**
  * Primary app routes.

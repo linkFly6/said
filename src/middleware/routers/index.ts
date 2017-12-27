@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import * as path from 'path'
 import * as fs from 'fs'
 import { eachDir } from './utils'
@@ -11,15 +12,15 @@ import { createController } from './controller'
 /**
  * router 配置
  */
-export interface RouterOptions<BHR, EHR> {
+export interface RouterOptions {
   /**
-   * 请求根目录
+   * 请求根目录，默认为 /
    */
   base?: string
   /**
-   * 文件根目录
+   * controller 文件根目录
    */
-  root?: string
+  root: string
   /**
    * express 应用
    */
@@ -30,12 +31,16 @@ export interface RouterOptions<BHR, EHR> {
    * BHR: 前置处理，返回参数会在 action 的第二个参数中注入
    * EHR: 后置处理，可以自行包装结果
    */
-  handler?: ActionHandler<BHR, EHR>,
+  handler?: ActionHandler,
 
   /**
-   * 修正的 controller 文件名格式，默认为 '-controller'
+   * controller 文件名后缀，默认为 -controller
    */
-  trimControllerFileName?: string | RegExp
+  postfix?: string | RegExp
+  /**
+   * controller 匹配规则
+   */
+  match?: (fileName: string, postfix: string | RegExp) => boolean
 }
 
 
@@ -63,37 +68,49 @@ const routerMount = (app: Express | Router) => {
     if (!app[filter.method]) {
       throw `[router:method]Property method does not support this value:${filter.method}`
     }
-    app[filter.method](filter.token, filter.use)
+    if (filter.token)
+      app[filter.method](filter.token, filter.use)
+    else
+      app[filter.method](filter.use)
   })
 
   routerMounted = true
 }
 
-export default <BHR, EHR>(options: RouterOptions<BHR, EHR>) => {
-  if (!options.root) {
-    options.base = path.resolve('./')
-  }
+const DEFAULTS = {
+  // root: path.resolve('./controllers'),
+  postfix: '-controller',
+  base: '/',
+  match: (fileName: string, postfix: string | RegExp) => {
+    if (!fileName.match(postfix)) return false
+    if (/\.map$/.test(fileName)) return false
+    return true
+  },
+}
 
-  if (options.trimControllerFileName == null) {
-    options.trimControllerFileName = '-controller'
-  }
+export default (options: RouterOptions) => {
+  options = Object.assign({}, DEFAULTS, options)
   if (options.base) {
-    options.base = options.base.startsWith('/') ? options.base.substring(1) : options.base
-    options.base = options.base.endsWith('/') ? options.base.substring(0, options.base.length - 2) : options.base
+    options.base = options.base.startsWith('/') ? options.base : '/' + options.base
+    options.base = options.base.length > 1 && options.base.endsWith('/') ? options.base.substring(0, options.base.length - 2) : options.base
   }
-
+  if (!options.app) {
+    throw `[options:app]Express app is required`
+  }
+  if (!options.root) {
+    throw `[options:root]The controller root directory is required`
+  }
   routerMount(options.app)
 
-  const routes = eachDir(options.base).reduce((previous: Route[], filePath: string): Route[] => {
+  const routes = eachDir(options.root).reduce((previous: Route[], filePath: string): Route[] => {
     // /root/linkFly/mfe-tinker-webapp/controller/index.js => index.js，绝对路径转相对路径
     const fileName = path.relative(__dirname, filePath)
-    if (/base-controller\.js$/.test(fileName)) return previous
-    if (/\.js\.map$/.test(fileName)) return previous
+    if (!options.match(fileName, options.postfix)) return previous
     const constructor = require(fileName)
     // ../controller/create-provider-controller.js => create-provider-controller => create-provider => createProvider
     const controllerName = fileName
-      .replace(/\.+\/([^\/]+\/)?|\.js/g, '')
-      .replace(options.trimControllerFileName, '')
+      .replace(/\.*\/([^\/]+\/)*|\.js/g, '')
+      .replace(options.postfix, '')
       .replace(/\-(\w)/g, (_, letter) => {
         return letter.toUpperCase()
       })

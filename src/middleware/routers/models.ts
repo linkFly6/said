@@ -100,15 +100,15 @@ export class RouterError extends Error {
 /**
  * action 句柄，在 action 处理过程中统一注入执行上下文
  */
-export abstract class ActionHandler<BHR, EHR> {
+export class ActionHandler {
   /**
    * 前置处理，返回参数会在 action 的第二个参数中注入
    */
-  abstract onActionExecuting: (req: Request, route: Route) => BHR
+  public onActionExecuting?: <BHR>(req: Request, route: Route) => (BHR | null)
   /**
-   * 后置处理，可以自行包装结果
+   * 后置处理，可以自行包装结果，也可以不处理
    */
-  abstract onResultExecuted: (err: RouterError | Error | null, req: Request, route: Route) => EHR | RouterError | null
+  public onResultExecuted?: <EHR>(err: RouterError | Error | null, req: Request, route: Route) => (EHR | RouterError | null)
 }
 
 

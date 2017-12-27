@@ -52,10 +52,10 @@ const invalid = (res: Response, err: RouterError) => {
  * @param action 执行函数
  * @param handle 钩子句柄
  */
-export const routeAction = <BHR, EHR>(route: Route,
+export const routeAction = (route: Route,
   req: Request, res: Response, next: Function,
   action: ((req: Request, res: Response, next: Function) => void) | null,
-  handle?: ActionHandler<BHR, EHR>) => {
+  handle?: ActionHandler) => {
 
   const params = Object.assign({}, req.body, req.query)
   let injectionParams = { req, res }
@@ -130,7 +130,7 @@ export const routeAction = <BHR, EHR>(route: Route,
  * @param constructor 
  * @param controllerName 
  */
-export const createController = <BHR, EHR>(options: RouterOptions<BHR, EHR>, constructor: any, controllerName: string): Route[] => {
+export const createController = <BHR, EHR>(options: RouterOptions, constructor: any, controllerName: string): Route[] => {
   const routes: Route[] = []
   // router 的 class 定义了名字，并且 name 不是编译过后的 default
   if (constructor.name && !constructor.name.startsWith('default')) {
@@ -140,26 +140,28 @@ export const createController = <BHR, EHR>(options: RouterOptions<BHR, EHR>, con
     })
   }
 
+  // 循环所有属性
   let controller = new constructor()
   if (controller == null) return routes
 
-
-  // 循环所有属性
-  Object.keys(controller).map(propertyKey => {
+  // 默认声明的 class 都是不可枚举的，只能通过这种 hack 的方式获取
+  Object.getOwnPropertyNames(constructor.prototype).forEach(propertyKey => {
+    if (propertyKey === 'constructor') return
     // 获取静态属性的类型
-    const getMetadata = factoryGetMetadata(controller, propertyKey)
-    const metaDesignType = getMetadata('design:type')
+    // const getMetadata = factoryGetMetadata(controller, propertyKey)
+    // const metaDesignType = getMetadata('design:type')
     // 方法才包装
-    if (typeof metaDesignType === 'function') {
+    if (typeof controller[propertyKey] === 'function') {
       const action = controller[propertyKey]
       let route = new Route()
-      route.name = controllerName
+      route.controllerName = controllerName
+      route.name = propertyKey
       route.path = `${options.base}/${controllerName}/${propertyKey === 'index' ? '' : `/${propertyKey}`}`
       route.method = 'all'
       route.action = function (req: Request, res: Response, next: Function) {
         return routeAction(route, req, res, next, action, options.handler)
       }
-      const configs = getFilterAndOptions(controller)
+      const configs = getFilterAndOptions(controller, propertyKey)
       if (configs.length) {
         route = configs.reduce((router, config) => {
           if (typeof config.filter.handler === 'function') {

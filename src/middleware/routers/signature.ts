@@ -67,9 +67,9 @@ export const signature = (
  * 根据 key 获取 Filter 配置和 options
  * @param key 
  */
-export const getFilterAndOptions = (target: any) => {
+export const getFilterAndOptions = (target: any, propertyKey: string) => {
   let res: Array<{ options: any, filter: Filter }> = []
-  let targetKeys = Reflect.getMetadataKeys(target)
+  let targetKeys = Reflect.getMetadataKeys(target, propertyKey)
   let keys = targetKeys.filter((key: string) => {
     return !!~allKeys.findIndex(k => k == key)
   })
