@@ -62,16 +62,13 @@ const routerMount = (app: Express | Router) => {
     /**
      * 没有中间件逻辑
      */
-    if (!filter.token && !filter.use) {
+    if (!filter.token || !filter.use) {
       return
     }
     if (!app[filter.method]) {
       throw `[router:method]Property method does not support this value:${filter.method}`
     }
-    if (filter.token)
-      app[filter.method](filter.token, filter.use)
-    else
-      app[filter.method](filter.use)
+    app[filter.method](filter.token, filter.use)
   })
 
   routerMounted = true
@@ -91,8 +88,11 @@ const DEFAULTS = {
 export default (options: RouterOptions) => {
   options = Object.assign({}, DEFAULTS, options)
   if (options.base) {
-    options.base = options.base.startsWith('/') ? options.base : '/' + options.base
-    options.base = options.base.length > 1 && options.base.endsWith('/') ? options.base.substring(0, options.base.length - 2) : options.base
+    // options.base = options.base.startsWith('/') ? options.base : '/' + options.base
+    // options.base = options.base.length > 1 && options.base.endsWith('/') ? options.base.substring(0, options.base.length - 2) : options.base
+    // options.base = options.base.replace(/^\/|\/$/g, '')
+    // 去掉尾部的空格，前面的空格不去(因为会命中 express 不同的规则)
+    options.base = options.base.replace(/\/$/g, '')
   }
   if (!options.app) {
     throw `[options:app]Express app is required`

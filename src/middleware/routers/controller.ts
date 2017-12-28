@@ -31,6 +31,11 @@ const isErrorResult = (err: any) => {
   return err.msg !== undefined && err.code !== undefined
 }
 
+/**
+ * 统一正确的输出
+ * @param res 
+ * @param data 
+ */
 const output = (res: Response, data: any) => {
   res.json({
     code: 0,
@@ -39,41 +44,27 @@ const output = (res: Response, data: any) => {
   })
 }
 
+/**
+ * 统一错误的输出
+ * @param res 
+ * @param err 
+ */
 const invalid = (res: Response, err: RouterError) => {
   res.json(err.toJSON())
 }
 
+
 /**
- * 执行并封装真正的 router
- * @param route 路由配置
- * @param req Express
- * @param res Express
- * @param next Express
- * @param action 执行函数
- * @param handle 钩子句柄
+ * 生成统一的错误处理函数
+ * @param req 
+ * @param res 
+ * @param route 
+ * @param handle 
  */
-export const routeAction = (route: Route,
-  req: Request, res: Response, next: Function,
-  action: ((req: Request, res: Response, next: Function) => void) | null,
-  handle?: ActionHandler) => {
-
-  const params = Object.assign({}, req.body, req.query)
-  let injectionParams = { req, res }
-  // 标记是否已经结束了整个 router 操作
-  if (handle && typeof handle.onActionExecuting === 'function') {
-    let tmp = handle.onActionExecuting(req, route)
-    if (tmp) {
-      injectionParams = Object.assign(injectionParams, tmp)
-    }
-  }
-
-  /**
-   * 统一包装的错误函数
-   * @param error 
-   */
-  const exceptionHandle = (error: Error) => {
-    if (handle && typeof handle.onResultExecuted === 'function') {
-      let temp = handle.onResultExecuted(error, req, route)
+const factoryCreateExceptionHandle = (req: Request, res: Response, route: Route, handler?: ActionHandler) => {
+  return (error: Error) => {
+    if (handler && typeof handler.onResultExecuted === 'function') {
+      let temp = handler.onResultExecuted(error, req, route)
       if (RouterError.isLike(temp)) {
         invalid(res, new RouterError(temp))
         return
@@ -85,6 +76,37 @@ export const routeAction = (route: Route,
       invalid(res, new RouterError(100000, 'The server was unable to process the request'))
     }
   }
+}
+
+/**
+ * 执行并封装真正的 router
+ * @param route 路由配置
+ * @param req Express
+ * @param res Express
+ * @param next Express
+ * @param action 执行函数
+ * @param handler 钩子句柄
+ */
+export const routeAction = (route: Route,
+  req: Request, res: Response, next: Function,
+  action: ((req: Request, res: Response, next: Function) => void) | null,
+  handler?: ActionHandler) => {
+
+  const params = Object.assign({}, req.body, req.query)
+  let injectionParams = { req, res }
+  // 标记是否已经结束了整个 router 操作
+  if (handler && typeof handler.onActionExecuting === 'function') {
+    let tmp = handler.onActionExecuting(req, route)
+    if (tmp) {
+      injectionParams = Object.assign(injectionParams, tmp)
+    }
+  }
+
+  /**
+   * 统一包装的错误函数
+   * @param error 
+   */
+  const exceptionHandle = factoryCreateExceptionHandle(req, res, route, handler)
 
   try {
     let isNext = false
@@ -156,7 +178,7 @@ export const createController = <BHR, EHR>(options: RouterOptions, constructor: 
       let route = new Route()
       route.controllerName = controllerName
       route.name = propertyKey
-      route.path = `${options.base}/${controllerName}/${propertyKey === 'index' ? '' : `/${propertyKey}`}`
+      route.path = `${options.base}/${controllerName}${propertyKey === 'index' ? '' : `/${propertyKey}`}`
       route.method = 'all'
       route.action = function (req: Request, res: Response, next: Function) {
         return routeAction(route, req, res, next, action, options.handler)
