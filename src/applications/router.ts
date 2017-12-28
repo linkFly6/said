@@ -8,9 +8,9 @@ type ActionInjection = {
   log: Log
 }
 
-actionHandler.onActionExecuting = <ActionInjection>(req: Request, route: Route): ActionInjection => {
+actionHandler.onActionExecuting = <ActionInjection>(req: Request, route: Route) => {
   const log = new Log(`${route.controllerName}/${route.name}`)
-  log.info('')
+  log.info(Object.assign({}, req.body, req.query))
   return {
     log,
   } as any

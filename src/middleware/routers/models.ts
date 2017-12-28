@@ -117,7 +117,7 @@ export class Filter {
   /**
    * 路由前缀
    */
-  public token?= ''
+  public path?= ''
   /**
    * 中间件
    */
@@ -139,14 +139,14 @@ export class Filter {
    * @param handle 配置生成的时候会调用该函数，该函数需要返回一个 Route 对象
    */
   constructor(
-    token?: string,
+    path?: string,
     use?: RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>,
     method = 'all',
     handler?: <T>(option: T, route: Route) => Route) {
-    this.token = token
+    this.path = path
     this.use = use
     // 要求要么 use 和 token 不挂载，要么两个必须都挂载
-    if ((this.use && !this.token) || (this.token && !this.use)) {
+    if ((this.use && !this.path) || (this.path && !this.use)) {
       throw '[Filter:constructor]Use and token must exist simultaneously'
     }
     this.method = method

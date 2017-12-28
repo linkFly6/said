@@ -177,7 +177,7 @@ export const createController = <BHR, EHR>(options: RouterOptions, constructor: 
       const action = controller[propertyKey]
       let route = new Route()
       route.controllerName = controllerName
-      route.name = propertyKey
+      route.name = propertyKey === 'index' ? '' : propertyKey
       route.path = `${options.base}/${controllerName}${propertyKey === 'index' ? '' : `/${propertyKey}`}`
       route.method = 'all'
       route.action = function (req: Request, res: Response, next: Function) {
@@ -191,6 +191,9 @@ export const createController = <BHR, EHR>(options: RouterOptions, constructor: 
             if (!(newRoute instanceof Route)) {
               throw `[Filter:handle]Filter handle needs to return the Route object, route: ${JSON.stringify(newRoute)}`
             }
+            // 自动修正 path
+            newRoute.path = options.base.length && newRoute.path.startsWith(options.base)
+              ? newRoute.path : `${options.base}/${newRoute.path.replace(/^\//g, '')}`
             return newRoute
           }
           return router

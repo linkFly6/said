@@ -53,7 +53,7 @@ let routerMounted = false
  * @param {string} base = [root] - 默认根目录
  * @returns {function}
  */
-const routerMount = (app: Express | Router) => {
+const routerMount = (options: RouterOptions) => {
   if (routerMounted) {
     throw `[router:mount]Repeat mount routing is not allowed`
   }
@@ -62,13 +62,16 @@ const routerMount = (app: Express | Router) => {
     /**
      * 没有中间件逻辑
      */
-    if (!filter.token || !filter.use) {
+    if (!filter.path || !filter.use) {
       return
     }
-    if (!app[filter.method]) {
+    if (!options.app[filter.method]) {
       throw `[router:method]Property method does not support this value:${filter.method}`
     }
-    app[filter.method](filter.token, filter.use)
+    const path = 
+    options.base.length && filter.path.startsWith(options.base)
+              ? filter.path : `${options.base}/${filter.path.replace(/^\//g, '')}`
+    options.app[filter.method](path, filter.use)
   })
 
   routerMounted = true
@@ -112,7 +115,7 @@ export default (options: RouterOptions) => {
   if (!options.root) {
     throw `[options:root]The controller root directory is required`
   }
-  
+
 
   const routes = eachDir(options.root).reduce((previous: Route[], filePath: string): Route[] => {
     // /root/linkFly/mfe-tinker-webapp/controller/index.js => index.js，绝对路径转相对路径
@@ -137,7 +140,7 @@ export default (options: RouterOptions) => {
    * 这时候可以保证中间件已经被挂载到了 signature.allSignature 中
    * 否则会因为 nodeJS 的优化，装饰器的签名代码尚未执行，controller 就已经生成了
    */
-  routerMount(options.app)
+  routerMount(options)
 
   routes.forEach(route => {
     if (!options.app[route.method]) {
