@@ -1,91 +1,60 @@
-import * as bcrypt from 'bcrypt-nodejs'
-import * as crypto from 'crypto'
 import * as mongoose from 'mongoose'
 
-
-export type UserModel = mongoose.Document & {
-  email: string,
-  password: string,
-  passwordResetToken: string,
-  passwordResetExpires: Date,
-
-  facebook: string,
-  tokens: AuthToken[],
-
-  profile: {
-    name: string,
-    gender: string,
-    location: string,
-    website: string,
-    picture: string
-  },
-
-  comparePassword: (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void,
-  gravatar: (size: number) => string
+/**
+ * 用户角色
+ */
+export enum UserRole {
+  /**
+   * 普通用户
+   */
+  NORMAL = 0,
+  /**
+   * 后台用户
+   */
+  ADMIN = 1
 }
-
-export type AuthToken = {
-  accessToken: string,
-  kind: string
-}
-
-const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
-  password: String,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-
-  facebook: String,
-  twitter: String,
-  google: String,
-  tokens: Array,
-
-  profile: {
-    name: String,
-    gender: String,
-    location: String,
-    website: String,
-    picture: String
-  }
-}, { timestamps: true })
 
 /**
- * Password hash middleware.
+ * 用户类(前台)
  */
-userSchema.pre('save', function save(next) {
-  const user = this
-  if (!user.isModified('password')) { return next() }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err) }
-    bcrypt.hash(user.password, salt, undefined, (err: mongoose.Error, hash) => {
-      if (err) { return next(err) }
-      user.password = hash
-      next()
-    })
-  })
+export type UserModel = mongoose.Document & {
+  _id: string
+  /**
+   * email
+   */
+  email: string
+  /**
+   * 用户站点
+   */
+  site?: string
+  /**
+   * 用户昵称
+   */
+  nickName: string
+  /**
+   * 用户角色
+   */
+  role: UserRole
+  /**
+   * 用户会话 token
+   */
+  token: string
+  /**
+   * 用户渠道 ID（用于用户分享）
+   */
+  channelId: string
+}
+
+export const UserSchema = new mongoose.Schema({
+  email: String,
+  site: String,
+  nickName: String,
+  role: UserRole,
+  token: String,
+  channelId: String,
 })
 
-userSchema.methods.comparePassword = function (candidatePassword: string, cb: (err: any, isMatch: any) => {}) {
-  bcrypt.compare(candidatePassword, this.password, (err: mongoose.Error, isMatch: boolean) => {
-    cb(err, isMatch)
-  })
-}
 
+const Model = mongoose.model('User', UserSchema)
 
-/**
- * Helper method for getting user's gravatar.
- */
-userSchema.methods.gravatar = function (size: number) {
-  if (!size) {
-    size = 200
-  }
-  if (!this.email) {
-    return `https://gravatar.com/avatar/?s=${size}&d=retro`
-  }
-  const md5 = crypto.createHash('md5').update(this.email).digest('hex')
-  return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`
-}
-
-// export const User: UserType = mongoose.model<UserType>('User', userSchema);
-const User = mongoose.model('User', userSchema)
-export default User
+export default Model
