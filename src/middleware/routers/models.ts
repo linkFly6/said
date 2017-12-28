@@ -139,10 +139,16 @@ export class Filter {
    * @param handle 配置生成的时候会调用该函数，该函数需要返回一个 Route 对象
    */
   constructor(
-    token?: string, use?: RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>, method = 'all',
+    token?: string,
+    use?: RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>,
+    method = 'all',
     handler?: <T>(option: T, route: Route) => Route) {
     this.token = token
     this.use = use
+    // 要求要么 use 和 token 不挂载，要么两个必须都挂载
+    if ((this.use && !this.token) || (this.token && !this.use)) {
+      throw '[Filter:constructor]Use and token must exist simultaneously'
+    }
     this.method = method
     if (handler) {
       this.handler = handler

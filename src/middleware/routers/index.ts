@@ -85,6 +85,18 @@ const DEFAULTS = {
   },
 }
 
+
+/**
+ * 自动挂载路由，并且可以通过装饰器为路由注入其他东西 => Router => Controller
+ * 设计思想：
+ * 通过 signature 签名生成自己的装饰器
+ *  - 挂载为 express 中间件
+ *  - 获取处理路由细节
+ * 自动读取路由 (Controller) 目录
+ * 自动处理参数和返回结果上下文，并且可以通过装饰器重写和扩展自己的处理上下文
+ * 
+ * 核心的目的只有一个： Controller 中只处理自己的业务逻辑，路由和其他的细节处理都应该自动完成
+ */
 export default (options: RouterOptions) => {
   options = Object.assign({}, DEFAULTS, options)
   if (options.base) {
@@ -100,7 +112,7 @@ export default (options: RouterOptions) => {
   if (!options.root) {
     throw `[options:root]The controller root directory is required`
   }
-  routerMount(options.app)
+  
 
   const routes = eachDir(options.root).reduce((previous: Route[], filePath: string): Route[] => {
     // /root/linkFly/mfe-tinker-webapp/controller/index.js => index.js，绝对路径转相对路径
@@ -119,6 +131,13 @@ export default (options: RouterOptions) => {
       constructor.default ? constructor.default : constructor,
       controllerName))
   }, [])
+
+  /**
+   * 先生成 controller 触发 signature 的逻辑(得到装饰器的 key 和中间件)
+   * 这时候可以保证中间件已经被挂载到了 signature.allSignature 中
+   * 否则会因为 nodeJS 的优化，装饰器的签名代码尚未执行，controller 就已经生成了
+   */
+  routerMount(options.app)
 
   routes.forEach(route => {
     if (!options.app[route.method]) {
