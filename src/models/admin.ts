@@ -25,7 +25,7 @@ export enum AdminRule {
 /**
  * 后台管理员（作者类）
  */
-export type AdminModel = mongoose.Document & {
+export interface AdminModel extends mongoose.Document {
   /**
    * mongoDB 默认 ID
    */
@@ -69,10 +69,10 @@ export const AdminSchema = new mongoose.Schema({
   avatar: { type: String, required: false },
   email: String,
   bio: String,
-  rule: AdminRule,
+  rule: Number,
 })
 
 
-const Model = mongoose.model('Admin', AdminSchema)
+const Model = mongoose.model<AdminModel>('Admin', AdminSchema)
 
 export default Model

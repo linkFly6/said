@@ -1,9 +1,10 @@
-import { get, user } from '../utils/decorators/route'
+import { get } from '../filters/http'
+import { admin } from '../filters/backend'
 
 
 export default class {
   @get
-  @user
+  @admin
   public check(params: any) {
     console.log(params.user)
     return {}

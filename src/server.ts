@@ -114,7 +114,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 router({
   app: app,
   handler: actionHandler,
-  root: path.join(__dirname, 'controllers')
+  root: path.join(__dirname, 'controllers'),
 })
 
 /**

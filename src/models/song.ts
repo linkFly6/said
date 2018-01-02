@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose'
 /**
  * 歌曲
  */
-export type SongModel = mongoose.Document & {
+export interface SongModel extends mongoose.Document {
   /**
    * url
    */
@@ -32,7 +32,7 @@ export type SongModel = mongoose.Document & {
   /**
    * 发行日期
    */
-  releaseDate: Date,
+  releaseDate: number,
   /**
    * 时长（ms）
    */
@@ -50,12 +50,12 @@ export const SongSchema = new mongoose.Schema({
   size: Number,
   artist: String,
   album: String,
-  releaseDate: Date,
+  releaseDate: Number,
   duration: Number,
-  image: [ImageSchema],
+  image: ImageSchema as any,
 })
 
 
-const Model = mongoose.model('Song', SongSchema)
+const Model = mongoose.model<SongModel>('Song', SongSchema)
 
 export default Model

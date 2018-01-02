@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# 要自己分步执行，因为 bash 远程连接之后就不执行了
+
+# 远程连接 mongoDB
+mongo 192.168.99.100:32769/tasaid
+
+# 插入测试数据
+db.getCollection('admins').insert({ rule: 2, nickName: "test", pwd: "test", userName: "test-linkFly" })
+db.getCollection('adminRecords').insert({
+  token: "test-token",
+  ip: "172.0.0.1",
+  headers: "",
+  createTime: 1514891331502,
+  type: 1,
+})

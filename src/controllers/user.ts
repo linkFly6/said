@@ -2,7 +2,7 @@ import * as async from 'async'
 import * as crypto from 'crypto'
 import * as nodemailer from 'nodemailer'
 import * as passport from 'passport'
-import { default as User, UserModel, AuthToken } from '../models/User'
+import { default as User, UserModel } from '../models/User'
 import { Request, Response, NextFunction } from 'express'
 import { LocalStrategyInfo } from 'passport-local'
 import { WriteError } from 'mongodb'
@@ -142,10 +142,10 @@ export let postUpdateProfile = (req: Request, res: Response, next: NextFunction)
   User.findById(req.user.id, (err, user: UserModel) => {
     if (err) { return next(err) }
     user.email = req.body.email || ''
-    user.profile.name = req.body.name || ''
-    user.profile.gender = req.body.gender || ''
-    user.profile.location = req.body.location || ''
-    user.profile.website = req.body.website || ''
+    // user.profile.name = req.body.name || ''
+    // user.profile.gender = req.body.gender || ''
+    // user.profile.location = req.body.location || ''
+    // user.profile.website = req.body.website || ''
     user.save((err: WriteError) => {
       if (err) {
         if (err.code === 11000) {
@@ -177,7 +177,7 @@ export let postUpdatePassword = (req: Request, res: Response, next: NextFunction
 
   User.findById(req.user.id, (err, user: UserModel) => {
     if (err) { return next(err) }
-    user.password = req.body.password
+    // user.password = req.body.password
     user.save((err: WriteError) => {
       if (err) { return next(err) }
       req.flash('success', { msg: 'Password has been changed.' })
@@ -208,7 +208,7 @@ export let getOauthUnlink = (req: Request, res: Response, next: NextFunction) =>
   User.findById(req.user.id, (err, user: any) => {
     if (err) { return next(err) }
     user[provider] = undefined
-    user.tokens = user.tokens.filter((token: AuthToken) => token.kind !== provider)
+    user.tokens = user.tokens.filter((token: any /*AuthToken*/) => token.kind !== provider)
     user.save((err: WriteError) => {
       if (err) { return next(err) }
       req.flash('info', { msg: `${provider} account has been unlinked.` })
@@ -337,7 +337,7 @@ export let postForgot = (req: Request, res: Response, next: NextFunction) => {
         done(err, token)
       })
     },
-    function setRandomToken(token: AuthToken, done: Function) {
+    function setRandomToken(token: any/*AuthToken*/, done: Function) {
       User.findOne({ email: req.body.email }, (err, user: any) => {
         if (err) { return done(err) }
         if (!user) {
@@ -351,7 +351,7 @@ export let postForgot = (req: Request, res: Response, next: NextFunction) => {
         })
       })
     },
-    function sendForgotPasswordEmail(token: AuthToken, user: UserModel, done: Function) {
+    function sendForgotPasswordEmail(token: any /*AuthToken*/, user: UserModel, done: Function) {
       const transporter = nodemailer.createTransport({
         service: 'SendGrid',
         auth: {

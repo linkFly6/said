@@ -17,7 +17,7 @@ export enum UserRole {
 /**
  * 用户类(前台)
  */
-export type UserModel = mongoose.Document & {
+export interface UserModel extends mongoose.Document {
   _id: string
   /**
    * email
@@ -49,12 +49,12 @@ export const UserSchema = new mongoose.Schema({
   email: String,
   site: String,
   nickName: String,
-  role: UserRole,
+  role: Number,
   token: String,
   channelId: String,
 })
 
 
-const Model = mongoose.model('User', UserSchema)
+const Model = mongoose.model<UserModel>('User', UserSchema)
 
 export default Model

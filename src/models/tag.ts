@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose'
 /**
  * 标签
  */
-export type TagModel = mongoose.Document & {
+export interface TagModel extends mongoose.Document {
   /**
    * tag
    */
@@ -19,6 +19,6 @@ export const TagSchema = new mongoose.Schema({
 })
 
 
-const Model = mongoose.model('Tag', TagSchema)
+const Model = mongoose.model<TagModel>('Tag', TagSchema)
 
 export default Model

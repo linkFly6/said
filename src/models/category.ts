@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose'
 /**
  * 分类
  */
-export type CategoryModel = mongoose.Document & {
+export interface CategoryModel extends mongoose.Document {
   _id: string
   /**
    * 分类 icon 文件名
@@ -21,6 +21,6 @@ export const CategorySchema = new mongoose.Schema({
 })
 
 
-const Model = mongoose.model('Category', CategorySchema)
+const Model = mongoose.model<CategoryModel>('Category', CategorySchema)
 
 export default Model

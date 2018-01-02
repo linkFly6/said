@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose'
 /**
  * 图片资源
  */
-export type ImageModel = mongoose.Document & {
+export interface ImageModel extends mongoose.Document {
   /**
     * 图片名称
     */
@@ -65,8 +65,8 @@ export const ImageSchema = new mongoose.Schema({
   name: String,
   fileName: String,
   size: Number,
-  type: ImageType,
+  type: Number,
 })
 
-const Image = mongoose.model('Image', ImageSchema)
+const Image = mongoose.model<ImageModel>('Image', ImageSchema)
 export default Image

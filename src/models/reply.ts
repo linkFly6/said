@@ -4,14 +4,14 @@ import * as mongoose from 'mongoose'
 /**
  * 用户针对评论的回复
  */
-export type ReplyModel = mongoose.Document & {
+export interface ReplyModel extends mongoose.Document {
   _id: string
   /**
    * 回复评论的用户
    */
   user: UserModel
   /**
-   * 针对回复的回复
+   * 针对回复的回复，只有一级回复
    */
   toReply?: ReplyModel
   /**
@@ -25,19 +25,23 @@ export type ReplyModel = mongoose.Document & {
   /**
    * 创建时间
    */
-  createTime: Date,
+  createTime: Number,
 }
 
 export const ReplySchema = new mongoose.Schema({
-  user: [UserSchema],
-  // TODO 自引用怎么破？
-  // toReply,
+  user: { type: UserSchema },
+  toReply: [this],
+  // or
+  // toReply: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Reply'
+  // },
   context: String,
   contextHTML: String,
-  createTime: { type: Date, default: Date.now },
+  createTime: Number,
 })
 
 
-const Model = mongoose.model('Reply', ReplySchema)
+const Model = mongoose.model<ReplyModel>('Reply', ReplySchema)
 
 export default Model

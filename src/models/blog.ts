@@ -1,21 +1,20 @@
 import { AdminModel, AdminSchema } from './admin'
+import { TagModel, TagSchema } from './tag'
 import { CategoryModel, CategorySchema } from './category'
 import { CommentModel, CommentSchema } from './comment'
-import { SongModel, SongSchema } from './song'
-import { ImageSchema, ImageModel } from './image'
 import * as mongoose from 'mongoose'
 
 
 /**
- * Said Model(听说)
+ * blog Model(日志)
  */
-export interface ArticleModel extends mongoose.Document {
+export interface BlogModel extends mongoose.Document {
   /**
    * mongoDB 默认 ID
    */
   _id: string,
   /**
-   * said 标题
+   * 日志标题
    */
   title: string,
   /**
@@ -34,16 +33,14 @@ export interface ArticleModel extends mongoose.Document {
    * 文件名
    */
   fileName: string,
-
   /**
-   * said 配图海报
+   * 标签
    */
-  poster: ImageModel
-
+  tags: TagModel[],
   /**
-   * said 引用的歌曲
+   * 分类
    */
-  song: SongModel
+  category: CategoryModel,
   /**
    * 发布时间时间戳
    */
@@ -65,6 +62,10 @@ export interface ArticleModel extends mongoose.Document {
      */
     summaryHTML: string,
   },
+  /**
+   * 评论
+   */
+  comments: CommentModel[]
   /**
    * 相关信息
    */
@@ -99,6 +100,10 @@ export interface ArticleModel extends mongoose.Document {
      */
     isPrivate?: boolean,
     /**
+     * 是否转载
+     */
+    isReprint?: boolean,
+    /**
      * 排序规则
      */
     sort?: number,
@@ -113,26 +118,25 @@ export interface ArticleModel extends mongoose.Document {
     /**
      * 访问密码
      */
-    password: string,
+    password?: string,
   }
 }
 
-
-
-export const ArticleSchema = new mongoose.Schema({
+export const BlogSchema = new mongoose.Schema({
   title: String,
   urlKey: String,
-  author: { type: AdminSchema },
+  author: AdminSchema as any,
   summary: String,
   fileName: String,
-  poster: ImageSchema as any,
-  song: SongSchema as any,
+  tags: [TagSchema],
+  category: CategorySchema as any,
   createTime: Number,
   other: {
     xml: String,
     html: String,
     summaryHTML: String,
   },
+  comments: [CommentSchema],
   info: {
     pv: Number,
     likeCount: Number,
@@ -151,6 +155,6 @@ export const ArticleSchema = new mongoose.Schema({
 })
 
 
-const Model = mongoose.model<ArticleModel>('Article', ArticleSchema)
+const Model = mongoose.model<BlogModel>('Blog', BlogSchema)
 
 export default Model
