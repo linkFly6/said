@@ -68,3 +68,13 @@ export const admin = signature(
       route.path = `user/${route.controllerName}${route.name ? `/${route.name}` : ''}`
       return route
     }))
+
+
+
+/**
+ * 配置路径
+ */
+export const path = signatureWithOption<string>(new Filter(void 0, void 0, 'all', (path: any, route: Route) => {
+  route.path = path
+  return route
+}))
