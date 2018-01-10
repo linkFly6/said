@@ -1,7 +1,7 @@
 /**
  * 通用返回类型抽象
  */
-export default class Returns<T> {
+export class Returns<T> {
   private _success: boolean
   /**
    * 结果是否正确，判断条件为 errorCode 不为 0，但并不检测数据合法性, 强检测数据合法请使用 check()

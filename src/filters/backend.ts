@@ -3,7 +3,7 @@ import { Request, Response, NextFunction, Express } from 'express'
 import { Filter, Route } from '../middleware/routers/models'
 import { default as AdminDb, AdminModel } from '../models/admin'
 import { default as AdminRecordDb, AdminRecordModel } from '../models/admin-record'
-import Returns from '../models/Returns'
+import { Returns } from '../models/Returns'
 
 
 const ERRORS = {
@@ -39,7 +39,6 @@ export const admin = signature(
       req.assert('token', '请求信息不正确').notEmpty()
       const errors = req.validationErrors()
       if (errors) {
-        req.flash('errors', errors)
         const returns = new Returns(null, {
           code: ERRORS.NOTOKEN,
           msg: '请求信息不正确',
@@ -51,7 +50,6 @@ export const admin = signature(
         if (err) {
           return next(err)
         }
-        console.log(admin)
         if (!admin) {
           const returns = new Returns(null, {
             code: ERRORS.NORECORD,

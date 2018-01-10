@@ -117,7 +117,7 @@ export const routeAction = (route: Route,
     if (methodResult == null) {
       // 中间件逻辑，执行了 next
       if (isNext) return
-      res.json({})
+      output(res, {})
     } else {
       // async 方法返回的 promise
       if (methodResult.then || methodResult instanceof Promise) {

@@ -75,7 +75,7 @@ export const getFilterAndOptions = (target: any, propertyKey: string) => {
   })
   if (keys) {
     res = keys.map(key => {
-      const options = Reflect.getMetadata(key, target)
+      const options = Reflect.getMetadata(key, target, propertyKey)
       const filter = allSignature[key]
       return {
         options: options === defaultSymbol ? null : options,

@@ -29,14 +29,15 @@ export enum OperationType {
   Warning = 5
 }
 
+
 /**
  * 管理员操作记录类
  */
-export interface AdminRecordModel extends mongoose.Document {
+export interface IAdminRecord {
   /**
    * mongoDB 默认 ID
    */
-  _id: string,
+  _id: any,
 
   /**
    * 用户登录 token
@@ -66,6 +67,12 @@ export interface AdminRecordModel extends mongoose.Document {
   admin: AdminModel,
 
 }
+
+/**
+ * 管理员操作记录类
+ */
+// tslint:disable-next-line:no-empty-interface
+export interface AdminRecordModel extends IAdminRecord, mongoose.Document { }
 
 export const AdminRecordSchema = new mongoose.Schema({
   token: String,

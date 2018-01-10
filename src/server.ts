@@ -11,7 +11,7 @@ import * as errorHandler from 'errorhandler'
 import * as lusca from 'lusca'
 import * as dotenv from 'dotenv'
 import * as mongo from 'connect-mongo'
-import * as flash from 'express-flash'
+// import * as flash from 'express-flash'
 import * as path from 'path'
 import * as mongoose from 'mongoose'
 import * as passport from 'passport'
@@ -87,7 +87,7 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(flash())
+// app.use(flash())
 app.use(lusca.xframe('SAMEORIGIN'))
 app.use(lusca.xssProtection(true))
 app.use((req, res, next) => {

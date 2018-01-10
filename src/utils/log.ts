@@ -39,7 +39,7 @@ export const errorLogger = log4js.getLogger('error')
 export const Log4js = log4js
 
 
-export default class Log implements ILog {
+export class Log implements ILog {
   public static makeMsg(logger: Logger, fn: string, namespace: string, title = 'msg', desc = '') {
     let description: string
     if (typeof desc !== 'string') {

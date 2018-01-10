@@ -33,11 +33,11 @@ export interface AdminModel extends mongoose.Document {
   /**
    * 用户名
    */
-  userName: string
+  username: string
   /**
-   * pwd 根据 said 私有公匙和私有私匙进行 RSA 加密
+   * password 根据 said 私有公匙和私有私匙进行 RSA 加密
    */
-  pwd: string
+  password: string
   /**
    * 昵称
    */
@@ -64,7 +64,7 @@ export interface AdminModel extends mongoose.Document {
 
 export const AdminSchema = new mongoose.Schema({
   userName: String,
-  pwd: String,
+  password: String,
   nickName: String,
   avatar: { type: String, required: false },
   email: String,
