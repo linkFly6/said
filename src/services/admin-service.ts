@@ -1,4 +1,4 @@
-import { default as AdminDb, AdminModel } from '../models/admin'
+import { default as AdminDb, AdminModel, AdminRule } from '../models/admin'
 import { default as AdminRecordDb, AdminRecordModel, OperationType, IAdminRecord } from '../models/admin-record'
 import { Log } from '../utils/log'
 import * as jwt from 'jsonwebtoken'
@@ -21,6 +21,13 @@ export const cryptoPassword = (password: string) => {
   return aes.update(md5Str, 'utf8', 'hex') + aes.final('hex')
 }
 
+/**
+ * 用户登录
+ * @param username 
+ * @param password 
+ * @param ip 
+ * @param headers 
+ */
 export const login = (username: string, password: string, ip: string, headers: string) => {
   log.info('service.login.call', { username, ip, headers })
 
@@ -76,4 +83,19 @@ export const login = (username: string, password: string, ip: string, headers: s
       })
     })
   })
+}
+
+
+/**
+ * 根据 token 获取用户信息
+ * @param token 
+ */
+export const getUserInfoByToken = (token: string) => {
+  return jwt.verify(token, process.env.JWT_SECRET) as {
+    nickName: string,
+    avatar: string,
+    bio: string,
+    rule: AdminRule,
+    email: string,
+  }
 }
