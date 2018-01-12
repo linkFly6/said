@@ -9,7 +9,7 @@ type ActionInjection = {
 }
 
 actionHandler.onActionExecuting = <ActionInjection>(req: Request, route: Route) => {
-  const log = new Log(`${route.controllerName}/${route.name}`)
+  const log = new Log(`controller/${route.controllerName}/${route.name}`)
   log.info('actionExecuting', Object.assign({}, req.body, req.query))
   return {
     log,

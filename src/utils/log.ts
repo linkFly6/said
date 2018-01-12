@@ -33,6 +33,7 @@ if (env === 'development') {
 export const accessLogger = log4js.getLogger('access')
 export const infoLogger = log4js.getLogger('info')
 export const errorLogger = log4js.getLogger('error')
+export const warnLogger = log4js.getLogger('warn')
 /**
  * log4js 实例
  */
@@ -69,7 +70,7 @@ export class Log implements ILog {
     Log.makeMsg(infoLogger, 'info', this.namespace, title, JSON.stringify(desc))
   }
   public warn(title: string, desc: any = ''): void {
-    Log.makeMsg(infoLogger, 'warn', this.namespace, title, JSON.stringify(desc))
+    Log.makeMsg(warnLogger, 'warn', this.namespace, title, JSON.stringify(desc))
   }
   public error(title: string, desc: any): void {
     let errMsg = ''

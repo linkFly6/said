@@ -8,9 +8,9 @@ import { RouterError } from '../../middleware/routers/models'
 
 
 const ERRORS: { [prop: string]: RouterError } = {
-  PARAMS: new RouterError(1, '登录信息不正确'),
-  SERVICEERROR: new RouterError(2, '登录失败'),
-  SERVER: new RouterError(3, '服务异常'),
+  SERVER: new RouterError(1, '服务异常'),
+  PARAMS: new RouterError(2, '登录信息不正确'),
+  SERVICEERROR: new RouterError(3, '登录失败'),
   NOTUSER: new RouterError(4, '暂无用户信息'),
   TOKENFAIL: new RouterError(5, '获取用户信息不正确'),
   LOGINFAIL: new RouterError(6, '用户登录信息已失效，请重新登录'),

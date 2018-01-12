@@ -22,6 +22,11 @@ const createConfig = function (basePath: string): Configuration {
         filename: `${basePath}/info.log`,
         category: 'info'
       },
+      warn: {
+        type: 'dateFile',
+        filename: `${basePath}/warn.log`,
+        category: 'warn'
+      },
       error: {
         type: 'dateFile',
         filename: `${basePath}/error.log`,
@@ -32,8 +37,9 @@ const createConfig = function (basePath: string): Configuration {
       default: { appenders: ['info'], level: 'info' },
       debug: { appenders: ['debug'], level: 'debug' },
       access: { appenders: ['access'], level: 'all' },
-      info: { appenders: ['info'], level: 'info' },
-      error: { appenders: ['error'], level: 'error' },
+      info: { appenders: ['info'], level: 'all' },
+      warn: { appenders: ['warn'], level: 'all' },
+      error: { appenders: ['error'], level: 'all' },
     }
   }
   /**

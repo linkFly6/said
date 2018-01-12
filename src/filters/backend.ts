@@ -3,14 +3,19 @@ import { Request, Response, NextFunction, Express } from 'express'
 import { Filter, Route } from '../middleware/routers/models'
 import { default as AdminDb, AdminModel } from '../models/admin'
 import { default as AdminRecordDb, AdminRecordModel } from '../models/admin-record'
+import { getUserInfoByToken } from '../services/admin-service'
+import { ServiceError } from '../models/server/said-error'
 import { Returns } from '../models/Returns'
-
+import { Log } from '../utils/log'
+import { SimpleAdmin } from '../types/admin'
 
 const ERRORS = {
   NOTOKEN: 10000,
   NORECORD: 10001,
 }
 
+
+const log = new Log('filter/backend')
 
 // interface UserRequest extends Request {
 //   query: any & { user: { name: string, age: number } }
@@ -22,7 +27,7 @@ const ERRORS = {
 
 export const admin = signature(
   new Filter(
-    'user/*',
+    '/back/api/user/*',
     (req: Request, res: Response, next: NextFunction) => {
       const params = req.method === 'GET'
         ? req.query : req.body
@@ -46,24 +51,39 @@ export const admin = signature(
         })
         return res.json(returns.toJSON())
       }
-      AdminRecordDb.findOne({ token: params.token }).populate('admin').exec((err, admin: AdminModel) => {
-        if (err) {
-          return next(err)
-        }
-        if (!admin) {
-          const returns = new Returns(null, {
-            code: ERRORS.NORECORD,
-            msg: '请求信息不正确',
-            data: null,
-          })
-          return res.json(returns.toJSON())
-        }
+
+      try {
+        let res = getUserInfoByToken<SimpleAdmin>(params.token)
+        log.info('admin.getUserInfoByToken', res)
+        params.user = res
         next()
-      })
+      } catch (error) {
+        if (ServiceError.is(error)) {
+          log.error((error as ServiceError).title, (error as ServiceError).data)
+        } else {
+          log.error('catch', error)
+        }
+        next(error)
+      }
+
+      // AdminRecordDb.findOne({ token: params.token }).populate('admin').exec((err, admin: AdminModel) => {
+      //   if (err) {
+      //     return next(err)
+      //   }
+      //   if (!admin) {
+      //     const returns = new Returns(null, {
+      //       code: ERRORS.NORECORD,
+      //       msg: '请求信息不正确',
+      //       data: null,
+      //     })
+      //     return res.json(returns.toJSON())
+      //   }
+      //   next()
+      // })
     },
     'all',
     (options: null, route: Route) => {
-      route.path = `user/${route.controllerName}${route.name ? `/${route.name}` : ''}`
+      route.path = `/back/api/user/${route.controllerName}${route.name ? `/${route.name}` : ''}`
       return route
     }))
 

@@ -29,14 +29,14 @@ export const cryptoPassword = (password: string) => {
  * @param headers 
  */
 export const login = (username: string, password: string, ip: string, headers: string) => {
-  log.info('service.login.call', { username, ip, headers })
+  log.info('login.call', { username, ip, headers })
 
   // 对密码进行加密
   password = cryptoPassword(password)
 
   return AdminDb.findOne({ username, password }).exec((err, admin) => {
     if (err) {
-      throw new ServiceError('service.login.findOne', err)
+      throw new ServiceError('login.findOne', err)
     }
     return admin
   }).then<IAdminRecord | null>((admin: AdminModel | null) => {
@@ -44,6 +44,7 @@ export const login = (username: string, password: string, ip: string, headers: s
     let token: string
     try {
       token = jwt.sign({
+        id: admin._id,
         nickName: admin.nickName,
         avatar: admin.avatar,
         bio: admin.bio,
@@ -53,7 +54,7 @@ export const login = (username: string, password: string, ip: string, headers: s
           expiresIn: '45 days'
         })
     } catch (error) {
-      throw new ServiceError('service.login.findOne.jwt.sign', error)
+      throw new ServiceError('login.findOne.jwt.sign', error)
     }
     const record: IAdminRecord = {
       token,
@@ -65,7 +66,7 @@ export const login = (username: string, password: string, ip: string, headers: s
         _id: admin._id,
       }
     } as any
-    log.info('service.login.record.model', record)
+    log.info('login.record.model', record)
     const recordDb = new AdminRecordDb(record)
     return new Promise<IAdminRecord>(resolve => {
       recordDb.save(err => {
@@ -73,6 +74,7 @@ export const login = (username: string, password: string, ip: string, headers: s
           throw new ServiceError('service.login.record.save', err)
         }
         record.admin = {
+          id: admin._id,
           nickName: admin.nickName,
           avatar: admin.avatar,
           email: admin.email,
@@ -90,12 +92,6 @@ export const login = (username: string, password: string, ip: string, headers: s
  * 根据 token 获取用户信息
  * @param token 
  */
-export const getUserInfoByToken = (token: string) => {
-  return jwt.verify(token, process.env.JWT_SECRET) as {
-    nickName: string,
-    avatar: string,
-    bio: string,
-    rule: AdminRule,
-    email: string,
-  }
+export const getUserInfoByToken = <T = object>(token: string) => {
+  return jwt.verify(token, process.env.JWT_SECRET) as T
 }
