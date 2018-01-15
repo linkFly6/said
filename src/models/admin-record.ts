@@ -38,7 +38,10 @@ export interface IAdminRecord {
    * mongoDB 默认 ID
    */
   _id: any,
-
+  /**
+   * 操作简述
+   */
+  title: string,
   /**
    * 用户登录 token
    */
@@ -75,6 +78,7 @@ export interface IAdminRecord {
 export interface AdminRecordModel extends IAdminRecord, mongoose.Document { }
 
 export const AdminRecordSchema = new mongoose.Schema({
+  title: String,
   token: String,
   ip: String,
   headers: String,

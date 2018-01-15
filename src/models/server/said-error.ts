@@ -13,7 +13,7 @@ export class ServiceError extends Error {
   public get data(): any {
     return this._data
   }
-  constructor(title: string, data: any, message?: '') {
+  constructor(title: string, data: any, message = '') {
     super(message)
     this._title = title
     this._data = data

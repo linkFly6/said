@@ -55,7 +55,7 @@ export const admin = signature(
       try {
         let res = getUserInfoByToken<SimpleAdmin>(params.token)
         log.info('admin.getUserInfoByToken', res)
-        params.user = res
+        params.admin = res
         next()
       } catch (error) {
         if (ServiceError.is(error)) {

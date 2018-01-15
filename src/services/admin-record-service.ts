@@ -1,6 +1,7 @@
 import { default as AdminRecordDb, AdminRecordModel, OperationType, IAdminRecord } from '../models/admin-record'
 import { Log } from '../utils/log'
 import { Request } from 'express'
+import { SimpleAdmin } from '../types/admin'
 
 const log = new Log('service/admin-record')
 
@@ -19,16 +20,17 @@ export const createRecord = (record: IAdminRecord) => {
  * 新增记录，但是不抛出异常，错误会写 log，用于不阻塞业务操作
  * @param record 
  */
-export const createRecordNoError = (params: any, type: OperationType, req: Request) => {
-  log.warn('createRecordNoError.call', params)
+export const createRecordNoError = (title: string, params: { token: string, admin: SimpleAdmin }, type: OperationType, req: Request) => {
+  log.warn(`${title}.createRecordNoError.call`, params)
   const recordDb = new AdminRecordDb({
+    title,
     token: params.token,
     ip: req.ip,
     headers: req.rawHeaders.join('\n'),
     createTime: Date.now(),
     type,
     admin: {
-      _id: params.user.id,
+      _id: params.admin.id,
     }
   })
   return recordDb.save().catch(err => {

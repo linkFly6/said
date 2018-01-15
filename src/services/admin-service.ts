@@ -4,6 +4,7 @@ import { Log } from '../utils/log'
 import * as jwt from 'jsonwebtoken'
 import { ServiceError } from '../models/server/said-error'
 import * as crypto from 'crypto'
+import { SimpleAdmin } from '../types/admin'
 
 const log = new Log('service/admin')
 
@@ -94,4 +95,13 @@ export const login = (username: string, password: string, ip: string, headers: s
  */
 export const getUserInfoByToken = <T = object>(token: string) => {
   return jwt.verify(token, process.env.JWT_SECRET) as T
+}
+
+
+/**
+ * 对用户鉴权
+ */
+export const authentication = (admin: SimpleAdmin, rule: AdminRule) => {
+  if (admin.rule === AdminRule.GLOBAL) return true
+  return admin.rule === rule
 }

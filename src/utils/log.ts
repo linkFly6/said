@@ -2,6 +2,7 @@ import * as log4js from 'log4js'
 import { Logger } from 'log4js'
 import createConfig from '../config/log-config'
 import * as path from 'path'
+import { ServiceError } from '../models/server/said-error'
 
 
 log4js.configure(createConfig(path.resolve('./logs')))
@@ -72,9 +73,16 @@ export class Log implements ILog {
   public warn(title: string, desc: any = ''): void {
     Log.makeMsg(warnLogger, 'warn', this.namespace, title, JSON.stringify(desc))
   }
-  public error(title: string, desc: any): void {
+  public error(title: string, desc: ServiceError | Error | any): void {
     let errMsg = ''
-    if (desc instanceof Error) {
+    if (ServiceError.is(desc)) {
+      title = (desc as ServiceError).title
+      errMsg = JSON.stringify({
+        message: desc.message,
+        stack: desc.stack,
+        data: (desc as ServiceError).data
+      })
+    } else if (desc instanceof Error) {
       errMsg = JSON.stringify({
         message: desc.message,
         stack: desc.stack,

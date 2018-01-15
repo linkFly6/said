@@ -45,11 +45,7 @@ export default class {
         rule: record.admin.rule,
       }
     } catch (error) {
-      if (ServiceError.is(error)) {
-        log.error((error as ServiceError).title, (error as ServiceError).data)
-      } else {
-        log.error('catch', error)
-      }
+      log.error('catch', error)
       return ERRORS.SERVER
     }
   }
@@ -66,11 +62,7 @@ export default class {
       log.info('getUserInfoByToken.res', res)
       return res
     } catch (error) {
-      if (ServiceError.is(error)) {
-        log.error((error as ServiceError).title, (error as ServiceError).data)
-      } else {
-        log.error('catch', error)
-      }
+      log.error('catch', error)
       return ERRORS.LOGINFAIL
     }
   }

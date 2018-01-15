@@ -1,13 +1,13 @@
-import { get, post } from '../filters/http'
-import { admin } from '../filters/backend'
-import { Log } from '../utils/log'
-import { SimpleAdmin } from '../types/admin'
-import { ServiceError } from '../models/server/said-error'
-import { queryCategoryAll, createCategory, updateCategoryById, removeCategory } from '../services/category-service'
-import { RouterError } from '../middleware/routers/models'
-import { createRecordNoError } from '../services/admin-record-service'
+import { get, post } from '../../filters/http'
+import { admin } from '../../filters/backend'
+import { Log } from '../../utils/log'
+import { SimpleAdmin } from '../../types/admin'
+import { ServiceError } from '../../models/server/said-error'
+import { queryCategoryAll, createCategory, updateCategoryById, removeCategory } from '../../services/category-service'
+import { RouterError } from '../../middleware/routers/models'
+import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
-import { OperationType } from '../models/admin-record'
+import { OperationType } from '../../models/admin-record'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
@@ -20,10 +20,10 @@ const ERRORS = {
 export default class {
   @get
   @admin
-  public async query(params: { user: SimpleAdmin }, { log }: { log: Log }) {
+  public async query(params: { admin: SimpleAdmin }, { log }: { log: Log }) {
     try {
       let res = await queryCategoryAll()
-      log.info('query', res)
+      log.info('res', res)
       return res
     } catch (error) {
       log.error('catch', error)
@@ -34,7 +34,7 @@ export default class {
   @post
   @admin
   public async create(
-    params: { entity: { icon: string, name: string }, user: SimpleAdmin, token: string },
+    params: { entity: { icon: string, name: string }, admin: SimpleAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!params.entity || !params.entity.icon || !params.entity.name) {
       log.error('params', params)
@@ -49,7 +49,7 @@ export default class {
         name: params.entity.name,
         createTime: Date.now()
       })
-      await createRecordNoError(params, OperationType.Create, req)
+      await createRecordNoError('category.create', params, OperationType.Create, req)
       log.info('res', res)
       return res
     } catch (error) {
@@ -61,7 +61,7 @@ export default class {
   @post
   @admin
   public async update(
-    params: { entity: { id: string, icon: string, name: string }, user: SimpleAdmin, token: string },
+    params: { entity: { id: string, icon: string, name: string }, admin: SimpleAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!params.entity || !params.entity.id || (!params.entity.icon && !params.entity.name)) {
       log.error('params', params)
@@ -73,11 +73,12 @@ export default class {
     }
 
     try {
+      // TODO 这里应该把所有的分类引用都修改，比如 blog 里面的
       let res = await updateCategoryById(params.entity.id, {
         icon: params.entity.icon,
         name: params.entity.name,
       })
-      await createRecordNoError(params, OperationType.Update, req)
+      await createRecordNoError('category.update', params, OperationType.Update, req)
       log.info('res', res)
       return res
     } catch (error) {
@@ -89,15 +90,16 @@ export default class {
   @post
   @admin
   public async remove(
-    params: { id: string, user: SimpleAdmin, token: string },
+    params: { id: string, admin: SimpleAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!params.id) {
       log.error('params', params)
       return ERRORS.PARAMS
     }
     try {
+      // 这里应该把文章里所有的分类都删除并且重新引用
       let res = await removeCategory(params.id)
-      await createRecordNoError(params, OperationType.Delete, req)
+      await createRecordNoError('create.remove', params, OperationType.Delete, req)
       log.info('res', res)
       return res
     } catch (error) {

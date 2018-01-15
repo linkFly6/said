@@ -1,8 +1,6 @@
 import { default as CategoryDb, CategoryModel, ICategory } from '../models/category'
 import { Log } from '../utils/log'
-import * as jwt from 'jsonwebtoken'
 import { ServiceError } from '../models/server/said-error'
-import * as crypto from 'crypto'
 
 const log = new Log('service/category')
 
@@ -15,6 +13,15 @@ export const queryCategoryAll = () => {
   return CategoryDb.find().exec()
 }
 
+
+/**
+ * 根据 ID 查询分类
+ * @param categoryId 
+ */
+export const queryCategoryById = (categoryId: string) => {
+  log.info('queryAll.queryCategoryById', categoryId)
+  return CategoryDb.findById(categoryId).exec()
+}
 
 /**
  * 新增
