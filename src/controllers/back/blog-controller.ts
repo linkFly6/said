@@ -11,6 +11,8 @@ import { Request } from 'express'
 import { OperationType } from '../../models/admin-record'
 import { AdminRule } from '../../models/admin'
 import { authentication } from '../../services/admin-service'
+import { queryAllTags } from '../../services/tag-service'
+import { queryCategoryAll } from '../../services/category-service'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
@@ -120,6 +122,19 @@ export default class {
       log.error('catch', error)
       return ERRORS.REMOVEFAIL
     }
+  }
+
+  /**
+   * 查询 blog 需要的基础数据信息
+   * @param params 
+   * @param param1 
+   */
+  @admin
+  public async base(params: { id: string }, { log }: { log: Log }) {
+    const tags = await queryAllTags()
+    const categorys = await queryCategoryAll()
+    log.info('res.tags', { tags, categorys })
+    return { tags, categorys }
   }
 }
 

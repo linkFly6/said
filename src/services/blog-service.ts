@@ -7,8 +7,8 @@ import { authentication } from '../services/admin-service'
 import { SimpleBlog } from '../types/blog'
 import { queryCategoryById } from '../services/category-service'
 import { CategoryModel } from '../models/category'
-import { TagModel } from '../models/tag'
-import { queryByTagIds } from '../services/tag-service'
+import { TagModel, ITag } from '../models/tag'
+import { queryByTagNames, createTags } from '../services/tag-service'
 import * as moment from 'moment'
 import { convertMarkdown2HTML, convertSummaryToHTML } from '../utils/html'
 
@@ -66,14 +66,25 @@ const validateBlog = async (blog: SimpleBlog, admin?: SimpleAdmin) => {
   }
 
   if (blog.tags.length) {
-    tags = await queryByTagIds(blog.tags)
+    tags = await queryByTagNames(blog.tags)
     if (!tags) {
       throw new ServiceError('validateBlog.queryByTagIds', category, 'tags not found')
     }
-    // 查找的 tag 长度不一样
-    if (tags.length !== blog.tags.length) {
-      throw new ServiceError('validateBlog.queryByTagIds', category, 'tags not match')
-    }
+  }
+  // 查找的 tag 长度不一样，证明有新增 tags
+  if (tags.length !== blog.tags.length) {
+    // 得到新增的 tags
+    let insertTags = blog.tags
+      .filter(blogTagName => !~tags.findIndex(tag => tag.name == blogTagName))
+      .map(tagName => {
+        return {
+          name: tagName,
+        } as ITag
+      })
+    log.info('validateBlog.createTags', insertTags)
+    let newTags = await createTags(insertTags)
+    tags = tags.concat(newTags)
+    // throw new ServiceError('validateBlog.queryByTagIds', category, 'tags not match')
   }
   return {
     tags,

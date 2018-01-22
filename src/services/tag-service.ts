@@ -6,12 +6,32 @@ const log = new Log('service/tag')
 
 
 /**
- * 根据一组 tagId 查询标签列表
+ * 查询全部
+ */
+export const queryAllTags = () => {
+  log.info('queryByTagNames.call')
+  return TagDb.find().exec()
+}
+
+
+/**
+ * 根据一组 tagName 查询标签列表
  * @param tagIds 
  */
-export const queryByTagIds = (tagIds: string[]) => {
-  log.info('queryByTagIds.call', { tagIds })
+export const queryByTagNames = (tagNames: string[]) => {
+  log.info('queryByTagNames.call', { tagNames })
   return TagDb.find({
-    _id: { '$in': tagIds }
+    name: { '$in': tagNames }
   }).exec()
+}
+
+
+/**
+ * 插入一组 tag
+ * @param tags 
+ */
+export const createTags = (tags: ITag[]) => {
+  log.info('createTags', tags)
+  return TagDb.insertMany(tags)
+  // return TagDb.collection.insertMany(tags)
 }
