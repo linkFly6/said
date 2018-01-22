@@ -74,6 +74,10 @@ export default class {
     if (!params.entity.config) {
       params.entity.config = {}
     }
+    if (!authentication(params.admin, AdminRule.BLOG)) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
     try {
       let res = await createBlog(params.entity, params.admin)
       await createRecordNoError('blog.create', params, OperationType.Create, req)
@@ -90,9 +94,11 @@ export default class {
   public async update(
     params: { entity: SimpleBlog, admin: SimpleAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
-
+    if (!authentication(params.admin, AdminRule.BLOG)) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
     validateParams(params, req, log)
-
     try {
       let res = await updateBlog(params.entity, params.admin)
       await createRecordNoError('blog.update', params, OperationType.Update, req)
@@ -107,17 +113,21 @@ export default class {
   @post
   @admin
   public async remove(
-    params: { id: string, admin: SimpleAdmin, token: string },
+    params: { blogId: string, admin: SimpleAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
-    if (!params.id) {
+    if (!authentication(params.admin, AdminRule.BLOG)) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
+    if (!params.blogId) {
       log.error('params', params)
       return ERRORS.PARAMS
     }
     try {
-      let res = await removeBlog(params.id, params.admin)
+      let res = await removeBlog(params.blogId, params.admin)
       await createRecordNoError('blog.remove', params, OperationType.Delete, req)
       log.info('res', res)
-      return res
+      return null
     } catch (error) {
       log.error('catch', error)
       return ERRORS.REMOVEFAIL
@@ -130,7 +140,11 @@ export default class {
    * @param param1 
    */
   @admin
-  public async base(params: { id: string }, { log }: { log: Log }) {
+  public async base(params: { id: string, admin: SimpleAdmin }, { log }: { log: Log }) {
+    if (!authentication(params.admin, AdminRule.BLOG)) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
     const tags = await queryAllTags()
     const categorys = await queryCategoryAll()
     log.info('res.tags', { tags, categorys })
