@@ -71,7 +71,8 @@ app.set('view engine', 'pug')
 app.use(compression())
 
 app.use(log.Log4js.connectLogger(log.accessLogger, { level: log.accessLogger.level }))
-// app.use(cookieParser())
+app.use(cookieParser())
+// 注意 bodyParser 不处理 multipart/form-data 的请求
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 // app.use(device.capture())
@@ -110,6 +111,11 @@ app.use(session({
 // })
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
+
+app.use((req, res, next) => {
+  console.log(req.body)
+  next()
+})
 
 router({
   app: app,

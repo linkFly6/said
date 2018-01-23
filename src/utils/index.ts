@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import * as crypto from 'crypto'
 
 /*
  * 日期格式化 yyyy-MM-dd HH:mm:ss 若不传 fmt 则返回时间戳
@@ -43,4 +44,15 @@ export const formateDate = function (time: string | number, fmt?: string): any {
     const date: Date = new Date(`${timeParts[0]} ${timeParts[1]} || ''`)
     return date.getTime()
   }
+}
+
+
+/**
+ * 根据文件计算得到文件 Md5
+ * @param fileBuffer 
+ */
+export const getFileMd5 = (fileBuffer: Buffer) => {
+  const fsMd5 = crypto.createHash('md5')
+  fsMd5.update(fileBuffer)
+  return fsMd5.digest('hex')
 }

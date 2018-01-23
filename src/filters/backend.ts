@@ -32,15 +32,11 @@ export const admin = signature(
     (req: Request, res: Response, next: NextFunction) => {
       const params = req.method === 'GET'
         ? req.query : req.body
-      let token = ''
-      log.error('321', req.body)
-      req.assert('token', '请求信息不正确').notEmpty()
-      const errors = req.validationErrors()
-      if (errors) {
-        // if (~req.header('content-type').indexOf('multipart/form-data;')) {
-
-        // }
-        console.log(req.cookies)
+      const token = params.token || req.cookies.token
+      // bodyParser 不会解析 multipart/form-data 的请求，所以在 form-data 下取不到 token
+      // if (~req.header('content-type').indexOf('multipart/form-data;')) {
+      // }
+      if (!token) {
         const returns = new Returns(null, {
           code: ERRORS.NOTOKEN,
           msg: '请求信息不正确',
@@ -48,9 +44,8 @@ export const admin = signature(
         })
         return res.json(returns.toJSON())
       }
-
       try {
-        let tokenInfo = getUserIdByToken(params.token)
+        let tokenInfo = getUserIdByToken(token)
         if (!tokenInfo || !tokenInfo.id) {
           return
         }

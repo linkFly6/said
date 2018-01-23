@@ -42,9 +42,9 @@ export enum ImageType {
    */
   Music = 2,
   /**
-   * Said图片
+   * Said 图片
    */
-  Said = 3,
+  Article = 3,
   /**
    * Icon
    */
