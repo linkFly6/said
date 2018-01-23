@@ -36,5 +36,5 @@ export const convertMarkdown2HTML = (context: string) => {
  * @param className 
  */
 export const convertSummaryToHTML = (summary: string, className = '') => {
-  return summary.split('\n').map(txt => `<p class="${className}">${txt}</p>`)
+  return summary.split('\n').map(txt => `<p class="${className}">${txt}</p>`).join('')
 }

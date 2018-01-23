@@ -1,7 +1,6 @@
 import { get, post } from '../../filters/http'
 import { admin } from '../../filters/backend'
 import { Log } from '../../utils/log'
-import { SimpleAdmin } from '../../types/admin'
 import { SimpleBlog } from '../../types/blog'
 import { ServiceError } from '../../models/server/said-error'
 import { queryAllBlogByAdmin, createBlog, updateBlog, removeBlog } from '../../services/blog-service'
@@ -9,7 +8,7 @@ import { RouterError } from '../../middleware/routers/models'
 import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
 import { OperationType } from '../../models/admin-record'
-import { AdminRule } from '../../models/admin'
+import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication } from '../../services/admin-service'
 import { queryAllTags } from '../../services/tag-service'
 import { queryCategoryAll } from '../../services/category-service'
@@ -22,7 +21,7 @@ const ERRORS = {
 }
 
 
-const validateParams = (params: { entity: SimpleBlog, admin: SimpleAdmin }, req: Request, log: Log) => {
+const validateParams = (params: { entity: SimpleBlog, admin: IAdmin }, req: Request, log: Log) => {
   if (!params.entity) {
     log.error('params', params)
     return ERRORS.PARAMS
@@ -50,7 +49,7 @@ const validateParams = (params: { entity: SimpleBlog, admin: SimpleAdmin }, req:
 export default class {
   @get
   @admin
-  public async query(params: { admin: SimpleAdmin }, { log }: { log: Log }) {
+  public async query(params: { admin: IAdmin }, { log }: { log: Log }) {
     try {
       if (!authentication(params.admin, AdminRule.BLOG)) {
         log.error('authentication.denied', params)
@@ -68,7 +67,7 @@ export default class {
   @post
   @admin
   public async create(
-    params: { entity: SimpleBlog, admin: SimpleAdmin, token: string },
+    params: { entity: SimpleBlog, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     validateParams(params, req, log)
     if (!params.entity.config) {
@@ -92,7 +91,7 @@ export default class {
   @post
   @admin
   public async update(
-    params: { entity: SimpleBlog, admin: SimpleAdmin, token: string },
+    params: { entity: SimpleBlog, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!authentication(params.admin, AdminRule.BLOG)) {
       log.error('authentication.denied', params)
@@ -113,7 +112,7 @@ export default class {
   @post
   @admin
   public async remove(
-    params: { blogId: string, admin: SimpleAdmin, token: string },
+    params: { blogId: string, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!authentication(params.admin, AdminRule.BLOG)) {
       log.error('authentication.denied', params)
@@ -140,7 +139,7 @@ export default class {
    * @param param1 
    */
   @admin
-  public async base(params: { id: string, admin: SimpleAdmin }, { log }: { log: Log }) {
+  public async base(params: { id: string, admin: IAdmin }, { log }: { log: Log }) {
     if (!authentication(params.admin, AdminRule.BLOG)) {
       log.error('authentication.denied', params)
       return ERRORS.DENIED

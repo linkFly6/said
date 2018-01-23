@@ -2,7 +2,7 @@ import { get } from '../../filters/http'
 import { path } from '../../filters/backend'
 import { Log } from '../../utils/log'
 import { Request } from 'express'
-import { login, getUserInfoByToken } from '../../services/admin-service'
+import { login, getUserInfoById, getUserIdByToken } from '../../services/admin-service'
 import { ServiceError } from '../../models/server/said-error'
 import { RouterError } from '../../middleware/routers/models'
 
@@ -12,8 +12,8 @@ const ERRORS: { [prop: string]: RouterError } = {
   PARAMS: new RouterError(2, '登录信息不正确'),
   SERVICEERROR: new RouterError(3, '登录失败'),
   NOTUSER: new RouterError(4, '暂无用户信息'),
-  TOKENFAIL: new RouterError(5, '获取用户信息不正确'),
-  LOGINFAIL: new RouterError(6, '用户登录信息已失效，请重新登录'),
+  TOKENFAIL: new RouterError(5, '用户信息已失效，请重新登录'),
+  LOGINFAIL: new RouterError(10004, '用户登录信息已失效，请重新登录'),
 }
 
 export default class {
@@ -58,9 +58,20 @@ export default class {
     }
     try {
       // return ERRORS.LOGINFAIL
-      let res = getUserInfoByToken(token)
+      let tokenInfo = getUserIdByToken(token)
+      if (!tokenInfo || !tokenInfo.id) {
+        return
+      }
+      let res = await getUserInfoById(tokenInfo.id)
       log.info('getUserInfoByToken.res', res)
-      return res
+      return {
+        token: token,
+        nickName: res.nickName,
+        avatar: res.avatar,
+        email: res.email,
+        bio: res.bio,
+        rule: res.rule,
+      }
     } catch (error) {
       log.error('catch', error)
       return ERRORS.LOGINFAIL

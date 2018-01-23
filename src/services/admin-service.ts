@@ -1,11 +1,9 @@
-import { default as AdminDb, AdminModel, AdminRule } from '../models/admin'
+import admin, { default as AdminDb, AdminModel, AdminRule, IAdmin } from '../models/admin'
 import { default as AdminRecordDb, AdminRecordModel, OperationType, IAdminRecord } from '../models/admin-record'
 import { Log } from '../utils/log'
 import * as jwt from 'jsonwebtoken'
 import { ServiceError } from '../models/server/said-error'
 import * as crypto from 'crypto'
-import { SimpleAdmin } from '../types/admin'
-
 const log = new Log('service/admin')
 
 
@@ -46,11 +44,6 @@ export const login = (username: string, password: string, ip: string, headers: s
     try {
       token = jwt.sign({
         id: admin._id,
-        nickName: admin.nickName,
-        avatar: admin.avatar,
-        bio: admin.bio,
-        rule: admin.rule,
-        email: admin.email,
       }, process.env.JWT_SECRET, {
           expiresIn: '45 days'
         })
@@ -88,20 +81,26 @@ export const login = (username: string, password: string, ip: string, headers: s
   })
 }
 
-
 /**
- * 根据 token 获取用户信息
+ * 根据 token 获取用户 ID
  * @param token 
  */
-export const getUserInfoByToken = <T = object>(token: string) => {
-  return jwt.verify(token, process.env.JWT_SECRET) as T
+export const getUserIdByToken = (token: string) => {
+  return jwt.verify(token, process.env.JWT_SECRET) as { id: string }
 }
 
+/**
+ * 根据用户 ID 获取用户信息
+ * @param adminId
+ */
+export const getUserInfoById = (adminId: string) => {
+  return AdminDb.findById(adminId).exec()
+}
 
 /**
  * 对用户鉴权
  */
-export const authentication = (admin: SimpleAdmin, rule: AdminRule) => {
+export const authentication = (admin: IAdmin, rule: AdminRule) => {
   if (admin.rule === AdminRule.GLOBAL) return true
   return admin.rule === rule
 }

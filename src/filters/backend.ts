@@ -3,15 +3,16 @@ import { Request, Response, NextFunction, Express } from 'express'
 import { Filter, Route } from '../middleware/routers/models'
 import { default as AdminDb, AdminModel } from '../models/admin'
 import { default as AdminRecordDb, AdminRecordModel } from '../models/admin-record'
-import { getUserInfoByToken } from '../services/admin-service'
+import { getUserInfoById, getUserIdByToken } from '../services/admin-service'
 import { ServiceError } from '../models/server/said-error'
 import { Returns } from '../models/Returns'
 import { Log } from '../utils/log'
-import { SimpleAdmin } from '../types/admin'
 
 const ERRORS = {
   NOTOKEN: 10000,
   NORECORD: 10001,
+  CHECKTOKENFAIL: 10002,
+  QUERYUSERFAIL: 10003,
 }
 
 
@@ -31,19 +32,15 @@ export const admin = signature(
     (req: Request, res: Response, next: NextFunction) => {
       const params = req.method === 'GET'
         ? req.query : req.body
-
-      // const model = new AdminDb()
-      // model.nickName = '32321'
-      // model.userName = 'linkFly'
-      // model.save(err => {
-      //   if (err) {
-
-      //   }
-      // })
-
+      let token = ''
+      log.error('321', req.body)
       req.assert('token', '请求信息不正确').notEmpty()
       const errors = req.validationErrors()
       if (errors) {
+        // if (~req.header('content-type').indexOf('multipart/form-data;')) {
+
+        // }
+        console.log(req.cookies)
         const returns = new Returns(null, {
           code: ERRORS.NOTOKEN,
           msg: '请求信息不正确',
@@ -53,33 +50,38 @@ export const admin = signature(
       }
 
       try {
-        let res = getUserInfoByToken<SimpleAdmin>(params.token)
-        log.info('admin.getUserInfoByToken', res)
-        params.admin = res
-        next()
+        let tokenInfo = getUserIdByToken(params.token)
+        if (!tokenInfo || !tokenInfo.id) {
+          return
+        }
+        getUserInfoById(tokenInfo.id).then(res => {
+          log.info('admin.getUserInfoByToken', res)
+          params.admin = res
+          next()
+        }).catch(err => {
+          log.error('getUserInfoById.catch', err)
+          const returns = new Returns(null, {
+            code: ERRORS.QUERYUSERFAIL,
+            msg: '查询用户失败',
+            data: null,
+          })
+          return res.json(returns.toJSON())
+        })
+
       } catch (error) {
         if (ServiceError.is(error)) {
           log.error((error as ServiceError).title, (error as ServiceError).data)
         } else {
           log.error('catch', error)
         }
-        next(error)
+        // next(error)
+        const returns = new Returns(null, {
+          code: ERRORS.CHECKTOKENFAIL,
+          msg: '查询用户失败',
+          data: null,
+        })
+        return res.json(returns.toJSON())
       }
-
-      // AdminRecordDb.findOne({ token: params.token }).populate('admin').exec((err, admin: AdminModel) => {
-      //   if (err) {
-      //     return next(err)
-      //   }
-      //   if (!admin) {
-      //     const returns = new Returns(null, {
-      //       code: ERRORS.NORECORD,
-      //       msg: '请求信息不正确',
-      //       data: null,
-      //     })
-      //     return res.json(returns.toJSON())
-      //   }
-      //   next()
-      // })
     },
     'all',
     (options: null, route: Route) => {

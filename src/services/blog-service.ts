@@ -1,8 +1,7 @@
 import { default as BlogDb, BlogModel, IBlog } from '../models/blog'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
-import { SimpleAdmin } from '../types/admin'
-import { AdminRule } from '../models/admin'
+import { AdminRule, IAdmin } from '../models/admin'
 import { authentication } from '../services/admin-service'
 import { SimpleBlog } from '../types/blog'
 import { queryCategoryById } from '../services/category-service'
@@ -31,7 +30,7 @@ export const queryAllBlog = () => {
  * 根据管理员信息查列表
  * @param adminId 
  */
-export const queryAllBlogByAdmin = (admin: SimpleAdmin) => {
+export const queryAllBlogByAdmin = (admin: IAdmin) => {
   log.info('queryAllBlogByAdminId.call', admin)
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
@@ -40,7 +39,7 @@ export const queryAllBlogByAdmin = (admin: SimpleAdmin) => {
   if (admin.rule == AdminRule.GLOBAL) {
     return BlogDb.find().exec()
   } else {
-    return BlogDb.find({ author: { _id: admin.id } }).exec()
+    return BlogDb.find({ author: { _id: admin._id } }).exec()
   }
 }
 
@@ -54,7 +53,7 @@ export const existsByBlogKey = (blogKey: string) => {
   return BlogDb.count({ urlKey: blogKey }).exec()
 }
 
-const validateBlog = async (blog: SimpleBlog, admin?: SimpleAdmin) => {
+const validateBlog = async (blog: SimpleBlog, admin?: IAdmin) => {
   let category: CategoryModel
   let tags: TagModel[] = []
   // 验证分类
@@ -96,7 +95,7 @@ const validateBlog = async (blog: SimpleBlog, admin?: SimpleAdmin) => {
 /**
  * 新增
  */
-export const createBlog = async (blog: SimpleBlog, admin: SimpleAdmin) => {
+export const createBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   log.info('createBlog.call', { blog, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
@@ -132,7 +131,7 @@ export const createBlog = async (blog: SimpleBlog, admin: SimpleAdmin) => {
     context: blog.context,
     urlKey,
     author: {
-      _id: admin.id,
+      _id: admin._id,
     },
     summary: blog.summary,
     fileName: urlKey,
@@ -166,7 +165,7 @@ export const createBlog = async (blog: SimpleBlog, admin: SimpleAdmin) => {
  * 修改
  * @param category 
  */
-export const updateBlog = async (blog: SimpleBlog, admin: SimpleAdmin) => {
+export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   log.info('updateBlogById.call', { blog, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
@@ -204,7 +203,7 @@ export const updateBlog = async (blog: SimpleBlog, admin: SimpleAdmin) => {
   }
 
   // 否则检查这个 blog 是否归属当前用户
-  const blogInfo = BlogDb.findOne({ _id: blog._id, author: { _id: admin.id } })
+  const blogInfo = BlogDb.findOne({ _id: blog._id, author: { _id: admin._id } })
   const oldBlog = await blogInfo.exec()
   if (!oldBlog) {
     throw new ServiceError('updateBlogById.checkBlog.denied', admin, 'access denied')
@@ -233,7 +232,7 @@ export const updateBlog = async (blog: SimpleBlog, admin: SimpleAdmin) => {
 /**
  * 删除
  */
-export const removeBlog = async (blogId: string, admin: SimpleAdmin) => {
+export const removeBlog = async (blogId: string, admin: IAdmin) => {
   log.warn('removeBlogById.call', { blogId, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
@@ -246,7 +245,7 @@ export const removeBlog = async (blogId: string, admin: SimpleAdmin) => {
   }
 
   // 鉴权
-  const blogInfo = BlogDb.findOne({ _id: blogId, author: { _id: admin.id } })
+  const blogInfo = BlogDb.findOne({ _id: blogId, author: { _id: admin._id } })
   const oldBlog = await blogInfo.exec()
   if (!oldBlog) {
     throw new ServiceError('updateBlogById.checkBlog.denied', admin, 'access denied')

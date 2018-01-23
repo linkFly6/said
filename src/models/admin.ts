@@ -20,16 +20,14 @@ export enum AdminRule {
   SAID = 2
 }
 
-
-
 /**
  * 后台管理员（作者类）
  */
-export interface AdminModel extends mongoose.Document {
+export interface IAdmin {
   /**
    * mongoDB 默认 ID
    */
-  _id: string
+  _id: any
   /**
    * 用户名
    */
@@ -61,6 +59,9 @@ export interface AdminModel extends mongoose.Document {
    */
   rule: AdminRule
 }
+
+
+export interface AdminModel extends IAdmin, mongoose.Document { }
 
 export const AdminSchema = new mongoose.Schema({
   userName: String,

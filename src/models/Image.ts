@@ -1,12 +1,11 @@
 import * as mongoose from 'mongoose'
 
-/**
- * 图片资源
- */
-export interface ImageModel extends mongoose.Document {
+
+export interface IImage {
+  _id: any,
   /**
-    * 图片名称
-    */
+   * 图片名称
+   */
   name: string,
   /**
    * 图片文件名
@@ -21,6 +20,10 @@ export interface ImageModel extends mongoose.Document {
    */
   type: ImageType,
 }
+/**
+ * 图片资源
+ */
+export interface ImageModel extends IImage, mongoose.Document { }
 
 /**
  * 图片类型枚举

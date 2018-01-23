@@ -1,13 +1,13 @@
 import { get, post } from '../../filters/http'
 import { admin } from '../../filters/backend'
 import { Log } from '../../utils/log'
-import { SimpleAdmin } from '../../types/admin'
 import { ServiceError } from '../../models/server/said-error'
 import { queryCategoryAll, createCategory, updateCategoryById, removeCategory } from '../../services/category-service'
 import { RouterError } from '../../middleware/routers/models'
 import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
 import { OperationType } from '../../models/admin-record'
+import { IAdmin } from '../../models/admin'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
@@ -20,7 +20,7 @@ const ERRORS = {
 export default class {
   @get
   @admin
-  public async query(params: { admin: SimpleAdmin }, { log }: { log: Log }) {
+  public async query(params: { admin: IAdmin }, { log }: { log: Log }) {
     try {
       let res = await queryCategoryAll()
       log.info('res', res)
@@ -34,7 +34,7 @@ export default class {
   @post
   @admin
   public async create(
-    params: { entity: { icon: string, name: string }, admin: SimpleAdmin, token: string },
+    params: { entity: { icon: string, name: string }, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!params.entity || !params.entity.icon || !params.entity.name) {
       log.error('params', params)
@@ -61,7 +61,7 @@ export default class {
   @post
   @admin
   public async update(
-    params: { entity: { id: string, icon: string, name: string }, admin: SimpleAdmin, token: string },
+    params: { entity: { id: string, icon: string, name: string }, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!params.entity || !params.entity.id || (!params.entity.icon && !params.entity.name)) {
       log.error('params', params)
@@ -90,7 +90,7 @@ export default class {
   @post
   @admin
   public async remove(
-    params: { id: string, admin: SimpleAdmin, token: string },
+    params: { id: string, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
     if (!params.id) {
       log.error('params', params)
