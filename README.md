@@ -29,6 +29,19 @@ Said - 听说
 前端开发QQ群：377786580&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=cb56d5db68d2001c42a3264df3bcd7e752713141fd2a3fb267b336c9b12487b8"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="JavaScript - 前端开发" title="JavaScript - 前端开发"></a>
 
 
+## 开发和启动
+
+- 安装 [kitematic](https://kitematic.com/)（本地 `docker` 容器）
+- 在 `kitematic` 中安装 `mongodb`
+- 修改 `.env.example` 文件中的 `MONGODB_URI` 字段，修改为本地或 `dokcer` 容器中的地址
+- 安装 [GraphicsMagick](http://www.graphicsmagick.org/)（图像处理引擎，`os x` 中可以 `brew install imagemagick` 安装）
+- 执行命令：
+
+```bash
+$ npm i --d # 安装依赖包
+$ npm run dev # 启动服务
+```
+
 
 ## 开发计划
 
