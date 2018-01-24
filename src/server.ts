@@ -58,7 +58,7 @@ const app = express()
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI)
 
 mongoose.connection.on('error', () => {
-  console.log('MongoDB connection error. Please make sure MongoDB is running.')
+  // console.log('MongoDB connection error. Please make sure MongoDB is running.')
   process.exit()
 })
 
@@ -111,12 +111,6 @@ app.use(session({
 // })
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
-
-app.use((req, res, next) => {
-  console.log(req.body)
-  next()
-})
-
 router({
   app: app,
   handler: actionHandler,
@@ -168,8 +162,8 @@ app.use(errorHandler())
  * Start Express server.
  */
 app.listen(app.get('port'), () => {
-  console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'))
-  console.log('  Press CTRL-C to stop\n')
+  // console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'))
+  // console.log('  Press CTRL-C to stop\n')
 })
 
 module.exports = app

@@ -33,7 +33,7 @@ export class Route {
   /**
    * 路由处理函数
    */
-  public action: (req: Request, res: Response, next: NextFunction) => any
+  public actions: ExpressRouterHandler[]
   // constructor(
   //   path?: string,
   //   method?: string,
@@ -111,7 +111,7 @@ export class ActionHandler {
   public onResultExecuted?: <EHR>(err: RouterError | Error | null, req: Request, route: Route) => (EHR | RouterError | null)
 }
 
-
+export type ExpressRouterHandler = RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>
 
 export class Filter {
   /**
@@ -121,7 +121,7 @@ export class Filter {
   /**
    * 中间件
    */
-  public use?: RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>
+  public use?: ExpressRouterHandler
   /**
    * http method
    */
@@ -140,15 +140,15 @@ export class Filter {
    */
   constructor(
     path?: string,
-    use?: RequestHandler | ErrorRequestHandler | IRouterMatcher<Express>,
+    use?: ExpressRouterHandler,
     method = 'all',
     handler?: <T>(option: T, route: Route) => Route) {
     this.path = path
     this.use = use
-    // 要求要么 use 和 token 不挂载，要么两个必须都挂载
-    if ((this.use && !this.path) || (this.path && !this.use)) {
-      throw '[Filter:constructor]Use and token must exist simultaneously'
-    }
+    // // 要求要么 use 和 token 不挂载，要么两个必须都挂载
+    // if ((!this.path && this.use) || (this.path && !this.use)) {
+    //   throw '[Filter:constructor]Use and token must exist simultaneously'
+    // }
     this.method = method
     if (handler) {
       this.handler = handler

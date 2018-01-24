@@ -3,10 +3,16 @@ import {
   symbolPathKey,
   symbolHttpMethodsKey,
   sysmbolRouterConfigProxyKey,
+  router,
 } from './router-decorator'
 import { RouterOptions } from './'
 import { allSignature, defaultSymbol, getFilterAndOptions } from './signature'
-import { Request, Response, Router } from 'express'
+import {
+  Express,
+  Request,
+  Response,
+  Router,
+} from 'express'
 
 /**
  * 生成获取 metadata 的工厂方法
@@ -180,9 +186,7 @@ export const createController = <BHR, EHR>(options: RouterOptions, constructor: 
       route.name = propertyKey === 'index' ? '' : propertyKey
       route.path = `${options.base}/${controllerName}${propertyKey === 'index' ? '' : `/${propertyKey}`}`
       route.method = 'all'
-      route.action = function (req: Request, res: Response, next: Function) {
-        return routeAction(route, req, res, next, action, options.handler)
-      }
+      route.actions = []
       const configs = getFilterAndOptions(controller, propertyKey)
       if (configs.length) {
         route = configs.reduce((router, config) => {
@@ -196,9 +200,16 @@ export const createController = <BHR, EHR>(options: RouterOptions, constructor: 
               ? newRoute.path : `${options.base}/${newRoute.path.replace(/^\//g, '')}`
             return newRoute
           }
+          // 没有配 path，但是配了 use 的，应用到对应的 router 上
+          if (config.filter.use && !config.filter.path) {
+            route.actions.push(config.filter.use)
+          }
           return router
         }, route)
       }
+      route.actions.push(function (req: Request, res: Response, next: Function) {
+        return routeAction(route, req, res, next, action, options.handler)
+      })
       routes.push(route)
     }
   })

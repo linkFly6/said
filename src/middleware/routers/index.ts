@@ -68,9 +68,9 @@ const routerMount = (options: RouterOptions) => {
     if (!options.app[filter.method]) {
       throw `[router:method]Property method does not support this value:${filter.method}`
     }
-    const path = 
-    options.base.length && filter.path.startsWith(options.base)
-              ? filter.path : `${options.base}/${filter.path.replace(/^\//g, '')}`
+    const path =
+      options.base.length && filter.path.startsWith(options.base)
+        ? filter.path : `${options.base}/${filter.path.replace(/^\//g, '')}`
     options.app[filter.method](path, filter.use)
   })
 
@@ -146,7 +146,7 @@ export default (options: RouterOptions) => {
     if (!options.app[route.method]) {
       throw `[router:method]Property method does not support this value:${route.method}, route: ${route.path}`
     }
-    options.app[route.method](route.path, route.action)
+    options.app[route.method].apply(options.app, [route.path].concat(route.actions as any))
   })
   return options.app
 }

@@ -36,6 +36,16 @@ Said - 听说
 - 访问量/阅读量/浏览量：通过 log 文件定期收集(例如 10min)
 - 前台访问用 cookie，后台 + 前台管理员访问接口带 token， token 每次进行校验
 
+
+### 关于 controller 设计
+
+- `signatureWithOption` 签名的 `Filter` 中，`Filter.use` 没有传入 `signatureWithOption` 签名的配置
+- 普通的请求和 `multipart/form-data` 中，如何取到 `token` 和对应的预处理不互斥
+  > 例如 Filter1 挂载到全局 `app.use`，如果取不到 `token` 就报错，那么在 Filter2 处理 `multipart/form-data` 的请求中，如何让 Filter 1 不报错
+- 如果要写一个 noFilter 呢？
+
+controller 是不是不应该设置全局请求？(`app.use`)
+
 ## 规范
 
 ### 返回接口

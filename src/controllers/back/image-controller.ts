@@ -7,11 +7,10 @@ import { createRecordNoError } from '../../services/admin-record-service'
 import { Request, Response } from 'express'
 import { OperationType } from '../../models/admin-record'
 import { AdminRule, IAdmin } from '../../models/admin'
-import { authentication } from '../../services/admin-service'
-import * as multer from 'multer'
+import { authentication, login } from '../../services/admin-service'
 import { ImageType } from '../../models/image'
 import { Express } from 'express'
-import { queryImagesByType, deleteImage, tempFolder, uploadImage } from '../../services/image-service'
+import { queryImagesByType, deleteImage, uploadImage } from '../../services/image-service'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
@@ -21,20 +20,15 @@ const ERRORS = {
   REMOVEFAIL: new RouterError(10, '删除失败，请稍后重试')
 }
 
-const filterFileTypes = [
-  'image/jpeg',
-  'image/gif',
-  'image/png',
-  'image/webp'
-]
 
-const upload = multer({
-  dest: tempFolder,
-  // 对文件格式进行过滤
-  fileFilter: (req, file, cb) => {
-    cb(null, !!~filterFileTypes.indexOf(file.mimetype))
-  }
-}).single('img')
+
+// const upload = multer({
+//   dest: tempFolder,
+//   // 对文件格式进行过滤
+//   fileFilter: (req, file, cb) => {
+//     cb(null, !!~filterFileTypes.indexOf(file.mimetype))
+//   }
+// }).single('img')
 
 export default class {
   @get
@@ -49,31 +43,16 @@ export default class {
 
   @post
   @admin
-  public async upload(params: { admin: IAdmin }, { log, req, res }: { log: Log, req: Request, res: Response }) {
+  public async upload(
+    params: { admin: IAdmin, imageType: ImageType },
+    { log, req, res }: { log: Log, req: Request, res: Response }) {
     if (authentication(params.admin, AdminRule.GLOBAL)) {
-      // 校验权限 
-    }
-    const uploader = await new Promise<{
-      imageType: ImageType,
-      img: Express.Multer.File
-    } | null>((resolve, reject) => {
-      upload(req, res, (err: any) => {
-        if (err) {
-          log.error('upload.reject', err)
-          resolve(null)
-        }
-        log.info('upload.call', req.body)
-        resolve({
-          imageType: req.body.imageType,
-          img: req.file
-        })
-      })
-    })
-    if (!uploader) {
-      return ERRORS.PARAMS
+      // TODO 校验权限，对应的用户只能上传对应的照片
+      
     }
     try {
-      return uploadImage(uploader.imageType, uploader.img)
+      if (!req.files || !(req.files as Express.Multer.File[]).length) return ERRORS.PARAMS
+      return await uploadImage(params.imageType, req.files[0])
     } catch (error) {
       if (ServiceError.is(error)) {
         log.error((error as ServiceError).title, (error as ServiceError).data)

@@ -6,14 +6,20 @@ import { authentication } from '../services/admin-service'
 import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
+
 
 const log = new Log('service/image')
 
 /**
- * 上传的图片临时存储的文件夹
+ * 图片过滤类型
  */
-export const tempFolder = path.resolve('./public/images/temp')
+const filterFileTypes = [
+  'image/jpeg',
+  'image/gif',
+  'image/png',
+  'image/webp'
+]
 
 /**
  * 根据分类查询图片
@@ -69,9 +75,9 @@ export const getImageFolder = (imageType: ImageType) => {
   }
   return {
     // 原图存储路径
-    original: path.resolve('./public/images/sources/original'),
+    original: path.resolve(path.join(__dirname, '../public/images/sources/original')),
     // 缩略图存储路径
-    thumb: path.resolve('./public/images/sources/thumb')
+    thumb: path.resolve(path.join(__dirname, '../public/images/sources/thumb'))
   }
 }
 
@@ -84,28 +90,24 @@ export const imageExistsByName = (name: string) => {
   return ImageDb.count({ name }).exec()
 }
 
-
-/**
- * 重命名图片
- * @param oldPath 
- * @param newPath 
- */
-export const renameImage = (oldPath: string, newPath: string) => {
-  return new Promise<boolean>((resolve, reject) => {
-    fs.rename(oldPath, newPath, err => {
-      if (err) {
-        reject(err)
-        return
-      }
-      resolve(true)
-    })
-  })
-}
-
 /**
  * 上传图片
  */
 export const uploadImage = async (imageType: ImageType, img: Express.Multer.File) => {
+  const params = {
+    destination: img.destination,
+    encoding: img.encoding,
+    fieldname: img.fieldname,
+    filename: img.filename,
+    mimetype: img.mimetype,
+    originalname: img.originalname,
+    path: img.path,
+    size: img.size,
+  }
+  log.info('uploadImage', { imageType, img: params })
+  if (!~filterFileTypes.indexOf(img.mimetype)) {
+    throw new ServiceError('uploadImage.mimetype', params)
+  }
   const folder = getImageFolder(imageType)
   const md5 = getFileMd5(img.buffer)
   // 通过文件 md5 生成文件名，所以进数据库校验一遍是否重名
@@ -114,20 +116,19 @@ export const uploadImage = async (imageType: ImageType, img: Express.Multer.File
     throw new ServiceError('uploadImage.existsNumer', null, '图片已存在')
   }
   // 生成全新文件名
-  const newFileName = path.join(md5, img.mimetype.split('/')[1])
-  // 进行重命名保存
-  const renameIsOK = await renameImage(
-    path.join(tempFolder, img.filename),
-    // mimetype => image/jpeg, image/png, image/gif
-    path.join(folder.original, newFileName))
+  const newFileName = md5 + '.' + img.mimetype.split('/')[1]
 
+  // 保存到本地
+  await fs.outputFile(path.join(folder.original, newFileName), img.buffer)
+  // if (saveIsOK) {
+  //   log.error('uploadImage.saveFileToLocal.error', saveIsOK)
+  // }
   // TODO 生成缩略图
   log.info('uploadImage.ready', {
     md5,
     img,
     folder
   })
-
   const image = new ImageDb({
     name: md5,
     fileName: newFileName,
