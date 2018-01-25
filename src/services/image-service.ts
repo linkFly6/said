@@ -7,7 +7,7 @@ import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
 import * as fs from 'fs-extra'
-import { uploadImageToQiniu } from '../utils/file'
+import { uploadImageToQiniu, deleteImageForQiniu } from '../utils/file'
 
 
 const log = new Log('service/image')
@@ -23,6 +23,24 @@ const filterFileTypes = [
 ]
 
 /**
+ * 根据七牛存储的 key ，获取完整 Url 路径
+ * blog/demo.jpg => //xx.com/blog/demo.jpg
+ * @param qiniuKey 
+ */
+export const getFullUrlByQiniuImage = (qiniuKey: string) => {
+  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}`
+}
+
+/**
+ * 获取七牛存储的 key 缩略图的完整路径
+ * blog/demo.jpg => //xx.com/blog/demo.jpg!thumb
+ * @param qiniuKey 
+ */
+export const getThumbUrlByQiniuImage = (qiniuKey: string) => {
+  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}${process.env.QINIU_THUMBNAILNAME}`
+}
+
+/**
  * 根据分类查询图片
  */
 export const queryImagesByType = (imageType: ImageType) => {
@@ -34,19 +52,31 @@ export const queryImagesByType = (imageType: ImageType) => {
  * @param imageId 
  * @param admin 
  */
-export const deleteImage = (imageId: string, admin: IAdmin) => {
-  if (authentication(admin, AdminRule.GLOBAL)) {
-    throw new ServiceError('deleteImage.authentication', admin)
+export const deleteImage = async (imageId: string, admin: IAdmin) => {
+  if (!authentication(admin, AdminRule.GLOBAL)) {
+    throw new ServiceError('deleteImage.authentication', admin, '您无权限进行该操作')
   }
   // TODO 要检查图片引用
-  return ImageDb.findByIdAndRemove(imageId)
+  const image = await ImageDb.findById(imageId).exec()
+  log.warn('deleteImage.image', image)
+  if (!image) {
+    throw new ServiceError('deleteImage.findById.empty', { admin, imageId }, '没有该图片信息')
+  }
+  try {
+    // 删除七牛的图片
+    const res = await deleteImageForQiniu(image.key)
+    log.info('deleteImage.deleteImageForQiniu', res)
+  } catch (error) {
+    throw new ServiceError('deleteImage.deleteImageForQiniu.error', error, '图片删除失败')
+  }
+  return image.remove()
 }
 
 /**
- * 根据图片类型获取图片路径
+ * 根据图片类型获取图片访问路径 => /blog/demo.jpg
  * @param imageType 
  */
-export const getImagePaths = (imageType: ImageType, filename: string) => {
+export const getImagePath = (imageType: ImageType, filename: string) => {
   let folderName = ''
   switch (imageType) {
     case ImageType.Blog:
@@ -74,16 +104,14 @@ export const getImagePaths = (imageType: ImageType, filename: string) => {
       folderName = 'systems'
       break
   }
-  return {
-    /**
-     * 原图存储路径(含文件名)
-     */
-    original: path.resolve(path.join(__dirname, '../public/images/sources/original', filename)),
-    /**
-     * 缩略图存储路径(含文件名)
-     */
-    thumb: path.resolve(path.join(__dirname, '../public/images/sources/thumb', filename))
+  if (!folderName) {
+    throw new ServiceError('uploadImage.getImagePath', { imageType }, '图片分类不正确')
   }
+  /**
+   * 这个路径就是上传到七牛的文件 key
+   * 注意不带前面的 /
+   */
+  return `${folderName}/${filename}`
 }
 
 
@@ -126,17 +154,20 @@ export const uploadImage = async (imageType: ImageType, img: Express.Multer.File
     throw new ServiceError('uploadImage.existsNumer', null, '图片已存在')
   }
   const filename = md5 + '.' + img.mimetype.split('/')[1]
-  // 生成全新文件名
-  const paths = getImagePaths(imageType, filename)
+  /**
+   * 生成 path，七牛是 { key: value } 扁平存储的图片
+   * 所以没有路径空间的概念，上传的文件名里面就可以带上 key
+   */
+  const path = getImagePath(imageType, filename)
 
   log.info('uploadImage.ready', {
     md5,
-    paths,
+    path,
   })
-  // 保存到本地
   try {
-    const res = await uploadImageToQiniu(filename, img.buffer)
-    log.info('uploadImageToQiniu.res', res)
+    // 保存到七牛
+    const res = await uploadImageToQiniu(path, img.buffer)
+    log.info('uploadImageToQiniu.uploadImageToQiniu', res)
   } catch (error) {
     throw new ServiceError('uploadImage.uploadImageToQiniu.error', error, '图片保存失败')
   }
@@ -146,6 +177,7 @@ export const uploadImage = async (imageType: ImageType, img: Express.Multer.File
     fileName: filename,
     size: img.size,
     type: imageType,
+    key: path,
   })
   return image.save()
 }

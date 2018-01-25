@@ -246,6 +246,7 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
 
   // 鉴权
   const blogInfo = BlogDb.findOne({ _id: blogId, author: { _id: admin._id } })
+  log.warn('removeBlogById.blogInfo', blogInfo)
   const oldBlog = await blogInfo.exec()
   if (!oldBlog) {
     throw new ServiceError('updateBlogById.checkBlog.denied', admin, 'access denied')

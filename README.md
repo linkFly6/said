@@ -34,7 +34,7 @@ Said - 听说
 - 安装 [kitematic](https://kitematic.com/)（本地 `docker` 容器）
 - 在 `kitematic` 中安装 `mongodb`
 - 修改 `.env.example` 文件中的 `MONGODB_URI` 字段，修改为本地或 `dokcer` 容器中的地址
-- 安装 [GraphicsMagick](http://www.graphicsmagick.org/)（图像处理引擎，`os x` 中可以 `brew install imagemagick` 安装）
+- 修改 `.env.example` 文件中的 `QINIU_ACCESSKEY/QINIU_SECRETKEY`（七牛云存储密匙）
 - 执行命令：
 
 ```bash
