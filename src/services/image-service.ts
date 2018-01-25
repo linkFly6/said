@@ -7,7 +7,7 @@ import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
 import * as fs from 'fs-extra'
-import { saveThumb } from '../utils/file'
+import { uploadImageToQiniu } from '../utils/file'
 
 
 const log = new Log('service/image')
@@ -135,25 +135,12 @@ export const uploadImage = async (imageType: ImageType, img: Express.Multer.File
   })
   // 保存到本地
   try {
-    await fs.outputFile(paths.original, img.buffer)
+    const res = await uploadImageToQiniu(filename, img.buffer)
+    log.info('uploadImageToQiniu.res', res)
   } catch (error) {
-    // log.error('uploadImage.outputFile.error', error)
-    throw new ServiceError('uploadImage.outputFile.error', error, '图片保存失败')
+    throw new ServiceError('uploadImage.uploadImageToQiniu.error', error, '图片保存失败')
   }
-  // 生成缩略图
-  try {
-    await saveThumb({
-      path: paths.original,
-      newFilePath: paths.thumb,
-      width: 400,
-      height: 100,
-      quality: 100,
-    })
-  } catch (error) {
-    // 把生成缩略图有问题，则删除原图
-    fs.remove(paths.original)
-    throw new ServiceError('uploadImage.saveThumb.error', error, '图片转存失败')
-  }
+
   const image = new ImageDb({
     name: md5,
     fileName: filename,
