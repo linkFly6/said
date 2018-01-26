@@ -37,9 +37,9 @@ export const queryAllBlogByAdmin = (admin: IAdmin) => {
     throw new ServiceError('queryAllBlogByAdmin.authentication.denied', admin, 'access denied')
   }
   if (admin.rule == AdminRule.GLOBAL) {
-    return BlogDb.find().exec()
+    return BlogDb.find().sort('-_id').exec()
   } else {
-    return BlogDb.find({ author: { _id: admin._id } }).exec()
+    return BlogDb.find({ author: { _id: admin._id } }).sort('-_id').exec()
   }
 }
 

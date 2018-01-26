@@ -44,7 +44,8 @@ export const getThumbUrlByQiniuImage = (qiniuKey: string) => {
  * 根据分类查询图片
  */
 export const queryImagesByType = (imageType: ImageType) => {
-  return ImageDb.find({ type: imageType }).exec()
+  // 排序： http://www.developerq.com/article/1492019600
+  return ImageDb.find({ type: imageType }).sort('-_id').exec()
 }
 
 /**

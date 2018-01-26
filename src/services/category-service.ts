@@ -10,7 +10,7 @@ const log = new Log('service/category')
  */
 export const queryCategoryAll = () => {
   log.info('queryAll.call', null)
-  return CategoryDb.find().exec()
+  return CategoryDb.find().sort('-_id').exec()
 }
 
 
