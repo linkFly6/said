@@ -1,4 +1,4 @@
-import { default as BlogDb, BlogModel, IBlog } from '../models/blog'
+import blog, { default as BlogDb, BlogModel, IBlog } from '../models/blog'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
@@ -60,14 +60,14 @@ const validateBlog = async (blog: SimpleBlog, admin?: IAdmin) => {
   if (blog.category) {
     category = await queryCategoryById(blog.category)
     if (!category) {
-      throw new ServiceError('validateBlog.queryCategoryById', category, 'category not found')
+      throw new ServiceError('validateBlog.queryCategoryById', category, '类型未找到')
     }
   }
 
   if (blog.tags.length) {
     tags = await queryByTagNames(blog.tags)
     if (!tags) {
-      throw new ServiceError('validateBlog.queryByTagIds', category, 'tags not found')
+      throw new ServiceError('validateBlog.queryByTagIds', category, '标签未找到')
     }
   }
   // 查找的 tag 长度不一样，证明有新增 tags
@@ -82,6 +82,9 @@ const validateBlog = async (blog: SimpleBlog, admin?: IAdmin) => {
       })
     log.info('validateBlog.createTags', insertTags)
     let newTags = await createTags(insertTags)
+    if (!newTags.length) {
+      throw new ServiceError('validateBlog.createTags', insertTags, '新增标签信息失败')
+    }
     tags = tags.concat(newTags)
     // throw new ServiceError('validateBlog.queryByTagIds', category, 'tags not match')
   }
@@ -163,16 +166,28 @@ export const createBlog = async (blog: SimpleBlog, admin: IAdmin) => {
 
 /**
  * 修改
- * @param category 
+ * @param blog 
+ * @param admin 
  */
 export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   log.info('updateBlogById.call', { blog, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
-    throw new ServiceError('updateBlogById.authentication.denied', admin, 'access denied')
+    throw new ServiceError('updateBlogById.authentication.denied', admin, '您没有权限进行该操作')
   }
-
-  // 检查是否是自己的 blog
+  // 全局管理员
+  const blogInfo = admin.rule === AdminRule.GLOBAL ?
+    BlogDb.findOne({ _id: blog._id })
+    : BlogDb.findOne({ _id: blog._id, author: { _id: admin._id } })
+  // 检查这个 blog 是否归属当前用户
+  const oldBlog = await blogInfo.exec()
+  if (!oldBlog) {
+    throw new ServiceError(
+      'updateBlogById.checkBlog.empty',
+      admin,
+      admin.rule === AdminRule.GLOBAL ?
+        '没有查到对应 Blog 信息' : '您没有权限操作该 Blog')
+  }
 
   // 如果有错误则 validateBlog 会抛出异常
   const validateRes = await validateBlog(blog, admin)
@@ -180,35 +195,7 @@ export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   const html = convertMarkdown2HTML(blog.context)
   const summaryHTML = convertSummaryToHTML(blog.summary)
 
-  // 全局管理员
-  if (admin.rule === AdminRule.GLOBAL) {
-    return BlogDb.findByIdAndUpdate(blog._id, {
-      title: blog.title,
-      context: blog.context,
-      summary: blog.summary,
-      tags: validateRes.tags,
-      category: validateRes.category,
-      other: {
-        html,
-        summaryHTML,
-      },
-      info: {
-        updateTime: Date.now(),
-      },
-      config: {
-        script: blog.config.script || '',
-        css: blog.config.css || '',
-      }
-    }).exec()
-  }
-
-  // 否则检查这个 blog 是否归属当前用户
-  const blogInfo = BlogDb.findOne({ _id: blog._id, author: { _id: admin._id } })
-  const oldBlog = await blogInfo.exec()
-  if (!oldBlog) {
-    throw new ServiceError('updateBlogById.checkBlog.denied', admin, 'access denied')
-  }
-  return blogInfo.update({
+  const newBlog = {
     title: blog.title,
     context: blog.context,
     summary: blog.summary,
@@ -225,7 +212,14 @@ export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
       script: blog.config.script || '',
       css: blog.config.css || '',
     }
-  }).exec()
+  }
+
+  log.info('updateBlogById.update', {
+    before: oldBlog,
+    now: newBlog
+  })
+
+  return blogInfo.update(newBlog).exec()
 }
 
 
@@ -236,7 +230,7 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
   log.warn('removeBlogById.call', { blogId, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
-    throw new ServiceError('removeBlogById.authentication.denied', admin, 'access denied')
+    throw new ServiceError('removeBlogById.authentication.denied', admin, '您没有权限进行该操作')
   }
 
   // 管理员直接删除
@@ -249,10 +243,31 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
   log.warn('removeBlogById.blogInfo', blogInfo)
   const oldBlog = await blogInfo.exec()
   if (!oldBlog) {
-    throw new ServiceError('updateBlogById.checkBlog.denied', admin, 'access denied')
+    throw new ServiceError('updateBlogById.checkBlog.empty', admin, '删除日志失败')
   }
   // TODO 这里的返回结果为什么不一样？
   return blogInfo.remove().exec()
+}
+
+/**
+ * 查询 Blog
+ * @param blogId 
+ * @param admin 
+ */
+export const queryBlogById = async (blogId: string, admin: IAdmin) => {
+  log.info('queryBlogById.call', { blogId, admin })
+  if (!authentication(admin, AdminRule.BLOG)) {
+    throw new ServiceError('queryBlogById.authentication.denied', admin, '无权访问')
+  }
+  if (admin.rule === AdminRule.GLOBAL) {
+    return BlogDb.findById(blogId).exec()
+  }
+  // 鉴权
+  const blog = await BlogDb.findOne({ _id: blogId, author: { _id: admin._id } }).exec()
+  if (!blog) {
+    throw new ServiceError('queryBlogById.checkBlog.empty', admin, '您无权访问该日志')
+  }
+  return blog
 }
 
 

@@ -9,7 +9,7 @@ const log = new Log('service/category')
  * 查询
  */
 export const queryCategoryAll = () => {
-  log.info('queryAll.call', null)
+  log.info('queryAll.call')
   return CategoryDb.find().sort('-_id').exec()
 }
 

@@ -9,8 +9,8 @@ const log = new Log('service/tag')
  * 查询全部
  */
 export const queryAllTags = () => {
-  log.info('queryByTagNames.call')
-  return TagDb.find().exec()
+  log.info('queryAllTags.call')
+  return TagDb.find().sort('-_id').exec()
 }
 
 

@@ -3,7 +3,7 @@ import { admin } from '../../filters/backend'
 import { Log } from '../../utils/log'
 import { SimpleBlog } from '../../types/blog'
 import { ServiceError } from '../../models/server/said-error'
-import { queryAllBlogByAdmin, createBlog, updateBlog, removeBlog } from '../../services/blog-service'
+import { queryAllBlogByAdmin, createBlog, updateBlog, removeBlog, queryBlogById } from '../../services/blog-service'
 import { RouterError } from '../../middleware/routers/models'
 import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
@@ -12,15 +12,22 @@ import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication } from '../../services/admin-service'
 import { queryAllTags } from '../../services/tag-service'
 import { queryCategoryAll } from '../../services/category-service'
+import { BlogModel } from '../../models/blog'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
   PARAMS: new RouterError(2, '请求信息不正确'),
   DENIED: new RouterError(3, '无权进行该操作'),
+  QUERYFAIL: new RouterError(4, '查询信息失败'),
   REMOVEFAIL: new RouterError(10, '删除失败，请稍后重试')
 }
 
-
+/**
+ * 验证 blog 基本参数
+ * @param params 
+ * @param req 
+ * @param log 
+ */
 const validateParams = (params: { entity: SimpleBlog, admin: IAdmin }, req: Request, log: Log) => {
   if (!params.entity) {
     log.error('params', params)
@@ -69,13 +76,16 @@ export default class {
   public async create(
     params: { entity: SimpleBlog, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
-    validateParams(params, req, log)
-    if (!params.entity.config) {
-      params.entity.config = {}
-    }
     if (!authentication(params.admin, AdminRule.BLOG)) {
       log.error('authentication.denied', params)
       return ERRORS.DENIED
+    }
+    const validateResult = validateParams(params, req, log)
+    if (validateResult) {
+      return validateResult
+    }
+    if (!params.entity.config) {
+      params.entity.config = {}
     }
     try {
       let res = await createBlog(params.entity, params.admin)
@@ -83,7 +93,12 @@ export default class {
       log.info('res', res)
       return res
     } catch (error) {
-      log.error('catch', error)
+      if (ServiceError.is(error)) {
+        log.error((error as ServiceError).title, (error as ServiceError).data)
+        return new RouterError(100, (error as ServiceError).message)
+      } else {
+        log.error('catch', error)
+      }
       return ERRORS.SERVER
     }
   }
@@ -97,14 +112,29 @@ export default class {
       log.error('authentication.denied', params)
       return ERRORS.DENIED
     }
-    validateParams(params, req, log)
+    if (!params.entity._id) {
+      log.error('blog._id.empty', params)
+      return ERRORS.PARAMS
+    }
+    const validateResult = validateParams(params, req, log)
+    if (validateResult) {
+      return validateResult
+    }
+    if (!params.entity.config) {
+      params.entity.config = {}
+    }
     try {
       let res = await updateBlog(params.entity, params.admin)
       await createRecordNoError('blog.update', params, OperationType.Update, req)
       log.info('res', res)
       return res
     } catch (error) {
-      log.error('catch', error)
+      if (ServiceError.is(error)) {
+        log.error((error as ServiceError).title, (error as ServiceError).data)
+        return new RouterError(100, (error as ServiceError).message)
+      } else {
+        log.error('catch', error)
+      }
       return ERRORS.SERVER
     }
   }
@@ -139,15 +169,30 @@ export default class {
    * @param param1 
    */
   @admin
-  public async base(params: { id: string, admin: IAdmin }, { log }: { log: Log }) {
+  public async base(params: { blogId: string, admin: IAdmin }, { log }: { log: Log }) {
     if (!authentication(params.admin, AdminRule.BLOG)) {
       log.error('authentication.denied', params)
       return ERRORS.DENIED
     }
     const tags = await queryAllTags()
     const categorys = await queryCategoryAll()
-    log.info('res.tags', { tags, categorys })
-    return { tags, categorys }
+    let blog: BlogModel | null = null
+    // 编辑模式
+    if (params.blogId) {
+      try {
+        blog = await queryBlogById(params.blogId, params.admin)
+      } catch (error) {
+        if (ServiceError.is(error)) {
+          log.error((error as ServiceError).title, (error as ServiceError).data)
+          return new RouterError(100, (error as ServiceError).message)
+        } else {
+          log.error('catch', error)
+        }
+        return ERRORS.QUERYFAIL
+      }
+    }
+    log.info('res.base', { tags, categorys, blog })
+    return { tags, categorys, blog }
   }
 }
 
