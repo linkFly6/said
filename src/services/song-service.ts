@@ -110,6 +110,7 @@ export interface QiqniuResBody {
  */
 export const acceptSongMimetypes = [
   'audio/mp3',
+  'audio/mpeg',
   'audio/ogg'
 ]
 
