@@ -6,8 +6,7 @@ import { authentication } from '../services/admin-service'
 import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
-import * as fs from 'fs-extra'
-import { uploadImageToQiniu, deleteImageForQiniu } from '../utils/file'
+import { uploadFileToQiniu, deleteFileForQiniu } from '../utils/file'
 
 
 const log = new Log('service/image')
@@ -65,7 +64,7 @@ export const deleteImage = async (imageId: string, admin: IAdmin) => {
   }
   try {
     // 删除七牛的图片
-    const res = await deleteImageForQiniu(image.key)
+    const res = await deleteFileForQiniu(image.key)
     log.info('deleteImage.deleteImageForQiniu', res)
   } catch (error) {
     throw new ServiceError('deleteImage.deleteImageForQiniu.error', error, '图片删除失败')
@@ -139,13 +138,13 @@ export const uploadImage = async (imageType: ImageType, img: Express.Multer.File
     path: img.path,
     size: img.size,
   }
-  log.info('uploadImage', { imageType, img: params })
+  log.info('uploadImage.call', { imageType, img: params })
   // 图片大于 2mb 不处理
   if (img.size > 2 * 1024 * 1024) {
     throw new ServiceError('uploadImage.maxsize', params, '图片不允许大于 2MB')
   }
   if (!~filterFileTypes.indexOf(img.mimetype)) {
-    throw new ServiceError('uploadImage.mimetype', params)
+    throw new ServiceError('uploadImage.mimetype', params, '不支持上传的文件')
   }
   const md5 = getFileMd5(img.buffer)
 
@@ -167,10 +166,10 @@ export const uploadImage = async (imageType: ImageType, img: Express.Multer.File
   })
   try {
     // 保存到七牛
-    const res = await uploadImageToQiniu(path, img.buffer)
-    log.info('uploadImageToQiniu.uploadImageToQiniu', res)
+    const res = await uploadFileToQiniu(path, img.buffer)
+    log.info('uploadImage.uploadFileToQiniu', res)
   } catch (error) {
-    throw new ServiceError('uploadImage.uploadImageToQiniu.error', error, '图片保存失败')
+    throw new ServiceError('uploadImage.uploadFileToQiniu.error', error, '图片保存失败')
   }
 
   const image = new ImageDb({

@@ -23,7 +23,7 @@ export interface IImage {
    * 存储图片名称，该名称对应为资源路径
    * 例如完整路径为 https://tasaid.com/static/blog/demo.jpg
    * 则存储路径为 static/blog/demo.jpg(注意不带前面的 /)
-   * 因为这个 name 对应的七牛云存储的文件 key
+   * 因为这个 key 对应的七牛云存储的文件 key
    */
   key: string,
 }

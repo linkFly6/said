@@ -1,22 +1,31 @@
 import { ImageModel, ImageSchema } from './image'
 import * as mongoose from 'mongoose'
 
-/**
- * 歌曲
- */
-export interface SongModel extends mongoose.Document {
+export interface ISongModel {
+  _id: any,
   /**
-   * url
+   * url，返回给前端才有
    */
-  url: string,
+  // url: string,
   /**
-   * 名称
+   * 名称，md5
    */
   name: string,
   /**
+   * 存储的资源名称
+   * 例如完整路径为 https://tasaid.com/static/said/demo.mp3
+   * 则存储路径为 static/said/demo.mp3(注意不带前面的 /)
+   * 因为这个 key 对应的七牛云存储的文件 key
+   */
+  key: string,
+  /**
+   * 歌曲名称
+   */
+  title: string,
+  /**
    * 文件类型
    */
-  fileType: number,
+  mimeType: number,
   /**
    * 大小（kb）
    */
@@ -30,10 +39,6 @@ export interface SongModel extends mongoose.Document {
    */
   album: string,
   /**
-   * 发行日期
-   */
-  releaseDate: number,
-  /**
    * 时长（ms）
    */
   duration: number,
@@ -43,14 +48,20 @@ export interface SongModel extends mongoose.Document {
   image: ImageModel
 }
 
+/**
+ * 歌曲
+ */
+export interface SongModel extends ISongModel, mongoose.Document {
+}
+
 export const SongSchema = new mongoose.Schema({
-  url: String,
   name: String,
-  fileType: Number,
+  key: String,
+  title: String,
+  mimeType: Number,
   size: Number,
   artist: String,
   album: String,
-  releaseDate: Number,
   duration: Number,
   image: ImageSchema as any,
 })

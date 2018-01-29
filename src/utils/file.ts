@@ -1,5 +1,8 @@
 import * as fs from 'fs'
 import * as qiniu from 'qiniu'
+import * as musicmetadata from 'musicmetadata'
+import * as Stream from 'stream'
+import { Readable } from 'stream'
 
 /**
  * 七牛云存储 key
@@ -16,13 +19,14 @@ const qiniuNamespace = 'said'
 const mac = new qiniu.auth.digest.Mac(process.env.QINIU_ACCESSKEY, process.env.QINIU_SECRETKEY)
 
 //构建上传策略函数
-function uptoken(key: string) {
+function uptoken(key: string, returnBody?: string) {
   // 根据 said 命名空间生成策略函数
   // 文档： https://developer.qiniu.com/kodo/manual/1206/put-policy
   const putPolicy = new qiniu.rs.PutPolicy({
     scope: `${qiniuNamespace}:${key}`,
     // 新增模式，不允许重名文件覆盖
     insertOnly: 1,
+    returnBody: returnBody ? returnBody : void 0
   })
   return putPolicy.uploadToken(mac)
 }
@@ -42,12 +46,15 @@ const qiniuConfig = new qiniu.conf.Config({
  * @param filename 
  * @param file 
  */
-export const uploadImageToQiniu = (filename: string, file: Buffer) => {
-  return new Promise<{ respBody: any, respInfo: any }>((resolve, reject) => {
+export const uploadFileToQiniu = <B = any, I =any>(filename: string, file: Buffer, returnBody?: string) => {
+  return new Promise<{ respBody: B, respInfo: I }>((resolve, reject) => {
     const formUploader = new qiniu.form_up.FormUploader(qiniuConfig)
     const putExtra = new qiniu.form_up.PutExtra()
+    // if (returnBody) {
+    //   putExtra.returnBody = returnBody
+    // }
     formUploader.put(
-      uptoken(filename),
+      uptoken(filename, returnBody),
       filename,
       file,
       new qiniu.form_up.PutExtra(),
@@ -65,7 +72,7 @@ export const uploadImageToQiniu = (filename: string, file: Buffer) => {
 /**
  * 删除七牛空间中的图片
  */
-export const deleteImageForQiniu = (key: string) => {
+export const deleteFileForQiniu = (key: string) => {
   // 七牛空间存储管理
   const bucketManager = new qiniu.rs.BucketManager(mac, qiniuConfig)
   return new Promise<{ respBody: any, respInfo: any }>((resolve, reject) => {
@@ -78,6 +85,63 @@ export const deleteImageForQiniu = (key: string) => {
     })
   })
 
+}
+
+/**
+ * buffer 转 steam，从 https://github.com/creeperyang/buffer-to-stream 上找的代码
+ * @param buf 
+ * @param chunkSize 
+ */
+function buffer2stream(buf: any, chunkSize?: any) {
+  if (typeof buf === 'string') {
+    buf = Buffer.from(buf, 'utf8')
+  }
+  if (!Buffer.isBuffer(buf)) {
+    throw new TypeError(`"buf" argument must be a string or an instance of Buffer`)
+  }
+
+  const reader = new Stream.Readable()
+  const hwm = (reader as any)._readableState.highWaterMark
+
+  // If chunkSize is invalid, set to highWaterMark.
+  if (!chunkSize || typeof chunkSize !== 'number' || chunkSize < 1 || chunkSize > hwm) {
+    chunkSize = hwm
+  }
+
+  const len = buf.length
+  let start = 0
+
+  // Overwrite _read method to push data from buffer.
+  reader._read = function () {
+    while (reader.push(
+      buf.slice(start, (start += chunkSize))
+    )) {
+      // If all data pushed, just break the loop.
+      if (start >= len) {
+        reader.push(null)
+        break
+      }
+    }
+  }
+  return reader
+}
+
+/**
+ * 获取音频文件的 metadata
+ * 这个库不能获取经过裁剪过后音频 duration（会卡着进程不懂），所以 duration 还要单独部署
+ * 可以通过七牛云上传后帮助获取这些信息： duration
+ * @param path
+ */
+export const getAudioMetadata = (buffer: Buffer) => {
+  return new Promise<MM.Metadata>((resolve, reject) => {
+    musicmetadata(buffer2stream(buffer) as Readable, (err, metadata) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(metadata)
+      }
+    })
+  })
 }
 
 // /**
