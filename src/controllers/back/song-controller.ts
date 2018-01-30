@@ -8,14 +8,58 @@ import { Request, Response } from 'express'
 import { OperationType } from '../../models/admin-record'
 import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication, } from '../../services/admin-service'
-import { uploadSong, getFullUrlByQiniuKey } from '../../services/song-service'
+import { uploadSong, getFullUrlByQiniuKey, saveSong, removeFile, queryAll } from '../../services/song-service'
+import song, { ISongModel } from '../../models/song'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
   PARAMS: new RouterError(2, '请求信息不正确'),
   DENIED: new RouterError(3, '无权进行该操作'),
-  CREATEFAIL: new RouterError(4, '上传歌曲文件失败'),
+  UPLOADFAIL: new RouterError(4, '上传歌曲文件失败'),
   DELETEFAIL: new RouterError(5, '删除失败，请稍后重试'),
+  SAVEFAIL: new RouterError(6, '保存歌曲信息失败，请稍后重试'),
+}
+
+
+/**
+ * 验证 blog 基本参数
+ * @param params 
+ * @param req 
+ * @param log 
+ */
+const validateParams = (params: { entity: ISongModel, admin: IAdmin }, req: Request, log: Log) => {
+  if (!params.entity) {
+    log.error('params', params)
+    return ERRORS.PARAMS
+  }
+  req.check('entity.name')
+    .notEmpty()
+    .isLength({ max: 100 }).withMessage('存储 name 不正确')
+  req.check('entity.name')
+    .notEmpty()
+    .isLength({ max: 100 }).withMessage('存储 key 不正确')
+  req.check('entity.title').notEmpty().isLength({ max: 100 }).withMessage('歌曲名称不正确')
+  req.check('entity.artist').notEmpty().isLength({ max: 100 }).withMessage('歌手名称不正确')
+  req.check('entity.album').notEmpty().isLength({ max: 100 }).withMessage('专辑名称不正确')
+  req.check('entity.size').notEmpty().isLength({ max: 100 }).withMessage('歌曲文件信息不正确')
+  req.check('entity.mimeType').notEmpty().isLength({ max: 100 }).withMessage('歌曲文件类型不正确')
+  req.check('entity.duration').notEmpty().isLength({ max: 100 }).withMessage('歌曲时长不正确')
+  req.check('entity.image._id').notEmpty().isLength({ max: 100 }).withMessage('歌曲封面信息不正确')
+
+  const errors = req.validationErrors()
+  if (errors) {
+    log.error('params', { params, errors })
+    return new RouterError(2, errors[0].msg)
+  }
+  if (isNaN(+params.entity.duration)) {
+    log.error('params', params)
+    return new RouterError(3, '歌曲时长信息不正确')
+  }
+  if (isNaN(+params.entity.size)) {
+    log.error('params', params)
+    return new RouterError(4, '歌曲文件信息不正确')
+  }
+  return null
 }
 
 
@@ -23,7 +67,13 @@ export default class {
   @get
   @admin
   public async query(params: { admin: IAdmin }, { log }: { log: Log }) {
-    return {}
+    if (!authentication(params.admin, AdminRule.SAID)) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
+    const res = await queryAll(params.admin)
+    log.info('res', res)
+    return res
   }
 
   @post
@@ -35,6 +85,7 @@ export default class {
     if (
       !authentication(params.admin, AdminRule.SAID)
     ) {
+      log.error('authentication.denied', params)
       return ERRORS.DENIED
     }
     try {
@@ -53,8 +104,61 @@ export default class {
       } else {
         log.error('catch', error)
       }
-      return ERRORS.CREATEFAIL
+      return ERRORS.UPLOADFAIL
     }
   }
 
+  @post
+  @admin
+  public async save(
+    params: { entity: ISongModel, admin: IAdmin },
+    { log, req }: { log: Log, req: Request }
+    ) {
+    if (
+      !authentication(params.admin, AdminRule.SAID)
+    ) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
+
+    const validateResult = validateParams(params, req, log)
+    if (validateResult) {
+      return validateResult
+    }
+    try {
+      const song = await saveSong(params.entity, params.admin)
+      log.info('res', song)
+      return song
+    } catch (error) {
+      if (ServiceError.is(error)) {
+        log.error((error as ServiceError).title, (error as ServiceError).data)
+        return new RouterError(100, (error as ServiceError).message)
+      } else {
+        log.error('catch', error)
+      }
+      return ERRORS.SAVEFAIL
+    }
+
+  }
+
+  @post
+  @admin
+  public async removeFile(
+    params: { md5: string, admin: IAdmin },
+    { log, req }: { log: Log, req: Request }
+    ) {
+    if (!params.md5) {
+      log.error('params.md5.empty', params)
+      return false
+    }
+    if (
+      !authentication(params.admin, AdminRule.SAID)
+    ) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
+    // 记录一条日志，不做删除处理
+    log.warn('removeFile.call', params)
+    return true
+  }
 }

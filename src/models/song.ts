@@ -25,7 +25,7 @@ export interface ISongModel {
   /**
    * 文件类型
    */
-  mimeType: number,
+  mimeType: string,
   /**
    * 大小（kb）
    */
@@ -58,7 +58,7 @@ export const SongSchema = new mongoose.Schema({
   name: String,
   key: String,
   title: String,
-  mimeType: Number,
+  mimeType: String,
   size: Number,
   artist: String,
   album: String,

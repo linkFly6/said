@@ -123,6 +123,14 @@ export const imageExistsByName = (name: string) => {
   return ImageDb.count({ name }).exec()
 }
 
+/**
+ * 根据图片 ID 查找图片
+ * @param imageId 
+ */
+export const queryImageById = (imageId: string) => {
+  return ImageDb.findById(imageId).exec()
+}
+
 
 /**
  * 上传图片

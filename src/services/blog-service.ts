@@ -22,7 +22,7 @@ const log = new Log('service/blog')
  */
 export const queryAllBlog = () => {
   log.info('queryAllBlog.call', null)
-  return BlogDb.find().exec()
+  return BlogDb.find().sort('-_id').exec()
 }
 
 
@@ -102,7 +102,7 @@ export const createBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   log.info('createBlog.call', { blog, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
-    throw new ServiceError('createBlog.authentication.denied', admin, 'access denied')
+    throw new ServiceError('createBlog.authentication.denied', admin, '您没有权限进行该操作')
   }
   // 如果有错误则 validateBlog 会抛出异常
   const validateRes = await validateBlog(blog, admin)

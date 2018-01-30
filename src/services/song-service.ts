@@ -1,4 +1,4 @@
-import SongDb, { ISongModel, SongSchema } from '../models/song'
+import SongDb, { ISongModel, SongSchema, SongModel } from '../models/song'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
@@ -7,8 +7,8 @@ import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
 import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata } from '../utils/file'
+import { queryImageById } from '../services/image-service'
 
-import * as Stream from 'stream'
 
 
 const log = new Log('service/image')
@@ -126,6 +126,14 @@ export const getPath = (filename: string) => {
   return `song/${filename}`
 }
 
+/**
+ * 查询全部
+ */
+export const queryAll = (admin: IAdmin) => {
+  log.info('queryAll.call', admin)
+  return SongDb.find().sort('-_id').exec()
+}
+
 
 /**
  * 查找数据库中是否存在同名的图片 (name 就是文件 md5)
@@ -135,6 +143,11 @@ export const existsByName = (name: string) => {
   return SongDb.count({ name }).exec()
 }
 
+/**
+ * 保存并解析得到歌曲文件信息，这里只是将歌曲文件上传并解析对应的歌曲信息（时长/歌手/专辑等）
+ * 将歌曲保存到数据库需要调用 save()
+ * @param file 
+ */
 export const uploadSong = async (file: Express.Multer.File): Promise<ISongModel> => {
   const params = {
     destination: file.destination,
@@ -195,6 +208,12 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISongModel>
       throw new ServiceError('uploadSong.uploadFileToQiniu.durationNaN', { params, res }, '歌曲文件转存失败')
     }
     return {
+      // _id: '',
+      // image: null as any,
+      /**
+       * mimetype
+       */
+      mimeType: file.mimetype,
       /**
        * 存储的资源名称 (7牛)
        */
@@ -222,7 +241,7 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISongModel>
       /**
        * 时长(s)
        */
-      duration: res.respBody.info.format.duration,
+      duration: +res.respBody.info.format.duration,
     } as any
   } catch (error) {
     throw new ServiceError('uploadSong.uploadFileToQiniu.error', error, '歌曲文件保存失败')
@@ -236,4 +255,34 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISongModel>
   //   key: path,
   // })
   // return image.save()
+}
+
+
+/**
+ * 保存歌曲信息，上传歌曲文件请参阅 uploadSong() 接口
+ * @param song 
+ */
+export const saveSong = async (song: ISongModel, admin: IAdmin) => {
+  log.info('save.call', { song, admin })
+  const denied = authentication(admin, AdminRule.SAID)
+  if (!denied) {
+    throw new ServiceError('save.authentication.denied', { song, admin }, '您没有权限进行该操作')
+  }
+  // 验证图片是否存在
+  const image = await queryImageById(song.image._id)
+  if (!image) {
+    throw new ServiceError('save.queryImageById.empty', { song, admin }, '歌曲封面图信息不正确')
+  }
+  const db = new SongDb(song)
+  return db.save()
+}
+
+
+export const removeFile = (md5: string, admin: IAdmin) => {
+  // const denied = authentication(admin, AdminRule.SAID)
+  // if (!denied) {
+  // throw new ServiceError('save.authentication.denied', { md5, admin }, '您没有权限进行该操作')
+  // }
+  log.warn('removeFile.call', { md5, admin })
+  return true
 }
