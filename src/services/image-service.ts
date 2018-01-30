@@ -6,7 +6,8 @@ import { authentication } from '../services/admin-service'
 import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
-import { uploadFileToQiniu, deleteFileForQiniu } from '../utils/file'
+import { uploadFileToQiniu, deleteFileForQiniu, getThumbUrlByQiniuImage, getFullUrlByQiniuKey } from '../utils/file'
+import { OutputImage } from '../types/image'
 
 
 const log = new Log('service/image')
@@ -21,22 +22,26 @@ const filterFileTypes = [
   // 'image/webp' // 因为使用了 https://www.npmjs.com/package/gm 处理，默认不处理 webp
 ]
 
-/**
- * 根据七牛存储的 key ，获取完整 Url 路径
- * blog/demo.jpg => //xx.com/blog/demo.jpg
- * @param qiniuKey 
- */
-export const getFullUrlByQiniuImage = (qiniuKey: string) => {
-  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}`
-}
 
 /**
- * 获取七牛存储的 key 缩略图的完整路径
- * blog/demo.jpg => //xx.com/blog/demo.jpg!thumb
- * @param qiniuKey 
+ * 把图片转换为前端格式图片
+ * 新增属性： url/thumb
  */
-export const getThumbUrlByQiniuImage = (qiniuKey: string) => {
-  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}${process.env.QINIU_THUMBNAILNAME}`
+export const image2outputImage = (image: any): OutputImage => {
+  // image.url = getFullUrlByQiniuKey(image.key)
+  // image.thumb = getThumbUrlByQiniuImage(image.key)
+  // return image as OutputImage
+  // mongoDB 返回的对象无法改结构，而且附带了其他乱七八糟的属性，所以在这里做一下 clean
+  return {
+    _id: image._id,
+    fileName: image.fileName,
+    name: image.name,
+    key: image.key,
+    size: image.size,
+    type: image.type,
+    url: getFullUrlByQiniuKey(image.key),
+    thumb: getThumbUrlByQiniuImage(image.key),
+  }
 }
 
 /**

@@ -9,7 +9,7 @@ import { OperationType } from '../../models/admin-record'
 import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication } from '../../services/admin-service'
 import image, { ImageType, IImage } from '../../models/image'
-import { queryImagesByType, deleteImage, uploadImage, getFullUrlByQiniuImage, getThumbUrlByQiniuImage } from '../../services/image-service'
+import { queryImagesByType, deleteImage, uploadImage, image2outputImage } from '../../services/image-service'
 import { OutputImage } from '../../types/image'
 
 const ERRORS = {
@@ -18,24 +18,6 @@ const ERRORS = {
   DENIED: new RouterError(3, '无权进行该操作'),
   CREATEFAIL: new RouterError(4, '上传图片失败'),
   DELETEFAIL: new RouterError(5, '删除失败，请稍后重试'),
-}
-
-
-/**
- * 把图片转换为前端格式图片
- * 新增属性： url/thumb
- */
-const image2outputImage = (image: IImage): OutputImage => {
-  return {
-    _id: image._id,
-    fileName: image.fileName,
-    name: image.name,
-    key: image.key,
-    size: image.size,
-    type: image.type,
-    url: getFullUrlByQiniuImage(image.key),
-    thumb: getThumbUrlByQiniuImage(image.key),
-  }
 }
 
 // const upload = multer({

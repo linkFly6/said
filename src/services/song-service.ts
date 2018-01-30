@@ -1,4 +1,4 @@
-import SongDb, { ISongModel, SongSchema, SongModel } from '../models/song'
+import SongDb, { ISong, SongSchema, SongModel } from '../models/song'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
@@ -6,23 +6,13 @@ import { authentication } from '../services/admin-service'
 import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
-import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata } from '../utils/file'
-import { queryImageById } from '../services/image-service'
+import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata, getFullUrlByQiniuKey } from '../utils/file'
+import { queryImageById, image2outputImage } from '../services/image-service'
+import { OutputSong } from '../types/song'
 
 
 
 const log = new Log('service/image')
-
-
-/**
- * 根据七牛存储的 key ，获取完整 Url 路径
- * blog/demo.mp3 => //xx.com/blog/demo.mp3
- * @param qiniuKey 
- */
-export const getFullUrlByQiniuKey = (qiniuKey: string) => {
-  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}`
-}
-
 
 /**
  * 上传图片七牛云返回的结果
@@ -127,6 +117,27 @@ export const getPath = (filename: string) => {
 }
 
 /**
+ * 把图片转换为前端格式图片
+ * 新增属性： url/thumb
+ */
+export const song2outputSong = (song: any): OutputSong => {
+  // mongoDB 返回的对象无法改结构，而且附带了其他乱七八糟的属性，所以在这里做一下 clean
+  return {
+    _id: song._id,
+    album: song.album,
+    artist: song.artist,
+    duration: song.duration,
+    key: song.key,
+    mimeType: song.mimeType,
+    name: song.name,
+    title: song.title,
+    size: song.size,
+    url: getFullUrlByQiniuKey(song.key),
+    image: image2outputImage(song.image),
+  }
+}
+
+/**
  * 查询全部
  */
 export const queryAll = (admin: IAdmin) => {
@@ -148,7 +159,7 @@ export const existsByName = (name: string) => {
  * 将歌曲保存到数据库需要调用 save()
  * @param file 
  */
-export const uploadSong = async (file: Express.Multer.File): Promise<ISongModel> => {
+export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
   const params = {
     destination: file.destination,
     encoding: file.encoding,
@@ -262,7 +273,7 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISongModel>
  * 保存歌曲信息，上传歌曲文件请参阅 uploadSong() 接口
  * @param song 
  */
-export const saveSong = async (song: ISongModel, admin: IAdmin) => {
+export const saveSong = async (song: ISong, admin: IAdmin) => {
   log.info('save.call', { song, admin })
   const denied = authentication(admin, AdminRule.SAID)
   if (!denied) {

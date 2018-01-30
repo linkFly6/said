@@ -1,7 +1,7 @@
 import { IImage } from '../models/Image'
 
 /**
- * 入参 Blog
+ * 输出给前端的图片
  */
 export interface OutputImage extends IImage {
   /**

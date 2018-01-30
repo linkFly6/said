@@ -144,6 +144,25 @@ export const getAudioMetadata = (buffer: Buffer) => {
   })
 }
 
+
+/**
+ * 根据七牛存储的 key ，获取完整 Url 路径
+ * blog/demo.jpg => //xx.com/blog/demo.jpg
+ * @param qiniuKey 
+ */
+export const getFullUrlByQiniuKey = (qiniuKey: string) => {
+  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}`
+}
+
+/**
+ * 获取七牛存储的 key 缩略图的完整路径
+ * blog/demo.jpg => //xx.com/blog/demo.jpg!thumb
+ * @param qiniuKey 
+ */
+export const getThumbUrlByQiniuImage = (qiniuKey: string) => {
+  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}${process.env.QINIU_THUMBNAILNAME}`
+}
+
 // /**
 //  * 保存缩略图
 //  * @param

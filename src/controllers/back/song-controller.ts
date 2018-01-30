@@ -8,8 +8,9 @@ import { Request, Response } from 'express'
 import { OperationType } from '../../models/admin-record'
 import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication, } from '../../services/admin-service'
-import { uploadSong, getFullUrlByQiniuKey, saveSong, removeFile, queryAll } from '../../services/song-service'
-import song, { ISongModel } from '../../models/song'
+import { uploadSong, saveSong, removeFile, queryAll, song2outputSong } from '../../services/song-service'
+import song, { ISong } from '../../models/song'
+import { getFullUrlByQiniuKey } from '../../utils/file'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
@@ -27,7 +28,7 @@ const ERRORS = {
  * @param req 
  * @param log 
  */
-const validateParams = (params: { entity: ISongModel, admin: IAdmin }, req: Request, log: Log) => {
+const validateParams = (params: { entity: ISong, admin: IAdmin }, req: Request, log: Log) => {
   if (!params.entity) {
     log.error('params', params)
     return ERRORS.PARAMS
@@ -73,7 +74,7 @@ export default class {
     }
     const res = await queryAll(params.admin)
     log.info('res', res)
-    return res
+    return res.map(song2outputSong)
   }
 
   @post
@@ -91,12 +92,10 @@ export default class {
     try {
       if (!req.files || !(req.files as Express.Multer.File[]).length) return ERRORS.PARAMS
       const song = await uploadSong(req.files[0])
-      log.info('res', song)
+      log.info('res', song);
       // 把 七牛 key 转换成完整域名路径
-      return {
-        url: getFullUrlByQiniuKey(song.key),
-        ...song,
-      }
+      (song as any).url = getFullUrlByQiniuKey(song.key)
+      return song
     } catch (error) {
       if (ServiceError.is(error)) {
         log.error((error as ServiceError).title, (error as ServiceError).data)
@@ -111,7 +110,7 @@ export default class {
   @post
   @admin
   public async save(
-    params: { entity: ISongModel, admin: IAdmin },
+    params: { entity: ISong, admin: IAdmin },
     { log, req }: { log: Log, req: Request }
     ) {
     if (

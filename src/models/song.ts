@@ -1,7 +1,7 @@
-import { ImageModel, ImageSchema } from './image'
+import { ImageModel, ImageSchema, IImage } from './image'
 import * as mongoose from 'mongoose'
 
-export interface ISongModel {
+export interface ISong {
   _id: any,
   /**
    * url，返回给前端才有
@@ -45,13 +45,13 @@ export interface ISongModel {
   /**
    * 歌曲图片
    */
-  image: ImageModel
+  image: IImage
 }
 
 /**
  * 歌曲
  */
-export interface SongModel extends ISongModel, mongoose.Document {
+export interface SongModel extends ISong, mongoose.Document {
 }
 
 export const SongSchema = new mongoose.Schema({
