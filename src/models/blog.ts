@@ -7,10 +7,6 @@ import * as mongoose from 'mongoose'
 
 export interface IBlog {
   /**
-   * mongoDB 默认 ID
-   */
-  _id: any,
-  /**
    * 日志标题
    */
   title: string,
@@ -118,7 +114,12 @@ export interface IBlog {
 /**
  * blog Model(日志)
  */
-export interface BlogModel extends IBlog, mongoose.Document { }
+export interface BlogModel extends IBlog, mongoose.Document {
+  /**
+   * mongoDB 默认 ID
+   */
+  _id: any,
+}
 
 export const BlogSchema = new mongoose.Schema({
   title: String,

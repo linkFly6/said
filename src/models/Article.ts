@@ -1,4 +1,4 @@
-import { AdminModel, AdminSchema } from './admin'
+import { AdminSchema, IAdmin } from './admin'
 import { CategoryModel, CategorySchema } from './category'
 import { CommentModel, CommentSchema } from './comment'
 import { SongModel, SongSchema } from './song'
@@ -6,14 +6,8 @@ import { ImageSchema, ImageModel } from './image'
 import * as mongoose from 'mongoose'
 
 
-/**
- * Said Model(听说)
- */
-export interface ArticleModel extends mongoose.Document {
-  /**
-   * mongoDB 默认 ID
-   */
-  _id: string,
+export interface IArticle {
+
   /**
    * said 标题
    */
@@ -25,11 +19,11 @@ export interface ArticleModel extends mongoose.Document {
   /**
    * 标记，可以自定义，也可以自动生成，url 中使用
    */
-  urlKey: string,
+  key: string,
   /**
-   * 作者信息
+ * 作者信息
    */
-  author: AdminModel
+  author: IAdmin
   /**
    * 描述
    */
@@ -76,7 +70,7 @@ export interface ArticleModel extends mongoose.Document {
     /**
      * 喜欢数
      */
-    likeCount?: number,
+    likeCount: number,
     /**
      * 评论数
      */
@@ -117,12 +111,22 @@ export interface ArticleModel extends mongoose.Document {
   }
 }
 
+/**
+ * Said Model(听说)
+ */
+export interface ArticleModel extends mongoose.Document {
+  /**
+   * mongoDB 默认 ID
+   */
+  _id: string,
+}
+
 
 
 export const ArticleSchema = new mongoose.Schema({
   title: String,
   context: String,
-  urlKey: String,
+  key: String,
   author: { type: AdminSchema },
   summary: String,
   fileName: String,

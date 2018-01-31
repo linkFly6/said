@@ -8,9 +8,10 @@ import { Request, Response } from 'express'
 import { OperationType } from '../../models/admin-record'
 import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication, } from '../../services/admin-service'
-import { uploadSong, saveSong, removeFile, queryAll, song2outputSong, removeSong } from '../../services/song-service'
+import { uploadSong, saveSong, queryAll, song2outputSong, removeSong } from '../../services/song-service'
 import song, { ISong } from '../../models/song'
 import { getFullUrlByQiniuKey } from '../../utils/file'
+import { article2SimpleArticle } from '../../services/article-service'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
@@ -183,8 +184,13 @@ export default class {
       return true
     } catch (error) {
       if (ServiceError.is(error)) {
-        log.error((error as ServiceError).title, (error as ServiceError).data)
-        return new RouterError(100, (error as ServiceError).message)
+        log.error(error!.title, error!.data)
+        // 歌曲正在被文章引用
+        if (error.title === 'removeSong.queryArticlesBySong.exists') {
+          // 同时把文章数据返回给前端，以便前端展现
+          return new RouterError(101, error!.message, error!.data.map(article2SimpleArticle))
+        }
+        return new RouterError(100, error!.message)
       } else {
         log.error('catch', error)
       }

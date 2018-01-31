@@ -133,9 +133,7 @@ export const createBlog = async (blog: SimpleBlog, admin: IAdmin) => {
     title: blog.title,
     context: blog.context,
     urlKey,
-    author: {
-      _id: admin._id,
-    },
+    author: admin,
     summary: blog.summary,
     fileName: urlKey,
     tags: validateRes.tags,

@@ -2,13 +2,14 @@ import SongDb, { ISong, SongSchema, SongModel } from '../models/song'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
-import { authentication } from '../services/admin-service'
+import { authentication } from './admin-service'
 import { Express } from 'express'
 import * as path from 'path'
 import { getFileMd5 } from '../utils'
 import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata, getFullUrlByQiniuKey } from '../utils/file'
-import { queryImageById, image2outputImage } from '../services/image-service'
+import { queryImageById, image2outputImage } from './image-service'
 import { OutputSong } from '../types/song'
+import { queryArticlesBySong } from './article-service'
 
 
 
@@ -289,18 +290,42 @@ export const saveSong = async (song: ISong, admin: IAdmin) => {
 }
 
 
+/**
+ * 删除歌曲
+ * 如果想捕获被文章引用的错误，请捕获 ServiceError 的 "removeSong.queryArticlesBySong.exists"，data 就是引用的文章列表
+ * 1. 先校验歌曲是否存在
+ * 2. 检查是否被文章引用
+ * 3. 从七牛云删除文件
+ * 4. 删除歌曲
+ * @param songId 
+ * @param admin 
+ */
 export const removeSong = async (songId: string, admin: IAdmin) => {
   const denied = authentication(admin, AdminRule.GLOBAL)
   if (!denied) {
     throw new ServiceError('removeSong.authentication.denied', { songId, admin }, '您没有权限进行该操作')
   }
-  log.warn('removeFile.call', { songId, admin })
+  log.warn('removeSong.call', { songId, admin })
   const song = await SongDb.findById(songId).exec()
-  log.warn('removeFile.song', song)
+  log.warn('removeSong.song', { song, admin })
   if (!song) {
     throw new ServiceError('removeSong.findById.empty', { songId, admin }, '没有查到相关信息')
   }
-  // TODO 删除七牛云的文件
-  // TODO 检查 articles 里面是否有歌曲的引用，如果有则抛出异常
-  return song.remove()
+  // 检查歌曲是否被文章引用，如果有则抛出异常
+  const articles = await queryArticlesBySong(song._id, admin)
+  if (articles.length) {
+    // 正在被文章引用
+    throw new ServiceError('removeSong.queryArticlesBySong.exists', articles, '歌曲被文章引用')
+  }
+  try {
+    // 从七牛云删除
+    const qiniuResp = await deleteFileForQiniu(song.key)
+    if (!qiniuResp) {
+      throw new ServiceError('removeSong.deleteFileForQiniu.fail', { song, qiniuResp, admin }, '删除歌曲文件失败')
+    }
+    log.warn('removeSong.ready', { song, qiniuResp, admin })
+    return song.remove()
+  } catch (error) {
+    throw new ServiceError('removeSong.deleteFileForQiniu.error', articles, '删除歌曲文件失败')
+  }
 }
