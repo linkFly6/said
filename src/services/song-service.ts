@@ -289,11 +289,18 @@ export const saveSong = async (song: ISong, admin: IAdmin) => {
 }
 
 
-export const removeFile = (md5: string, admin: IAdmin) => {
-  // const denied = authentication(admin, AdminRule.SAID)
-  // if (!denied) {
-  // throw new ServiceError('save.authentication.denied', { md5, admin }, '您没有权限进行该操作')
-  // }
-  log.warn('removeFile.call', { md5, admin })
-  return true
+export const removeSong = async (songId: string, admin: IAdmin) => {
+  const denied = authentication(admin, AdminRule.GLOBAL)
+  if (!denied) {
+    throw new ServiceError('removeSong.authentication.denied', { songId, admin }, '您没有权限进行该操作')
+  }
+  log.warn('removeFile.call', { songId, admin })
+  const song = await SongDb.findById(songId).exec()
+  log.warn('removeFile.song', song)
+  if (!song) {
+    throw new ServiceError('removeSong.findById.empty', { songId, admin }, '没有查到相关信息')
+  }
+  // TODO 删除七牛云的文件
+  // TODO 检查 articles 里面是否有歌曲的引用，如果有则抛出异常
+  return song.remove()
 }

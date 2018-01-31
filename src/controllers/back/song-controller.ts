@@ -8,7 +8,7 @@ import { Request, Response } from 'express'
 import { OperationType } from '../../models/admin-record'
 import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication, } from '../../services/admin-service'
-import { uploadSong, saveSong, removeFile, queryAll, song2outputSong } from '../../services/song-service'
+import { uploadSong, saveSong, removeFile, queryAll, song2outputSong, removeSong } from '../../services/song-service'
 import song, { ISong } from '../../models/song'
 import { getFullUrlByQiniuKey } from '../../utils/file'
 
@@ -127,7 +127,7 @@ export default class {
     try {
       const song = await saveSong(params.entity, params.admin)
       log.info('res', song)
-      return song
+      return song2outputSong(song)
     } catch (error) {
       if (ServiceError.is(error)) {
         log.error((error as ServiceError).title, (error as ServiceError).data)
@@ -151,7 +151,7 @@ export default class {
       return false
     }
     if (
-      !authentication(params.admin, AdminRule.SAID)
+      !authentication(params.admin, AdminRule.GLOBAL)
     ) {
       log.error('authentication.denied', params)
       return ERRORS.DENIED
@@ -159,5 +159,36 @@ export default class {
     // 记录一条日志，不做删除处理
     log.warn('removeFile.call', params)
     return true
+  }
+
+  @post
+  @admin
+  public async delete(
+    params: { songId: string, admin: IAdmin },
+    { log, req }: { log: Log, req: Request }
+    ) {
+    if (!params.songId) {
+      log.error('params.songId.empty', params)
+      return false
+    }
+    if (
+      !authentication(params.admin, AdminRule.GLOBAL)
+    ) {
+      log.error('authentication.denied', params)
+      return ERRORS.DENIED
+    }
+    try {
+      const song = await removeSong(params.songId, params.admin)
+      log.info('res', song)
+      return true
+    } catch (error) {
+      if (ServiceError.is(error)) {
+        log.error((error as ServiceError).title, (error as ServiceError).data)
+        return new RouterError(100, (error as ServiceError).message)
+      } else {
+        log.error('catch', error)
+      }
+      return ERRORS.SAVEFAIL
+    }
   }
 }
