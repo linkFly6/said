@@ -16,7 +16,7 @@ export interface OutputArticle {
     email?: string,
     bio?: string,
     rule: AdminRule,
-  }
+  },
   summary: string,
   fileName: string,
   poster: {
@@ -26,7 +26,7 @@ export interface OutputArticle {
     type: ImageType,
     name: string,
     key: string,
-  }
+  },
   song: {
     _id: string,
     key: string,
