@@ -16,6 +16,7 @@ const log = new Log('service/article')
 /**
  * 将 mongoose 返回的 model 进行处理
  * mongoDB 返回的对象无法改结构，而且附带了其他乱七八糟的属性，所以对外输出要经过这个函数处理
+ * 当然，源查出来的 Mongoose Doc 对象也可以自行通过 toObject() 来处理
  * @param article 
  */
 export const article2SimpleArticle = (article: any): OutputArticle => {
@@ -227,13 +228,10 @@ export const updateArtice = async (article: SimpleArticle, admin: IAdmin) => {
     summary: article.summary,
     poster: validateRes.poster,
     song: validateRes.song,
-    other: {
-      html,
-      summaryHTML,
-    },
-    info: {
-      updateTime: Date.now()
-    }
+    // 这个 update 模式... 给跪了 ...
+    'other.html': html,
+    'other.summaryHTML': summaryHTML,
+    'info.updateTime': Date.now(),
   }
 
   log.info('updateArtice.update', {
@@ -241,6 +239,10 @@ export const updateArtice = async (article: SimpleArticle, admin: IAdmin) => {
     now: newArticle,
     admin,
   })
+  
+  // 不想使用上面的 2b set 的话，也可以试试这种思路
+  // lodash.merge(oldArticle, newArticle)
+  // oldArticle.save()
   // TODO 增量更新 https://cnodejs.org/topic/5539bde663b7692e48bbb6b0
   return articleInfo.update(newArticle).exec()
 }
@@ -299,5 +301,5 @@ export const queryArticleById = async (articleId: string, admin: IAdmin) => {
   if (!article) {
     throw new ServiceError('queryArticleById.checkArticle.empty', { articleId, admin }, '无法访问该文章')
   }
-  return article
+  return article //  .toObject()
 }

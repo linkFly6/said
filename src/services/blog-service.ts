@@ -197,17 +197,11 @@ export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
     summary: blog.summary,
     tags: validateRes.tags,
     category: validateRes.category,
-    other: {
-      html,
-      summaryHTML,
-    },
-    info: {
-      updateTime: Date.now(),
-    },
-    config: {
-      script: blog.config.script || '',
-      css: blog.config.css || '',
-    }
+    'other.html': html,
+    'other.summaryHTML': summaryHTML,
+    'info.updateTime': Date.now(),
+    'config.script': blog.config.script || '',
+    'config.css': blog.config.css || '',
   }
 
   log.info('updateBlogById.update', {
