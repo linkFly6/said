@@ -93,21 +93,24 @@ export const admin = signature(
           if (!tokenInfo || !tokenInfo.id) {
             return
           }
-          getUserInfoById(tokenInfo.id).then((res: IAdmin) => {
-            log.info('admin.getUserInfoByToken', res)
+          getUserInfoById(tokenInfo.id).then((resAdmin: IAdmin) => {
+            if (!resAdmin) {
+              return res.json(ERRORS.CHECKTOKENFAIL.toJSON())
+            }
+            log.info('admin.getUserInfoByToken', resAdmin)
             const admin: SimpleAdmin = {
-              _id: res._id,
-              nickName: res.nickName,
-              rule: res.rule
+              _id: resAdmin._id,
+              nickName: resAdmin.nickName,
+              rule: resAdmin.rule
             }
-            if (res.avatar) {
-              admin.avatar = res.avatar
+            if (resAdmin.avatar) {
+              admin.avatar = resAdmin.avatar
             }
-            if (res.email) {
-              admin.email = res.email
+            if (resAdmin.email) {
+              admin.email = resAdmin.email
             }
-            if (res.bio) {
-              admin.bio = res.bio
+            if (resAdmin.bio) {
+              admin.bio = resAdmin.bio
             }
             // 挂载到 params 下
             params.admin = admin
