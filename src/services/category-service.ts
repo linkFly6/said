@@ -1,6 +1,7 @@
 import { default as CategoryDb, CategoryModel, ICategory } from '../models/category'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
+import { IAdmin } from '../models/admin'
 
 const log = new Log('service/category')
 
@@ -18,7 +19,7 @@ export const queryCategoryAll = () => {
  * 根据 ID 查询分类
  * @param categoryId 
  */
-export const queryCategoryById = (categoryId: string) => {
+export const queryCategoryById = (categoryId: string, admin: IAdmin) => {
   log.info('queryAll.queryCategoryById', categoryId)
   return CategoryDb.findById(categoryId).exec()
 }

@@ -1,18 +1,17 @@
 import { get, post } from '../../filters/http'
 import { admin } from '../../filters/backend'
 import { Log } from '../../utils/log'
-import { SimpleBlog } from '../../types/blog'
 import { ServiceError } from '../../models/server/said-error'
-import { queryAllBlogByAdmin, createBlog, updateBlog, removeBlog, queryBlogById } from '../../services/blog-service'
+import { queryAllArticleByAdmin, createArticle, updateArtice, removeArticle, queryArticleById, article2SimpleArticle } from '../../services/article-service'
 import { RouterError } from '../../middleware/routers/models'
 import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
 import { OperationType } from '../../models/admin-record'
 import { AdminRule, IAdmin } from '../../models/admin'
 import { authentication } from '../../services/admin-service'
-import { queryAllTags } from '../../services/tag-service'
-import { queryCategoryAll } from '../../services/category-service'
 import { BlogModel } from '../../models/blog'
+import { SimpleArticle } from '../../types/article'
+import { ArticleModel } from '../../models/article'
 
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
@@ -23,12 +22,12 @@ const ERRORS = {
 }
 
 /**
- * 验证 blog 基本参数
+ * 验证新增和修改文章的基本参数
  * @param params 
  * @param req 
  * @param log 
  */
-const validateParams = (params: { entity: SimpleBlog, admin: IAdmin }, req: Request, log: Log) => {
+const validateParams = (params: { entity: SimpleArticle, admin: IAdmin }, req: Request, log: Log) => {
   if (!params.entity) {
     log.error('params', params)
     return ERRORS.PARAMS
@@ -37,18 +36,18 @@ const validateParams = (params: { entity: SimpleBlog, admin: IAdmin }, req: Requ
     .notEmpty().withMessage('文章标题必须填写')
     .isLength({ max: 40 }).withMessage('文章标题必须在 40 个字符内')
   req.check('entity.context').notEmpty().withMessage('文章内容不允许为空')
-  req.check('entity.summary').notEmpty().withMessage('文章描述不能为空')
-  req.check('entity.category').notEmpty().withMessage('分类不能为空')
+  req.check('entity.summary')
+    .notEmpty().withMessage('文章描述不能为空')
+    .isLength({ max: 200 }).withMessage('文章描述只能在 200 字以内')
+  req.check('entity.songId').notEmpty().isLength({ max: 100 }).withMessage('歌曲信息不正确')
+  req.check('entity.posterId').notEmpty().isLength({ max: 100 }).withMessage('文章图片不正确')
 
   const errors = req.validationErrors()
   if (errors) {
     log.error('params', { params, errors })
     return new RouterError(2, errors[0].msg)
   }
-  if (!Array.isArray(params.entity.tags)) {
-    log.error('params', params)
-    return new RouterError(2, '标签信息不正确')
-  }
+
   return null
 }
 
@@ -58,13 +57,15 @@ export default class {
   @admin
   public async query(params: { admin: IAdmin }, { log }: { log: Log }) {
     try {
-      if (!authentication(params.admin, AdminRule.BLOG)) {
+      if (!authentication(params.admin, AdminRule.SAID)) {
         log.error('authentication.denied', params)
         return ERRORS.DENIED
       }
-      let res = await queryAllBlogByAdmin(params.admin)
+
+      // TODO article2SimpleArticle
+      let res = await queryAllArticleByAdmin(params.admin)
       log.info('res', res)
-      return res
+      return res.map(a => article2SimpleArticle(a))
     } catch (error) {
       log.error('catch', error)
       return ERRORS.SERVER
@@ -74,9 +75,9 @@ export default class {
   @post
   @admin
   public async create(
-    params: { entity: SimpleBlog, admin: IAdmin, token: string },
+    params: { entity: SimpleArticle, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
-    if (!authentication(params.admin, AdminRule.BLOG)) {
+    if (!authentication(params.admin, AdminRule.SAID)) {
       log.error('authentication.denied', params)
       return ERRORS.DENIED
     }
@@ -84,12 +85,10 @@ export default class {
     if (validateResult) {
       return validateResult
     }
-    if (!params.entity.config) {
-      params.entity.config = {}
-    }
+
     try {
-      let res = await createBlog(params.entity, params.admin)
-      await createRecordNoError('blog.create', params, OperationType.Create, req)
+      let res = await createArticle(params.entity, params.admin)
+      await createRecordNoError('article.create', params, OperationType.Create, req)
       log.info('res', res)
       return res
     } catch (error) {
@@ -106,26 +105,25 @@ export default class {
   @post
   @admin
   public async update(
-    params: { entity: SimpleBlog, admin: IAdmin, token: string },
+    params: { entity: SimpleArticle, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
-    if (!authentication(params.admin, AdminRule.BLOG)) {
+    if (!authentication(params.admin, AdminRule.SAID)) {
       log.error('authentication.denied', params)
       return ERRORS.DENIED
     }
     if (!params.entity._id) {
-      log.error('blog._id.empty', params)
+      log.error('article._id.empty', params)
       return ERRORS.PARAMS
     }
     const validateResult = validateParams(params, req, log)
     if (validateResult) {
       return validateResult
     }
-    if (!params.entity.config) {
-      params.entity.config = {}
-    }
+
+
     try {
-      let res = await updateBlog(params.entity, params.admin)
-      await createRecordNoError('blog.update', params, OperationType.Update, req)
+      let res = await updateArtice(params.entity, params.admin)
+      await createRecordNoError('article.update', params, OperationType.Update, req)
       log.info('res', res)
       return res
     } catch (error) {
@@ -142,19 +140,19 @@ export default class {
   @post
   @admin
   public async remove(
-    params: { blogId: string, admin: IAdmin, token: string },
+    params: { articleId: string, admin: IAdmin, token: string },
     { log, req }: { log: Log, req: Request }) {
-    if (!authentication(params.admin, AdminRule.BLOG)) {
+    if (!authentication(params.admin, AdminRule.SAID)) {
       log.error('authentication.denied', params)
       return ERRORS.DENIED
     }
-    if (!params.blogId) {
+    if (!params.articleId) {
       log.error('params', params)
       return ERRORS.PARAMS
     }
     try {
-      let res = await removeBlog(params.blogId, params.admin)
-      await createRecordNoError('blog.remove', params, OperationType.Delete, req)
+      let res = await removeArticle(params.articleId, params.admin)
+      await createRecordNoError('article.remove', params, OperationType.Delete, req)
       log.info('res', res)
       return null
     } catch (error) {
@@ -169,35 +167,37 @@ export default class {
   }
 
   /**
-   * 查询 blog 需要的基础数据信息
+   * 查询编辑文章需要的基础数据
    * @param params 
    * @param param1 
    */
   @admin
-  public async base(params: { blogId: string, admin: IAdmin }, { log }: { log: Log }) {
-    if (!authentication(params.admin, AdminRule.BLOG)) {
+  public async base(params: { articleId: string, admin: IAdmin }, { log }: { log: Log }) {
+    if (!authentication(params.admin, AdminRule.SAID)) {
       log.error('authentication.denied', { params, admin })
       return ERRORS.DENIED
     }
-    const tags = await queryAllTags()
-    const categorys = await queryCategoryAll()
-    let blog: BlogModel | null = null
-    // 编辑模式
-    if (params.blogId) {
-      try {
-        blog = await queryBlogById(params.blogId, params.admin)
-      } catch (error) {
-        if (ServiceError.is(error)) {
-          log.error((error as ServiceError).title, (error as ServiceError).data)
-          return new RouterError(100, (error as ServiceError).message)
-        } else {
-          log.error('catch', error)
-        }
-        return ERRORS.QUERYFAIL
-      }
+    if (!params.articleId) {
+      log.error('empty.articleId', { params, admin })
+      return ERRORS.PARAMS
     }
-    log.info('res.base', { tags, categorys, blog })
-    return { tags, categorys, blog }
+    let article: ArticleModel | null = null
+
+    try {
+      // TODO article2SimpleArticle
+      article = await queryArticleById(params.articleId, params.admin)
+    } catch (error) {
+      if (ServiceError.is(error)) {
+        log.error((error as ServiceError).title, (error as ServiceError).data)
+        return new RouterError(100, (error as ServiceError).message)
+      } else {
+        log.error('catch', error)
+      }
+      return ERRORS.QUERYFAIL
+    }
+
+    log.info('res.base', { article })
+    return { article: article2SimpleArticle(article) }
   }
 }
 

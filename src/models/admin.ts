@@ -48,7 +48,7 @@ export interface IAdmin {
   /**
    * 作者邮箱
    */
-  email: string
+  email?: string
   /**
    * 个人简介
    */

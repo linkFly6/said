@@ -15,8 +15,6 @@ import { convertMarkdown2HTML, convertSummaryToHTML } from '../utils/html'
 const log = new Log('service/blog')
 
 
-
-
 /**
  * 查询
  */
@@ -24,7 +22,6 @@ export const queryAllBlog = () => {
   log.info('queryAllBlog.call', null)
   return BlogDb.find().sort('-_id').exec()
 }
-
 
 /**
  * 根据管理员信息查列表
@@ -45,12 +42,12 @@ export const queryAllBlogByAdmin = (admin: IAdmin) => {
 
 
 /**
- * 根据 urlKey 检查是否存在对应的 Blog
+ * 根据 key 检查是否存在对应的 Blog
  * @param blogKey 
  */
 export const existsByBlogKey = (blogKey: string) => {
   log.info('existsByBlogKey.call', { blogKey })
-  return BlogDb.count({ urlKey: blogKey }).exec()
+  return BlogDb.count({ key: blogKey }).exec()
 }
 
 const validateBlog = async (blog: SimpleBlog, admin?: IAdmin) => {
@@ -58,10 +55,12 @@ const validateBlog = async (blog: SimpleBlog, admin?: IAdmin) => {
   let tags: TagModel[] = []
   // 验证分类
   if (blog.category) {
-    category = await queryCategoryById(blog.category)
+    category = await queryCategoryById(blog.category, admin)
     if (!category) {
-      throw new ServiceError('validateBlog.queryCategoryById', category, '类型未找到')
+      throw new ServiceError('validateBlog.queryCategoryById', category, '类型不正确')
     }
+  } else {
+    throw new ServiceError('validateBlog.category.empty', category, '类型未找到')
   }
 
   if (blog.tags.length) {
@@ -102,28 +101,28 @@ export const createBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   log.info('createBlog.call', { blog, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
-    throw new ServiceError('createBlog.authentication.denied', admin, '您没有权限进行该操作')
+    throw new ServiceError('createBlog.authentication.denied', { blog, admin }, '您没有权限进行该操作')
   }
   // 如果有错误则 validateBlog 会抛出异常
   const validateRes = await validateBlog(blog, admin)
 
   // blog 的唯一 key
-  let urlKey = ''
+  let key = ''
 
   let i = 0
   // 最多重试 3 次
   while (i++ < 3) {
-    urlKey = moment().format('YYYYMMDDHHmmss')
-    let existsCount = await existsByBlogKey(urlKey)
+    key = moment().format('YYYYMMDDHHmmss' + Math.floor(Math.random() * 100))
+    let existsCount = await existsByBlogKey(key)
     if (existsCount > 0) {
-      urlKey = ''
+      key = ''
       continue
     }
     break
   }
 
-  if (!urlKey) {
-    throw new ServiceError('createBlog.createUrKey', null)
+  if (!key) {
+    throw new ServiceError('createBlog.createUrKey', { blog, admin })
   }
 
   const html = convertMarkdown2HTML(blog.context)
@@ -132,10 +131,9 @@ export const createBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   const db = new BlogDb({
     title: blog.title,
     context: blog.context,
-    urlKey,
+    key,
     author: admin,
     summary: blog.summary,
-    fileName: urlKey,
     tags: validateRes.tags,
     category: validateRes.category,
     other: {
@@ -171,7 +169,7 @@ export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   log.info('updateBlogById.call', { blog, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
-    throw new ServiceError('updateBlogById.authentication.denied', admin, '您没有权限进行该操作')
+    throw new ServiceError('updateBlogById.authentication.denied', { blog, admin }, '您没有权限进行该操作')
   }
   // 全局管理员
   const blogInfo = admin.rule === AdminRule.GLOBAL ?
@@ -214,7 +212,8 @@ export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
 
   log.info('updateBlogById.update', {
     before: oldBlog,
-    now: newBlog
+    now: newBlog,
+    admin,
   })
 
   return blogInfo.update(newBlog).exec()
@@ -228,18 +227,24 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
   log.warn('removeBlogById.call', { blogId, admin })
   const denied = authentication(admin, AdminRule.BLOG)
   if (!denied) {
-    throw new ServiceError('removeBlogById.authentication.denied', admin, '您没有权限进行该操作')
+    throw new ServiceError('removeBlogById.authentication.denied', { blogId, admin }, '您没有权限进行该操作')
   }
 
   // 管理员直接删除
   if (admin.rule === AdminRule.GLOBAL) {
-    return BlogDb.findByIdAndRemove(blogId).exec()
+    const blogInfo = BlogDb.findById(blogId)
+    const oldBlog = await blogInfo.exec()
+    if (!oldBlog) {
+      throw new ServiceError('removeBlogById.admin.delete.fail', { blogId, admin }, '没有找到文章')
+    }
+    log.warn('removeBlogById.admin.ready', { oldBlog, admin })
+    return blogInfo.remove().exec()
   }
 
   // 鉴权
   const blogInfo = BlogDb.findOne({ _id: blogId, author: { _id: admin._id } })
-  log.warn('removeBlogById.blogInfo', blogInfo)
   const oldBlog = await blogInfo.exec()
+  log.warn('removeBlogById.blogInfo.ready', { blogInfo, admin })
   if (!oldBlog) {
     throw new ServiceError('updateBlogById.checkBlog.empty', admin, '删除日志失败')
   }
@@ -255,7 +260,7 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
 export const queryBlogById = async (blogId: string, admin: IAdmin) => {
   log.info('queryBlogById.call', { blogId, admin })
   if (!authentication(admin, AdminRule.BLOG)) {
-    throw new ServiceError('queryBlogById.authentication.denied', admin, '无权访问')
+    throw new ServiceError('queryBlogById.authentication.denied', { blogId, admin }, '您没有权限访问该模块')
   }
   if (admin.rule === AdminRule.GLOBAL) {
     return BlogDb.findById(blogId).exec()
@@ -263,7 +268,7 @@ export const queryBlogById = async (blogId: string, admin: IAdmin) => {
   // 鉴权
   const blog = await BlogDb.findOne({ _id: blogId, author: { _id: admin._id } }).exec()
   if (!blog) {
-    throw new ServiceError('queryBlogById.checkBlog.empty', admin, '您无权访问该日志')
+    throw new ServiceError('queryBlogById.checkBlog.empty', { blogId, admin }, '无法访问该日志')
   }
   return blog
 }

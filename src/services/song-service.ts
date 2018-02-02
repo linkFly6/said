@@ -146,6 +146,16 @@ export const queryAll = (admin: IAdmin) => {
   return SongDb.find().sort('-_id').exec()
 }
 
+/**
+ * 根据 ID 查询
+ * @param songId 
+ * @param admin 
+ */
+export const querySongById = (songId: string, admin: IAdmin) => {
+  log.info('querySongById.call', { songId, admin })
+  return SongDb.findById(songId).exec()
+}
+
 
 /**
  * 查找数据库中是否存在同名的图片 (name 就是文件 md5)

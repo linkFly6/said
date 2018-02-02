@@ -17,7 +17,7 @@ export interface IBlog {
   /**
    * 标记，可以自定义，也可以自动生成，url 中使用
    */
-  urlKey: string,
+  key: string,
   /**
    * 作者信息
    */
@@ -26,10 +26,6 @@ export interface IBlog {
    * 描述
    */
   summary: string,
-  /**
-   * 文件名
-   */
-  fileName: string,
   /**
    * 标签
    */
@@ -124,10 +120,9 @@ export interface BlogModel extends IBlog, mongoose.Document {
 export const BlogSchema = new mongoose.Schema({
   title: String,
   context: String,
-  urlKey: String,
+  key: String,
   author: AdminSchema as any,
   summary: String,
-  fileName: String,
   tags: [TagSchema],
   category: CategorySchema as any,
   createTime: Number,

@@ -28,10 +28,6 @@ export interface IArticle {
    * 描述
    */
   summary: string,
-  /**
-   * 文件名
-   */
-  fileName: string,
 
   /**
    * said 配图海报
@@ -71,10 +67,6 @@ export interface IArticle {
      * 喜欢数
      */
     likeCount: number,
-    /**
-     * 评论数
-     */
-    commentCount?: number,
     /**
      * 创建时间
      */
@@ -129,7 +121,6 @@ export const ArticleSchema = new mongoose.Schema({
   key: String,
   author: { type: AdminSchema },
   summary: String,
-  fileName: String,
   poster: ImageSchema as any,
   song: SongSchema as any,
   other: {
@@ -140,13 +131,11 @@ export const ArticleSchema = new mongoose.Schema({
   info: {
     pv: Number,
     likeCount: Number,
-    commentCount: Number,
     createTime: Number,
     updateTime: Number,
   },
   config: {
     isPrivate: Boolean,
-    isReprint: Boolean,
     sort: Number,
     script: String,
     css: String,

@@ -2,6 +2,18 @@ import { AdminRule } from '../models/admin'
 import { ImageType } from '../models/image'
 
 /**
+ * 前端入参
+ */
+export interface SimpleArticle {
+  _id?: string,
+  title: string,
+  context: string,
+  summary: string,
+  songId: string,
+  posterId: string,
+}
+
+/**
  * 输出对象
  */
 export interface OutputArticle {
@@ -18,7 +30,6 @@ export interface OutputArticle {
     rule: AdminRule,
   },
   summary: string,
-  fileName: string,
   poster: {
     _id: string,
     size: number,

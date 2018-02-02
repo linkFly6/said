@@ -1,11 +1,12 @@
 import { signature, signatureWithOption } from '../middleware/routers/signature'
 import { Request, Response, NextFunction, Express } from 'express'
 import { Filter, Route } from '../middleware/routers/models'
-import { default as AdminDb, AdminModel } from '../models/admin'
+import { default as AdminDb, AdminModel, IAdmin } from '../models/admin'
 import { default as AdminRecordDb, AdminRecordModel } from '../models/admin-record'
 import { getUserInfoById, getUserIdByToken } from '../services/admin-service'
 import { ServiceError } from '../models/server/said-error'
 import { Returns } from '../models/Returns'
+import { SimpleAdmin } from '../types/admin'
 import { Log } from '../utils/log'
 import * as multer from 'multer'
 
@@ -92,10 +93,24 @@ export const admin = signature(
           if (!tokenInfo || !tokenInfo.id) {
             return
           }
-          getUserInfoById(tokenInfo.id).then(res => {
+          getUserInfoById(tokenInfo.id).then((res: IAdmin) => {
             log.info('admin.getUserInfoByToken', res)
+            const admin: SimpleAdmin = {
+              _id: res._id,
+              nickName: res.nickName,
+              rule: res.rule
+            }
+            if (res.avatar) {
+              admin.avatar = res.avatar
+            }
+            if (res.email) {
+              admin.email = res.email
+            }
+            if (res.bio) {
+              admin.bio = res.bio
+            }
             // 挂载到 params 下
-            params.admin = res
+            params.admin = admin
             next()
           }).catch(err => {
             log.error('getUserInfoById.catch', err)
