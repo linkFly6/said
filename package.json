@@ -10,19 +10,21 @@
   "license": "GPL",
   "scripts": {
     "dev": "npm run build && npm run watch",
-    "build": "npm run build-sass && npm run build-ts && npm run tslint && npm run copy-static-assets",
+    "build": "npm run build-stylus && npm run build-ts && npm run tslint && npm run copy-static-assets",
     "serve": "nodemon dist/server.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"bgMagenta.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve\"",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Stylus,TypeScript,Node\" -c \"bgMagenta.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-stylus\" \"npm run watch-ts\" \"npm run serve\"",
     "test": "jest --forceExit",
     "build-ts": "tsc --locale zh-CN",
     "watch-ts": "tsc -w",
+    "build-stylus": "stylus src/public/css/*.styl -o dist/public/css/",
     "build-sass": "node-sass src/public/css/main.scss dist/public/css/main.css",
     "watch-sass": "node-sass -w src/public/css/main.scss dist/public/css/main.css",
+    "watch-stylus": "stylus -w src/public/css/*.styl -o dist/public/css/",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "copy-static-assets": "node copyStaticAssets.js",
     "debug": "npm run build && npm run watch-debug",
     "serve-debug": "nodemon --inspect dist/server.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"bgMagenta.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve-debug\""
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Stylus,TypeScript,Node\" -c \"bgMagenta.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-stylus\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
   "jest": {
     "globals": {
@@ -110,6 +112,7 @@
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
     "shelljs": "^0.7.7",
+    "stylus": "^0.54.5",
     "supertest": "^2.0.1",
     "ts-jest": "^19.0.8",
     "tslint": "^5.0.0",

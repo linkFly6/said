@@ -6,15 +6,15 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='theme-color' content='#4DA5F4')
     meta(name='csrf-token', content=_csrf)
-    title #{title} - Hackathon Starter
+    title #{title} - 世界很大，风住过这里
     link(rel='shortcut icon', href='/images/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/css/test.css')
 
   body
     include partials/header
 
     .container
-      include partials/flash
       block content
 
     include partials/footer
