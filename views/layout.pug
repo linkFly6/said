@@ -1,16 +1,20 @@
 doctype html
 html
   head
+    meta(http-equiv='description', content='听说-linkFly')
+    meta(name='author', content='linkFly')
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    meta(name='theme-color' content='#4DA5F4')
-    meta(name='csrf-token', content=_csrf)
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+    //- meta(name='theme-color' content='#4DA5F4')
+    //- meta(name='csrf-token', content=_csrf)
+    block meta
     title #{title} - 世界很大，风住过这里
-    link(rel='shortcut icon', href='/images/favicon.png')
+    link(rel='shortcut icon', href='/images/favicon.png', type='image/x-icon')
+    link(rel='icon', href='/images/favicon.png', type='image/x-icon')
+    link(rel='bookmark', href='/images/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
-    link(rel='stylesheet', href='/css/test.css')
-
+    block head
   body
     include partials/header
 
