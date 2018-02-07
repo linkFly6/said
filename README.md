@@ -43,11 +43,12 @@ $ npm run dev # 启动服务
 ```
 
 
-## 开发计划
+## TODO LIST
 
 - controller 需要支持 render
 - 访问量/阅读量/浏览量：通过 log 文件定期收集(例如 10min)
 - 前台访问用 cookie，后台 + 前台管理员访问接口带 token， token 每次进行校验
+- 服务异常需要显示错误页
 
 
 ### 关于 controller 设计

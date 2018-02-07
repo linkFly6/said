@@ -17,12 +17,11 @@ html
     link(rel='stylesheet', href='//at.alicdn.com/t/font_566817_rpyo9ekxii8dunmi.css')
     block head
   body
-    include partials/header
-
     .container
+      include header.pug
       block content
 
-    include partials/footer
+    include footer.pug
 
     script(src='/js/lib/jquery-3.1.1.min.js')
     script(src='/js/lib/bootstrap.min.js')

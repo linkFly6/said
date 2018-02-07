@@ -37,9 +37,7 @@ dotenv.config({ path: '.env.example' })
  * Controllers (route handlers).
  */
 import * as homeController from './controllers/home'
-import * as userController from './controllers/user'
-import * as apiController from './controllers/api'
-import * as contactController from './controllers/contact'
+import * as blogController from './controllers/blog'
 
 /**
  * API keys and Passport configuration.
@@ -121,6 +119,7 @@ router({
  * Primary app routes.
  */
 app.get('/', homeController.index)
+app.get('/blog', blogController.index)
 // app.get('/login', userController.getLogin)
 // app.post('/login', userController.postLogin)
 // app.get('/logout', userController.logout)

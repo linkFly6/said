@@ -1,0 +1,32 @@
+extends ./partials/layout.pug
+
+block head
+  link(rel='stylesheet', href='/css/blog.css')
+
+block content
+  .banner-bg
+    ul.banner
+      li.banner-item.white(style='background-image:url(/images/bg/team.jpg)')
+        .banner-content
+          h3.title Write the code,change the world
+          .context
+            p console.log('Hello,Wrold!')
+            p (46840404742).toString(36)
+  section#content
+    .blog-head
+      .cate-head
+        h3.title 全部文章 - 共 18 篇
+          a.cate-btn
+            span 分类
+            label.open
+      .categorys
+        .box
+          ul.content
+            - values = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+            each val in values
+              li.item
+                a 
+                  img.icon(src='//tasaid.com/Source/Sys/Images/Icons/default.png')
+                  = '全部'
+    //- .said-content
+

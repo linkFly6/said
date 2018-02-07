@@ -1,12 +1,13 @@
-extends layout
+extends ./partials/layout.pug
 
 block head
+  //- stylus 编译出来的目录只有一级目录，？？？？？？？
   link(rel='stylesheet', href='/css/home.css')
 
 block content
   .banner-bg
     ul.banner
-      li.banner-item.white
+      li.banner-item.white(style='background-image:url(/images/bg/said-backgournd.jpg)')
         .banner-content
           h3.title 世界很大，风住过这里
           .context
@@ -99,7 +100,7 @@ block content
               span 2018-01-18 13:27 星期四
           li.item.blog-item
             h2.ellipsis
-              a.link(href='/blog/123.html') JavaScript 中的 task queues
+              a.link(href='/blog/123.html') JavaScript 中的 task queues 和路交口防雷接地啥时间阿济格拉路公交垃圾股
             .summary
               p JavaScript 是单线程的，所有的任务都放在 "任务队列"  中，从而衍生了 event loops 机制
               p 我们这次要讨论的，则是 event loop 的背后：
