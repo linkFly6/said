@@ -1,27 +1,119 @@
 extends layout
 
+block head
+  link(rel='stylesheet', href='/css/home.css')
+
 block content
-  h1 Hackathon Starter
-  p.lead A boilerplate for Node.js web applications.
-  hr
-  .row
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
-    .col-sm-6
-      h2 Heading
-      p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-      p
-        a.btn.btn-default(href='#', role='button') View details »
+  .banner-bg
+    ul.banner
+      li.banner-item.white
+        .banner-content
+          h3.title 世界很大，风住过这里
+          .context
+            p 我有一些故事
+            p 觉得让它们在时间里老去有点不妥
+            p 于是我把它们分别折进一首歌里
+            p 在百无聊赖的下午
+            p 与你分享
+  section#content
+    .said-content
+      //- 听说模块
+      .said-module
+        //- 模块简述
+        .head
+          h1= '听·说'
+          p
+            i.saidfont.icon-baojiaquotation2
+            = '让思想安静片刻，让耳朵沉沦音乐'
+            i.saidfont.icon-baojiaquotation
+          a.link(href='/said')= '查看更多故事'
+        //- 模块内容
+        ul.content.clear-fix
+          li.item.said-item
+            .main(style='background-image:url("/images/bg/6036.jpg")')
+              //- 蒙版文字
+              .mask
+                .summary
+                  p 我们去了哪儿
+                  p 又回到了哪儿
+            .detail
+              h2
+                a.ellipsis(title='故里拾遗', href='/said/1111.html') 故里拾遗
+              time.date 2017-02-08 22:44 星期三
+          //- test
+          li.item.said-item
+            .main(style='background-image:url("/images/bg/6036.jpg")')
+              //- 蒙版文字
+              .mask
+                .summary
+                  p 我们去了哪儿
+                  p 又回到了哪儿
+            .detail
+              h2
+                a.ellipsis(title='故里拾遗', href='/said/1111.html') 故里拾遗
+              time.date 2017-02-08 22:44 星期三
+          li.item.said-item
+            .main(style='background-image:url("/images/bg/6036.jpg")')
+              //- 蒙版文字
+              .mask
+                .summary
+                  p 我们去了哪儿
+                  p 又回到了哪儿
+            .detail
+              h2
+                a.ellipsis(title='故里拾遗', href='/said/1111.html') 故里拾遗
+              time.date 2017-02-08 22:44 星期三
+      //- blog 模块
+      .said-module
+        .head
+          h1= '博客精选'
+          p
+            i.saidfont.icon-baojiaquotation2
+            = '泡上咖啡，我们用舒服的方式聊聊技术'
+            i.saidfont.icon-baojiaquotation
+          a.link(href='/blog')= '查看更多精彩技术文章'
+        ul.content.clear-fix
+          //- blog 模块
+          li.item.blog-item
+            h2.ellipsis
+              a.link(href='/blog/123.html') JavaScript 中的 task queues
+            .summary
+              p JavaScript 是单线程的，所有的任务都放在 "任务队列"  中，从而衍生了 event loops 机制
+              p 我们这次要讨论的，则是 event loop 的背后：
+              p task queues 和异步任务 API 的执行细节
+            .footer
+              i.saidfont.icon-leimupinleifenleileibie JavaScript
+              i.saidfont.icon-yonghu 12
+              span 2018-01-18 13:27 星期四
+          //- blog 模块
+          li.item.blog-item
+            h2.ellipsis
+              a.link(href='/blog/123.html') JavaScript 中的 task queues
+            .summary
+              p JavaScript 是单线程的，所有的任务都放在 "任务队列"  中，从而衍生了 event loops 机制
+              p 我们这次要讨论的，则是 event loop 的背后：
+              p task queues 和异步任务 API 的执行细节
+            .footer
+              i.saidfont.icon-leimupinleifenleileibie JavaScript
+              i.saidfont.icon-yonghu 12
+              span 2018-01-18 13:27 星期四
+          li.item.blog-item
+            h2.ellipsis
+              a.link(href='/blog/123.html') JavaScript 中的 task queues
+            .summary
+              p JavaScript 是单线程的，所有的任务都放在 "任务队列"  中，从而衍生了 event loops 机制
+              p 我们这次要讨论的，则是 event loop 的背后：
+              p task queues 和异步任务 API 的执行细节
+            .footer
+              i.saidfont.icon-leimupinleifenleileibie JavaScript
+              i.saidfont.icon-yonghu 12
+              span 2018-01-18 13:27 星期四
+      //- 实验室模块，尚未开发
+      //- .said-module
+      //-   .head
+      //-     h1= '实验室'
+      //-     p
+      //-       i.saidfont.icon-baojiaquotation2
+      //-       = '锤炼卓越的作品，心怀信仰，所以天马星空'
+      //-       i.saidfont.icon-baojiaquotation
+      //-     a.span= '敬请期待'

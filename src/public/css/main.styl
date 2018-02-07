@@ -1,5 +1,18 @@
 @require './lib/normalize'
+@require './layout'
+
 // @import 'nib'
+
+body, button, input, select, textarea
+  font 14px/24px STHeiti, "Helvetica Neue", Helvetica,Arial, 'Microsoft Yahei', sans-serif
+  font-feature-settings "liga", "kern"
+  text-rendering optimizelegibility
+  // mac os 下进行抗锯齿优化，字体会显得更瘦小一点儿
+  -webkit-font-smoothing antialiased
+  color #444
+textarea
+  resize vertical
+  outline none
 
 // global
 *, *:before, *:after 
@@ -19,5 +32,29 @@ a
   overflow hidden
   white-space nowrap
   text-overflow ellipsis
-body
-  border 1px solid red
+
+// a 样式
+.link
+  $color = #4078c0
+  color $color
+  position relative
+  &::after
+    content ''
+    position absolute
+    left 0
+    display block
+    bottom -5px
+    width 100%
+    height 1px
+    background-color currentColor
+    background $color
+    transform scale(0)
+    transition transform 0.5s
+  &:hover::after
+    transform scale(1)
+// 全局清浮动
+.clear-fix::after
+  clear both
+  float none!important
+  content ''
+  display block

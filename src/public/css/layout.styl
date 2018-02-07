@@ -1,0 +1,67 @@
+// 顶部和页面底部通用布局
+$layoutWidth = 980px
+
+// 顶部导航
+#header
+  // 导航下所有元素的高度
+  $menuHeight = 3rem
+  padding 10px 0 15px 0
+  width $layoutWidth
+  margin 0 auto
+  overflow hidden
+  display flex
+  justify-content space-between
+  // 左侧 logo
+  #nav-logo
+    // logo 图片
+    .logo
+      display block
+      margin 0 auto
+      width 9.38rem
+      height $menuHeight
+      background-position center
+      background url('/images/said-logo2.png') no-repeat
+  // 右侧导航菜单
+  #nav
+    float right
+    position relative
+    z-index 1
+    // 导航文本内每个元素的宽度
+    $menuItemHeight = 4.4rem
+    #nav-menu // ul => li
+      list-style none
+      margin 0
+      padding 0
+      overflow hidden
+      li
+        float left
+        $linkhighColor = #59c6ff
+        &.nav-active
+          a
+            color $linkhighColor
+        &:hover
+          a
+            color $linkhighColor
+        a
+          display block
+          width $menuItemHeight
+          text-align center
+          line-height $menuHeight
+          color #606060
+    .line
+      width $menuItemHeight
+      border-bottom 1px solid #33b5e5
+      position absolute
+      bottom 0
+      z-index 5
+      transition all .2s ease-in-out 0s
+
+// 页面骨架
+#content
+  padding 40px 0
+  margin-bottom 371px
+  .said-content
+    min-width 1000px
+    max-width 1600px
+    margin 0 auto
+// 页面底部

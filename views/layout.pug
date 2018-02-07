@@ -10,10 +10,11 @@ html
     //- meta(name='csrf-token', content=_csrf)
     block meta
     title #{title} - 世界很大，风住过这里
-    link(rel='shortcut icon', href='/images/favicon.png', type='image/x-icon')
-    link(rel='icon', href='/images/favicon.png', type='image/x-icon')
-    link(rel='bookmark', href='/images/favicon.png')
+    link(rel='shortcut icon', href='/images/favicon.ico', type='image/x-icon')
+    link(rel='icon', href='/images/favicon.ico', type='image/x-icon')
+    link(rel='bookmark', href='/images/favicon.ico')
     link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='//at.alicdn.com/t/font_566817_rpyo9ekxii8dunmi.css')
     block head
   body
     include partials/header
@@ -35,3 +36,4 @@ html
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
       ga('create', 'UA-XXXXX-X', 'auto');
       ga('send', 'pageview');
+    block script
