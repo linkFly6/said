@@ -38,6 +38,7 @@ dotenv.config({ path: '.env.example' })
  */
 import * as homeController from './controllers/home'
 import * as blogController from './controllers/blog'
+import * as saidController from './controllers/article'
 
 /**
  * API keys and Passport configuration.
@@ -120,6 +121,8 @@ router({
  */
 app.get('/', homeController.index)
 app.get('/blog', blogController.index)
+app.get('/blog/:id', blogController.detail)
+app.get('/said', saidController.index)
 // app.get('/login', userController.getLogin)
 // app.post('/login', userController.postLogin)
 // app.get('/logout', userController.logout)

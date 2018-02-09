@@ -26,20 +26,22 @@ $layoutWidth = 825px
         position relative
         color #666
         top 3px
+        span
+          margin-right .4rem
+          vertical-align middle
         // 分类按钮旁边的小标
         label
-          $lineWidth = 1.1rem
+          $lineWidth = 1.2rem
           display inline-block
           position relative
           z-index 3
           width $lineWidth
           height $lineWidth
-          // right 3px
-          margin-left .4rem
-          top 2px
+          // top 2px
           overflow hidden
           vertical-align middle
           cursor pointer
+          transition .4s
           &::before, &::after
             content ''
             display block
@@ -50,31 +52,24 @@ $layoutWidth = 825px
             z-index 1
             top 0
             left 0
-            transition .4s .4s
+            transform-origin 50%
+            transition .4s 0s
           &::before
-            top 30%
-            transform-origin 50%
+            top 35%
+            transform rotate(0deg) translate(0, 0)
           &::after
-            top 60%
-            transform-origin 50%
+            top 68%
             transform rotate(0deg) translate(0, 0)
           // 展开样式
           &.open
+            transform rotate(90deg)            
             &::before
-              transform rotate(135deg) translate(0px, -2px)
-              // transform rotate(130deg) translate(0px, -2px)
+              transition .4s .3s
+              transform rotate(-45deg) translate(-2px, 3px)
             &::after
-              animation translateLine .4s .4s
-              animation-fill-mode forwards
-              // transform rotate(45deg) translate(-2px, -4px)
-              // transform rotate(225deg) translate(2px, 4px)
-            @keyframes translateLine
-              0%
-                transform rotate(0deg) translate(0, 0)
-              70%
-                transform rotate(90deg) translate(-5px, -1px)
-              100%
-                transform rotate(45deg) translate(-2px, -4px)
+              transition .4s .3s
+              transform rotate(45deg) translate(-1px, -1px)
+  // 分类 icon 相关
   .categorys
     height 0
     transition .2s .2s
@@ -108,4 +103,59 @@ $layoutWidth = 825px
           &:hover
             .icon
               transform rotate(360deg) scale(1.2)
-
+// 文章列表
+.blog-content
+  width $layoutWidth
+  margin 0 auto
+  padding-top .6rem
+  // 2018年01月 的月份标记
+  .timespan
+    text-align center
+    font-size 18px
+    color #aaa
+    margin 1rem 0
+    padding-bottom 10px
+    .txt
+      padding .7rem
+      border-bottom 3px solid #75b4f4
+  // 文章项
+  >.item
+    padding .8rem 0
+    border-bottom 1px solid #eee
+    .date // 左侧
+      text-align center
+      color #777
+      margin-right .9rem
+      width 2.8rem
+      height 2.4rem
+      background #f0f0f0
+      float left
+      span, small
+        display block
+        line-height 1.3
+    .content // 右侧
+      padding-left .9rem
+      border-left 1px solid #f3f3f3
+      overflow hidden
+      .title
+        color #333
+        font-weight 200
+        font-size 1.5rem
+        margin 0
+        line-height 1.5
+      .summary
+        color #777
+        padding .2rem 0
+        text-align justify
+        p
+          margin 0
+      .footer
+        color #999
+        i
+          font-size 1rem
+          &::before
+            padding 0 .2rem
+            margin-left .5rem
+          &:first-child::before
+            padding-left 0
+            margin-left 0
