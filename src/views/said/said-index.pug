@@ -1,0 +1,75 @@
+extends ../partials/layout.pug
+
+block head
+  link(rel='stylesheet', href='/css/article-index.css')
+
+block content
+  //- 大banner
+  .banner-bg
+    ul.banner
+      li.banner-item.white(style='background-image:url(/images/bg/said-banner-bg.jpg)')
+        .banner-content
+          h3.title 世界很大，风住过这里
+          .context
+            p 某个月夜，秋风漫步而来，带来一片律动，捎走一阵繁花。
+            p 阳光或许依旧，孤苦或许仍有，但我想，尚有很多梦还未醒。
+            p 世界很大，风住过这里。
+  //- 正文
+  section#content
+    .said-content
+      //- 文章项
+      article.item
+        a.image(style='background-image:url(/images/bg/Reine-Norway.jpg)', href='/said/123.html', title='点击阅读全文')
+        .context
+          h2.title
+            a.ellipsis(href='/said/123.html', title='你们这些回魂尸') 你们这些回魂尸你们这些回魂尸你们这些回魂尸你们这些回魂尸
+          .summary
+            .preview
+              p 周而复始
+              p 你的存在意义重大
+              p 因为你就是悖论
+              p 周而复始
+              p 你的存在意义重大
+              p 因为你就是悖论
+          .footer
+            .music
+              .music-image(title='Breath and Life')
+                .music-ring
+                img(src='//tasaid.com/Source/Said/Musics/Images/20170101195639.jpg')
+              ul.music-info
+                li.ellipsis(title='歌曲') Breath and Life
+                li.ellipsis(title='歌手') Audio Machine
+            .more
+              i.saidfont.icon-yonghu(title='浏览') 12
+              time(title='发布时间') 2017-01-01 20:17
+      article.item
+        a.image(style='background-image:url(/images/bg/Reine-Norway.jpg)', href='/said/123.html', title='点击阅读全文')
+        .context
+          h2.title
+            a.ellipsis(href='/said/123.html', title='你们这些回魂尸') 你们这些回魂尸你们这些回魂尸你们这些回魂尸你们这些回魂尸
+          .summary
+            .preview
+              p 周而复始
+              p 你的存在意义重大
+              p 因为你就是悖论
+              p 周而复始
+              p 你的存在意义重大
+              p 因为你就是悖论
+          .footer
+            .music
+              .music-image(title='Breath and Life')
+                .music-ring
+                img(src='//tasaid.com/Source/Said/Musics/Images/20170101195639.jpg')
+              ul.music-info
+                li.ellipsis(title='歌曲') Breath and Life
+                li.ellipsis(title='艺术家') Audio Machine
+            .more
+              i.saidfont.icon-yonghu(title='浏览') 12
+              time(title='发布时间') 2017-01-01 20:17
+      //- 翻页
+      .page
+        a.pre(href='/said/2') 上一页
+        a(href='/said/2') 2
+        span 3
+        a(href='/said/4') 4
+        a.next(href='/said/4') 下一页

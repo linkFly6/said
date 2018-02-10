@@ -199,4 +199,4 @@ FakesAssemblies/
 dist/
 logs/
 said.tar.gz
-said/
+/said/
