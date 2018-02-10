@@ -198,3 +198,5 @@ FakesAssemblies/
 .DS_Store
 dist/
 logs/
+said.tar.gz
+said/

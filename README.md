@@ -1,5 +1,6 @@
-Said - 听说
-====
+# Said - 听说
+
+----
 
 
 ```
@@ -42,13 +43,26 @@ $ npm i --d # 安装依赖包
 $ npm run dev # 启动服务
 ```
 
+## 部署
+
+```bash
+$ sh build.sh # 构建会产出 said-temp 和 said-temp.tar.gz
+# copy 将打包后的文件上传 github，服务器 wget 下载，或者直接上传到服务器上
+$ # 服务器中执行 tar zxvf ./said-temp.tar.gz
+$ cd said-temp
+$ sh deploy.sh # 进行部署
+```
+
 
 ## TODO LIST
 
+- HTTPS
+- 从 `www.tasaid.com` 访问的流量全部自动跳转到 `tasaid.com` (不带 `www`)
 - controller 需要支持 render
 - 访问量/阅读量/浏览量：通过 log 文件定期收集(例如 10min)
 - 前台访问用 cookie，后台 + 前台管理员访问接口带 token， token 每次进行校验
 - 服务异常需要显示错误页
+- 部署脚本压缩 js 和 css(最好 js 和 css 能单独部署到 cdn)
 
 
 ### 关于 controller 设计
