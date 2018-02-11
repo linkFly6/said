@@ -34,7 +34,7 @@ const validateParams = (params: { entity: SimpleArticle, admin: IAdmin }, req: R
   }
   req.check('entity.title')
     .notEmpty().withMessage('文章标题必须填写')
-    .isLength({ max: 40 }).withMessage('文章标题必须在 40 个字符内')
+    .isLength({ max: 120 }).withMessage('文章标题必须在 120 个字符内')
   req.check('entity.context').notEmpty().withMessage('文章内容不允许为空')
   req.check('entity.summary')
     .notEmpty().withMessage('文章描述不能为空')

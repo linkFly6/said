@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { blogContent } from '../models/mock'
 
 /**
  * GET /
@@ -17,7 +18,8 @@ export const index = (req: Request, res: Response) => {
  */
 export const detail = (req: Request, res: Response) => {
   res.render('blog/blog-detail', {
-    title: 'blog - 每一行代码都恰到好处'
+    title: 'blog - 每一行代码都恰到好处',
+    content: blogContent,
   })
 }
 

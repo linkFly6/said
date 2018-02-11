@@ -1,0 +1,143 @@
+@require './highlight-solarized-light'
+
+html()
+  // 如果觉得小可以设为 18px
+  // font: 200 16px/2 system, -apple-system, BlinkMacSystemFont, "Lantinghei SC","Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  font: 16px/2 system, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+             "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+             SimSun, sans-serif
+  // 链接
+  a
+    $color = #4078c0
+    color $color
+    position relative
+    &::after
+      content ''
+      position absolute
+      left 0
+      display block
+      bottom -5px
+      width 100%
+      height 1px
+      background-color currentColor
+      // background $color
+      transform scale(0)
+      transition transform 0.5s
+    &:hover::after
+      transform scale(1)
+  // 代码相关
+  code // 平时引用的行级代码
+    padding .2em .3em
+    margin 0
+    font-size 85%
+    background-color rgba(0,0,0,0.04)
+  .hljs // 代码块
+    border-radius 3px
+    padding 1em
+    margin 1em 0
+    // chrome 横向滚动条重写
+    &::-webkit-scrollbar
+        // 10px
+        height .625em
+    &::-webkit-scrollbar-thumb
+      &:horizontal
+        background-color #CCCCCC
+        border-radius 6px
+        opacity .1
+        &:hover
+          opacity .1
+    code
+      padding 0
+      border-radius 3px
+      background transparent
+      border-radius 0
+      font-size 1em
+      font-family Consolas, "Liberation Mono", Menlo, Courier, monospace
+  // 图片
+  img
+    display block
+    max-width 100%
+    cursor pointer
+  // 内容
+  p
+    text-align justify
+    margin 0
+  // 引用
+  blockquote
+    padding: 1em
+    margin 1em 0
+    color: #777;
+    background-color: #f8f8f8;
+    border-left: 4px solid #56a1d6;
+    ul, ol, p:last-child
+      margin-bottom: 0
+  // 分割线
+  hr
+    margin 1.25em 0
+  // 标题
+  h1, h2, h3, h4, h5, h6
+    margin-top 2em
+    margin-bottom 1em
+    font-weight 400
+    .hash
+      font-size 1.25em // 20px
+      float left
+      margin-left -2em
+      color #8b8b8b
+      visibility hidden
+      padding-right 5px
+      /*-moz-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+      -o-transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+      transform: rotate(-45deg);*/
+      margin-right 0
+      line-height 1em
+      &::after
+        display none
+      &:hover
+        text-decoration: none
+    &:hover 
+      .hash
+        visibility: visible
+  h1
+    padding-bottom .3em
+    font-size 2em
+    line-height 1.2
+    border-bottom 1px solid #eee
+    .hash
+      line-height: 2.2em
+  h2
+    padding-bottom 0.3em
+    font-size 1.75em
+    line-height 1.225
+    border-bottom 1px solid #eee
+    .hash
+      line-height: 1.9em
+  h3
+    font-size 1.5em
+    line-height 1.43
+    .hash
+      line-height 1.9em
+  h4
+    font-size 1.25em
+    .hash
+      line-height 1.5em
+  h5
+    font-size 1em
+    .hash
+      line-height 1.4em
+      font-size 1.125em
+  h6
+    font-size 1em
+    color #777
+    .hash
+      line-height: 1.5em
+      font-size: 1em
+  // 列表项
+  ul, ol
+    padding-left 1em
+  // 全局通用样式
+  p, ul, ol, dl, table, pre, blockquote
+    margin-top 0
+    margin-bottom 1em

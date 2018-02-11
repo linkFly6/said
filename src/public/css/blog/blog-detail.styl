@@ -1,4 +1,67 @@
-body
+@require './lib/article-format'
+
+$layoutWidth = 825px
 .blog-banner
   .banner-item
     background-position center!important
+.context
+  width $layoutWidth
+  margin 0 auto
+  // 文章标题
+  .title
+    margin 0
+    font-weight 300
+    line-height 1.2
+    padding 0 0 1rem 0
+    margin 0 0 1rem 0
+    font-size 2.1rem
+    border-bottom: 1px dashed #CCC
+    color: #666
+  // 文章内容
+  .article
+    .html
+      html()
+      padding-bottom 2rem
+    .author
+      border-top 1px solid #eee
+      padding-top 2rem
+      font-size 1.142rem
+      p
+        margin 0 0 .5rem 0
+      a
+        &:visited
+          color #4078c0
+    .other
+      padding 4rem 0
+      text-align center
+      .like
+        $bg-color = #40a9ff
+        box-shadow 0 1px 1px rgba(0,0,0,0.05)
+        padding 1rem 1.2rem
+        border-radius 6px
+        font-size 1.185rem // 18px
+        background $bg-color
+        border 1px solid $bg-color
+        color #fff
+        cursor pointer
+        transition .2s
+        &:hover
+          background #389bec
+          border-color #1984dc
+        &.liked
+          background #40a9ff
+          border-color #40a9ff
+        span
+          &:first-child
+            position relative
+            padding-right 1rem
+            // border-right 1px solid #fafafa
+            &:after
+              position absolute
+              content '|'
+              right -.5rem
+              display inline
+              color rgba(255,255,255,0.2)
+          &:last-child
+            padding-left 1rem
+        

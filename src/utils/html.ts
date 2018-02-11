@@ -5,6 +5,14 @@ import * as hljs from 'highlight.js'
 // Prismjs.languages.ts = Prismjs.languages.typescript
 
 /**
+ * 匹配是否是 said 本站内容，如果是本站内容则不打开新页面跳转
+ * //tasaid.com/home/cv?url=https%3A%2F%2Fmicrosoft.github.io%2FTypeSearch%2F
+ * http://tasaid.com/home/cv?url=https%3A%2F%2Fmicrosoft.github.io%2FTypeSearch%2F
+ * https://tasaid.com/home/cv?url=https%3A%2F%2Fmicrosoft.github.io%2FTypeSearch%2F
+ */
+const regSelfHref = /^((https?:)?\/\/tasaid.com)|^\/[^\/]/
+
+/**
  * markdown to html
  * @param context 
  * @param summary 
@@ -28,20 +36,32 @@ export const convertMarkdown2HTML = (context: string) => {
   // 重写 <a> 标签，跳转的逻辑修改
   renderer.link = (href: string, title: string, text: string) => {
     // 本页锚点
-    if (href.startsWith('#')) {
-      return `<a href="${href}" title="${title}">${text}</a>`
+    if (!href) {
+      href = ''
+    }
+    if (href.startsWith('#') || regSelfHref.test(href)) {
+      return `<a href="${href}" title="${title || ''}">${text}</a>`
     }
     // 跳转的链接，全部补上统计
     const url = `//tasaid.com/home/cv?url=${encodeURIComponent(href)}`
-    return `<a herf="${url}" title="${title}" target="_blank">${text}</a>`
+    return `<a href="${url}" title="${title || ''}" target="_blank">${text}</a>`
+  }
+
+  renderer.code = (code: string, language: string) => {
+    return `<pre class="hljs"><code class="${language}">${
+      // 如果在支持的语言列表里面就用该语言渲染，否则使用默认语言渲染
+      hljs.getLanguage(language) ?
+        hljs.highlight(language, code).value :
+        hljs.highlightAuto(code).value
+      }</code></pre>`
   }
   return marked(context, {
     renderer,
-    highlight: (code: string, lang: string, callback?: (error: any | undefined, code: string) => void) => {
-      // callback(null, null)
-      return hljs.highlightAuto(code).value
-    },
-    
+    // highlight: (code: string, lang: string, callback?: (error: any | undefined, code: string) => void) => {
+    //   // callback(null, null)
+    //   return hljs.highlightAuto(code).value
+    // },
+
   })
 }
 
