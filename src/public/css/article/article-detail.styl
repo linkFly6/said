@@ -1,0 +1,121 @@
+@require './lib/article-format'
+@require './lib/article'
+
+$pageBg = #f6f6f1
+#header
+  position relative
+  z-index 2
+  #nav-logo
+    display none
+  #nav #nav-menu
+    li a
+      color #fff
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6)
+// 大 banner
+#content
+  background $pageBg
+  padding 260px 0 10rem 0
+  // bannner
+  .content-bg
+    border-bottom 1px solid #fff
+    position absolute
+    top 0 
+    left 0
+    height 380px
+    width 100%
+    overflow hidden
+    .content-bg-img
+      @keyframes banner-anima
+        0% 
+          transform translate(0,0)
+        50% 
+          transform translate(0, -20%)
+        100% 
+          transform translate(0,0)
+      width 100%
+      height 680px
+      position relative
+      animation 20s linear 0s normal none infinite banner-anima
+      left 0
+      background-size cover
+      background-position center bottom
+  // 音乐
+  .music
+    // ./lib/article 里面的变量
+    width $layoutWidth
+    margin 0 auto
+    display flex
+    align-items flex-end
+    // 专辑封面
+    .img
+      border 1px solid #fff
+      img
+        width 200px
+        height 200px
+        display block
+    // 歌曲/歌手/专辑
+    .music-info
+      flex 1
+      list-style none
+      padding 0 1rem
+      border-right 1px solid #fcfcfc
+      li.name
+        font-size 1.6rem
+    // 播放器
+    .music-player
+      &::after
+        content ''
+        display block
+        clear both
+      position relative
+      height 80px
+      padding 1rem 0 1rem 1rem
+      // 进度条
+      .player-volume
+        width 0
+        height 100%
+        background #99ccff
+      // 播放按钮
+      .palyer-button
+        cursor pointer
+        float left
+        margin-right .8rem
+        color #777
+        i
+          font-size 2rem
+      // 播放进度
+      .player-progress
+        position relative
+        top .66rem
+        width 200px
+        height 6px
+        border-radius 4px
+        overflow hidden
+        background #ededed
+        float right
+      // 时间
+      .time
+        position absolute
+        bottom 3.7rem
+        right 0
+  .said-content
+    position relative
+    z-index 2
+    // .music
+    .context
+      &.said
+        padding 2rem 2rem
+        background-image linear-gradient(to bottom, #f6f6f1 0%, #ffffff 50%)
+        .title
+          padding 0 1rem 1rem
+        .html
+          p
+            text-indent 2rem
+            letter-spacing 1px
+            margin-left 1rem
+            margin-right 1rem
+        // 重写 ./lib/article 里面的部分样式
+        .article-other-info
+          padding 1rem 0
+          $line = #eee
+          border-bottom 1px solid $line

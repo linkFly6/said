@@ -4,12 +4,18 @@
 var gulp = require('gulp')
 var watch = require('gulp-watch')
 
-gulp.task('copy', function () {
+gulp.task('copy-views', function () {
   gulp.src('./src/views/**').pipe(gulp.dest('./dist/views/'))
+})
+gulp.task('copy-images', function () {
+  gulp.src('./src/public/images/**').pipe(gulp.dest('./dist/public/images/'))
 })
 
 gulp.task('default', function () {
   watch('src/views/**', function () {
-    gulp.run('copy')
+    gulp.run('copy-views')
+  })
+  watch('src/public/images/**', function () {
+    gulp.run('copy-images')
   })
 })

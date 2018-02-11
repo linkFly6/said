@@ -16,10 +16,11 @@ block content
   //- 正文内容
   section#content
     .said-content
-      section.context
+      section.context.blog
         h1.title 世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里
         article.article
           section.html
+            //- 文章内容
             !=content
           .author
             p 作者：linkFly
@@ -27,10 +28,51 @@ block content
               a.link(href='http://www.cnblogs.com/silin6/p/4288967.html') http://www.cnblogs.com/silin6/p/4288967.html
             p 出处：
               a.link(href='https://tasaid.com') https://tasaid.com
-            p 声明：转载相关授权请
+            p 声明：转载相关授权请&nbsp;
               a.link(href='//tasaid.com/Blog/20160906231305.html') 点击这里
               = '，请尊重作者的辛勤劳动成果。'
-          .other
-            a.like.liked
-              span#like-text 点赞
-              span#link-num 1
+          .more 
+            //- .info
+            //-   time 最后一次更新于 2014/10/08 00:21:51
+            .other
+              a.button.like.disabled
+                span#like-tqext 点赞
+                span#link-num 1
+        //- 页面其他信息(首选/评论/发布时间)
+        .article-other-info
+          .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
+            a(href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh', target='_blank')
+              img(src='/images/creativecommons-sa.svg')
+          .comments-sum
+            span 评论(0)
+          time 发布于 2014/10/08 00:21:51
+          .browse(title='浏览量')
+            i.saidfont.icon-yonghu 12
+          //- 评论
+        section.comments
+          section.comments-list
+            .item
+              .head
+                a(href='#1', title='定位到该评论').hash
+                  i.saidfont.icon-yonghu
+                a(name='1', href='/')
+                  i.saidfont.icon-yonghu [管理员]linkFly
+              .body 重构是在不改变程序行为的基础上进行小的改动，是代码逐渐改善的过程。移除长期累积下来的烂码，以得到更清晰和更容易维护，除错以及添加新功能的代码，这做法不能单纯只出现在编码的后期，甚至是你意识到你的代码已经无从再下手非重写不可的时候，而是从开始开发起，逐渐积累，逐渐修改。以前因为日常编码的随意性，导致问题日益积累，逐步扩散，最后只能推倒重来。如果时间经受不起推倒重来，你别无选择，唯一实现的选择就是重构。
+              .footer
+                span #1
+                span.reply
+                  a(href='javascript:;')
+                    i.saidfont.icon-yonghu 回复
+                span.delete
+                  a(href='javascript:;') 删除
+                time 2014/10/08 00:21:51&nbsp;·&nbsp;
+            .comment-bar
+              .form
+                .inputs
+                  input.form-control(placeholder='名称')
+                  input.form-control(placeholder='email')
+                  input.form-control(placeholder='你的站点(可略)')
+                textarea.form-control(placeholder='说出你的想法或问题')
+                .btns
+                  a.button(href='javascript:;') 发布评论
+

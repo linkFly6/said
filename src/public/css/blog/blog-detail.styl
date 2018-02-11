@@ -1,67 +1,95 @@
 @require './lib/article-format'
+@require './lib/article'
 
-$layoutWidth = 825px
 .blog-banner
   .banner-item
     background-position center!important
+// blog 相关
 .context
-  width $layoutWidth
-  margin 0 auto
-  // 文章标题
-  .title
-    margin 0
-    font-weight 300
-    line-height 1.2
-    padding 0 0 1rem 0
-    margin 0 0 1rem 0
-    font-size 2.1rem
-    border-bottom: 1px dashed #CCC
-    color: #666
-  // 文章内容
-  .article
-    .html
-      html()
-      padding-bottom 2rem
-    .author
-      border-top 1px solid #eee
-      padding-top 2rem
-      font-size 1.142rem
-      p
-        margin 0 0 .5rem 0
-      a
-        &:visited
-          color #4078c0
-    .other
-      padding 4rem 0
-      text-align center
-      .like
-        $bg-color = #40a9ff
-        box-shadow 0 1px 1px rgba(0,0,0,0.05)
-        padding 1rem 1.2rem
-        border-radius 6px
-        font-size 1.185rem // 18px
-        background $bg-color
-        border 1px solid $bg-color
-        color #fff
-        cursor pointer
-        transition .2s
-        &:hover
-          background #389bec
-          border-color #1984dc
-        &.liked
-          background #40a9ff
-          border-color #40a9ff
-        span
-          &:first-child
+  &.blog
+    // 版权和时间等
+    .article-other-info
+      $line = #eee
+      border-bottom 1px solid $line
+      padding .3rem 0
+      .comments-sum
+        position absolute
+        left 10rem
+        bottom -1px
+        padding .5rem 1.5rem
+        background #fff
+        margin-left 2rem
+        // padding 1rem 1rem 0 1rem
+        font-size 1.1428rem // 16px
+        border 1px solid $line
+        border-radius: 4px 4px 0 0
+        border-bottom 0
+      // 评论列表
+    .comments-list
+        .item
+          padding 1rem
+          .head
             position relative
-            padding-right 1rem
-            // border-right 1px solid #fafafa
-            &:after
+            .hash
               position absolute
-              content '|'
-              right -.5rem
-              display inline
-              color rgba(255,255,255,0.2)
-          &:last-child
-            padding-left 1rem
-        
+              left -1rem
+              top 0
+              opacity 0
+          &:hover
+            .head .hash
+              opacity 1
+          .body
+            text-align justify
+          .footer
+            color #999
+            &::after
+              content ''
+              display block
+              clear both
+            span:first-child
+              float left
+            time, span.reply, span.delete
+              float right
+            span.reply
+              a
+                color #666
+                &:hover
+                  color #444
+                i::before
+                  margin-right .3rem
+            span.delete
+              margin-right 1rem
+              a
+                color #f5222d
+                &:hover
+                  color #e3111c
+        // 评论框
+        .form
+          .form-control
+            padding .2rem .8rem
+            color #555
+            border-radius 4px
+            transition border-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s
+            box-shadow inset 0 1px 1px rgba(0,0,0,0.075)
+            border 1px solid #CCC
+            &:focus
+              border 1px solid #3b99fc
+              box-shadow 0 0 3px 0px #3b99fc
+          textarea
+            width 100%
+            min-height 6.428rem // 90px
+            max-height 9.428rem // 132px
+          .inputs
+            padding-bottom 1rem
+            display flex
+            input
+              flex 1
+              margin-right 1rem
+              &:last-child
+                margin-right 0
+          .btns
+            text-align right
+        .comment-bar
+          border-top 1px solid #eee
+          padding 1rem
+            

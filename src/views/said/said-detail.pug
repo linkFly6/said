@@ -1,0 +1,61 @@
+extends ../partials/layout.pug
+
+block head
+  link(rel='stylesheet', href='/css/article-detail.css')
+
+block content
+  //- 正文内容
+  section#content
+    .content-bg
+      .content-bg-img(style="background-image:url(/images/bg/6033.jpg)")
+    .said-content
+      .music
+        .img
+          img(src='//s1.ax1x.com/2018/02/12/9GzOit.jpg')
+        ul.music-info
+          li.name The Only ExceptionThe Only Exception The Only Exception
+          li
+            a.link(href='//sogou.com', target='_blank') Paramore
+          li
+            a.link(href='//sogou.com', target='_blank') The Only Exception
+        .music-player
+          .palyer-button(title='点击播放')
+            //- i.saidfont.icon-play1
+            i.saidfont.icon-pause
+          .player-progress
+            .player-volume(style='width:10%')
+          .time 
+            span 01:03 
+            = '/'
+            span 03:42
+      section.context.said
+        h1.title 世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里世界很大，风住过这里
+        article.article
+          section.html
+            //- 文章内容
+            !=content
+          .author
+            p 作者：linkFly
+            p 原文：
+              a.link(href='http://www.cnblogs.com/silin6/p/4288967.html') http://www.cnblogs.com/silin6/p/4288967.html
+            p 出处：
+              a.link(href='https://tasaid.com') https://tasaid.com
+            p 声明：转载相关授权请&nbsp;
+              a.link(href='//tasaid.com/Blog/20160906231305.html') 点击这里
+              = '，请尊重作者的辛勤劳动成果。'
+        //- 其他信息
+        .article-other-info
+          //- .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
+          //-   a(href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh', target='_blank')
+          //-     img(src='/images/creativecommons-sa.svg')
+          time 发布于 2014/10/08 00:21:51
+          .browse(title='浏览量')
+            i.saidfont.icon-yonghu 12
+        .more 
+          //- .info
+          //-   time 最后一次更新于 2014/10/08 00:21:51
+          .other
+            a.button.like
+              span#like-tqext 点赞
+              span#link-num 1
+

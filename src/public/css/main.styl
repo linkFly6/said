@@ -1,7 +1,7 @@
 @require './lib/normalize'
 @require './layout'
 
-// @import 'nib'
+$color-a = #4078c0
 
 html, body, button, input, select, textarea
   font 14px/24px STHeiti, "Helvetica Neue", Helvetica,Arial, 'Microsoft Yahei', sans-serif
@@ -10,6 +10,8 @@ html, body, button, input, select, textarea
   // mac os 下进行抗锯齿优化，字体会显得更瘦小一点儿
   -webkit-font-smoothing antialiased
   color #444
+input
+  outline none
 textarea
   resize vertical
   outline none
@@ -23,6 +25,7 @@ textarea
   background none repeat scroll 0 0 #ea4c89
   color rgba(255, 255, 255, 0.85)
 a 
+  color $color-a
   text-decoration none
   transition color 0.2s ease-in-out 0s
   outline none
@@ -37,7 +40,6 @@ a
 
 // a 样式
 .link
-  $color = #4078c0
   color $color
   position relative
   &::after
@@ -60,3 +62,22 @@ a
   float none!important
   content ''
   display block
+// 按钮
+.button
+  $bg-color = #40a9ff
+  box-shadow 0 1px 1px rgba(0,0,0,0.05)
+  padding .5rem 1rem
+  border-radius 6px
+  background $bg-color
+  border 1px solid $bg-color
+  color #fff
+  cursor pointer
+  transition .2s
+  &:hover
+    background #389bec
+    border-color #1984dc
+  &:active
+    background #2d87e8
+  &.disabled, &[disabled]
+    background #40a9ff
+    border-color #40a9ff

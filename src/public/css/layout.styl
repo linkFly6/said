@@ -5,16 +5,17 @@ $pageBottom = 371px
 // 顶部导航
 #header
   // 导航下所有元素的高度
-  $menuHeight = 3rem
+  $menuHeight = 3.4rem
   padding 10px 0 15px 0
   width $layoutWidth
   margin 0 auto
   overflow hidden
-  display flex
+  // display flex
   justify-content space-between
   // 左侧 logo
   #nav-logo
     // logo 图片
+    float left
     .logo
       display block
       margin 0 auto
@@ -39,7 +40,7 @@ $pageBottom = 371px
         $linkhighColor = #59c6ff
         &.nav-active
           a
-            color $linkhighColor
+            color $linkhighColor!important
         &:hover
           a
             color $linkhighColor
