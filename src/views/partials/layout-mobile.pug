@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    meta(http-equiv='description', content='听说-linkFly的博客')
+    meta(name='author', content='linkFly')
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
+    meta(name='keywords', content='linkfly,said,听说,blog,博客,技术,nodejs,前端,javascript,web')
+    meta(name='format-detection', content='telephone=no')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-touch-fullscreen', content='yes')
+    block meta
+    title #{title} - 世界很大，风住过这里
+    link(rel='shortcut icon', href='/images/favicon.ico', type='image/x-icon')
+    link(rel='icon', href='/images/favicon.ico', type='image/x-icon')
+    link(rel='bookmark', href='/images/favicon.ico')
+    link(rel='stylesheet', href='//at.alicdn.com/t/font_566817_xcpzxz4c9q0vn29.css')
+    link(rel='stylesheet', href='/css/main-mobile.css')
+    block head
+  body
+    .page#page
+      include ../partials/header-mobile.pug
+      .container
+        block content
+      include ../partials/footer-mobile.pug
+    script(type='text/javascript', charset='utf-8', src='/js/app-mobile.js')
+    block script

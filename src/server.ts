@@ -44,6 +44,8 @@ import * as saidController from './controllers/article'
  * API keys and Passport configuration.
  */
 import * as passportConfig from './config/passport'
+import { isMobileDevice } from './utils/device'
+import { DEVICE } from './models/server/enums'
 
 /**
  * Create Express server.
@@ -114,6 +116,13 @@ router({
   app: app,
   handler: actionHandler,
   root: path.join(__dirname, 'controllers'),
+})
+
+// 判断是否来自移动设备中间件
+app.use((req, res, next) => {
+  const ua = req.headers['user-agent']
+  res.locals.device = isMobileDevice(ua) ? DEVICE.MOBILE : DEVICE.DESKTOP
+  return next()
 })
 
 /**

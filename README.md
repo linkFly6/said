@@ -63,7 +63,7 @@ $ sh deploy.sh # 进行部署
 - 前台访问用 cookie，后台 + 前台管理员访问接口带 token， token 每次进行校验
 - 服务异常需要显示错误页
 - 部署脚本压缩 js 和 css(最好 js 和 css 能单独部署到 cdn)
-
+- 编译方式优化，优化 `stylus` 文件编译产出路径和 `src` 目录不一致的问题
 
 ### 关于 controller 设计
 

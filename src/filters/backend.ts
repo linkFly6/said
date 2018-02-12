@@ -60,10 +60,11 @@ export const admin = signature(
       let params = req.method === 'GET'
         ? req.query : req.body
       // 如果前面有其他 filter 处理过则不再处理
-      if (params.admin) {
-        next()
-        return
-      }
+      // 不能这么做，因为可以在参数伪造 admin，admin 只能在 server 生成
+      // if (params.admin) {
+      //   next()
+      //   return
+      // }
       const token = params.token || req.cookies.token
       const promise = Promise.resolve(token)
       // bodyParser 不会解析 multipart/form-data 的请求，所以在 form-data 下取不到 token
