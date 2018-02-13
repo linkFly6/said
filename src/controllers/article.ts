@@ -24,8 +24,9 @@ export const index = (req: Request, res: Response) => {
  */
 export const detail = (req: Request, res: Response) => {
   if (res.locals.device === DEVICE.MOBILE) {
-    res.render('blog/said-mobile-detail', {
-      title: '听说'
+    res.render('said/said-mobile-detail', {
+      title: '听说',
+      content: blogContent,
     })
   } else {
     res.render('said/said-detail', {
