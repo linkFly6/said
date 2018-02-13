@@ -7,7 +7,8 @@ import { DEVICE } from '../models/server/enums'
  */
 export const index = (req: Request, res: Response) => {
   if (res.locals.device === DEVICE.MOBILE) {
-    res.render('mobile/home-mobile', {
+    // 移动页面
+    res.render('home-mobile', {
       title: '听说'
     })
   } else {

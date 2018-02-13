@@ -1,20 +1,25 @@
 @require './lib/normalize'
+@require './lib/article-format'
+@require './lib/mobile/mobile-header'
+@require './lib/mobile/mobile-navigator'
+@require './lib/mobile/mobile-banner'
+@require './lib/mobile/mobile-module'
+@require './lib/mobile/mobile-article-detail'
+@require './lib/mobile/mobile-comments'
 
 // 全局链接
 $color-a = #4078c0
-// 菜单蒙版背景色
-$color-mask = #292929
-
-// 顶部菜单栏高度
-$headerheight = 3rem
 
 html, body, button, input, select, textarea
-  font 16px/24px STHeiti, "Helvetica Neue", Helvetica,Arial, 'Microsoft Yahei', sans-serif
+  font 16px/24px -apple-system, BlinkMacSystemFont,STHeiti, "Helvetica Neue", Helvetica,Arial, "PingFang SC", "Microsoft Yahei", sans-serif
   font-feature-settings "liga", "kern"
   text-rendering optimizelegibility
   // mac os 下进行抗锯齿优化，字体会显得更瘦小一点儿
   -webkit-font-smoothing antialiased
   color #444
+
+.saidfont
+  font-size inherit
 
 a 
   color $color-a
@@ -32,149 +37,35 @@ html
   &.lock
     overflow hidden
 
-// layout
-#header
-  background rgba(41, 41, 41, 0.8)
-  transition background-color linear .6s
-  // position relative
-  position fixed
-  width 100%
-  height $headerheight
-  overflow hidden
-  z-index  101
-  .logo
-    background url(/images/said-wap-logo.png) no-repeat center center
+// 全局通用的查看更多按钮
+.module-more
+  padding-bottom 1rem
+  a
+    padding 1rem
     display block
-    height 100%
-    background-size auto 70%
-    width $headerheight
-    float left
-    position relative
-    z-index 101
-  .nav-btn
-    height 100%
-    width $headerheight
-    display block
-    float right
-    position relative
-    z-index 101
-    // 右边的导航箭头按钮
+    text-align center
     span
-      display block
-      width 17px
-      height 1px
-      background #fafafa
-      position absolute
-      left 16px
-      transition all ease-in-out 0.3s 0.2s
-      &.l-top
-        top 23px
-        transform translateY(-3px)
-      &.l-bottom
-        bottom 23px
-        transform translateY(3px)
-        transition-delay 0.1s
-      &.m-left
-        top 23px
-        transform rotate(45deg) translateX(-70px)
-      &.m-right
-        bottom 24px
-        transform rotate(-45deg) translateX(60px)
-        transition-delay 0.1s
+      padding-bottom .3rem
+      border-bottom 1px solid rgba(64, 120, 192, 0.25)
 
-.page
-  // 展开菜单动画
-  &.open
-    // 导航箭头展开动画
-    #header
-      background $color-mask
-      .nav-btn
-        span
-          &.l-top
-            left 100%
-          &.l-bottom
-            left 100%
-          &.m-left
-            top 23px
-            transform rotate(45deg) translateX(0%)
-          &.m-right
-            bottom 24px
-            transform rotate(-45deg) translateX(0%)
-            transition-delay 0.1s
-    .nav-mask
+// layout
+
+// 页面底部
+#footer
+  .menus
+    padding 1rem 1rem 0 1rem
+    font-size .875rem
+    text-align center
+    a
+      color #555
+    i
+      padding 0 .5rem
+  .logo
+    a
       display block
-      .nav-animate-box
-        transition opacity linear .6s
-        opacity 1
-        .bg
-          transition all cubic-bezier(0, 0.19, 0.85, -0.02) 0.5s
-          &.top
-            transform rotate(45deg) rotateY(0deg)
-          &.middle
-            transform rotate(45deg) rotateY(0deg)
-          &.bottom
-            transform rotate(45deg) rotateY(0deg)
-        .menu-box
-          opacity 1
-          .menu
-            a
-              transform none
-              opacity 1
-  .nav-mask
-    .nav-animate-box
-      // background $color-mask
-      position fixed
-      height 100%
-      width 100%
-      overflow hidden
-      left 0
-      top 0
-      z-index 100
-      opacity 0
-      transition opacity linear .6s
-      // 导航展开背景
-      .bg
-        position absolute
-        display block
-        width 100%
-        top -50%
-        height 200%
-        background-color $color-mask
-        transition all ease-in-out 0.5s
-        transform rotate(45deg) rotateY(90deg)
-        &.top
-          left -130%
-        &.bottom
-          left 130%
-      // 菜单列表
-      .menu-box
-        opacity 0
-        transition opacity linear .5s
-      .menu
-        position absolute
-        top 40%
-        left 50%
-        transform translate(-50%, -50%)
-        text-align center
-        // 列表项
-        $menu-item-padding = .625rem
-        a
-          display block
-          padding $menu-item-padding 0
-          transform scale(1.1) translateY(-24px)
-          color #fafafa
-          text-shadow 1px 1px 1px rgba(0, 0, 0, 0.6)
-          opacity 0
-          transition opacity .35s ease-out, transform .35s ease-out
-          for num in (1..6)
-            &:nth-child({num})
-              $ms = 700ms + num * 50ms
-              transition-delay $ms, $ms
-        .by
-          display block
-          padding $menu-item-padding 0
-          color #afafaf
-          opacity 0.5
-        
-.container
-  padding-top $headerheight
+      margin 0 auto
+      height 3rem // 48px
+      width 6.25rem // 100px
+      background url(/images/said-logo2.png) no-repeat center center
+      background-size 100% auto
+      overflow hidden 

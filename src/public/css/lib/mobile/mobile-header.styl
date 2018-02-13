@@ -1,0 +1,54 @@
+// 顶部菜单
+
+// 顶部菜单栏高度
+$headerheight = 3rem
+
+#header
+  background rgba(41, 41, 41, 0.8)
+  transition background-color linear .6s
+  // position relative
+  position fixed
+  width 100%
+  height $headerheight
+  overflow hidden
+  z-index  101
+  .logo
+    background url(/images/said-wap-logo.png) no-repeat center center
+    display block
+    height 100%
+    background-size auto 70%
+    width $headerheight
+    float left
+    position relative
+    z-index 101
+  .nav-btn
+    height 100%
+    overflow hidden
+    width $headerheight
+    display block
+    float right
+    position relative
+    z-index 101
+    // 右边的导航箭头按钮
+    span
+      display block
+      width 17px
+      height 1px
+      background #fafafa
+      position absolute
+      left 16px
+      transition all ease-in-out 0.3s 0.2s
+      &.l-top
+        top 23px
+        transform translateY(-3px)
+      &.l-bottom
+        bottom 23px
+        transform translateY(3px)
+        transition-delay 0.1s
+      &.m-left
+        top 23px
+        transform rotate(45deg) translateX(-70px)
+      &.m-right
+        bottom 24px
+        transform rotate(-45deg) translateX(60px)
+        transition-delay 0.1s

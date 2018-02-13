@@ -130,7 +130,7 @@ app.use((req, res, next) => {
  */
 app.get('/', homeController.index)
 app.get('/blog', blogController.index)
-app.get('/blog/:id', blogController.detail)
+app.get('/blog/:id.html', blogController.detail)
 app.get('/said', saidController.index)
 app.get('/said/:id', saidController.detail)
 // app.get('/login', userController.getLogin)

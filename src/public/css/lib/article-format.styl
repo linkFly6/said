@@ -1,12 +1,17 @@
 @require './highlight-solarized-light'
 
-html()
+// 全局统一 markdown 渲染 HTML 样式，拆除最小模块以便自定义
+
+// 字体设置
+font()
   // 如果觉得小可以设为 18px
   // font: 200 16px/2 system, -apple-system, BlinkMacSystemFont, "Lantinghei SC","Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   font: 16px/2 system, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
              "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
              SimSun, sans-serif
-  // 链接
+
+// 链接
+link()
   a
     $color = #4078c0
     color $color
@@ -25,7 +30,9 @@ html()
       transition transform 0.5s
     &:hover::after
       transform scale(1)
-  // 代码相关
+
+// 代码相关设置
+code(overrideScrollbar = true)
   code // 平时引用的行级代码
     padding .2em .3em
     margin 0
@@ -35,34 +42,43 @@ html()
     border-radius 6px
     padding 1em
     margin 1em 0
-    // chrome 横向滚动条重写
-    &::-webkit-scrollbar
-        // 10px
-        height .625em
-    &::-webkit-scrollbar-thumb
-      &:horizontal
-        background-color #CCCCCC
-        border-radius 6px
-        opacity .1
-        &:hover
+    // 表示重写 chrome 滚动条
+    if overrideScrollbar
+      // chrome 横向滚动条重写
+      &::-webkit-scrollbar
+          // 10px
+          height .625em
+      &::-webkit-scrollbar-thumb
+        &:horizontal
+          background-color #CCCCCC
+          border-radius 6px
           opacity .1
+          &:hover
+            opacity .1
     code
       padding 0
       border-radius 3px
       background transparent
       border-radius 0
       font-size 1em
+      line-height 1
       font-family Consolas, "Liberation Mono", Menlo, Courier, monospace
-  // 图片
+
+// 图片相关
+img()
   img
     display block
     max-width 100%
     cursor pointer
-  // 内容
+
+// 普通内容
+p()
   p
     text-align justify
     margin 0
-  // 引用
+
+// 引用相关
+blockquote()
   blockquote
     padding: 1em
     margin 1em 0
@@ -71,10 +87,14 @@ html()
     border-left: 4px solid #56a1d6;
     ul, ol, p:last-child
       margin-bottom: 0
-  // 分割线
+
+// 分割线
+hr()
   hr
     margin 1.25em 0
-  // 标题
+
+// 标题
+hx() 
   h1, h2, h3, h4, h5, h6
     margin-top 2em
     margin-bottom 1em
@@ -134,10 +154,71 @@ html()
     .hash
       line-height: 1.5em
       font-size: 1em
-  // 列表项
+
+// 列表项
+ulol()
   ul, ol
     padding-left 1em
-  // 全局通用样式
+
+// 表格
+table
+  table
+    $tableRadius = .28571429rem
+    width 100%
+    background #FFF
+    border 1px solid rgba(34,36,38,.15)
+    box-shadow none
+    border-radius $tableRadius
+    text-align left
+    color rgba(0,0,0,.87)
+    border-collapse separate
+    border-spacing 0
+    thead
+      tr
+        &:first-child
+          >th
+            &:first-child
+              border-radius $tableRadius 0 0
+              border-left none
+            &:last-child
+              border-radius 0 $tableRadius 0 0
+    tbody
+      tr
+        >td:first-child
+          border-left: none
+        &:first-child
+          >td
+            border-top none
+    th
+      padding .3em 1em
+      background #F9FAFB
+      text-align inherit
+      color rgba(0,0,0,.87)
+      vertical-align inherit
+      font-weight 700
+      border-bottom 1px solid rgba(34,36,38,.1)
+      border-left 1px solid rgba(34,36,38,.1)
+    td
+      padding .5em 1em
+      border-left 1px solid rgba(34,36,38,.1)
+      border-top 1px solid rgba(34,36,38,.1)
+
+// 全局通用样式
+global()
   p, ul, ol, dl, table, pre, blockquote
     margin-top 0
     margin-bottom 1em
+
+// 提供一个完全组合好的模块
+html()
+  font()
+  link()
+  code()
+  img()
+  p()
+  blockquote()
+  hr()
+  hx()
+  ulol()
+  table()
+  global()

@@ -1,0 +1,113 @@
+// 文章详情
+.article-content
+  .music
+    display flex
+    padding 1rem
+    align-items center
+    .info
+      flex 1
+      overflow hidden
+      .album
+        font-size .875rem // 14px
+    .player
+      padding-left 1rem
+      a
+        font-size 2rem
+        color #858585
+  .context
+    padding 0 1rem 1.25rem // 0 16px 20px
+    h1.title
+      font-size 1.5rem // 24px
+      padding 1.25rem 0 // 20px
+      color #2f2f2f
+      border-bottom 1px solid #e8e8e8
+      font-weight 400
+      line-height 1.2
+    .html
+      // ./lib/article-mobile-format 里面的内容
+      font()
+      a
+        $color = #4078c0
+        color $color
+        position relative
+        &::after
+          content ''
+          position absolute
+          left 0
+          display block
+          bottom -5px
+          width 100%
+          height 1px
+          background rgba(64, 120, 192, 0.25)
+          transform none
+      // 移动端不播放视频
+      embed
+        display none!important
+      code(false)
+      img()
+      p()
+      blockquote()
+      hr()
+      hx()
+      ulol()
+      table()
+      global()
+  .info
+    .like-box
+      text-align center
+    // 点赞按钮
+    .like
+      $bg-color = #40a9ff
+      box-shadow 0 1px 1px rgba(0,0,0,0.05)
+      background $bg-color
+      border 1px solid $bg-color
+      color #fff
+      cursor pointer
+      transition .2s
+      padding .5rem 1.2rem
+      border-radius 6px
+      font-size 1.185rem // 18px
+      &:active
+        background #2d87e8
+      &.disabled, &[disabled]
+        background #40a9ff
+        border-color #40a9ff
+      span
+        &:first-child
+          position relative
+          padding-right .5rem
+          &:after
+            position absolute
+            content '|'
+            right -.5rem
+            display inline
+            color rgba(255,255,255,0.2)
+        &:last-child
+          padding-left 1rem
+    .article-other-info
+      margin 1rem
+      overflow hidden
+      font-size .875rem // 14px
+      .saidfont
+        color #999
+        &::before
+          margin-right .2rem
+      right()
+        float right
+      // 浏览量
+      .browse
+        right()
+      // 更新时间
+      time
+        margin-left .4rem
+        right()
+    // 版权
+    .cc
+      margin 1rem 1rem 0 1rem
+      padding 1rem 1rem 0 1rem
+      border-top 1px solid #e8e8e8
+      text-align center
+      a
+        display inline-block
+      img
+        display block
