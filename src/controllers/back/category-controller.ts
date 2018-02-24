@@ -2,7 +2,7 @@ import { get, post } from '../../filters/http'
 import { admin } from '../../filters/backend'
 import { Log } from '../../utils/log'
 import { ServiceError } from '../../models/server/said-error'
-import { queryCategoryAll, createCategory, updateCategoryById, removeCategory } from '../../services/category-service'
+import { queryCategoryAll, createCategory, updateCategoryById, removeCategory, checkCategoryName } from '../../services/category-service'
 import { RouterError } from '../../middleware/routers/models'
 import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
@@ -12,7 +12,7 @@ import { IAdmin } from '../../models/admin'
 const ERRORS = {
   SERVER: new RouterError(1, '服务异常，请稍后重试'),
   PARAMS: new RouterError(2, '请求信息不正确'),
-  PARAMSLENGTH: new RouterError(3, '类型名称或图片名称过长'),
+  PARAMSLENGTH: new RouterError(3, '图片名称过长，或类型名称不正确，只允许包含以下项：字母、数字、点(.)、下划线(_)'),
   REMOVEFAIL: new RouterError(10, '删除失败，请稍后重试')
 }
 
@@ -40,7 +40,7 @@ export default class {
       log.error('params', params)
       return ERRORS.PARAMS
     }
-    if ((params.entity.icon + '').length > 36 || (params.entity.name + '').length > 18) {
+    if ((params.entity.icon + '').length > 36 || !checkCategoryName(params.entity.name)) {
       return ERRORS.PARAMSLENGTH
     }
     try {
@@ -53,7 +53,12 @@ export default class {
       log.info('res', res)
       return res
     } catch (error) {
-      log.error('catch', error)
+      if (ServiceError.is(error)) {
+        log.error((error as ServiceError).title, (error as ServiceError).data)
+        return new RouterError(100, (error as ServiceError).message)
+      } else {
+        log.error('catch', error)
+      }
       return ERRORS.SERVER
     }
   }
@@ -68,7 +73,7 @@ export default class {
       return ERRORS.PARAMS
     }
 
-    if ((params.entity.icon + '').length > 36 || (params.entity.name + '').length > 18) {
+    if ((params.entity.icon + '').length > 36 || !checkCategoryName(params.entity.name)) {
       return ERRORS.PARAMSLENGTH
     }
 
@@ -82,7 +87,12 @@ export default class {
       log.info('res', res)
       return res
     } catch (error) {
-      log.error('catch', error)
+      if (ServiceError.is(error)) {
+        log.error((error as ServiceError).title, (error as ServiceError).data)
+        return new RouterError(100, (error as ServiceError).message)
+      } else {
+        log.error('catch', error)
+      }
       return ERRORS.SERVER
     }
   }

@@ -10,7 +10,7 @@ export interface ICategory {
    */
   icon: string
   /**
-   * 分类名
+   * 分类名，该名称唯一
    */
   name: string
 

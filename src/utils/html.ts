@@ -24,7 +24,7 @@ export const convertMarkdown2HTML = (context: string) => {
     // var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-')
     const escapedText = text.toLowerCase()
     // 注入 title 的 hash
-    return `<h${level} id="${escapedText}"><a class="fa fa-link hash" aria-hidden="true" href="#${escapedText}" name="${escapedText}"></a><span>${text}</span></h${level}>`
+    return `<h${level} id="${escapedText}"><a class="saidfont icon-yinyong hash" aria-hidden="true" href="#${escapedText}" name="${escapedText}"></a><span>${text}</span></h${level}>`
     // return '<h' + level + '><a name="' +
     //   escapedText +
     //   '" class="anchor" href="#' +
@@ -43,7 +43,7 @@ export const convertMarkdown2HTML = (context: string) => {
       return `<a href="${href}" title="${title || ''}">${text}</a>`
     }
     // 跳转的链接，全部补上统计
-    const url = `//tasaid.com/home/cv?url=${encodeURIComponent(href)}`
+    const url = `//tasaid.com/home/sv?url=${encodeURIComponent(href)}`
     return `<a href="${url}" title="${title || ''}" target="_blank">${text}</a>`
   }
 

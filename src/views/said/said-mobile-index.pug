@@ -10,34 +10,27 @@ block content
   .content
     .module-title
       span 探索
-    a.module-item(href='/said')
-      .item-bg(style='background-image:url(/images/bg/6033.jpg)')
-      .item-context
-        .item-article
-          h2 后摇 - 泡上咖啡，让我们用舒服的方式聊聊技术
-          .item-music.ellipsis
-            i.saidfont.icon-music
-            = 'See you again - I love house - ministry of sound - cameron jibril Thomaz/Charlie Puth'
-          .item-txt 想要做坐火车去一个更远的远方去流浪 然而目的地并不重要 我只是想重温那种稍纵即逝 从繁华到荒蛮的感觉 重新感觉一段相比人生简短了无数倍 却折射人生缩影的旅途
-          .item-footer
-            time.date 
-              i.saidfont.icon-rili 3分钟前
-            span.pv 
-              i.saidfont.icon-yonghu 12
-    a.module-item(href='/said')
-      .item-bg(style='background-image:url(/images/bg/6036.jpg)')
-      .item-context
-        .item-article
-          h2 后摇 - 泡上咖啡，让我们用舒服的方式聊聊技术
-          .item-music.ellipsis
-            i.saidfont.icon-music
-            = 'See you again - I love house - ministry of sound - cameron jibril Thomaz/Charlie Puth'
-          .item-txt 想要做坐火车去一个更远的远方去流浪 然而目的地并不重要 我只是想重温那种稍纵即逝 从繁华到荒蛮的感觉 重新感觉一段相比人生简短了无数倍 却折射人生缩影的旅途
-          .item-footer
-            time.date 
-              i.saidfont.icon-rili 3分钟前
-            span.pv 
-              i.saidfont.icon-yonghu 12
-    .module-more
-        a(href='/said') 
-          span 查看更多听说
+    for article in articles
+      a.module-item(href=`/said/${article.key}.html`)
+        .item-bg(style=`background-image:url(${article.poster.thumb})`)
+        .item-context
+          .item-article
+            h2 #{article.title}
+            .item-music.ellipsis
+              i.saidfont.icon-music
+              //- 不能放到 saidfont 元素下，原因参见这里：https://github.com/thx/iconfont-plus/issues/563
+              = `${article.song.title} - ${article.song.artist} 《${article.song.album}》`
+            .item-txt #{article.summary}
+            .item-footer
+              time.date 
+                i.saidfont.icon-rili
+                = article.info.localDate
+              span.pv 
+                i.saidfont.icon-yonghu #{article.info.pv}
+    .module-next
+        a(href='javascript:;').button
+          span 点击加载更多
+          i.saidfont.icon-arrow-down
+        span.button
+          span 正在加载中...
+          i.saidfont.icon-loading

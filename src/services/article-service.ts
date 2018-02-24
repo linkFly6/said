@@ -1,4 +1,4 @@
-import article, { default as AriticleDb, ArticleModel, IArticle } from '../models/article'
+import { default as AriticleDb, ArticleModel, IArticle } from '../models/article'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
@@ -10,6 +10,7 @@ import { SongModel } from '../models/song'
 import { ImageModel } from '../models/image'
 import { querySongById, song2outputSong } from '../services/song-service'
 import { queryImageById, image2outputImage } from '../services/image-service'
+import { IUser } from '../models/User'
 
 const log = new Log('service/article')
 
@@ -43,7 +44,6 @@ export const article2SimpleArticle = (article: any): OutputArticle => {
       createTime: article.info.createTime,
       updateTime: article.info.updateTime,
     },
-
   }
 }
 
@@ -143,6 +143,7 @@ export const createArticle = async (article: SimpleArticle, admin: IAdmin) => {
   let i = 0
   // 最多重试 3 次
   while (i++ < 3) {
+    // 15 ~ 16 位
     key = moment().format('YYYYMMDDHHmmss' + Math.floor(Math.random() * 100))
     let existsCount = await existsByArticleKey(key)
     if (existsCount > 0) {
@@ -239,7 +240,7 @@ export const updateArtice = async (article: SimpleArticle, admin: IAdmin) => {
     now: newArticle,
     admin,
   })
-  
+
   // 不想使用上面的 2b set 的话，也可以试试这种思路
   // lodash.merge(oldArticle, newArticle)
   // oldArticle.save()
@@ -302,4 +303,67 @@ export const queryArticleById = async (articleId: string, admin: IAdmin) => {
     throw new ServiceError('queryArticleById.checkArticle.empty', { articleId, admin }, '无法访问该文章')
   }
   return article //  .toObject()
+}
+
+/**
+ * 根据 key 查找文章
+ * @param key 
+ */
+export const getArticleByKey = (key: string) => {
+  return AriticleDb.findOne({ key }).exec()
+}
+
+/**
+ * 累加文章的浏览量
+ * @param key 
+ */
+export const updateArticlePV = (key: string) => {
+  return AriticleDb.findOne({ key }).update({
+    '$inc': { 'info.pv': 1 }
+  })
+}
+
+/**
+ * 累加 Like 了文章
+ * @param key 
+ */
+export const updateArticleLike = (key: string, user: IUser) => {
+  log.info('updateArticleLike.call', { key, user })
+  return AriticleDb.findOne({ key }).update({
+    '$inc': { 'info.likeCount': 1 }
+  })
+}
+
+/** 
+ * 查询所有文章个数
+ */
+export const queryAllArticleCount = () => {
+  return AriticleDb.find().count().exec()
+}
+
+/**
+ * 根据条件查询文章个数
+ * @param where 
+ */
+export const queryArticleCountByWhere = (where: any) => {
+  return AriticleDb.find(where).count().exec()
+}
+
+/**
+ * 分页查询
+ * @param limit 指定查询结果的数量
+ * @param offset 执行查询结果的偏移量（limit * (页码 -1)），从 0 开始计算
+ */
+export const queryAllArticleByPage = (limit = 10, offset = 0) => {
+  return AriticleDb.find().sort('-_id').limit(limit).skip(offset).exec()
+}
+
+/**
+ * 根据条件分页查询
+ * @param where 查询条件
+ * @param limit 指定查询结果的数量
+ * @param offset 执行查询结果的偏移量（limit * (页码 -1)），从 0 开始计算
+ */
+export const queryArticleByPageAndWhere = (where: any, limit = 10, offset = 0) => {
+  return AriticleDb.find(where).sort('-_id').limit(limit).skip(offset).exec()
 }

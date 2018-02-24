@@ -1,4 +1,4 @@
-import blog, { default as BlogDb, BlogModel, IBlog } from '../models/blog'
+import { default as BlogDb, BlogModel, IBlog } from '../models/blog'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
@@ -10,6 +10,7 @@ import { TagModel, ITag } from '../models/tag'
 import { queryByTagNames, createTags } from '../services/tag-service'
 import * as moment from 'moment'
 import { convertMarkdown2HTML, convertSummaryToHTML } from '../utils/html'
+import { IUser } from '../models/User'
 
 
 const log = new Log('service/blog')
@@ -39,7 +40,6 @@ export const queryAllBlogByAdmin = (admin: IAdmin) => {
     return BlogDb.find({ author: { _id: admin._id } }).sort('-_id').exec()
   }
 }
-
 
 /**
  * 根据 key 检查是否存在对应的 Blog
@@ -215,6 +215,14 @@ export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
 
 
 /**
+ * 批量修改 blog 中的类型
+ * @param category 
+ */
+export const updateBlogsCategory = async (category: CategoryModel) => {
+  return BlogDb.find({ 'category._id': category._id }).update({ category }).exec()
+}
+
+/**
  * 删除
  */
 export const removeBlog = async (blogId: string, admin: IAdmin) => {
@@ -268,3 +276,74 @@ export const queryBlogById = async (blogId: string, admin: IAdmin) => {
 }
 
 
+/**
+ * 根据 key 查找文章
+ * @param key 
+ */
+export const getBlogByKey = (key: string) => {
+  return BlogDb.findOne({ key }).exec()
+}
+
+/**
+ * 累加文章的浏览量
+ * @param key 
+ */
+export const updateBlogPV = (key: string) => {
+  return BlogDb.findOne({ key }).update({
+    '$inc': { 'info.pv': 1 }
+  })
+}
+
+/**
+ * 用户 Like 了日志
+ * @param key 
+ */
+export const updateBlogLike = (key: string, user: IUser) => {
+  log.info('updateBlogLike.call', { key, user })
+  return BlogDb.findOne({ key }).update({
+    '$inc': { 'info.pv': 1 }
+  })
+}
+
+/**
+ * 根据分类查询
+ * @param categoryName 
+ */
+export const queryBlogsByByCategoryName = (categoryName: string) => {
+  return BlogDb.find({ 'category.name': categoryName }).exec()
+}
+
+
+/** 
+ * 查询所有 blog 的个数
+ */
+export const queryAllBlogCount = () => {
+  return BlogDb.find().count().exec()
+}
+
+/**
+ * 根据条件查询 blog 个数
+ * @param where 
+ */
+export const queryBlogCountByWhere = (where: any) => {
+  return BlogDb.find(where).count().exec()
+}
+
+/**
+ * 分页查询
+ * @param limit 指定查询结果的数量
+ * @param offset 执行查询结果的偏移量（limit * (页码 -1)），从 0 开始计算
+ */
+export const queryAllBlogByPage = (limit = 10, offset = 0) => {
+  return BlogDb.find().sort('-_id').limit(limit).skip(offset).exec()
+}
+
+/**
+ * 根据条件分页查询
+ * @param where 查询条件
+ * @param limit 指定查询结果的数量
+ * @param offset 执行查询结果的偏移量（limit * (页码 -1)），从 0 开始计算
+ */
+export const queryBlogByPageAndWhere = (where: any, limit = 10, offset = 0) => {
+  return BlogDb.find(where).sort('-_id').limit(limit).skip(offset).exec()
+}

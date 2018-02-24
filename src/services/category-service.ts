@@ -2,8 +2,22 @@ import { default as CategoryDb, CategoryModel, ICategory } from '../models/categ
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { IAdmin } from '../models/admin'
+import { updateBlogsCategory } from './blog-service'
 
 const log = new Log('service/category')
+
+
+/**
+ * 匹配分类名称合法性，匹配字母、下划线、数字和.号
+ */
+const regCategoryName = /^[\d\w\.]{1,18}$/i
+
+/**
+ * 检查分类名称是否合法
+ */
+export const checkCategoryName = (categoryName: string) => {
+  return regCategoryName.test(categoryName)
+}
 
 
 /**
@@ -27,8 +41,13 @@ export const queryCategoryById = (categoryId: string, admin: IAdmin) => {
 /**
  * 新增
  */
-export const createCategory = (category: ICategory) => {
-  log.info('addCategory.call', category)
+export const createCategory = async (category: ICategory) => {
+  log.info('createCategory.call', category)
+  let old = await CategoryDb.count({ name: category.name }).exec()
+  if (old > 0) {
+    // log.error('createCategory.exists', category)
+    throw new ServiceError('createCategory.exists', category, '分类已存在')
+  }
   const categorydb = new CategoryDb(category)
   return categorydb.save()
 }
@@ -37,9 +56,18 @@ export const createCategory = (category: ICategory) => {
  * 修改
  * @param category 
  */
-export const updateCategoryById = (id: string, category: { icon?: string, name?: string }) => {
-  log.info('editCategory.call', { id, category })
-  return CategoryDb.findByIdAndUpdate(id, category).exec()
+export const updateCategoryById = async (id: string, category: { icon?: string, name?: string }) => {
+  log.info('updateCategoryById.call', { id, category })
+  let old = await CategoryDb.count({ name: category.name, }).exec()
+  if (old > 0) {
+    // log.error('createCategory.exists', category)
+    throw new ServiceError('updateCategoryById.exists', { id, category }, '分类已存在')
+  }
+  let categoryModel = await CategoryDb.findByIdAndUpdate(id, category, { new: true }).exec()
+  log.info('updateCategoryById.findByIdAndUpdate', categoryModel)
+  const rows = await updateBlogsCategory(categoryModel)
+  log.info('FFFFFFFFFFFFFFFFF', rows)
+  return categoryModel
 }
 
 

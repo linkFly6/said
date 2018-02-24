@@ -56,7 +56,9 @@ $ sh deploy.sh # 进行部署
 
 ## TODO LIST
 
+- 测试生产环境下，`express` 对于错误页的处理
 - HTTPS
+- 部署脚本中需要 copy `rebots.txt` 到网站根目录下（或者指定 url）
 - 从 `www.tasaid.com` 访问的流量全部自动跳转到 `tasaid.com` (不带 `www`)
 - controller 需要支持 render
 - 访问量/阅读量/浏览量：通过 log 文件定期收集(例如 10min)
@@ -66,6 +68,7 @@ $ sh deploy.sh # 进行部署
 - 编译方式优化，优化 `stylus` 文件编译产出路径和 `src` 目录不一致的问题
 - 关于页可以做成动态文字输入的形式，然后背景放上蒙版跟随鼠标 3d 偏移
 - 每个页面的样式太集中了，需要拆出模块
+- 后台登录 cookie 设置为 `http-only`
 
 ### 关于 controller 设计
 
@@ -81,6 +84,10 @@ controller 是不是不应该设置全局请求？(`app.use`)
 ### 返回接口
 
 所有的接口返回的数据结构都使用 `{ code: number, message: string, data: any }`。
+
+### 全局统计
+
+默认全局统计使用的参数全部都是 `sv`
 
 
 ## 版权

@@ -2,7 +2,7 @@ import { get } from '../../filters/http'
 import { path } from '../../filters/backend'
 import { Log } from '../../utils/log'
 import { Request } from 'express'
-import { login, getUserInfoById, getUserIdByToken } from '../../services/admin-service'
+import { login, getAdminInfoById, getAdminInfoByToken } from '../../services/admin-service'
 import { ServiceError } from '../../models/server/said-error'
 import { RouterError } from '../../middleware/routers/models'
 
@@ -51,19 +51,19 @@ export default class {
   }
 
   @get
-  @path('/back/api/getUserByToken')
-  public async getUserByToken({ token }: { token: string }, { log }: { log: Log }) {
+  @path('/back/api/getAdminByToken')
+  public async getAdminByToken({ token }: { token: string }, { log }: { log: Log }) {
     if (!token) {
       return ERRORS.TOKENFAIL
     }
     try {
       // return ERRORS.LOGINFAIL
-      let tokenInfo = getUserIdByToken(token)
-      if (!tokenInfo || !tokenInfo.id) {
-        return
+      let tokenInfo = await getAdminInfoByToken(token)
+      if (!tokenInfo || !tokenInfo._id) {
+        return ERRORS.TOKENFAIL
       }
-      let res = await getUserInfoById(tokenInfo.id)
-      log.info('getUserInfoByToken.res', res)
+      let res = await getAdminInfoById(tokenInfo._id)
+      log.info('getAdminInfoByToken.res', res)
       return {
         token: token,
         nickName: res.nickName,

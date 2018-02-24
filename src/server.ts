@@ -23,7 +23,6 @@ import expressValidator = require('express-validator')
 
 
 
-
 const MongoStore = mongo(session)
 
 /**
@@ -46,6 +45,10 @@ import * as saidController from './controllers/article'
 import * as passportConfig from './config/passport'
 import { isMobileDevice } from './utils/device'
 import { DEVICE } from './models/server/enums'
+import { getAdminIdByToken } from './services/admin-service'
+import { createUser, getUserInfoByToken } from './services/user-service'
+import { IUser, UserRole } from './models/user'
+import { SimpleAdmin } from 'admin'
 
 /**
  * Create Express server.
@@ -69,6 +72,7 @@ mongoose.connection.on('error', () => {
 app.set('port', process.env.PORT || 3000)
 app.set('views', path.join(__dirname, './views'))
 app.set('view engine', 'pug')
+
 app.use(compression())
 
 app.use(log.Log4js.connectLogger(log.accessLogger, { level: log.accessLogger.level }))
@@ -112,6 +116,66 @@ app.use(session({
 // })
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
+
+// 获取用户 token 和 基本信息
+app.use(async (req, res, next) => {
+  let params = req.method === 'GET'
+    ? req.query : req.body
+  const token = params.token || req.cookies.token
+  // 没有 token 信息，则表示不是管理员
+  if (token) {
+    try {
+      const admin = await getAdminIdByToken(token)
+      if (admin) {
+        res.locals.admin = admin
+      }
+    } catch (error) {
+      // getUserInfoByToken 内部已经打了 log，所以这里不用再打了
+    }
+
+  }
+  // 获取用户信息，user token
+  // 为了安全起见，服务端只认 token 而不认 uid
+  let userToken = req.cookies.ut
+  if (userToken) {
+    try {
+      const userInfo = await getUserInfoByToken(userToken)
+      if (!userInfo) {
+        // 把 userToken 清空，从而触发下面的逻辑重新注入 token
+        userToken = null
+      } else {
+        // 注入到 user 中
+        res.locals.user = userInfo
+      }
+    } catch (error) {
+      userToken = null
+    }
+  }
+  if (!userToken) {
+    let user: IUser = {
+      role: UserRole.NORMAL,
+    } as any
+    // 有管理员信息，则把管理员信息复制到用户中
+    if (res.locals.admin) {
+      const admin: SimpleAdmin = res.locals.admin
+      user.email = admin.email
+      user.nickName = admin.nickName
+      user.role = UserRole.ADMIN
+    }
+    // 保存到数据库
+    const userInfo = await createUser(user)
+    if (!userInfo) {
+      // 跳转到服务器异常
+      res.redirect('/error', 500)
+      return
+    }
+    res.locals.user = userInfo.user
+    // 注入到 cookie https://segmentfault.com/a/1190000004139342
+    res.cookie('ut', userInfo.token, { maxAge: 31536E7 }) // 10 years
+  }
+  next()
+})
+
 router({
   app: app,
   handler: actionHandler,
@@ -129,10 +193,13 @@ app.use((req, res, next) => {
  * Primary app routes.
  */
 app.get('/', homeController.index)
+app.get('/blog/:key.html', blogController.detail)
 app.get('/blog', blogController.index)
-app.get('/blog/:id.html', blogController.detail)
+app.get('/blog/cate/:category', blogController.index)
+app.get('/said/:key.html', saidController.detail)
 app.get('/said', saidController.index)
-app.get('/said/:id.html', saidController.detail)
+app.get('/said/page/:page?', saidController.index)
+
 // app.get('/login', userController.getLogin)
 // app.post('/login', userController.postLogin)
 // app.get('/logout', userController.logout)

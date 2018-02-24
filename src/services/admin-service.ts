@@ -4,6 +4,7 @@ import { Log } from '../utils/log'
 import * as jwt from 'jsonwebtoken'
 import { ServiceError } from '../models/server/said-error'
 import * as crypto from 'crypto'
+import { SimpleAdmin } from '../types/admin'
 const log = new Log('service/admin')
 
 
@@ -85,7 +86,7 @@ export const login = (username: string, password: string, ip: string, headers: s
  * 根据 token 获取用户 ID
  * @param token 
  */
-export const getUserIdByToken = (token: string) => {
+export const getAdminIdByToken = (token: string) => {
   return jwt.verify(token, process.env.JWT_SECRET) as { id: string }
 }
 
@@ -93,7 +94,7 @@ export const getUserIdByToken = (token: string) => {
  * 根据用户 ID 获取用户信息
  * @param adminId
  */
-export const getUserInfoById = (adminId: string) => {
+export const getAdminInfoById = (adminId: string) => {
   return AdminDb.findById(adminId).exec()
 }
 
@@ -103,4 +104,47 @@ export const getUserInfoById = (adminId: string) => {
 export const authentication = (admin: IAdmin, rule: AdminRule) => {
   if (admin.rule === AdminRule.GLOBAL) return true
   return admin.rule === rule
+}
+
+
+/**
+ * 根据 token 获取用户信息
+ * @param token 
+ */
+export const getAdminInfoByToken = async (token: string) => {
+  log.info('getAdminInfoByToken.call', token)
+  try {
+    let tokenInfo = getAdminIdByToken(token)
+    log.info('getAdminInfoByToken.getUserIdByToken', { token, tokenInfo })
+    if (!tokenInfo || !tokenInfo.id) {
+      throw new ServiceError('getAdminInfoByToken.tokenInfo.empty', { tokenInfo, token }, '获取用户信息失败')
+    }
+    const resAdmin: IAdmin = await getAdminInfoById(tokenInfo.id)
+    if (!resAdmin) {
+      throw new ServiceError('getAdminInfoByToken.getAdminInfoById.empty', { tokenInfo, token }, '获取用户信息失败')
+    }
+    log.info('getAdminInfoByToken.getAdminInfoById.res', resAdmin)
+    const admin: SimpleAdmin = {
+      _id: resAdmin._id,
+      nickName: resAdmin.nickName,
+      rule: resAdmin.rule
+    }
+    if (resAdmin.avatar) {
+      admin.avatar = resAdmin.avatar
+    }
+    if (resAdmin.email) {
+      admin.email = resAdmin.email
+    }
+    if (resAdmin.bio) {
+      admin.bio = resAdmin.bio
+    }
+    return admin
+  } catch (error) {
+    if (ServiceError.is(error)) {
+      log.error(`getAdminInfoByToken.${(error as ServiceError).title}`, (error as ServiceError).data)
+    } else {
+      log.error('getAdminInfoByToken.catch', error)
+    }
+    throw error
+  }
 }

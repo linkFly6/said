@@ -13,6 +13,7 @@ const createConfig = function (basePath: string): Configuration {
         },
       },
       access: {
+        // 这里应该自定义输出 cookie，参见这里是 tokens: https://log4js-node.github.io/log4js-node/layouts.html
         type: 'dateFile',
         filename: `${basePath}/access.log`,
         category: 'access',

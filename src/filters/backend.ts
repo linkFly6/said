@@ -3,7 +3,7 @@ import { Request, Response, NextFunction, Express } from 'express'
 import { Filter, Route } from '../middleware/routers/models'
 import { default as AdminDb, AdminModel, IAdmin } from '../models/admin'
 import { default as AdminRecordDb, AdminRecordModel } from '../models/admin-record'
-import { getUserInfoById, getUserIdByToken } from '../services/admin-service'
+import { getAdminInfoById, getAdminIdByToken, getAdminInfoByToken } from '../services/admin-service'
 import { ServiceError } from '../models/server/said-error'
 import { Returns } from '../models/Returns'
 import { SimpleAdmin } from '../types/admin'
@@ -59,17 +59,11 @@ export const admin = signature(
     (req: Request, res: Response, next: NextFunction) => {
       let params = req.method === 'GET'
         ? req.query : req.body
-      // 如果前面有其他 filter 处理过则不再处理
-      // 不能这么做，因为可以在参数伪造 admin，admin 只能在 server 生成
-      // if (params.admin) {
-      //   next()
-      //   return
-      // }
       const token = params.token || req.cookies.token
       const promise = Promise.resolve(token)
       // bodyParser 不会解析 multipart/form-data 的请求，所以在 form-data 下取不到 token
       promise.then((token: string) => {
-        // 还取不到 token，并且是通过 form-data 上传的数据，则通过 multer 取 req.body 的数据
+        // 如果是通过 form-data 上传的数据，则通过 multer 取 req.body 的数据
         if (~req.header('content-type').indexOf('multipart/form-data')) {
           return new Promise(resolve => {
             upload(req, res, (err: any) => {
@@ -86,50 +80,29 @@ export const admin = signature(
         }
         return token
       }).then((token: string | null) => {
+        // 如果前面有中间件处理过，则不再处理
+        // 只所以后置处理是为了让 multipart/form-data 解析上传的数据生效
+        if (res.locals.admin) {
+          params.admin = res.locals.admin
+          next()
+          return
+        }
         if (!token) {
           return res.json(ERRORS.NOTOKEN.toJSON())
         }
-        try {
-          let tokenInfo = getUserIdByToken(token)
-          if (!tokenInfo || !tokenInfo.id) {
-            return
-          }
-          getUserInfoById(tokenInfo.id).then((resAdmin: IAdmin) => {
-            if (!resAdmin) {
-              return res.json(ERRORS.CHECKTOKENFAIL.toJSON())
-            }
-            log.info('admin.getUserInfoByToken', resAdmin)
-            const admin: SimpleAdmin = {
-              _id: resAdmin._id,
-              nickName: resAdmin.nickName,
-              rule: resAdmin.rule
-            }
-            if (resAdmin.avatar) {
-              admin.avatar = resAdmin.avatar
-            }
-            if (resAdmin.email) {
-              admin.email = resAdmin.email
-            }
-            if (resAdmin.bio) {
-              admin.bio = resAdmin.bio
-            }
+        getAdminInfoByToken(token).then(admin => {
+          if (!admin) {
+            // res.redirect('/error', 500)
+            // return
+            res.json(ERRORS.CHECKTOKENFAIL.toJSON())
+          } else {
             // 挂载到 params 下
             params.admin = admin
             next()
-          }).catch(err => {
-            log.error('getUserInfoById.catch', err)
-            return res.json(ERRORS.QUERYUSERFAIL.toJSON())
-          })
-
-        } catch (error) {
-          if (ServiceError.is(error)) {
-            log.error((error as ServiceError).title, (error as ServiceError).data)
-          } else {
-            log.error('catch', error)
           }
-          // next(error)
-          return res.json(ERRORS.CHECKTOKENFAIL.toJSON())
-        }
+        }).catch(error => {
+          res.json(ERRORS.QUERYUSERFAIL.toJSON())
+        })
       })
     },
     'all',

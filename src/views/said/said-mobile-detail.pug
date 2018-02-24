@@ -2,36 +2,36 @@ extends ../partials/layout-mobile.pug
 
 block content
   .banner
-    section.banner-bg(style='background-image:url(/images/bg/team.jpg);background-size:auto 100%;')
+    section.banner-bg(style=`background-image:url(${article.poster.url});background-size:auto 100%;`)
   section.article-content
     //- 播放器
     .music
       //- 歌曲名称
       .info
-        .name.ellipsis Mariana Mariana Mariana Mariana Mariana Mariana Mariana Mariana
-        a.album(href='https://m.sogou.com/web/searchList.jsp?keyword=%E5%BE%88%E4%B9%85%E5%BE%88%E4%B9%85%E8%AF%B4') Childs - Yui
+        .name.ellipsis #{article.song.title}
+        a.album(href=`https://m.sogou.com/web/searchList.jsp?keyword=${encodeURIComponent(article.song.artist + ' ' + article.song.album)}`, target='_blank') #{article.song.artist} - #{article.song.album}
       //- 播放暂停按钮
       .player
         a.play
           i.saidfont.icon-bofang
           //- i.saidfont.icon-tingzhi
     article.context
-      h1.title 萤火虫之墓萤火虫之墓萤火虫之墓萤火虫之墓萤火虫之墓
+      h1.title #{article.title}
       section.html
         //- 文章内容
-        !=content
+        != article.other.html
     .info
       //- 点赞
       .like-box
         a.button.like
           span#like-text 点赞
-          span#link-num 1
+          span#link-num #{article.info.likeCount}
       //- 文章其他信息(首选/评论/发布时间)
       .article-other-info
         time
-          i.saidfont.icon-rili 2014/10/08 00:21:51
+          i.saidfont.icon-rili #{article.info.createTime}
         .browse.left
-          i.saidfont.icon-yonghu 12
+          i.saidfont.icon-yonghu &nbsp;#{article.info.pv}
       .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
         a(href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh', target='_blank')
           img(src='/images/creativecommons-sa.svg')

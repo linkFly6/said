@@ -39,7 +39,7 @@ export interface ISong {
    */
   album: string,
   /**
-   * 时长（ms）
+   * 时长（s）
    */
   duration: number,
   /**

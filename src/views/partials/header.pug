@@ -3,7 +3,7 @@ header#header
     a.logo(title='听说', href='/')
   nav#nav
     ul#nav-menu
-      each o, i in [ { name: '首页', link: '/' }, { name: 'blog', link: '/blog' }, { name: '听说', link: '/said' }, { name: '项目', link: '/project' }, { name: '关于', link: '/about' }]
-        li(class=i==0? 'nav-active': '')
+      each o, i in [ { name: '首页', link: '/' }, { name: 'blog', link: '/blog' }, { name: '听说', link: '/said' }, { name: '关于', link: '/about' }]
+        li(class= (pageIndex ? i == pageIndex : i == 0) ? 'nav-active': '')
           a(href=o.link)= o.name
-    span.line(style='left:0')
+    span.line(style=`left:${61.6 * (pageIndex || 0)}px`)

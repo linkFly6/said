@@ -18,58 +18,63 @@ block content
   section#content
     .said-content
       //- 文章项
-      article.item
-        a.image(style='background-image:url(/images/bg/Reine-Norway.jpg)', href='/said/123.html', title='点击阅读全文')
-        .context
-          h2.title
-            a.ellipsis(href='/said/123.html', title='你们这些回魂尸') 你们这些回魂尸你们这些回魂尸你们这些回魂尸你们这些回魂尸
-          .summary
-            .preview
-              p 周而复始
-              p 你的存在意义重大
-              p 因为你就是悖论
-              p 周而复始
-              p 你的存在意义重大
-              p 因为你就是悖论
-          .footer
-            .music
-              .music-image(title='Breath and Life')
-                .music-ring
-                img(src='//tasaid.com/Source/Said/Musics/Images/20170101195639.jpg')
-              ul.music-info
-                li.ellipsis(title='歌曲') Breath and Life
-                li.ellipsis(title='歌手') Audio Machine
-            .more
-              i.saidfont.icon-yonghu(title='浏览') 12
-              time(title='发布时间') 2017-01-01 20:17
-      article.item
-        a.image(style='background-image:url(/images/bg/Reine-Norway.jpg)', href='/said/123.html', title='点击阅读全文')
-        .context
-          h2.title
-            a.ellipsis(href='/said/123.html', title='你们这些回魂尸') 你们这些回魂尸你们这些回魂尸你们这些回魂尸你们这些回魂尸
-          .summary
-            .preview
-              p 周而复始
-              p 你的存在意义重大
-              p 因为你就是悖论
-              p 周而复始
-              p 你的存在意义重大
-              p 因为你就是悖论
-          .footer
-            .music
-              .music-image(title='Breath and Life')
-                .music-ring
-                img(src='//tasaid.com/Source/Said/Musics/Images/20170101195639.jpg')
-              ul.music-info
-                li.ellipsis(title='歌曲') Breath and Life
-                li.ellipsis(title='艺术家') Audio Machine
-            .more
-              i.saidfont.icon-yonghu(title='浏览') 12
-              time(title='发布时间') 2017-01-01 20:17
+      each article in articles
+        article.item
+          a.image(style=`background-image:url(${article.poster.thumb})`, href=`/said/${article.key}.html`, title='点击阅读全文')
+          .context
+            h2.title
+              a.ellipsis(href=`/said/${article.key}.html`, title=article.title) #{article.title}
+            .summary
+              .preview
+                != article.other.summaryHTML
+            .footer
+              .music
+                .music-image(title=article.song.title)
+                  .music-ring
+                  img(src=article.song.image.thumb)
+                ul.music-info
+                  li.ellipsis(title='歌曲') #{article.song.title}
+                  li.ellipsis(title='艺术家') #{article.song.artist}
+              .more
+                i.saidfont.icon-yonghu(title='浏览') #{article.info.pv}
+                time(title='发布时间') #{article.info.createTime}
       //- 翻页
       .page
-        a.pre(href='/said/2') 上一页
-        a(href='/said/2') 2
-        span 3
-        a(href='/said/4') 4
-        a.next(href='/said/4') 下一页
+        if maxPage > 1
+          //- 显示上一页
+          if page != 1 && maxPage > 1
+            a.pre(href=`/said/page/${page - 1}`) 上一页
+          //- 大于 5 页，显示第一页按钮和省略号
+          if maxPage > 5 && page >= 5
+            a(href='/said/page/1') 1
+            span.break ...
+          //- 当前页码小于 5 条 => 前 5页
+          if maxPage <= 5 || page < 5
+            - for (var i = 1; i <= Math.min(maxPage, 5); i++) {
+              if i === page
+                span #{page}
+              else
+                a(href=`/said/page/${i}`) #{i}
+            - }
+          //- 当前页码大于 5 条，并且当前总页数和页码差大于 5
+          else if maxPage - page >= 5
+            - for (var i = page - 2; i <= page + 2; i++) {
+              if i == page
+                span #{page}
+              else
+                a(href=`/said/page/${i}`) #{i}
+            - }
+          //- 当前页码已经到最后5页
+          else
+            - for (var i = maxPage - 4; i <= maxPage; i++) {
+              if i == page
+                span #{page}
+              else
+                a(href=`/said/page/${i}`) #{i}
+            - }
+          if (maxPage - page) >= 5
+            span.break ...
+            a(href=`/said/page/${maxPage}`) #{maxPage}
+          if page != maxPage && maxPage > 1
+            a.next(href=`/said/page/${page + 1}`) 下一页
+        

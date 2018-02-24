@@ -35,7 +35,7 @@ $layoutWidth = 825px
           color #666
           line-height 1.2
           letter-spacing 0
-          text-align center
+          text-align left
           &:hover
             color #43b4ef
       // 简述
@@ -132,15 +132,18 @@ $layoutWidth = 825px
       &.pre, &.next
         &::before
           transition .2s
-          border .9rem solid transparent;
+          border 1rem solid transparent;
           position absolute
           content ''
           top 0
       &.pre::before
-        left -1.7rem
+        left -1.9rem
         border-right-color #dfdfdf
       &.next::before
-        right -1.7rem
+        right -1.9rem
         border-left-color #dfdfdf
     span
+      &.break
+        background none
+        color #666
       active()
