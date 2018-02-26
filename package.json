@@ -13,7 +13,7 @@
     "build:dev": "npm run build-ts && npm run tslint && npm run copy-static-assets && npm run build-stylus",
     "build": "npm run build-ts:production && npm run tslint && npm run copy-static-assets && npm run build-stylus",
     "serve": "nodemon dist/server.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"Stylus,Views,TypeScript,Node\" -c \"bgMagenta.white.bold,bgCyan.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-stylus\" \"npm run watch-static\" \"npm run watch-ts\" \"npm run serve\"",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"Stylus,Gulp,TypeScript,Node\" -c \"bgMagenta.white.bold,bgCyan.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-stylus\" \"npm run watch-static\" \"npm run watch-ts\" \"npm run serve\"",
     "test": "jest --forceExit",
     "build-ts": "tsc --locale zh-CN",
     "build-ts:production": "tsc --locale zh-CN --sourceMap false",
@@ -121,7 +121,9 @@
     "stylus": "^0.54.5",
     "supertest": "^2.0.1",
     "ts-jest": "^19.0.8",
+    "ts-loader": "^3.5.0",
     "tslint": "^5.0.0",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.1",
+    "webpack-stream": "^4.0.2"
   }
 }
