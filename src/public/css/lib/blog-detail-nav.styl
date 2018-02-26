@@ -1,0 +1,47 @@
+// blog 详情页右侧的菜单目录（动态生成）
+$nav-width = 255px
+.blog-detail-nav
+  position absolute
+  top 0
+  right 76.5px // 3.333
+  width 255px
+  @media only screen and (max-width: 1244px)
+    display none
+  .nav
+    &.fixed
+      position fixed
+      top 1rem
+    .title
+      padding 0.7142rem 0 1rem 2rem
+    .content
+      position relative
+      width $nav-width
+      // 线
+      .line
+        position absolute
+        width 100%
+        height 2rem
+        background #f3f3f3
+        border-left 2px solid #649adf
+        z-index 1
+        top 0
+        left 0
+        transition height linear .3s, top linear .3s
+      // 目录内容
+      .context
+        border-left 2px solid #EEE
+        >ul
+          position relative
+          z-index 2
+        ul
+          margin 0
+          padding-left 2rem
+          li
+            list-style disc
+            line-height 2
+            // 代表有二级目录
+            &.child
+              list-style none
+            a
+              display block
+              color #649adf

@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
   // Place JavaScript code here...
   var CommentInput: any = function (blogId: any, $commentBox: any) {

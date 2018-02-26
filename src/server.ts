@@ -45,7 +45,7 @@ import * as saidController from './controllers/article'
 import * as passportConfig from './config/passport'
 import { isMobileDevice } from './utils/device'
 import { DEVICE } from './models/server/enums'
-import { getAdminIdByToken } from './services/admin-service'
+import { getAdminInfoByToken } from './services/admin-service'
 import { createUser, getUserInfoByToken } from './services/user-service'
 import { IUser, UserRole } from './models/user'
 import { SimpleAdmin } from 'admin'
@@ -125,7 +125,7 @@ app.use(async (req, res, next) => {
   // 没有 token 信息，则表示不是管理员
   if (token) {
     try {
-      const admin = await getAdminIdByToken(token)
+      const admin = await getAdminInfoByToken(token)
       if (admin) {
         res.locals.admin = admin
       }

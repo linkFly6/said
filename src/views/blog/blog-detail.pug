@@ -15,7 +15,7 @@ block content
   //- 正文内容
   section#content
     .said-content
-      section.context.blog
+      section.context.blog#article-context
         h1.title #{blog.title}
         article.article
           section.html
@@ -74,4 +74,30 @@ block content
                 textarea.form-control(placeholder='说出你的想法或问题')
                 .btns
                   a.button(href='javascript:;') 发布评论
+      section.blog-detail-nav
+        nav.nav#blog-nav
+          .title 目录
+          .content
+            .line
+            .context
+              ul
+                li
+                  a(href='#01') Promise应对的问题
+                li
+                  a(href='#02') Promise的解决
+                li
+                  a(href='#03') ECMAScript 6 Promise
+                  ul
+                    li
+                      a(href='#03-01') Promise.prototype.then
+                    li
+                      a(href='#03-02') Promise.constructor
+                li
+                  a(href='#04') 参考和引用
 
+block script
+  script(src='/js/blog-detail.js')
+  script(type='text/template')#tmp-nav-item
+      li
+        a(href='javascript:;', data-top='${top}') ${text}
+        = '${child}'

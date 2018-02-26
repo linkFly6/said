@@ -1,5 +1,10 @@
 import * as marked from 'marked'
 import * as hljs from 'highlight.js'
+/**
+ * UTF-8 转 ASCII
+ * @example hello, code => hello-code
+ */
+const transliteration = require('transliteration')
 // import * as Prismjs from 'prismjs'
 // Prismjs.languages.js = Prismjs.languages.javascript
 // Prismjs.languages.ts = Prismjs.languages.typescript
@@ -19,12 +24,21 @@ const regSelfHref = /^((https?:)?\/\/tasaid.com)|^\/[^\/]/
  */
 export const convertMarkdown2HTML = (context: string) => {
   var renderer = new marked.Renderer()
+  // 已存在的标题缓存，用于处理标题重复
+  let headings: object = {}
+  // 当前标题索引，如果标题重复，则将标题 ID 和这个累加的索引进行拼接，从而生成唯一标题 ID
+  let index = 0
   // 重写 <hx> 标签的渲染
   renderer.heading = function (text: string, level: number) {
     // var escapedText = text.toLowerCase().replace(/[^\w]+/g, '-')
-    const escapedText = text.toLowerCase()
+    let id = transliteration.slugify(text)
+    // 标题存在重复，则添加一直自增的索引，让标题不再重复
+    if (headings[id]) {
+      id = `${id}-${index++}`
+    }
+    headings[id] = true
     // 注入 title 的 hash
-    return `<h${level} id="${escapedText}"><a class="saidfont icon-yinyong hash" aria-hidden="true" href="#${escapedText}" name="${escapedText}"></a><span>${text}</span></h${level}>`
+    return `<h${level} id="${id}"><a class="saidfont icon-yinyong hash" aria-hidden="true" href="#${id}" name="${id}"></a><span>${text}</span></h${level}>`
     // return '<h' + level + '><a name="' +
     //   escapedText +
     //   '" class="anchor" href="#' +

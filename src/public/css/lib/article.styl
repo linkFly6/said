@@ -1,83 +1,85 @@
 
 $layoutWidth = 825px
-.context
-  width $layoutWidth
-  margin 0 auto
-  // 文章标题
-  .title
-    margin 0
-    font-weight 300
-    line-height 1.2
-    padding 0 0 1rem 0
-    margin 0 0 1rem 0
-    font-size 2.1rem
-    border-bottom: 1px dashed #CCC
-    color: #666
-  // 文章内容
-  .article
-    .html
-      html()
-      // padding-bottom 2rem
-    .author
-      // border-top 1px solid #eee
-      padding-top 3rem
-      font-size 1.142rem
-      p
-        margin 0 0 .5rem 0
-      a
-        &:visited
-          color #4078c0
-  // 点赞
-  .more
-    // 点赞
-    .other
-      padding 4rem 0
-      text-align center
-      .like
-        padding 1rem 1.2rem
-        border-radius 6px
-        font-size 1.185rem // 18px
-        span
-          &:first-child
-            position relative
-            padding-right .5rem
-            // border-right 1px solid #fafafa
-            &:after
-              position absolute
-              content '|'
-              right -.5rem
-              display inline
-              color rgba(255,255,255,0.2)
-          &:last-child
-            padding-left 1rem
-  // 协议、浏览量和时间
-  .article-other-info
-      position relative
-      // 阅读协议
-      .cc
-        position relative
-        top 0
-        float left
-        img
-          display block
-      right()
-        position relative
-        top .3rem
-        float right
-      // 浏览量
-      .browse
-        right()
-      // 更新时间
-      time
-        right()
-        margin-left 1rem
+#content
+  .said-content
+    >.context
+      width $layoutWidth
+      margin 0 auto
+      // 文章标题
+      .title
+        margin 0
+        font-weight 300
         line-height 1.2
-        background #999
-        border-radius 1.285rem // 18px
-        color #fff
-        font-size .928rem // 13px
-        padding .2rem .85rem
-      &::after
-        content ''
-        display block
-        clear both
+        padding 0 0 1rem 0
+        margin 0 0 1rem 0
+        font-size 2.1rem
+        border-bottom 1px dashed #CCC
+        color #666
+      // 文章内容
+      .article
+        .html
+          html()
+          // padding-bottom 2rem
+        .author
+          // border-top 1px solid #eee
+          padding-top 3rem
+          font-size 1.142rem
+          p
+            margin 0 0 .5rem 0
+          a
+            &:visited
+              color #4078c0
+      // 点赞
+      .more
+        // 点赞
+        .other
+          padding 4rem 0
+          text-align center
+          .like
+            padding 1rem 1.2rem
+            border-radius 6px
+            font-size 1.185rem // 18px
+            span
+              &:first-child
+                position relative
+                padding-right .5rem
+                // border-right 1px solid #fafafa
+                &:after
+                  position absolute
+                  content '|'
+                  right -.5rem
+                  display inline
+                  color rgba(255,255,255,0.2)
+              &:last-child
+                padding-left 1rem
+      // 协议、浏览量和时间
+      .article-other-info
+          position relative
+          // 阅读协议
+          .cc
+            position relative
+            top 0
+            float left
+            img
+              display block
+          right()
+            position relative
+            top .3rem
+            float right
+          // 浏览量
+          .browse
+            right()
+          // 更新时间
+          time
+            right()
+            margin-left 1rem
+            line-height 1.2
+            background #999
+            border-radius 1.285rem // 18px
+            color #fff
+            font-size .928rem // 13px
+            padding .2rem .85rem
+          &::after
+            content ''
+            display block
+            clear both

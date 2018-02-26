@@ -1,97 +1,112 @@
 @require './lib/article-format'
 @require './lib/article'
+@require './lib/blog-detail-nav.styl'
 
 .blog-banner
   .banner-item
     background-position center!important
 // blog 相关
-.context
-  &.blog
-    // 版权和时间等
-    .article-other-info
-      $line = #eee
-      border-bottom 1px solid $line
-      padding .3rem 0
-      .comments-sum
-        position absolute
-        left 10rem
-        bottom -1px
-        padding .5rem 1.5rem
-        background #fff
-        margin-left 2rem
-        // padding 1rem 1rem 0 1rem
-        font-size 1.1428rem // 16px
-        border 1px solid $line
-        border-radius: 4px 4px 0 0
-        border-bottom 0
-      // 评论列表
-    .comments-list
-        .item
-          padding 1rem
-          .head
-            position relative
-            .hash
-              position absolute
-              color #666
-              font-weight 500
-              left -1rem
-              top 0
-              opacity 0
-          &:hover
-            .head .hash
-              opacity 1
-          .body
-            text-align justify
-          .footer
-            color #999
-            &::after
-              content ''
-              display block
-              clear both
-            span:first-child
-              float left
-            time, span.reply, span.delete
-              float right
-            span.reply
-              a
-                color #666
-                &:hover
-                  color #444
-                i::before
-                  margin-right .3rem
-            span.delete
-              margin-right 1rem
-              a
-                color #f5222d
-                &:hover
-                  color #e3111c
-        // 评论框
-        .form
-          .form-control
-            padding .2rem .8rem
-            color #555
-            border-radius 4px
-            transition border-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s
-            box-shadow inset 0 1px 1px rgba(0,0,0,0.075)
-            border 1px solid #CCC
-            &:focus
-              border 1px solid #3b99fc
-              box-shadow 0 0 3px 0px #3b99fc
-          textarea
-            width 100%
-            min-height 6.428rem // 90px
-            max-height 9.428rem // 132px
-          .inputs
-            padding-bottom 1rem
-            display flex
-            input
-              flex 1
-              margin-right 1rem
-              &:last-child
-                margin-right 0
-          .btns
-            text-align right
-        .comment-bar
-          border-top 1px solid #eee
-          padding 1rem
+#content
+  .said-content
+    position relative
+    // 配合 ./lib/blog-detail-nav.styl 里面的目录样式使用
+    >.context
+      // 不同的屏幕宽度做不同的 margin 处理，让右侧菜单不会覆盖到正文内容上
+      @media only screen and (max-width: 1514px)
+        margin 0 15%
+      @media only screen and (max-width: 1384px)
+        margin 0 10%
+      @media only screen and (max-width: 1308px)
+        margin 0 5%
+      // 当到达 1244px 的时候，右侧的菜单会隐藏，参见 ./lib/blog-detail-nav.styl
+      @media only screen and (max-width: 1244px)
+        margin 0 auto
+      &.blog
+        // 版权和时间等
+        .article-other-info
+          $line = #eee
+          border-bottom 1px solid $line
+          padding .3rem 0
+          .comments-sum
+            position absolute
+            left 10rem
+            bottom -1px
+            padding .5rem 1.5rem
+            background #fff
+            margin-left 2rem
+            // padding 1rem 1rem 0 1rem
+            font-size 1.1428rem // 16px
+            border 1px solid $line
+            border-radius: 4px 4px 0 0
+            border-bottom 0
+          // 评论列表
+        .comments-list
+            .item
+              padding 1rem
+              .head
+                position relative
+                .hash
+                  position absolute
+                  color #666
+                  font-weight 500
+                  left -1rem
+                  top 0
+                  opacity 0
+              &:hover
+                .head .hash
+                  opacity 1
+              .body
+                text-align justify
+              .footer
+                color #999
+                &::after
+                  content ''
+                  display block
+                  clear both
+                span:first-child
+                  float left
+                time, span.reply, span.delete
+                  float right
+                span.reply
+                  a
+                    color #666
+                    &:hover
+                      color #444
+                    i::before
+                      margin-right .3rem
+                span.delete
+                  margin-right 1rem
+                  a
+                    color #f5222d
+                    &:hover
+                      color #e3111c
+            // 评论框
+            .form
+              .form-control
+                padding .2rem .8rem
+                color #555
+                border-radius 4px
+                transition border-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s
+                box-shadow inset 0 1px 1px rgba(0,0,0,0.075)
+                border 1px solid #CCC
+                &:focus
+                  border 1px solid #3b99fc
+                  box-shadow 0 0 3px 0px #3b99fc
+              textarea
+                width 100%
+                min-height 6.428rem // 90px
+                max-height 9.428rem // 132px
+              .inputs
+                padding-bottom 1rem
+                display flex
+                input
+                  flex 1
+                  margin-right 1rem
+                  &:last-child
+                    margin-right 0
+              .btns
+                text-align right
+            .comment-bar
+              border-top 1px solid #eee
+              padding 1rem
             
