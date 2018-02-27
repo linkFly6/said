@@ -1,9 +1,18 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "esnext",
     "target": "es5",
+    "sourceMap": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "dom",
+      "es2015",
+      "es2015.promise",
+      "es2017",
+    ]
   },
   "include": [
     "."
-  ]
+  ],
 }

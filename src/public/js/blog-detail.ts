@@ -1,4 +1,7 @@
-import { format } from './lib/utils'
+import { format, throttle } from './lib/utils'
+import { view } from './lib/image-view'
+// ts 按需加载会报错（因为 @types 没有声明命名空间），所以只能通过 require 来实现按需加载了
+const once = require('lodash/once')
 
 /**
  * blog 详情页 js
@@ -10,10 +13,12 @@ $(() => {
 
   // 文章目录
   const $navList = $nav.find('.context')
-  // 文章正文容器
+  // 文章内容容器
   const $context = $('#article-context')
+  // 文章正文容器
+  const $HTML = $context.find('.html')
   // 目录从 h2/h3 取，忽略其他标签
-  const $titles = $context.find('.html').find('h2, h3')
+  const $titles = $HTML.find('h2, h3')
   // 参见 blog-detail.pug => <li><a data-top='${top}'>${text}</a>${child}</li>
   const templateNavItem = $('#tmp-nav-item').html()
 
@@ -27,6 +32,7 @@ $(() => {
     const $title = $(element)
     // title距离顶部的距离
     const top = $title.offset().top - $title.height()
+
     // title 文本
     const text = $title.children().last().text()
 
@@ -131,8 +137,11 @@ $(() => {
   }
 
   let titlesLastIndex = titles.length - 1
-  // @TODO 这里要进行函数节流 throttle https://github.com/linkFly6/said/blob/master/Said/Content/Widget/so/so.js#L710
-  const titleScroll = (scrollValue: number) => {
+
+  /**
+   * 根据滚动值处理导航如何显示
+   */
+  const titleScroll = throttle<(v: number) => void>((scrollValue: number) => {
     let i = titlesLastIndex
     for (; i >= 0; i--) {
       const title = titles[i]
@@ -160,31 +169,73 @@ $(() => {
         scrollNavLine(-1)
       }
     }
-  }
-  // 正文距离页面顶部的高度
-  const mainTop = $context.offset().top
-  $(window).on('scroll', function () {
-    if (window.scrollY > mainTop) {
-        $nav.addClass('fixed')
-    } else
-        $nav.removeClass('fixed')
-    titleScroll(window.scrollY)
-}).trigger('scroll')
+  }, 200)
 
+  // 针对所有的图片
+  let imgs = $HTML.find('img')
+
+  // 加载图片
+  let promises = Array.prototype.map.call(imgs, (img: HTMLImageElement) => {
+    return new Promise(resolve => {
+      let onloaded = false
+      let done = once(() => {
+        resolve()
+        onloaded = true
+      })
+      if (img.complete) {
+        done()
+      }
+      img.addEventListener('load', done)
+      img.addEventListener('error', done)
+      img.addEventListener('abort', done)
+      img.addEventListener('click', () => {
+        if (!onloaded) return
+        // 样式在 lib/article.styl 中
+        view(img, 'app-image-view')
+      })
+    })
+  }) as Promise<any>[]
+
+  // 图片加载完成后在绑定计算滚动条
+  Promise.all(promises)
+    .then(() => {
+      // 正文距离页面顶部的高度
+      const mainTop = $context.offset().top
+      // 文章正文底部
+      const maxScroll = $HTML.offset().top + $HTML.height() - $nav.height()
+      const navOffsetTop = $nav.offset().top
+      // 导航的父容器
+      const $navParentBox = $nav.parent()
+      $(window).on('scroll', function () {
+        if (window.scrollY >= maxScroll) {
+          // 滚动条到文章底部了之后，将右侧菜单固定住
+          $nav.removeClass('fixed')
+          $navParentBox.css('top', maxScroll - navOffsetTop)
+        } else if (window.scrollY > mainTop) {
+          $nav.addClass('fixed')
+          $navParentBox.css('top', 0)
+        } else {
+          $nav.removeClass('fixed')
+          $navParentBox.css('top', 0)
+        }
+        titleScroll(window.scrollY)
+      }).trigger('scroll')
+    })
 })
 
 // 目录数据对象
-type Title = { 
+type Title = {
   // 文章二级标题距离页面顶部的距离
-  top: number, 
+  top: number,
   // 文章二级标题
-  text: string, 
+  text: string,
   // 文章二级标题的目录高度
   height: number,
   // 文章二级标题的目录距离目录容器顶部的距离 
   navTop: number,
   // 文章三级标题
-  child: Array<{ top: number, text: string, height: number, navTop: number }> }
+  child: Array<{ top: number, text: string, height: number, navTop: number }>
+}
 
 // 目录 HTML 模板 format 使用的格式
 type TemplateNavItem = { top: number, text: string, child: string }
