@@ -191,7 +191,9 @@ $(() => {
       img.addEventListener('click', () => {
         if (!onloaded) return
         // 样式在 lib/article.styl 中
-        view(img, 'app-image-view')
+        view(img, {
+          className: 'app-image-view',
+        })
       })
     })
   }) as Promise<any>[]
