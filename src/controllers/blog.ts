@@ -2,11 +2,25 @@ import { Request, Response } from 'express'
 import { DEVICE } from '../models/server/enums'
 import * as moment from 'moment'
 import { Log } from '../utils/log'
-import { getBlogByKey, updateBlogPV, queryAllBlog, queryBlogsByByCategoryName } from '../services/blog-service'
+import { getBlogByKey, updateBlogPV, queryAllBlog, queryBlogsByByCategoryName, updateBlogLike } from '../services/blog-service'
 import { IBlog, BlogModel } from '../models/blog'
 import { date2Local, date2day } from '../utils/format'
 import { checkCategoryName, queryCategoryAll } from '../services/category-service'
 import { CategoryModel } from '../models/category'
+import { Returns } from '../models/Returns'
+
+const ERRORS = {
+  SERVER: new Returns(null, {
+    code: 1,
+    msg: 'server error',
+    data: null,
+  }),
+  BLOGNOTFOUND: new Returns(null, {
+    code: 2,
+    msg: 'invalid',
+    data: null,
+  }),
+}
 
 const log = new Log('router/blog')
 
@@ -22,7 +36,7 @@ export const index = async (req: Request, res: Response) => {
   let categoryName = ''
   // 是否展开分类列表
   let isOpenCategory = false
-  
+
   // 有分类查询条件，并且分类名称符合规范，并且不是移动端访问
   if (req.params.category && checkCategoryName(req.params.category) && res.locals.device !== DEVICE.MOBILE) {
     categoryName = req.params.category.trim()
@@ -86,7 +100,7 @@ export const detail = async (req: Request, res: Response) => {
     return
   }
   const blogModel = await getBlogByKey(req.params.key)
-  await updateBlogPV(req.params.key)
+  await updateBlogPV(blogModel._id)
   const blog = blogModel.toJSON() as IBlog
   blog.info.createTime = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm') as any
   blog.info.pv++
@@ -104,3 +118,34 @@ export const detail = async (req: Request, res: Response) => {
   }
 }
 
+
+/**
+ * 匹配 mongoDB 的 ID
+ */
+const regMongodbId = /^[0-9a-zA-Z]{10,30}$/
+
+/**
+ * POST /blog/like/ blogId=string
+ * 用户 like 了文章
+ * @param req 
+ * @param res 
+ */
+export const userLike = async (req: Request, res: Response) => {
+  const blogId = req.body.blogId
+  if (!blogId || !regMongodbId.test(blogId)) {
+    return res.json(ERRORS.BLOGNOTFOUND.toJSON())
+  }
+  try {
+    let likeCounts = await updateBlogLike(blogId, res.locals.user)
+    let returns = new Returns(null, {
+      code: 0,
+      msg: '',
+      // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
+      data: likeCounts && (likeCounts as any).nModified,
+    })
+    return res.json(returns.toJSON())
+  } catch (error) {
+    log.error('userLike.catch', error)
+    return res.json(ERRORS.SERVER.toJSON())
+  }
+}

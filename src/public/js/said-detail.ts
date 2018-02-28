@@ -1,5 +1,6 @@
 import { Player } from './lib/player'
 import { parseTime } from './lib/format'
+import { initUserLikeEvent } from './lib/user-like'
 
 $(() => {
   // 播放器容器 DOM
@@ -16,7 +17,7 @@ $(() => {
   // 歌曲 src
   const musicSrc = $player.data('src')
 
-  const player = new Player({ autoplay: false, loop: false })
+  const player = new Player({ autoplay: true, loop: true })
 
   player.onTimer((progress, currentTime) => {
     $playerVolume.css('width', progress + '%')
@@ -35,6 +36,7 @@ $(() => {
 
   let isPlay = true
   $button.on('click', () => {
+    // @TODO umeng 统计
     if (isPlay) {
       player.stop()
       $buttonIcon.removeClass('icon-stop_icon').addClass('icon-play_icon')
@@ -43,4 +45,13 @@ $(() => {
     }
     isPlay = !isPlay
   })
+
+  // 用户 like
+  initUserLikeEvent(
+    '/said/like',
+    { articleId: (window as any).articleId },
+    (err, data) => {
+      // @TODO umeng 统计
+      console.log(err, data)
+    })
 })

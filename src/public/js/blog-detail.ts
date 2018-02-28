@@ -1,5 +1,6 @@
 import { format, throttle } from './lib/utils'
 import { view } from './lib/image-view'
+import { initUserLikeEvent } from './lib/user-like'
 // ts 按需加载会报错（因为 @types 没有声明命名空间），所以只能通过 require 来实现按需加载了
 const once = require('lodash/once')
 
@@ -222,6 +223,17 @@ $(() => {
         }
         titleScroll(window.scrollY)
       }).trigger('scroll')
+    })
+
+
+
+  // 用户 like
+  initUserLikeEvent(
+    '/blog/like',
+    { blogId: (window as any).blogId },
+    (err, data) => {
+      // @TODO umeng 统计
+      console.log(err, data)
     })
 })
 

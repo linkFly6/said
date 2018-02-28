@@ -315,23 +315,23 @@ export const getArticleByKey = (key: string) => {
 
 /**
  * 累加文章的浏览量
- * @param key 
+ * @param id
  */
-export const updateArticlePV = (key: string) => {
-  return AriticleDb.findOne({ key }).update({
+export const updateArticlePV = (id: string) => {
+  return AriticleDb.findById(id).update({
     '$inc': { 'info.pv': 1 }
-  })
+  }).exec()
 }
 
 /**
  * 累加 Like 了文章
- * @param key 
+ * @param id 
  */
-export const updateArticleLike = (key: string, user: IUser) => {
-  log.info('updateArticleLike.call', { key, user })
-  return AriticleDb.findOne({ key }).update({
+export const updateArticleLike = (id: string, user: IUser) => {
+  log.info('updateArticleLike.call', { id, user })
+  return AriticleDb.findById(id).update({
     '$inc': { 'info.likeCount': 1 }
-  })
+  }).exec()
 }
 
 /** 

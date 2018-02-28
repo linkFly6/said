@@ -34,9 +34,9 @@ block content
             //- .info
             //-   time 最后一次更新于 2014/10/08 00:21:51
             .other
-              a.button.like.disabled
+              a#user-like.button.like
                 span#like-text 点赞
-                span#link-num #{blog.info.likeCount}
+                span#link-num(data-num=`${blog.info.likeCount}`) #{blog.info.likeCount}
         //- 页面其他信息(首选/评论/发布时间)
         .article-other-info
           .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
@@ -80,22 +80,24 @@ block content
           .content
             .line
             .context
-              ul
-                li
-                  a(href='#01') Promise应对的问题
-                li
-                  a(href='#02') Promise的解决
-                li
-                  a(href='#03') ECMAScript 6 Promise
-                  ul
-                    li
-                      a(href='#03-01') Promise.prototype.then
-                    li
-                      a(href='#03-02') Promise.constructor
-                li
-                  a(href='#04') 参考和引用
+              //- ul
+              //-   li
+              //-     a(href='#01') Promise应对的问题
+              //-   li
+              //-     a(href='#02') Promise的解决
+              //-   li
+              //-     a(href='#03') ECMAScript 6 Promise
+              //-     ul
+              //-       li
+              //-         a(href='#03-01') Promise.prototype.then
+              //-       li
+              //-         a(href='#03-02') Promise.constructor
+              //-   li
+              //-     a(href='#04') 参考和引用
 
 block script
+  script.
+    window.blogId = '#{blog._id}'
   script(src='/js/blog-detail.js')
   script(type='text/template')#tmp-nav-item
       li

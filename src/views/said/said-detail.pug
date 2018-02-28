@@ -55,8 +55,10 @@ block content
           //- .info
           //-   time 最后一次更新于 2014/10/08 00:21:51
           .other
-            a.button.like
+            a#user-like.button.like
               span#like-text 点赞
-              span#link-num #{article.info.likeCount}
+              span#link-num(data-num=`${article.info.likeCount}`) #{article.info.likeCount}
 block script
+  script.
+    window.articleId = '#{article._id}'
   script(src='/js/said-detail.js')

@@ -286,23 +286,24 @@ export const getBlogByKey = (key: string) => {
 
 /**
  * 累加文章的浏览量
- * @param key 
+ * @param id
  */
-export const updateBlogPV = (key: string) => {
-  return BlogDb.findOne({ key }).update({
+export const updateBlogPV = (id: string) => {
+  return BlogDb.findById(id).update({
     '$inc': { 'info.pv': 1 }
-  })
+  }).exec()
 }
 
 /**
  * 用户 Like 了日志
  * @param key 
  */
-export const updateBlogLike = (key: string, user: IUser) => {
-  log.info('updateBlogLike.call', { key, user })
-  return BlogDb.findOne({ key }).update({
-    '$inc': { 'info.pv': 1 }
-  })
+export const updateBlogLike = (id: string, user: IUser) => {
+  log.info('updateBlogLike.call', { id, user })
+  // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
+  return BlogDb.findById(id).update({
+    '$inc': { 'info.likeCount': 1 }
+  }).exec()
 }
 
 /**

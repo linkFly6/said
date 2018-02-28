@@ -193,12 +193,18 @@ app.use((req, res, next) => {
  * Primary app routes.
  */
 app.get('/', homeController.index)
+
 app.get('/blog/:key.html', blogController.detail)
 app.get('/blog', blogController.index)
 app.get('/blog/cate/:category', blogController.index)
+
+app.post('/blog/like', blogController.userLike)
+
 app.get('/said/:key.html', saidController.detail)
 app.get('/said', saidController.index)
 app.get('/said/page/:page?', saidController.index)
+
+app.post('/said/like', saidController.userLike)
 
 // app.get('/login', userController.getLogin)
 // app.post('/login', userController.postLogin)
