@@ -18,17 +18,17 @@ block content
     .blog-head
       .cate-head
         h3.title #{currentCategory ? currentCategory.name : '全部文章'} - 共 #{blogs.length} 篇
-          a.cate-btn
+          a#cate-btn.cate-btn(class=isOpenCategory ? 'open' : '' )
             span 分类
-            label.open
-      .categorys(data-open=!!currentCategory)
+            label
+      #categorys.categorys(data-open=`${!!isOpenCategory}`)
         .box
           ul.content
-            each val in categorys
+            each category in categorys
               li.item
-                a 
+                a(href=`/blog/cate/${category.name}`)
                   img.icon(src='//tasaid.com/Source/Sys/Images/Icons/default.png')
-                  = '全部'
+                  = category.name
     .said-content
       section.blog-content
         each blog, index in blogs
@@ -47,5 +47,5 @@ block content
               .footer
                 i.saidfont.icon-category #{blog.category.name}
                 i.saidfont.icon-yonghu #{blog.info.pv}
-
-    
+block script
+  script(src='/js/blog-index.js')

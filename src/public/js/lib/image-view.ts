@@ -9,12 +9,10 @@ let $doc = $(document.documentElement)
  * @param img - 原图
  * @param {Object} options - 配置项
  * @param {string} options.className - 查看大图的容器 class
- * @param {boolean} [options.disableClick=false] - 是否禁用点击大图弹出新窗口显示原图的功能
  */
 export const view = (img: HTMLImageElement, options: {
   className?: string,
-  disableClick?: boolean
-} = { disableClick: false }) => {
+} = {}) => {
   // 先把滚动条 lock 住，不让滚动条锁定
   $doc.addClass('lock')
   let newImg = img.cloneNode() as HTMLImageElement
@@ -35,7 +33,6 @@ export const view = (img: HTMLImageElement, options: {
 
   // 查看大图的容器
   let $content = $(
-    // 如果设置了 disableClick，就把外层 a 标签的功能禁掉
     `<div class="${options.className || ''}"><div class="bg" style="display:none"></div></div>`
   )
 

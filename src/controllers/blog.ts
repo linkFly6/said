@@ -13,14 +13,18 @@ const log = new Log('router/blog')
 
 
 /**
- * GET /
+ * GET /blog
+ * GET /blog/cate/:category
  * Home page.
  */
 export const index = async (req: Request, res: Response) => {
   let blogModels: BlogModel[]
   let categoryName = ''
-  // 分类查询
-  if (req.params.category && checkCategoryName(req.params.category)) {
+  // 是否展开分类列表
+  let isOpenCategory = false
+  
+  // 有分类查询条件，并且分类名称符合规范，并且不是移动端访问
+  if (req.params.category && checkCategoryName(req.params.category) && res.locals.device !== DEVICE.MOBILE) {
     categoryName = req.params.category.trim()
     blogModels = await queryBlogsByByCategoryName(categoryName)
   } else {
@@ -45,6 +49,7 @@ export const index = async (req: Request, res: Response) => {
     let currentCategory: CategoryModel
     // 如果有分类查询，则标记出分类
     if (categoryName) {
+      isOpenCategory = true
       currentCategory = categorys.find(category => {
         if (category.name === categoryName) {
           return true
@@ -52,11 +57,16 @@ export const index = async (req: Request, res: Response) => {
         return false
       })
     }
+    // 没有查到文章列表，则默认页展开分类列表
+    if (!blogs.length) {
+      isOpenCategory = true
+    }
     res.render('blog/blog-index', {
       title: 'blog - 每一行代码都恰到好处',
       pageIndex: 1,
       blogs,
       categorys,
+      isOpenCategory,
       currentCategory,
     })
   }

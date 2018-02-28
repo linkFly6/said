@@ -14,15 +14,25 @@ gulp.task('copy-images', function () {
   gulp.src('./src/public/images/**').pipe(gulp.dest('./dist/public/images/'))
 })
 
+var createWebpackEntry = () => {
+  // var pre = ['./src/public/js/main.ts']
+  return {
+    // 'blog-detail': pre.concat('./src/public/js/blog-detail.ts'),
+    'blog-detail': ['./src/public/js/blog-detail.ts'],
+    'main': ['./src/public/js/main.ts'],
+    'blog-index': ['./src/public/js/blog-index.ts'],
+    'said-detail': ['./src/public/js/said-detail.ts'],
+  }
+}
+
+
 // 编译客户端 js
 gulp.task('compile-client-ts', function () {
   return gulp.src('./src/public/js/*.ts')
     .pipe(webpack({
+      watch: false,
       // devtool: '#cheap-module-eval-source-map',
-      entry: {
-        'blog-detail': ['./src/public/js/main.ts', './src/public/js/blog-detail.ts'],
-        // 'main.ts': './src/public/js/main.ts'
-      },
+      entry: createWebpackEntry(),
       output: {
         path: __dirname + '/dist/public/js',
         // publicPath

@@ -6,7 +6,6 @@ import { updateBlogsCategory } from './blog-service'
 
 const log = new Log('service/category')
 
-
 /**
  * 匹配分类名称合法性，匹配字母、下划线、数字和.号
  */

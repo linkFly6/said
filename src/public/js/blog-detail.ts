@@ -31,7 +31,7 @@ $(() => {
   $titles.each((i, element) => {
     const $title = $(element)
     // title距离顶部的距离
-    const top = $title.offset().top - $title.height()
+    const top = Math.floor($title.offset().top - $title.height())
 
     // title 文本
     const text = $title.children().last().text()
@@ -169,7 +169,7 @@ $(() => {
         scrollNavLine(-1)
       }
     }
-  }, 200)
+  }, 300)
 
   // 针对所有的图片
   let imgs = $HTML.find('img')

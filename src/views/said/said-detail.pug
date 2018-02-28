@@ -18,16 +18,16 @@ block content
             a.link(href=`//www.sogou.com/web?query=${encodeURIComponent(article.song.artist)}`, target='_blank') #{article.song.artist}
           li
             a.link(href=`//www.sogou.com/web?query=${encodeURIComponent(article.song.album)}`, target='_blank') #{article.song.album}
-        .music-player
-          .palyer-button(title='点击播放')
-            //- i.saidfont.icon-play_icon
-            i.saidfont.icon-stop_icon
+        .music-player#player(data-src=`${article.song.url}`)
+          .palyer-button
+            i.saidfont.icon-play_icon
+            //- i.saidfont.icon-stop_icon
           .player-progress
-            .player-volume(style='width:10%')
+            .player-volume(style='width:0%')
           .time 
-            span 00:00
+            span.cur-time 00:00:00
             = ' / '
-            span #{article.song.duration}
+            span.sum-time #{article.song.duration}
       section.context.said
         h1.title #{article.title}
         article.article
@@ -58,4 +58,5 @@ block content
             a.button.like
               span#like-text 点赞
               span#link-num #{article.info.likeCount}
-
+block script
+  script(src='/js/said-detail.js')
