@@ -19,7 +19,7 @@ $(() => {
 
   const player = new Player({ autoplay: true, loop: true })
 
-  player.onTimer((progress, currentTime) => {
+  player.onTimeupdate((progress, currentTime) => {
     $playerVolume.css('width', progress + '%')
     $curTime.text(parseTime(currentTime))
   })

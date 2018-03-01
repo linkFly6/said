@@ -27,7 +27,7 @@ block content
             each category in categorys
               li.item
                 a(href=`/blog/cate/${category.name}`)
-                  img.icon(src='//tasaid.com/Source/Sys/Images/Icons/default.png')
+                  img.icon(src=category.icon)
                   = category.name
     .said-content
       section.blog-content

@@ -88,7 +88,39 @@ export class Player {
    * 监听播放中事件，每 1s 执行一次
    * @param listener 事件函数
    */
-  onTimer(listener: (
+  // onTimer(listener: (
+  //   /**
+  //    * 进度百分比
+  //    */
+  //   progress: number,
+  //   /**
+  //    * 当前播放时间(s)
+  //    */
+  //   currentTime: number,
+  //   /**
+  //    * 总时长(s)
+  //    */
+  //   duration: number) => any) {
+  //   /**
+  //    * timeupdate 事件不是 1s 执行一次，而是在任务队列有空隙的时候执行，1s 内可能执行多次，所以并不靠谱
+  //    * https://stackoverflow.com/questions/12325787/setting-the-granularity-of-the-html5-audio-event-timeupdate
+  //    * 这里采用的方案是通过函数节流从而实现 1s 执行一次，实现仍然不完美
+  //    */
+  //   this.on('timeupdate', throttle(e => {
+  //     const progress = this.$elem.duration ?
+  //       // 因为如果是懒加载资源的话， play 之后才会开始播放音乐
+  //       this.$elem.currentTime / this.$elem.duration * 100 : 0
+  //     listener.call(this, progress, this.$elem.currentTime, this.$elem.duration || 0)
+  //   }, 1000))
+  //   return this
+  // }
+
+  /**
+   * 监听播放中事件，会在 v8 任务队列允许的情况下尽可能快的执行
+   * 也就是 1s 可能会执行多次
+   * @param listener 事件函数
+   */
+  onTimeupdate(listener: (
     /**
      * 进度百分比
      */
@@ -101,18 +133,13 @@ export class Player {
      * 总时长(s)
      */
     duration: number) => any) {
-    /**
-     * timeupdate 事件不是 1s 执行一次，而是在任务队列有空隙的时候执行，1s 内可能执行多次，所以并不靠谱
-     * https://stackoverflow.com/questions/12325787/setting-the-granularity-of-the-html5-audio-event-timeupdate
-     * 这里采用的方案是通过函数节流从而实现 1s 执行一次
-     */
+    // 为了性能做个 200ms 的节流
     this.on('timeupdate', throttle(e => {
       const progress = this.$elem.duration ?
         // 因为如果是懒加载资源的话， play 之后才会开始播放音乐
         this.$elem.currentTime / this.$elem.duration * 100 : 0
       listener.call(this, progress, this.$elem.currentTime, this.$elem.duration || 0)
-    }, 1000))
-    return this
+    }, 200))
   }
 
   /**

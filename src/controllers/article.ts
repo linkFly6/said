@@ -8,6 +8,8 @@ import * as moment from 'moment'
 import { song2outputSong } from '../services/song-service'
 import { parseTime, date2Local } from '../utils/format'
 import { Returns } from '../models/Returns'
+import { userLiked, createUserLike } from '../services/user-like-service'
+import { LikeType } from '../models/user-like'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -95,21 +97,45 @@ export const detail = async (req: Request, res: Response) => {
     res.redirect('/error', 404)
     return
   }
-  const articleModel = await getArticleByKey(req.params.key)
-  await updateArticlePV(articleModel._id)
-  const article = convertArticle2View(articleModel.toJSON() as IArticle)
-  article.info.pv++
-  if (res.locals.device === DEVICE.MOBILE) {
-    res.render('said/said-mobile-detail', {
-      title: '听说',
-      article,
-    })
-  } else {
-    res.render('said/said-detail', {
-      title: '听说',
-      pageIndex: 2,
-      article,
-    })
+
+  try {
+    const articleModel = await getArticleByKey(req.params.key)
+
+    if (!articleModel) {
+      res.redirect('/error', 404)
+      return
+    }
+
+    // 查询用户是否 like 了这篇文章
+    const userLike = await userLiked(res.locals.user._id, articleModel._id, LikeType.ARTICLE)
+    let likeIt = false
+    if (userLike > 0) {
+      likeIt = true
+    }
+
+    // 累加文章 pv
+    await updateArticlePV(articleModel._id)
+
+    const article = convertArticle2View(articleModel.toJSON() as IArticle)
+    article.info.pv++
+    
+    if (res.locals.device === DEVICE.MOBILE) {
+      res.render('said/said-mobile-detail', {
+        title: '听说',
+        likeIt,
+        article,
+      })
+    } else {
+      res.render('said/said-detail', {
+        title: '听说',
+        pageIndex: 2,
+        likeIt,
+        article,
+      })
+    }
+  } catch (error) {
+    log.error('detail.catch', error)
+    res.redirect('/error', 502)
   }
 }
 
@@ -131,6 +157,17 @@ export const userLike = async (req: Request, res: Response) => {
   }
   try {
     let likeCounts = await updateArticleLike(articleId, res.locals.user)
+
+    // 将用户 like 记录添加到数据库
+    if (likeCounts && (likeCounts as any).nModified) {
+      const userlike = await createUserLike({
+        userId: res.locals.user._id,
+        targetId: articleId,
+        type: LikeType.ARTICLE,
+      })
+      log.info('userLike.createUserLike.res', userlike)
+    }
+
     let returns = new Returns(null, {
       code: 0,
       msg: '',

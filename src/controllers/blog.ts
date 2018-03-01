@@ -8,6 +8,8 @@ import { date2Local, date2day } from '../utils/format'
 import { checkCategoryName, queryCategoryAll } from '../services/category-service'
 import { CategoryModel } from '../models/category'
 import { Returns } from '../models/Returns'
+import { createUserLike, userLiked } from '../services/user-like-service'
+import { LikeType } from '../models/user-like'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -99,22 +101,43 @@ export const detail = async (req: Request, res: Response) => {
     res.redirect('/error', 404)
     return
   }
-  const blogModel = await getBlogByKey(req.params.key)
-  await updateBlogPV(blogModel._id)
-  const blog = blogModel.toJSON() as IBlog
-  blog.info.createTime = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm') as any
-  blog.info.pv++
-  if (res.locals.device === DEVICE.MOBILE) {
-    res.render('blog/blog-mobile-detail', {
-      title: 'blog - 每一行代码都恰到好处',
-      blog,
-    })
-  } else {
-    res.render('blog/blog-detail', {
-      title: 'blog - 每一行代码都恰到好处',
-      pageIndex: 1,
-      blog,
-    })
+  try {
+    const blogModel = await getBlogByKey(req.params.key)
+    if (!blogModel) {
+      res.redirect('/error', 404)
+      return
+    }
+    // 查询用户是否 like 了这篇文章
+    const userLike = await userLiked(res.locals.user._id, blogModel._id, LikeType.BLOG)
+    let likeIt = false
+    if (userLike > 0) {
+      likeIt = true
+    }
+
+    // 累加 blog pv
+    await updateBlogPV(blogModel._id)
+
+    const blog = blogModel.toJSON() as IBlog
+    blog.info.createTime = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm') as any
+    blog.info.pv++
+    
+    if (res.locals.device === DEVICE.MOBILE) {
+      res.render('blog/blog-mobile-detail', {
+        title: 'blog - 每一行代码都恰到好处',
+        likeIt,
+        blog,
+      })
+    } else {
+      res.render('blog/blog-detail', {
+        title: 'blog - 每一行代码都恰到好处',
+        pageIndex: 1,
+        likeIt,
+        blog,
+      })
+    }
+  } catch (error) {
+    log.error('detail.catch', error)
+    res.redirect('/error', 502)
   }
 }
 
@@ -131,12 +154,22 @@ const regMongodbId = /^[0-9a-zA-Z]{10,30}$/
  * @param res 
  */
 export const userLike = async (req: Request, res: Response) => {
+  log.info('userLike.call', Object.assign(req.query, req.body))
   const blogId = req.body.blogId
   if (!blogId || !regMongodbId.test(blogId)) {
     return res.json(ERRORS.BLOGNOTFOUND.toJSON())
   }
   try {
     let likeCounts = await updateBlogLike(blogId, res.locals.user)
+    if (likeCounts && (likeCounts as any).nModified) {
+      const userlike = await createUserLike({
+        userId: res.locals.user._id,
+        targetId: blogId,
+        type: LikeType.BLOG,
+      })
+      log.info('userLike.createUserLike.res', userlike)
+    }
+
     let returns = new Returns(null, {
       code: 0,
       msg: '',

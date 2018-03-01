@@ -6,6 +6,7 @@
         {
             "type": "npm",
             "script": "build:dev",
+            "label": "build-dev",
             "group": {
                 "kind": "build",
                 "isDefault": true

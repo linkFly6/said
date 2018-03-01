@@ -49,6 +49,7 @@ import { getAdminInfoByToken } from './services/admin-service'
 import { createUser, getUserInfoByToken } from './services/user-service'
 import { IUser, UserRole } from './models/user'
 import { SimpleAdmin } from 'admin'
+import { Response } from 'express'
 
 /**
  * Create Express server.
@@ -117,8 +118,13 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 
-// 获取用户 token 和 基本信息
-app.use(async (req, res, next) => {
+/**
+ * 获取用户 token 和 基本信息
+ * 之所以特殊针对 res 写 Response 是因为 src/types/global.d.ts 中针对 Response 进行了扩展
+ * 默认参数直接引用了 express 内部的 Response，而 global.d.ts 是针对 express 曝露出来的 Response 进行的扩展
+ * 如果去掉则 res.locals 就无法识别 global.d.ts 中定义的类型了
+ */
+app.use(async (req, res: Response, next) => {
   let params = req.method === 'GET'
     ? req.query : req.body
   const token = params.token || req.cookies.token

@@ -2,7 +2,7 @@ import { get, post } from '../../filters/http'
 import { admin } from '../../filters/backend'
 import { Log } from '../../utils/log'
 import { ServiceError } from '../../models/server/said-error'
-import { queryCategoryAll, createCategory, updateCategoryById, removeCategory, checkCategoryName } from '../../services/category-service'
+import { queryCategoryAll, createCategory, updateCategoryById, removeCategory, checkCategoryName, getIcons, inIcons } from '../../services/category-service'
 import { RouterError } from '../../middleware/routers/models'
 import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
@@ -20,11 +20,15 @@ const ERRORS = {
 export default class {
   @get
   @admin
-  public async query(params: { admin: IAdmin }, { log }: { log: Log }) {
+  public async base(params: { admin: IAdmin }, { log }: { log: Log }) {
     try {
-      let res = await queryCategoryAll()
-      log.info('res', res)
-      return res
+      let categorys = await queryCategoryAll()
+      let icons = getIcons()
+      log.info('res', { categorys, icons })
+      return {
+        categorys,
+        icons,
+      }
     } catch (error) {
       log.error('catch', error)
       return ERRORS.SERVER
@@ -40,7 +44,9 @@ export default class {
       log.error('params', params)
       return ERRORS.PARAMS
     }
-    if ((params.entity.icon + '').length > 36 || !checkCategoryName(params.entity.name)) {
+    let icons = getIcons()
+    // 没有在系统支持的 icon 列表中找到 icon
+    if (!inIcons(params.entity.icon) || !checkCategoryName(params.entity.name)) {
       return ERRORS.PARAMSLENGTH
     }
     try {
@@ -73,7 +79,7 @@ export default class {
       return ERRORS.PARAMS
     }
 
-    if ((params.entity.icon + '').length > 36 || !checkCategoryName(params.entity.name)) {
+    if (!inIcons(params.entity.icon) || !checkCategoryName(params.entity.name)) {
       return ERRORS.PARAMSLENGTH
     }
 

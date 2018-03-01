@@ -34,8 +34,8 @@ block content
             //- .info
             //-   time 最后一次更新于 2014/10/08 00:21:51
             .other
-              a#user-like.button.like
-                span#like-text 点赞
+              button#user-like.button.like(disabled=likeIt)
+                span#like-text= likeIt ? '已赞' : '点赞'
                 span#link-num(data-num=`${blog.info.likeCount}`) #{blog.info.likeCount}
         //- 页面其他信息(首选/评论/发布时间)
         .article-other-info
