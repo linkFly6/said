@@ -33,11 +33,11 @@ html, body
     width 100%
     transform translate(-50%,-50%)
     h1
-      margin 0
+      margin-bottom 1rem
       font-size 10rem
       color #fafafa
       font-weight normal
-      line-height 1rem
+      line-height 1
       text-shadow 0 0 1.25rem #CCC
     h2 
       margin 0
@@ -58,10 +58,22 @@ html, body
       line-height 2
       text-shadow 1px 1px 1px rgba(0, 0, 0, 0.6)
       color #fafafa
+      p
+        margin 0
       a
         color: #fafafa;
         text-shadow 1px 1px 1px rgba(0, 0, 0, 0.6)
-        text-decoration underline
+        position relative
+        &::after
+          content ''
+          position absolute
+          left 0
+          display block
+          bottom -5px
+          width 100%
+          height 1px
+          background #fafafa
+          transform none
     .go
       padding .625rem 2.5rem
       font-size 1.25rem

@@ -90,8 +90,7 @@ $(() => {
     navTop += height
     // 1级目录
     $title.on('click', () => {
-      // @TODO ument 统计
-      // chrome 61 之后 body.scrollTop 已经失效
+      // chrome 61 之后 body.scrollTop 已经失效，只能作用于 documentElement 上
       $document.stop().animate({ scrollTop: top }, 300)
     })
 
@@ -104,7 +103,6 @@ $(() => {
         titles[i].child[j].navTop = navTop
         navTop += height
         $child.on('click', () => {
-          // @TODO ument 统计
           $document.stop().animate({ scrollTop: childTop }, 300)
         })
       })
@@ -231,9 +229,8 @@ $(() => {
   initUserLikeEvent(
     '/blog/like',
     { blogId: (window as any).blogId },
-    (err, data) => {
-      // @TODO umeng 统计
-      console.log(err, data)
+    (err, data, element) => {
+      window.Umeng.event('blog', 'like', '用户点赞', (window as any).blogId, element.id)
     })
 })
 

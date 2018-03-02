@@ -214,6 +214,7 @@ app.post('/blog/like', safeRouterHandler(blogController.userLike))
 app.get('/said/:key.html', safeRouterHandler(saidController.detail))
 app.get('/said',safeRouterHandler(saidController.index))
 app.get('/said/page/:page?', safeRouterHandler(saidController.index))
+app.get('/said/get/:page', safeRouterHandler(saidController.getArticlesByPage))
 
 app.post('/said/like', safeRouterHandler(saidController.userLike))
 

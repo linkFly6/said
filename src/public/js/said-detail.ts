@@ -36,7 +36,7 @@ $(() => {
 
   let isPlay = true
   $button.on('click', () => {
-    // @TODO umeng 统计
+    window.Umeng.event('article', 'play', '播放/暂停音乐', (window as any).articleId, '#player')
     if (isPlay) {
       player.stop()
       $buttonIcon.removeClass('icon-stop_icon').addClass('icon-play_icon')
@@ -50,8 +50,7 @@ $(() => {
   initUserLikeEvent(
     '/said/like',
     { articleId: (window as any).articleId },
-    (err, data) => {
-      // @TODO umeng 统计
-      console.log(err, data)
+    (err, data, element) => {
+      window.Umeng.event('article', 'like', '用户点赞', (window as any).articleId, element.id)
     })
 })

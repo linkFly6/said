@@ -7,7 +7,7 @@
 export const initUserLikeEvent = (
   url: string,
   params: object,
-  callback: (err: any, data: { code: number, message: string, data: any } | null) => void
+  callback: (err: any, data: { code: number, message: string, data: any } | null, element: HTMLElement) => void
 ) => {
   const $userLike = $('#user-like')
   const $likeText = $userLike.children().eq(0)
@@ -27,9 +27,9 @@ export const initUserLikeEvent = (
         dataType: 'json',
         data: params,
       }).done(function (data) {
-        callback(null, data)
+        callback(null, data, $userLike[0])
       }).fail(function (err) {
-        callback(err, null)
+        callback(err, null, $userLike[0])
       })
     })
   }

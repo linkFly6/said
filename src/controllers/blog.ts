@@ -24,6 +24,11 @@ const ERRORS = {
   }),
 }
 
+/**
+ * 匹配 mongoDB 的 ID
+ */
+const regMongodbId = /^[0-9a-zA-Z]{10,30}$/
+
 const log = new Log('router/blog')
 
 
@@ -136,11 +141,6 @@ export const detail = async (req: Request, res: Response) => {
   }
 }
 
-
-/**
- * 匹配 mongoDB 的 ID
- */
-const regMongodbId = /^[0-9a-zA-Z]{10,30}$/
 
 /**
  * POST /blog/like/ blogId=string

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { DEVICE } from '../models/server/enums'
-import { getArticleByKey, updateArticlePV, queryAllArticleByPage, queryAllArticleCount, updateArticleLike } from '../services/article-service'
+import { getArticleByKey, updateArticlePV, queryAllArticleByPage, queryAllArticleCount, updateArticleLike, article2SimpleArticle } from '../services/article-service'
 import { image2outputImage } from '../services/image-service'
 import { Log } from '../utils/log'
 import { IArticle } from '../models/article'
@@ -23,6 +23,12 @@ const ERRORS = {
     data: null,
   }),
 }
+
+
+/**
+ * 匹配 mongoDB 的 ID
+ */
+const regMongodbId = /^[0-9a-zA-Z]{10,30}$/
 
 const log = new Log('router/article')
 
@@ -86,6 +92,44 @@ export const index = async (req: Request, res: Response) => {
     })
   }
 }
+
+
+/**
+ * /said/get/:page
+ * 分页加载数据
+ * @param req 
+ * @param res 
+ */
+export const getArticlesByPage = async (req: Request, res: Response) => {
+  const page = req.params.page
+  if (!page || !regPageRange.test(req.params.page)) {
+    return res.json(ERRORS.NOTFOUND.toJSON())
+  }
+  let limit = 10
+  let offset = (page - 1) * limit
+
+  // const articleSum = await queryAllArticleCount()
+  // // 求出最大页数
+  // const maxPage = articleSum % limit === 0 ? articleSum / limit : Math.floor(articleSum / limit) + 1
+
+  // 分页查询
+  const articleModels = await queryAllArticleByPage(limit, offset)
+
+
+  let returns = new Returns(null, {
+    code: 0,
+    msg: '',
+    data: {
+      // 不用传给前端 max，因为在页面加载的时候已经输到页面中了
+      // max: maxPage,
+      lists: articleModels.map(article => article2SimpleArticle(article.toJSON())),
+    }
+  })
+  return res.json(returns.toJSON())
+}
+
+
+
 // 匹配 key，10~20位数字，key 范围在 15~16 位，老 said 的 key 在 14 位
 const regMatchKey = /^\d{10,20}$/
 /**
@@ -131,11 +175,6 @@ export const detail = async (req: Request, res: Response) => {
     })
   }
 }
-
-/**
- * 匹配 mongoDB 的 ID
- */
-const regMongodbId = /^[0-9a-zA-Z]{10,30}$/
 
 /**
  * POST /said/like/ articleId=string

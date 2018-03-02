@@ -22,6 +22,11 @@ var createWebpackEntry = () => {
     'main': ['./src/public/js/main.ts'],
     'blog-index': ['./src/public/js/blog-index.ts'],
     'said-detail': ['./src/public/js/said-detail.ts'],
+    // 移动页面
+    './mobile/app-mobile': ['./src/public/js/mobile/app-mobile.ts'],
+    './mobile/said-mobile-index': ['./src/public/js/mobile/said-mobile-index.ts'],
+    './mobile/said-mobile-detail': ['./src/public/js/mobile/said-mobile-detail.ts'],
+    './mobile/blog-mobile-detail': ['./src/public/js/mobile/blog-mobile-detail.ts'],
   }
 }
 
