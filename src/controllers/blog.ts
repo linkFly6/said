@@ -101,43 +101,38 @@ export const detail = async (req: Request, res: Response) => {
     res.redirect('/error', 404)
     return
   }
-  try {
-    const blogModel = await getBlogByKey(req.params.key)
-    if (!blogModel) {
-      res.redirect('/error', 404)
-      return
-    }
-    // 查询用户是否 like 了这篇文章
-    const userLike = await userLiked(res.locals.user._id, blogModel._id, LikeType.BLOG)
-    let likeIt = false
-    if (userLike > 0) {
-      likeIt = true
-    }
+  const blogModel = await getBlogByKey(req.params.key)
+  if (!blogModel) {
+    res.redirect('/error', 404)
+    return
+  }
+  // 查询用户是否 like 了这篇文章
+  const userLike = await userLiked(res.locals.user._id, blogModel._id, LikeType.BLOG)
+  let likeIt = false
+  if (userLike > 0) {
+    likeIt = true
+  }
 
-    // 累加 blog pv
-    await updateBlogPV(blogModel._id)
+  // 累加 blog pv
+  await updateBlogPV(blogModel._id)
 
-    const blog = blogModel.toJSON() as IBlog
-    blog.info.createTime = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm') as any
-    blog.info.pv++
-    
-    if (res.locals.device === DEVICE.MOBILE) {
-      res.render('blog/blog-mobile-detail', {
-        title: 'blog - 每一行代码都恰到好处',
-        likeIt,
-        blog,
-      })
-    } else {
-      res.render('blog/blog-detail', {
-        title: 'blog - 每一行代码都恰到好处',
-        pageIndex: 1,
-        likeIt,
-        blog,
-      })
-    }
-  } catch (error) {
-    log.error('detail.catch', error)
-    res.redirect('/error', 502)
+  const blog = blogModel.toJSON() as IBlog
+  blog.info.createTime = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm') as any
+  blog.info.pv++
+
+  if (res.locals.device === DEVICE.MOBILE) {
+    res.render('blog/blog-mobile-detail', {
+      title: 'blog - 每一行代码都恰到好处',
+      likeIt,
+      blog,
+    })
+  } else {
+    res.render('blog/blog-detail', {
+      title: 'blog - 每一行代码都恰到好处',
+      pageIndex: 1,
+      likeIt,
+      blog,
+    })
   }
 }
 
@@ -159,26 +154,21 @@ export const userLike = async (req: Request, res: Response) => {
   if (!blogId || !regMongodbId.test(blogId)) {
     return res.json(ERRORS.BLOGNOTFOUND.toJSON())
   }
-  try {
-    let likeCounts = await updateBlogLike(blogId, res.locals.user)
-    if (likeCounts && (likeCounts as any).nModified) {
-      const userlike = await createUserLike({
-        userId: res.locals.user._id,
-        targetId: blogId,
-        type: LikeType.BLOG,
-      })
-      log.info('userLike.createUserLike.res', userlike)
-    }
-
-    let returns = new Returns(null, {
-      code: 0,
-      msg: '',
-      // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
-      data: likeCounts && (likeCounts as any).nModified,
+  let likeCounts = await updateBlogLike(blogId, res.locals.user)
+  if (likeCounts && (likeCounts as any).nModified) {
+    const userlike = await createUserLike({
+      userId: res.locals.user._id,
+      targetId: blogId,
+      type: LikeType.BLOG,
     })
-    return res.json(returns.toJSON())
-  } catch (error) {
-    log.error('userLike.catch', error)
-    return res.json(ERRORS.SERVER.toJSON())
+    log.info('userLike.createUserLike.res', userlike)
   }
+
+  let returns = new Returns(null, {
+    code: 0,
+    msg: '',
+    // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
+    data: likeCounts && (likeCounts as any).nModified,
+  })
+  return res.json(returns.toJSON())
 }

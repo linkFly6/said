@@ -18,15 +18,15 @@ html
     link(rel='stylesheet', href='/css/main.css')
     block head
   body
-    .container
-      include header.pug
+    if (override !== true)
+      .container
+        include header.pug
+        block content
+      include footer.pug
+      script(src='//oxki39qdy.bkt.clouddn.com//js/lib/jquery-3.3.1.min.js')
+      script(src='/js/main.js')
+    else
       block content
-
-    include footer.pug
-
-    script(src='//oxki39qdy.bkt.clouddn.com//js/lib/jquery-3.3.1.min.js')
-    script(src='/js/main.js')
-
     // Google Analytics: change UA-XXXXX-X to be your site's ID
     //- script.
     //-   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -97,45 +97,38 @@ export const detail = async (req: Request, res: Response) => {
     res.redirect('/error', 404)
     return
   }
+  const articleModel = await getArticleByKey(req.params.key)
+  if (!articleModel) {
+    res.redirect('/error', 404)
+    return
+  }
 
-  try {
-    const articleModel = await getArticleByKey(req.params.key)
+  // 查询用户是否 like 了这篇文章
+  const userLike = await userLiked(res.locals.user._id, articleModel._id, LikeType.ARTICLE)
+  let likeIt = false
+  if (userLike > 0) {
+    likeIt = true
+  }
 
-    if (!articleModel) {
-      res.redirect('/error', 404)
-      return
-    }
+  // 累加文章 pv
+  await updateArticlePV(articleModel._id)
 
-    // 查询用户是否 like 了这篇文章
-    const userLike = await userLiked(res.locals.user._id, articleModel._id, LikeType.ARTICLE)
-    let likeIt = false
-    if (userLike > 0) {
-      likeIt = true
-    }
+  const article = convertArticle2View(articleModel.toJSON() as IArticle)
+  article.info.pv++
 
-    // 累加文章 pv
-    await updateArticlePV(articleModel._id)
-
-    const article = convertArticle2View(articleModel.toJSON() as IArticle)
-    article.info.pv++
-    
-    if (res.locals.device === DEVICE.MOBILE) {
-      res.render('said/said-mobile-detail', {
-        title: '听说',
-        likeIt,
-        article,
-      })
-    } else {
-      res.render('said/said-detail', {
-        title: '听说',
-        pageIndex: 2,
-        likeIt,
-        article,
-      })
-    }
-  } catch (error) {
-    log.error('detail.catch', error)
-    res.redirect('/error', 502)
+  if (res.locals.device === DEVICE.MOBILE) {
+    res.render('said/said-mobile-detail', {
+      title: '听说',
+      likeIt,
+      article,
+    })
+  } else {
+    res.render('said/said-detail', {
+      title: '听说',
+      pageIndex: 2,
+      likeIt,
+      article,
+    })
   }
 }
 

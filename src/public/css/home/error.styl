@@ -1,0 +1,76 @@
+//混合生成动画
+html, body
+  height 100%
+  width 100%
+  background #979488
+  overflow hidden
+
+.page-bg
+  background url('//static.tasaid.com/images/bg/404.jpg') no-repeat center center
+  position absolute
+  background-size cover
+  width 100%
+  height 100%
+  top 0
+  left 0
+  right 0
+  bottom 0
+  opacity 0
+  animation fadein .5s ease 0s forwards
+  text-align center
+  z-index 1
+  @keyframes fadein
+    from
+      opacity 0
+    to
+      opacity 1
+.content
+    z-index 3
+    text-align center
+    position absolute
+    top 50%
+    left 50%
+    width 100%
+    transform translate(-50%,-50%)
+    h1
+      margin 0
+      font-size 10rem
+      color #fafafa
+      font-weight normal
+      line-height 1rem
+      text-shadow 0 0 1.25rem #CCC
+    h2 
+      margin 0
+      line-height 1.5
+      font-weight normal
+      font-size 2rem
+      color #fafafa
+      text-shadow 0 0 1.25rem #CCC
+    h3
+      margin 0
+      color #fafafa
+      text-shadow 1px 1px 1px rgba(0, 0, 0, 0.6)
+      font-family Consolas,Segoe UI Light, Calibri,Lucida Sans Unicode,Verdana,Arial,Helvetica
+      font-size 1.2rem
+      font-weight normal
+    .context
+      padding 1rem 0 1.875rem
+      line-height 2
+      text-shadow 1px 1px 1px rgba(0, 0, 0, 0.6)
+      color #fafafa
+      a
+        color: #fafafa;
+        text-shadow 1px 1px 1px rgba(0, 0, 0, 0.6)
+        text-decoration underline
+    .go
+      padding .625rem 2.5rem
+      font-size 1.25rem
+      border 2px solid #fff
+      border-radius 6px
+      color #fff
+      opacity 0.6
+      transition all 0.4s ease-in 0s
+      &:hover
+          opacity 1
+          box-shadow 0 1px 20px white
+        

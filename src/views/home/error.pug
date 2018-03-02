@@ -1,0 +1,18 @@
+//- 服务器异常页面
+extends ../partials/layout.pug
+
+block head
+  link(rel='stylesheet', href='/css/error.css')
+
+block content
+  .page-bg
+  .content
+    h2 出了一点小问题
+    .context 
+      p 服务器有点懵圈
+      p 
+        //- @TODO 要加统计
+        a(href='http://music.163.com/#/playlist?id=331813690', target='_blank') 听听我的歌单
+    div
+      a.go(href='/') Home
+  

@@ -22,6 +22,8 @@ import * as cookieParser from 'cookie-parser'
 import expressValidator = require('express-validator')
 
 
+import * as applications from './applications'
+
 
 const MongoStore = mongo(session)
 
@@ -29,7 +31,6 @@ const MongoStore = mongo(session)
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
 dotenv.config({ path: '.env.example' })
-
 
 
 /**
@@ -50,11 +51,15 @@ import { createUser, getUserInfoByToken } from './services/user-service'
 import { IUser, UserRole } from './models/user'
 import { SimpleAdmin } from 'admin'
 import { Response } from 'express'
+import { safeRouterHandler } from './applications'
 
 /**
  * Create Express server.
  */
 const app = express()
+
+
+
 
 /**
  * Connect to MongoDB.
@@ -198,56 +203,45 @@ app.use((req, res, next) => {
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index)
+app.get('/', safeRouterHandler(homeController.index))
 
-app.get('/blog/:key.html', blogController.detail)
-app.get('/blog', blogController.index)
-app.get('/blog/cate/:category', blogController.index)
+app.get('/blog/:key.html', safeRouterHandler(blogController.detail))
+app.get('/blog', safeRouterHandler(blogController.index))
+app.get('/blog/cate/:category', safeRouterHandler(blogController.index))
 
-app.post('/blog/like', blogController.userLike)
+app.post('/blog/like', safeRouterHandler(blogController.userLike))
 
-app.get('/said/:key.html', saidController.detail)
-app.get('/said', saidController.index)
-app.get('/said/page/:page?', saidController.index)
+app.get('/said/:key.html', safeRouterHandler(saidController.detail))
+app.get('/said',safeRouterHandler(saidController.index))
+app.get('/said/page/:page?', safeRouterHandler(saidController.index))
 
-app.post('/said/like', saidController.userLike)
+app.post('/said/like', safeRouterHandler(saidController.userLike))
 
-// app.get('/login', userController.getLogin)
-// app.post('/login', userController.postLogin)
-// app.get('/logout', userController.logout)
-// app.get('/forgot', userController.getForgot)
-// app.post('/forgot', userController.postForgot)
-// app.get('/reset/:token', userController.getReset)
-// app.post('/reset/:token', userController.postReset)
-// app.get('/signup', userController.getSignup)
-// app.post('/signup', userController.postSignup)
-// app.get('/contact', contactController.getContact)
-// app.post('/contact', contactController.postContact)
-// app.get('/account', passportConfig.isAuthenticated, userController.getAccount)
-// app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile)
-// app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword)
-// app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount)
-// app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink)
+/**
+ * 404
+ */
+app.all('/404(.html)?', homeController.noFound)
 
-// /**
-//  * API examples routes.
-//  */
-// app.get('/api', apiController.getApi)
-// app.get('/api/facebook', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook)
-
-// /**
-//  * OAuth authentication routes. (Sign in)
-//  */
-// app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }))
-// app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
-//   res.redirect(req.session.returnTo || '/')
-// })
+/**
+ * 服务器异常
+ */
+app.all('/500(.html)?', homeController.error)
 
 
 /**
  * Error Handler. Provides full stack - remove for production
  */
-app.use(errorHandler())
+// app.use(errorHandler())
+
+/**
+ * 全局错误处理
+ */
+app.use(applications.routerErrorHandler)
+
+/**
+ * 如果前面的路由都没有匹配到，则默认跳转到 404
+ */
+app.use(homeController.noFound)
 
 /**
  * Start Express server.
