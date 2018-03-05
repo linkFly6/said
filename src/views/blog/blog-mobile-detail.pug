@@ -2,7 +2,7 @@ extends ../partials/layout-mobile.pug
 
 block content
   .banner
-    section.banner-bg(style='background-image:url(/images/bg/team.jpg);background-size:auto 100%;')
+    section.banner-bg(style='background-image:url(/static/images/bg/team.jpg);background-size:auto 100%;')
   section.article-content
     article.context
       h1.title #{blog.title}
@@ -24,7 +24,7 @@ block content
           i.saidfont.icon-yonghu #{blog.info.pv}
       .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
         a(href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh', target='_blank')
-          img(src='/images/creativecommons-sa.svg')
+          img(src='/static/images/creativecommons-sa.svg')
       .module-more
         a(href='/blog')
           span 查看更多我的文章
@@ -67,4 +67,4 @@ block content
 block script
   script.
     window.blogId = '#{blog._id}'
-  script(type='text/javascript', charset='utf-8', src='/js/mobile/blog-mobile-detail.js')
+  script(type='text/javascript', charset='utf-8', src='/static/js/mobile/blog-mobile-detail.js')

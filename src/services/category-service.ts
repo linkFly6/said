@@ -25,7 +25,7 @@ const remoteIcons = {
   defaults: 'default.png',
   icons: [
     /**
-     * 存储在 oss 存储服务中资源，前缀都是 https://static.tasaid.com/images/logos/
+     * 存储在 oss 存储服务中资源，前缀都是 https://static.tasaid.com/static/images/logos/
      */
     'default.png',
     'angular.png',
@@ -53,7 +53,7 @@ const remoteIcons = {
  */
 export const getIconUrl = (icon: string) => {
   // !icon 是七牛云的处理样式，原图是 512 * 512 的，七牛云配了 !icon 样式显示的图片是 30 * 30 的
-  return '//static.tasaid.com/images/logos/' + icon + '!icon'
+  return '//static.tasaid.com/static/images/logos/' + icon + '!icon'
 }
 
 /**

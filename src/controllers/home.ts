@@ -7,7 +7,7 @@ import { IBlog } from '../models/blog'
 import { image2outputImage } from '../services/image-service'
 import { IArticle } from '../models/article'
 import { date2Local } from '../utils/format'
-import * as url from 'url'
+import * as path from 'path'
 
 const log = new Log('router/home')
 
@@ -99,4 +99,23 @@ export const link = (req: Request, res: Response) => {
     log.error('redirect.catch', req.query)
     res.redirect('/404')
   }
+}
+
+/**
+ * GET /back
+ * 发送后端 HTML
+ * @param req 
+ * @param res 
+ */
+export const backend = (req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, '../views/backend/index.html'))
+}
+
+/**
+ * GET /rebots.txt
+ * @param req 
+ * @param res 
+ */
+export const rebots = (req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, '../rebots.txt'))
 }

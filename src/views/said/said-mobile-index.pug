@@ -2,7 +2,7 @@ extends ../partials/layout-mobile.pug
 
 block content
   .banner
-    section.banner-bg(style='background-image:url(/images/bg/said-banner-bg.jpg)')
+    section.banner-bg(style='background-image:url(/static/images/bg/said-banner-bg.jpg)')
     .content
       h2 听·说
       p 秋天该很好
@@ -38,7 +38,7 @@ block content
             i.saidfont.icon-loading
 
 block script
-  script(type='text/javascript', charset='utf-8', src='/js/mobile/said-mobile-index.js')
+  script(type='text/javascript', charset='utf-8', src='/static/js/mobile/said-mobile-index.js')
   script(type='text/template')#tmp-item
     a.module-item(href='/said/${key}.html')
       .item-bg(style='background-image:url(${thumb})')

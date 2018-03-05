@@ -120,7 +120,7 @@ app.use(session({
 //   }
 //   next()
 // })
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
+app.use('/static', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 
 /**
@@ -200,11 +200,15 @@ app.use((req, res, next) => {
   return next()
 })
 
+
 /**
- * Primary app routes.
+ * app router
  */
 app.get('/', safeRouterHandler(homeController.index))
+app.get('/rebots.txt', safeRouterHandler(homeController.rebots))
 app.get('/link', safeRouterHandler(homeController.link))
+// 后台系统
+app.get('/back/?*', safeRouterHandler(homeController.backend))
 
 app.get('/blog/:key.html', safeRouterHandler(blogController.detail))
 app.get('/blog', safeRouterHandler(blogController.index))

@@ -1,13 +1,13 @@
 extends ../partials/layout.pug
 
 block head
-  link(rel='stylesheet', href='/css/blog-detail.css')
+  link(rel='stylesheet', href='/static/css/blog-detail.css')
 
 block content
   //- 大 banner
   .banner-bg.blog-banner
     ul.banner
-      li.banner-item.white(style='background-image:url(/images/bg/blog-banner-bg.jpg)')
+      li.banner-item.white(style='background-image:url(/static/images/bg/blog-banner-bg.jpg)')
         .banner-content
           h3.title Write the code, change the world
           .context
@@ -41,7 +41,7 @@ block content
         .article-other-info
           .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
             a(href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh', target='_blank')
-              img(src='/images/creativecommons-sa.svg')
+              img(src='/static/images/creativecommons-sa.svg')
           .comments-sum
             span 评论(#{blog.comments.length})
           time 发布于 #{blog.info.createTimeString}
@@ -98,7 +98,7 @@ block content
 block script
   script.
     window.blogId = '#{blog._id}'
-  script(src='/js/blog-detail.js')
+  script(src='/static/js/blog-detail.js')
   script(type='text/template')#tmp-nav-item
       li
         a(href='javascript:;', data-top='${top}') ${text}

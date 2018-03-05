@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This script is used for server building
 prog="said"
 

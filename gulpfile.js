@@ -9,10 +9,17 @@ var webpack = require('webpack-stream')
 gulp.task('copy-views', function () {
   gulp.src('./src/views/**').pipe(gulp.dest('./dist/views/'))
 })
+
 // copy 图片资源
 gulp.task('copy-images', function () {
   gulp.src('./src/public/images/**').pipe(gulp.dest('./dist/public/images/'))
 })
+
+// copy 后端文件
+gulp.task('copy-backend-static', function () {
+  gulp.src('./src/public/backend/**').pipe(gulp.dest('./dist/public/backend/'))
+})
+
 
 var createWebpackEntry = () => {
   // var pre = ['./src/public/js/main.ts']
@@ -124,10 +131,19 @@ gulp.task('default', function () {
   watch('src/public/images/**', function () {
     gulp.run('copy-images')
   })
+  watch('./src/public/backend/**', function () {
+    gulp.run('copy-backend-static')
+  })
   watch('./src/public/js/**', function () {
     gulp.run('compile-client-ts')
   })
+  gulp.run('build')
+})
+
+
+gulp.task('build', function () {
   gulp.run('copy-views')
   gulp.run('copy-images')
+  gulp.run('copy-backend-static')
   gulp.run('compile-client-ts')
 })

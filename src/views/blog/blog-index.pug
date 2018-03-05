@@ -1,13 +1,13 @@
 extends ../partials/layout.pug
 
 block head
-  link(rel='stylesheet', href='/css/blog-index.css')
+  link(rel='stylesheet', href='/static/css/blog-index.css')
 
 block content
   //- 大 banner
   .banner-bg
     ul.banner
-      li.banner-item.white(style='background-image:url(/images/bg/team.jpg)')
+      li.banner-item.white(style='background-image:url(/static/images/bg/team.jpg)')
         .banner-content
           h3.title Write the code,change the world
           .context
@@ -48,4 +48,4 @@ block content
                 i.saidfont.icon-category #{blog.category.name}
                 i.saidfont.icon-yonghu #{blog.info.pv}
 block script
-  script(src='/js/blog-index.js')
+  script(src='/static/js/blog-index.js')
