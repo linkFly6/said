@@ -38,10 +38,9 @@ cp -r ./deploy.sh ./dist/
 cp -r ./src/rebots.txt ./dist/
 
 # 运行 gulp 任务，将资源进行合并
-gulp_bin build
+gulp build-production
 
 rm -r ./said
 rm -r ./said.tar.gz
 mv ./dist ./said
-tar zcvf said.tar.gz --exclude=.DS_Store said
 echo '============= build success ============='

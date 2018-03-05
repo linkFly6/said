@@ -5,7 +5,7 @@ import * as path from 'path'
 import { ServiceError } from '../models/server/said-error'
 
 
-log4js.configure(createConfig(path.resolve('./logs')))
+log4js.configure(createConfig(path.resolve(process.env.LOG_PATH)))
 
 interface ILog {
   namespace: string

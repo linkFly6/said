@@ -147,3 +147,12 @@ gulp.task('build', function () {
   gulp.run('copy-backend-static')
   gulp.run('compile-client-ts')
 })
+
+/**
+ * production 版的打包
+ */
+gulp.task('build-production', function () {
+  gulp.run('build')
+  // 生成 md5 并替换资源路径
+  
+})
