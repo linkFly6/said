@@ -78,3 +78,50 @@ export const throttle = function <T=any>(
     return result
   } as any
 }
+
+
+/**
+ * 添加 class
+ * @param element dom
+ * @param className className，不考虑多个
+ */
+export const addClass = (element: Element, className: string) => {
+  className = className.trim()
+  // 如果支持 DOM 3 中的 classList，则使用 classList
+  if (element.classList && element.classList.add) {
+    element.classList.add(className)
+    return element
+  }
+  // 按照数组进行操作
+  let classNames = element.className.split(' ')
+  // 有存在项则不在继续
+  if (~classNames.indexOf(className)) {
+    return element
+  }
+  classNames.push(className)
+  element.className = classNames.join(' ')
+  return element
+}
+
+
+/**
+ * 移除 class
+ * @param element dom
+ * @param className className，不考虑多个
+ */
+export const removeClass = (element: Element, className: string) => {
+  className = className.trim()
+  if (element.classList && element.classList.remove) {
+    element.classList.remove(className)
+    return element
+  }
+  let classNames = element.className.split(' ')
+  let index = ~classNames.indexOf(className)
+  // 没找到则不再继续
+  if (!~index) {
+    return element
+  }
+  classNames.splice(index, 1)
+  element.className = classNames.join(' ')
+  return element
+}

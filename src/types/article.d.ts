@@ -1,5 +1,9 @@
 import { AdminRule } from '../models/admin'
-import { ImageType } from '../models/image'
+import { ImageType, ImageModel } from '../models/image'
+import { SongModel } from '../models/song'
+import { IArticle } from '../models/article'
+import { OutputImage } from './image'
+import { OutputSong } from './song'
 
 /**
  * 前端入参
@@ -37,6 +41,7 @@ export interface OutputArticle {
     type: ImageType,
     name: string,
     key: string,
+    thumb: string,
   },
   song: {
     _id: string,
@@ -54,6 +59,7 @@ export interface OutputArticle {
       type: ImageType,
       name: string,
       key: string,
+      thumb: string,
     }
   },
   other: {
@@ -70,4 +76,49 @@ export interface OutputArticle {
   //   script: string,
   //   css: string,
   // }
+}
+
+/**
+ * 前端输出到前台页面中的文章，会针对日期进行本地化处理
+ */
+interface IViewArticle extends IArticle {
+  poster: OutputImage,
+  song: OutputSong,
+  info: IArticle['info'] & {
+    /**
+     * 根据 createTime 修正为日期，格式为 'YYYY-MM-DD HH:mm'
+     */
+    createTimeString: string,
+    /**
+     * 同时针对本地化输出时间
+     */
+    localDate: string
+  }
+}
+
+/**
+ * 剔除无关信息的文章对象
+ * 用于文章列表使用，剔除了 HTML/源码/配置/管理员等信息
+ */
+export interface SafeSimpleArticle {
+  _id: string,
+  title: string,
+  key: string,
+  author: {
+    nickName: string,
+  },
+  summary: string,
+  poster: OutputImage,
+  song: OutputSong,
+  other: {
+    summaryHTML: string
+  },
+  info: {
+    localDate: string,
+    likeCount: number,
+    createTimeString: string,
+    createTime: number,
+    updateTime: number,
+    pv: number,
+  },
 }

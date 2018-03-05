@@ -1,13 +1,16 @@
 import { AdminSchema, IAdmin } from './admin'
 import { CategoryModel, CategorySchema } from './category'
 import { CommentModel, CommentSchema } from './comment'
-import { SongModel, SongSchema } from './song'
-import { ImageSchema, ImageModel } from './image'
+import { SongModel, SongSchema, ISong } from './song'
+import { ImageSchema, ImageModel, IImage } from './image'
 import * as mongoose from 'mongoose'
 
 
 export interface IArticle {
-
+  /**
+   * mongodb ID
+   */
+  _id: any,
   /**
    * said 标题
    */
@@ -32,12 +35,12 @@ export interface IArticle {
   /**
    * said 配图海报
    */
-  poster: ImageModel
+  poster: IImage
 
   /**
    * said 引用的歌曲
    */
-  song: SongModel
+  song: ISong
   /**
    * 处理过后的资源
    */
@@ -110,7 +113,7 @@ export interface ArticleModel extends IArticle,mongoose.Document {
   /**
    * mongoDB 默认 ID
    */
-  _id: string,
+  _id: any,
 }
 
 

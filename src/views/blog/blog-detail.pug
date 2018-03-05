@@ -44,7 +44,7 @@ block content
               img(src='/images/creativecommons-sa.svg')
           .comments-sum
             span 评论(#{blog.comments.length})
-          time 发布于 #{blog.info.createTime}
+          time 发布于 #{blog.info.createTimeString}
           .browse(title='浏览量')
             i.saidfont.icon-yonghu &nbsp;#{blog.info.pv}
           //- 评论

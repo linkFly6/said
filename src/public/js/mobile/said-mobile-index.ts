@@ -1,6 +1,53 @@
 import { get } from '../lib/ajax'
 import { format } from '../lib/utils'
 
+interface IViewArticle {
+  _id: string,
+  title: string,
+  context: string,
+  key: string,
+  author: {
+    nickName: string,
+  },
+  summary: string,
+  poster: {
+    _id: string,
+    size: number,
+    fileName: string,
+    type: number,
+    name: string,
+    key: string,
+    thumb: string,
+  },
+  song: {
+    _id: string,
+    key: string,
+    title: string,
+    mimeType: string,
+    size: number,
+    artist: string,
+    album: string,
+    duration: number,
+    image: {
+      _id: string,
+      size: number,
+      fileName: string,
+      type: number,
+      name: string,
+      key: string,
+    }
+  },
+  info: {
+    localDate: string,
+    likeCount: number,
+    createTimeString: string,
+    createTime: number,
+    updateTime: number,
+    pv: number,
+  },
+}
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
   /**
@@ -11,6 +58,11 @@ window.addEventListener('DOMContentLoaded', () => {
    * 加载更多按钮
    */
   const $more = document.querySelector('#load-more')
+
+  /**
+   * 没有对应的 dom
+   */
+  if (!$more) return
   /**
    * "点击加载更多" 按钮容器
    */
@@ -46,8 +98,8 @@ window.addEventListener('DOMContentLoaded', () => {
     // 发送 ajax
     get({
       url: `/said/get/${currenPage}`,
-      callback: (err, data) => {
-        if (err) {
+      callback: (err, returns) => {
+        if (err || (returns && returns.code !== 0)) {
           $text.innerHTML = '加载失败，点击重新加载'
           $a.style.display = ''
           $span.style.display = 'none'
@@ -59,20 +111,20 @@ window.addEventListener('DOMContentLoaded', () => {
           $a.style.display = ''
         }
         $span.style.display = 'none'
-
-        if (data.lists && data.lists.length) {
+        console.log(returns)
+        if (returns && returns.data && returns.data.lists && returns.data.lists.length) {
           // 填充数据
-          const html = data.lists.map(article => {
+          const html = returns.data.lists.map((article: IViewArticle) => {
             return format(template, {
               key: article.key,
-              thumb: article.thumb,
+              thumb: article.poster.thumb,
               title: article.title,
               songTitle: article.song.title,
               songArtist: article.song.artist,
               songAlbum: article.song.album,
               summary: article.summary,
               localDate: article.info.localDate,
-              pv: article.pv,
+              pv: article.info.pv,
             })
           }).join('')
           $listBox.insertAdjacentHTML('beforeend', html)

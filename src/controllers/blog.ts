@@ -10,6 +10,7 @@ import { CategoryModel } from '../models/category'
 import { Returns } from '../models/Returns'
 import { createUserLike, userLiked } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
+import { IViewBlog } from '../types/blog'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -32,6 +33,20 @@ const regMongodbId = /^[0-9a-zA-Z]{10,30}$/
 const log = new Log('router/blog')
 
 
+/**
+ * 将文章对象的日期/头像/歌曲等信息进行处理
+ * @param blog 
+ */
+const convertBlog2View = (blog: IBlog): IViewBlog => {
+  const createTime = moment(blog.info.createTime);
+  (blog as IViewBlog).info.day = date2day((blog.info as any).createTime);
+  (blog as IViewBlog).info.time = createTime.format('HH:mm');
+  (blog as IViewBlog).info.tag = createTime.format('YYYY年MM月');
+  (blog as IViewBlog).info.localDate = date2Local(blog.info.createTime);
+  (blog as IViewBlog).info.createTimeString = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm')
+  return blog as IViewBlog
+}
+
 
 /**
  * GET /blog
@@ -51,15 +66,7 @@ export const index = async (req: Request, res: Response) => {
   } else {
     blogModels = await queryAllBlog()
   }
-  const blogs: IBlog[] = blogModels.map(blogModel => {
-    let blog = blogModel.toJSON() as any
-    const createTime = moment(blog.info.createTime)
-    blog.info.day = date2day(blog.info.createTime)
-    blog.info.time = createTime.format('HH:mm')
-    blog.info.tag = createTime.format('YYYY年MM月')
-    blog.info.localDate = date2Local(blog.info.createTime)
-    return blog
-  })
+  const blogs: IBlog[] = blogModels.map(blogModel => convertBlog2View(blogModel.toJSON() as any))
   if (res.locals.device === DEVICE.MOBILE) {
     res.render('blog/blog-mobile-index', {
       title: 'blog - 每一行代码都恰到好处',
@@ -122,7 +129,7 @@ export const detail = async (req: Request, res: Response) => {
   await updateBlogPV(blogModel._id)
 
   const blog = blogModel.toJSON() as IBlog
-  blog.info.createTime = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm') as any
+  (blog as IViewBlog).info.createTimeString = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm')
   blog.info.pv++
 
   if (res.locals.device === DEVICE.MOBILE) {

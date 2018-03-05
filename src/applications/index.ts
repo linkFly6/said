@@ -21,7 +21,7 @@ process.on('unhandledRejection', (error: any) => {
 export const routerErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   log.error('router.error', err)
   // 服务器异常跳到服务器异常页
-  res.redirect('/500')
+  res.redirect('/500', 500)
 }
 
 
@@ -36,15 +36,15 @@ export const safeRouterHandler = (func: (req: Request, res: Response, next: Next
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       let result = func(req, res, next)
-      if (result.catch) {
+      if (result && result.catch) {
         result.catch((error: any) => {
           log.error('server.err', error)
-          res.redirect('/500')
+          res.redirect('/500', 500)
         })
       }
     } catch (error) {
       log.error('server.err', error)
-      res.redirect('/500')
+      res.redirect('/500', 500)
     }
   }
 }

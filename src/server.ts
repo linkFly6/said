@@ -204,6 +204,7 @@ app.use((req, res, next) => {
  * Primary app routes.
  */
 app.get('/', safeRouterHandler(homeController.index))
+app.get('/link', safeRouterHandler(homeController.link))
 
 app.get('/blog/:key.html', safeRouterHandler(blogController.detail))
 app.get('/blog', safeRouterHandler(blogController.index))
@@ -212,7 +213,7 @@ app.get('/blog/cate/:category', safeRouterHandler(blogController.index))
 app.post('/blog/like', safeRouterHandler(blogController.userLike))
 
 app.get('/said/:key.html', safeRouterHandler(saidController.detail))
-app.get('/said',safeRouterHandler(saidController.index))
+app.get('/said', safeRouterHandler(saidController.index))
 app.get('/said/page/:page?', safeRouterHandler(saidController.index))
 app.get('/said/get/:page', safeRouterHandler(saidController.getArticlesByPage))
 
@@ -222,18 +223,10 @@ app.post('/said/like', safeRouterHandler(saidController.userLike))
  * 404
  */
 app.all('/404(.html)?', homeController.noFound)
-
 /**
  * 服务器异常
  */
 app.all('/500(.html)?', homeController.error)
-
-
-/**
- * Error Handler. Provides full stack - remove for production
- */
-// app.use(errorHandler())
-
 /**
  * 全局错误处理
  */
@@ -243,6 +236,15 @@ app.use(applications.routerErrorHandler)
  * 如果前面的路由都没有匹配到，则默认跳转到 404
  */
 app.use(homeController.noFound)
+
+
+
+/**
+ * Error Handler. Provides full stack - remove for production
+ */
+// app.use(errorHandler())
+
+
 
 /**
  * Start Express server.

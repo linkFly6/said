@@ -1,5 +1,8 @@
+import { ajax } from './ajax'
+
 /**
- * 通用用户 like 事件，需要在 DOM Ready 之后调用
+ * [PC端]通用用户 like 事件，需要在 DOM Ready 之后调用
+ * 移动端方法请参见 initMobileUserLikeEvent
  * @param url like 请求的 url
  * @param params 请求参数
  * @param callback 完成后的回调函数，第一个参数是错误（xhr），第二个参数是服务器返回
@@ -30,6 +33,38 @@ export const initUserLikeEvent = (
         callback(null, data, $userLike[0])
       }).fail(function (err) {
         callback(err, null, $userLike[0])
+      })
+    })
+  }
+}
+
+
+/**
+ * [移动端] 通用用户 like 事件，需要在 DOM Ready 之后调用
+ * PC 端方法请参见 initMobileUserLikeEvent
+ * @param url - 请求 url
+ * @param params - 请求参数
+ * @param callback - 完成后的回调函数
+ */
+export const initMobileUserLikeEvent = (
+  url: string,
+  params: object,
+  callback: (err: any, data: { code: number, message: string, data: any } | null, element: HTMLElement) => void
+) => {
+  const $userlike = document.querySelector('#user-like') as HTMLButtonElement
+  if (!$userlike.disabled) {
+    $userlike.addEventListener('click', () => {
+      if ($userlike.disabled) return
+      $userlike.children[0].innerHTML = '已赞'
+      $userlike.children[1].innerHTML = parseInt($userlike.children[1].getAttribute('data-num')) + 1 as any
+      $userlike.disabled = true
+      ajax({
+        url,
+        methods: 'POST',
+        params,
+        callback: (err, data) => {
+          callback(err, data, $userlike)
+        },
       })
     })
   }

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { DEVICE } from '../models/server/enums'
-import { getArticleByKey, updateArticlePV, queryAllArticleByPage, queryAllArticleCount, updateArticleLike, article2SimpleArticle } from '../services/article-service'
+import { getArticleByKey, updateArticlePV, queryAllArticleByPage, queryAllArticleCount, updateArticleLike } from '../services/article-service'
 import { image2outputImage } from '../services/image-service'
 import { Log } from '../utils/log'
 import { IArticle } from '../models/article'
@@ -10,6 +10,7 @@ import { parseTime, date2Local } from '../utils/format'
 import { Returns } from '../models/Returns'
 import { userLiked, createUserLike } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
+import { SafeSimpleArticle, IViewArticle } from 'article'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -25,6 +26,7 @@ const ERRORS = {
 }
 
 
+
 /**
  * 匹配 mongoDB 的 ID
  */
@@ -36,14 +38,47 @@ const log = new Log('router/article')
  * 将文章对象的日期/头像/歌曲等信息进行处理
  * @param article 
  */
-const convertArticle2View = (article: IArticle) => {
-  article.info.createTime = moment(article.info.createTime).format('YYYY-MM-DD HH:mm') as any
+const convertArticle2View = (article: IArticle): IViewArticle => {
+  (article.info as any).createTimeString = moment(article.info.createTime).format('YYYY-MM-DD HH:mm') as any
   (article.info as any).localDate = date2Local(article.info.createTime)
   article.poster = image2outputImage(article.poster) as any
   article.song = song2outputSong(article.song) as any
   article.song.duration = parseTime(article.song.duration) as any
-  return article
+  return article as IViewArticle
 }
+
+
+/**
+ * 将歌曲对象的日期/头像/歌曲等信息进行处理，并且将 HTML 等无关信息删除
+ * 用于 API 接口返回文章的数据
+ * @param article 
+ */
+const convertArticle2APIResult = (article: IArticle): SafeSimpleArticle => {
+  const viewArticle = convertArticle2View(article)
+  return {
+    _id: viewArticle._id,
+    title: viewArticle.title,
+    key: viewArticle.key,
+    author: {
+      nickName: viewArticle.author.nickName,
+    },
+    summary: viewArticle.summary,
+    poster: viewArticle.poster,
+    song: viewArticle.song,
+    other: {
+      summaryHTML: viewArticle.other.summaryHTML,
+    },
+    info: {
+      likeCount: viewArticle.info.likeCount,
+      createTime: viewArticle.info.createTime,
+      updateTime: viewArticle.info.updateTime,
+      pv: viewArticle.info.pv,
+      createTimeString: viewArticle.info.createTimeString,
+      localDate: viewArticle.info.localDate,
+    }
+  }
+}
+
 
 
 /**
@@ -122,7 +157,7 @@ export const getArticlesByPage = async (req: Request, res: Response) => {
     data: {
       // 不用传给前端 max，因为在页面加载的时候已经输到页面中了
       // max: maxPage,
-      lists: articleModels.map(article => article2SimpleArticle(article.toJSON())),
+      lists: articleModels.map(article => convertArticle2APIResult(article.toJSON() as IArticle)),
     }
   })
   return res.json(returns.toJSON())

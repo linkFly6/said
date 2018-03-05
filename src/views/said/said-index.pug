@@ -37,7 +37,7 @@ block content
                   li.ellipsis(title='艺术家') #{article.song.artist}
               .more
                 i.saidfont.icon-yonghu(title='浏览') #{article.info.pv}
-                time(title='发布时间') #{article.info.createTime}
+                time(title='发布时间') #{article.info.localDate}
       //- 翻页
       .page
         if maxPage > 1

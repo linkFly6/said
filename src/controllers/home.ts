@@ -7,6 +7,7 @@ import { IBlog } from '../models/blog'
 import { image2outputImage } from '../services/image-service'
 import { IArticle } from '../models/article'
 import { date2Local } from '../utils/format'
+import * as url from 'url'
 
 const log = new Log('router/home')
 
@@ -54,7 +55,8 @@ export const index = async (req: Request, res: Response) => {
  * @param req 
  * @param res 
  */
-export const noFound = async (req: Request, res: Response) => {
+export const noFound = (req: Request, res: Response) => {
+  res.status(404)
   res.render('home/404', {
     // src/views/partials/layout.pug
     override: true,
@@ -67,10 +69,34 @@ export const noFound = async (req: Request, res: Response) => {
  * @param req 
  * @param res 
  */
-export const error = async (req: Request, res: Response) => {
+export const error = (req: Request, res: Response) => {
+  res.status(500)
   res.render('home/error', {
     // src/views/partials/layout.pug
     override: true,
   })
 }
 
+
+
+
+/**
+ * GET /link?url=String
+ * 跳转页，用于统计，参数带 url 进行统计
+ * @param req 
+ * @param res 
+ */
+export const link = (req: Request, res: Response) => {
+  log.info('redirect.call', Object.assign({}, req.params, req.query, req.body))
+  if (!req.query.url) {
+    log.error('redirect.params.url.invalid', req.query)
+    res.redirect('/404')
+    return
+  }
+  try {
+    res.redirect(req.query.url)
+  } catch (error) {
+    log.error('redirect.catch', req.query)
+    res.redirect('/404')
+  }
+}

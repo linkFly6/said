@@ -12,7 +12,7 @@ block content
         a.album(href=`https://m.sogou.com/web/searchList.jsp?keyword=${encodeURIComponent(article.song.artist + ' ' + article.song.album)}`, target='_blank') #{article.song.artist} - #{article.song.album}
       //- 播放暂停按钮
       .player
-        a.play
+        a.play#play(data-src=`${article.song.url}`)
           i.saidfont.icon-bofang
           //- i.saidfont.icon-tingzhi
     article.context
@@ -23,13 +23,13 @@ block content
     .info
       //- 点赞
       .like-box
-        a.button.like
-          span#like-text 点赞
-          span#link-num #{article.info.likeCount}
+        button.button.like(disabled=likeIt)#user-like
+          span#like-text= likeIt ? '已赞' : '点赞'
+          span#link-num(data-num=article.info.likeCount) #{article.info.likeCount}
       //- 文章其他信息(首选/评论/发布时间)
       .article-other-info
         time
-          i.saidfont.icon-rili #{article.info.createTime}
+          i.saidfont.icon-rili #{article.info.createTimeString}
         .browse.left
           i.saidfont.icon-yonghu &nbsp;#{article.info.pv}
       .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
@@ -38,4 +38,7 @@ block content
       .module-more
         a(href='/said')
           span 查看更多我的听说
-      
+block script
+  script.
+    window.articleId = '#{article._id}'
+  script(type='text/javascript', charset='utf-8', src='/js/mobile/said-mobile-detail.js')

@@ -1,4 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
+
+  // 导航遮罩动画
   const $html = document.documentElement
   // 右上角导航按钮
   const $elemNavigationButton = document.getElementById('nav-btn')
@@ -33,4 +35,7 @@ window.addEventListener('DOMContentLoaded', () => {
       })
     }
   })
+
+
+
 })
