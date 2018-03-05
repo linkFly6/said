@@ -30,40 +30,40 @@ block content
           span 查看更多我的文章
   section.comments
     span.label 共 #{blog.comments.length} 条评论
-    ul.comments-list
-      li
-        .title.ellipsis 
-          a(href='/') linkfly&nbsp;
-          i.saidfont.icon-admin
-          = '评论:'
-        .context 一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论
-        ul
-          li
-            .title.ellipsis 
-              a(href='/') linkfly&nbsp;
-              i.saidfont.icon-admin
-              = '回复:'
-            .context 一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论
-          li
-            .title.ellipsis 
-              a(href='/') linkfly&nbsp;
-              i.saidfont.icon-admin
-              = '回复:'
-              span &nbsp;Tj
-            .context 一个评论一个评论
-          li
-            .title.ellipsis 
-              span linkfly&nbsp;
-              = '回复: '
-              a(href='/') Tj
-              = ' '
-              i.saidfont.icon-admin
-            .context 一个评论一个评论
-      li
-        .title.ellipsis 
-          a(href='/') linkfly&nbsp;
-          = '评论:'
-        .context 一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论
+    //- ul.comments-list
+    //-   li
+    //-     .title.ellipsis 
+    //-       a(href='/') linkfly&nbsp;
+    //-       i.saidfont.icon-admin
+    //-       = '评论:'
+    //-     .context 一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论
+    //-     ul
+    //-       li
+    //-         .title.ellipsis 
+    //-           a(href='/') linkfly&nbsp;
+    //-           i.saidfont.icon-admin
+    //-           = '回复:'
+    //-         .context 一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论
+    //-       li
+    //-         .title.ellipsis 
+    //-           a(href='/') linkfly&nbsp;
+    //-           i.saidfont.icon-admin
+    //-           = '回复:'
+    //-           span &nbsp;Tj
+    //-         .context 一个评论一个评论
+    //-       li
+    //-         .title.ellipsis 
+    //-           span linkfly&nbsp;
+    //-           = '回复: '
+    //-           a(href='/') Tj
+    //-           = ' '
+    //-           i.saidfont.icon-admin
+    //-         .context 一个评论一个评论
+    //-   li
+    //-     .title.ellipsis 
+    //-       a(href='/') linkfly&nbsp;
+    //-       = '评论:'
+    //-     .context 一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论一个评论
 block script
   script.
     window.blogId = '#{blog._id}'
