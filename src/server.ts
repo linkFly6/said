@@ -29,7 +29,7 @@ import expressValidator = require('express-validator')
 const greenlock = require('greenlock-express')
 
 
-import * as applications from './applications'
+import { routerErrorHandler, safeRouterHandler, log as appLog } from './applications'
 
 
 const MongoStore = mongo(session)
@@ -53,7 +53,6 @@ import { createUser, getUserInfoByToken } from './services/user-service'
 import { IUser, UserRole } from './models/user'
 import { SimpleAdmin } from 'admin'
 import { Response } from 'express'
-import { safeRouterHandler } from './applications'
 
 /**
  * Create Express server.
@@ -236,7 +235,7 @@ app.all('/500(.html)?', homeController.error)
 /**
  * 全局错误处理
  */
-app.use(applications.routerErrorHandler)
+app.use(routerErrorHandler)
 
 /**
  * 如果前面的路由都没有匹配到，则默认跳转到 404
@@ -254,16 +253,25 @@ app.use(homeController.noFound)
 if (process.env.NODE_ENV === 'production') {
   // 线上启用 HTTPS
   const lex = greenlock.create({
-    // server: 'staging',
-    server: 'https://acme-v01.api.letsencrypt.org/directory',
-    email: 'linkF ly6@live.com',
+    server: 'staging',
+    // server: 'https://acme-v01.api.letsencrypt.org/directory',
     challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '~/letsencrypt/var/acme-challenges' }) },
     store: require('le-store-certbot').create({ webrootPath: '~/letsencrypt/srv/www/:hostname/.well-known/acme-challenge' }),
-    agreeTos: true,
-    approveDomains: ['tasaid.com', 'www.tasaid.com'],
+    // agreeTos: true,
+    approveDomains: (opts: any, certs: any, cb: any) => {
+      appLog.info('approveDomains', { opts, certs })
+      if (certs) {
+        opts.domains = certs.altnames
+      }
+      else {
+        opts.email = 'linkF ly6@live.com'
+        opts.agreeTos = true
+      }
+      cb(null, { options: opts, certs: certs })
+    },
     // app,
   })
-  require('http').createServer(lex.middleware (require('redirect-https')())).listen(80, function () {
+  require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
     console.log('Listening for ACME http-01 challenges on', this.address())
   })
   require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
