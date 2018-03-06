@@ -95,6 +95,11 @@ controller 是不是不应该设置全局请求？(`app.use`)
 
 默认全局统计使用的参数全部都是 `sv`
 
+### 其他
+
+本仓库 fork 自 [https://github.com/Microsoft/TypeScript-Node-Starter](https://github.com/Microsoft/TypeScript-Node-Starter) 仓库并进行的针对性开发。
+
+
 
 ## 版权
 
