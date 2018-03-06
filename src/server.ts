@@ -25,7 +25,8 @@ import router from './middleware/routers'
 import { actionHandler } from './applications/router'
 import * as cookieParser from 'cookie-parser'
 import expressValidator = require('express-validator')
-const letsencryptExpress = require('letsencrypt-express')
+// https://github.com/Daplie/greenlock-express
+const greenlock = require('greenlock-express')
 
 
 import * as applications from './applications'
@@ -252,13 +253,21 @@ app.use(homeController.noFound)
 
 if (process.env.NODE_ENV === 'production') {
   // 线上启用 HTTPS
-  letsencryptExpress.create({
+  const lex = greenlock.create({
     server: 'staging',
     email: 'linkFly6@live.com',
+    challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '/tmp/acme-challenges' }) },
+    store: require('le-store-certbot').create({ webrootPath: '/tmp/acme-challenges' }),
     agreeTos: true,
     approveDomains: ['tasaid.com', 'www.tasaid.com'],
-    app,
-  }).listen(80, 443)
+    // app,
+  })
+  require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
+    console.log('Listening for ACME http-01 challenges on', this.address())
+  })
+  require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+    console.log('Listening for ACME tls-sni-01 challenges and serve app on', this.address())
+  })
 } else {
   /**
    * Start Express server.
