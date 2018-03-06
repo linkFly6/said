@@ -18,7 +18,7 @@
     "build-ts": "tsc --locale zh-CN",
     "build-ts:production": "tsc --locale zh-CN --sourceMap false",
     "watch-ts": "tsc -w",
-    "build-stylus": "stylus src/public/css/** --out dist/public/css",
+    "build-stylus": "stylus src/public/css/** --out dist/public/css --compress",
     "build-sass": "node-sass src/public/css/main.scss dist/public/css/main.css",
     "watch-static": "gulp",
     "watch-sass": "node-sass -w src/public/css/main.scss dist/public/css/main.css",
