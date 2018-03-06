@@ -73,6 +73,7 @@ mongoose.connection.on('error', () => {
   process.exit()
 })
 
+
 /**
  * Express configuration.
  */
@@ -81,6 +82,18 @@ app.set('views', path.join(__dirname, './views'))
 app.set('view engine', 'pug')
 
 app.use(compression())
+
+/**
+ * //www.tasaid.com 重定向到 https://tasaid.com
+ */
+app.use((req, res, next) => {
+  if (/^www\./.test(req.host)) {
+    const host = req.host.slice(4)
+    return res.redirect(301, 'https://' + host + req.originalUrl)
+  } else {
+    next()
+  }
+})
 
 app.use(log.Log4js.connectLogger(log.accessLogger, { level: log.accessLogger.level }))
 app.use(cookieParser())
