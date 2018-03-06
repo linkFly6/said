@@ -21,9 +21,9 @@ gulp.task('copy-backend-static', function () {
   gulp.src('./src/public/backend/**').pipe(gulp.dest('./dist/public/backend/'))
 })
 
-// .env.example
+// .env
 gulp.task('copy-env-file', function () {
-  gulp.src('./.env.example').pipe(gulp.dest('./dist/'))
+  gulp.src('./.env').pipe(gulp.dest('./dist/'))
 })
 
 

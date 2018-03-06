@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 /**
  * 优先读取全局配置，否则后面有包使用了配置会找不到
  */
-dotenv.config({ path: '.env.example' })
+dotenv.config({ path: '.env' })
 
 /**
  * Module dependencies.
