@@ -11,8 +11,7 @@ block content
     .context 
       p 服务器有点懵圈
       p 
-        //- @TODO 要加统计
-        a(href='http://music.163.com/#/playlist?id=331813690', target='_blank') 听听我的歌单
+        a(href=`/link?url=${encodeURIComponent('http://music.163.com/#/playlist?id=331813690')}`, target='_blank') 听听我的歌单
     div
       a.go(href='/') Home
   

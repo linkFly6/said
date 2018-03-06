@@ -2,7 +2,7 @@ import { Log } from '../utils/log'
 import { Request, Response, NextFunction, Express } from 'express'
 
 
-const log = new Log('app')
+export const log = new Log('app')
 
 /**
  * 捕获全局 Promise error

@@ -2,7 +2,7 @@ extends ../partials/layout-mobile.pug
 
 block content
   .banner
-    section.banner-bg(style='background-image:url(/static/images/bg/team.jpg);background-size:auto 100%;')
+    section.banner-bg(style='background-image:url(//static.tasaid.com/images/bg/team.f089a72a.jpg);background-size:auto 100%;')
   section.article-content
     article.context
       h1.title #{blog.title}
@@ -23,8 +23,8 @@ block content
         .browse(title='浏览量')
           i.saidfont.icon-yonghu #{blog.info.pv}
       .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
-        a(href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh', target='_blank')
-          img(src='/static/images/creativecommons-sa.svg')
+        a(href=`/link?url=${encodeURIComponent('https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh')}`, target='_blank')
+          img(src='//static.tasaid.com/media/sa.3e9b6648.svg')
       .module-more
         a(href='/blog')
           span 查看更多我的文章

@@ -250,7 +250,6 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
   if (!oldBlog) {
     throw new ServiceError('updateBlogById.checkBlog.empty', admin, '删除日志失败')
   }
-  // TODO 这里的返回结果为什么不一样？
   return blogInfo.remove().exec()
 }
 

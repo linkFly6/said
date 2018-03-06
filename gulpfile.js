@@ -21,6 +21,11 @@ gulp.task('copy-backend-static', function () {
   gulp.src('./src/public/backend/**').pipe(gulp.dest('./dist/public/backend/'))
 })
 
+// .env
+gulp.task('copy-env-file', function () {
+  gulp.src('./.env').pipe(gulp.dest('./dist/'))
+})
+
 
 var createWebpackEntry = () => {
   // var pre = ['./src/public/js/main.ts']
@@ -164,6 +169,7 @@ gulp.task('default', function () {
 
 
 gulp.task('build', function () {
+  gulp.run('copy-env-file')
   gulp.run('copy-views')
   gulp.run('copy-images')
   gulp.run('copy-backend-static')

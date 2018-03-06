@@ -1,15 +1,20 @@
+import * as dotenv from 'dotenv'
+/**
+ * 优先读取全局配置，否则后面有包使用了配置会找不到
+ */
+dotenv.config({ path: '.env' })
+
 /**
  * Module dependencies.
  */
 import * as express from 'express'
 // import * as device from 'express-device'
-const device = require('express-device')
+// const device = require('express-device')
 import * as compression from 'compression'  // compresses requests
 import * as session from 'express-session'
 import * as bodyParser from 'body-parser'
 import * as errorHandler from 'errorhandler'
 import * as lusca from 'lusca'
-import * as dotenv from 'dotenv'
 import * as mongo from 'connect-mongo'
 // import * as flash from 'express-flash'
 import * as path from 'path'
@@ -20,17 +25,14 @@ import router from './middleware/routers'
 import { actionHandler } from './applications/router'
 import * as cookieParser from 'cookie-parser'
 import expressValidator = require('express-validator')
+// https://github.com/Daplie/greenlock-express
+const greenlock = require('greenlock-express')
 
 
-import * as applications from './applications'
+import { routerErrorHandler, safeRouterHandler, log as appLog } from './applications'
 
 
 const MongoStore = mongo(session)
-
-/**
- * Load environment variables from .env file, where API keys and passwords are configured.
- */
-dotenv.config({ path: '.env.example' })
 
 
 /**
@@ -51,7 +53,6 @@ import { createUser, getUserInfoByToken } from './services/user-service'
 import { IUser, UserRole } from './models/user'
 import { SimpleAdmin } from 'admin'
 import { Response } from 'express'
-import { safeRouterHandler } from './applications'
 
 /**
  * Create Express server.
@@ -72,6 +73,7 @@ mongoose.connection.on('error', () => {
   process.exit()
 })
 
+
 /**
  * Express configuration.
  */
@@ -80,6 +82,18 @@ app.set('views', path.join(__dirname, './views'))
 app.set('view engine', 'pug')
 
 app.use(compression())
+
+/**
+ * //www.tasaid.com 重定向到 https://tasaid.com
+ */
+app.use((req, res, next) => {
+  if (/^www\./.test(req.host)) {
+    const host = req.host.slice(4)
+    return res.redirect(301, 'https://' + host + req.originalUrl)
+  } else {
+    next()
+  }
+})
 
 app.use(log.Log4js.connectLogger(log.accessLogger, { level: log.accessLogger.level }))
 app.use(cookieParser())
@@ -234,7 +248,7 @@ app.all('/500(.html)?', homeController.error)
 /**
  * 全局错误处理
  */
-app.use(applications.routerErrorHandler)
+app.use(routerErrorHandler)
 
 /**
  * 如果前面的路由都没有匹配到，则默认跳转到 404
@@ -249,13 +263,38 @@ app.use(homeController.noFound)
 // app.use(errorHandler())
 
 
-
-/**
- * Start Express server.
- */
-app.listen(app.get('port'), () => {
-  // console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'))
-  // console.log('  Press CTRL-C to stop\n')
-})
+if (process.env.NODE_ENV === 'production') {
+  // 线上启用 HTTPS
+  const lex = greenlock.create({
+    // server: 'staging', // 测试
+    server: 'https://acme-v01.api.letsencrypt.org/directory', // 生产
+    challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '~/letsencrypt/var/acme-challenges' }) },
+    store: require('le-store-certbot').create({ webrootPath: '~/letsencrypt/srv/www/:hostname/.well-known/acme-challenge' }),
+    approveDomains: (opts: any, certs: any, cb: any) => {
+      appLog.info('approveDomains', { opts, certs })
+      if (certs) {
+        opts.domains = certs.altnames
+      } else {
+        opts.email = 'linkFly6@live.com'
+        opts.agreeTos = true
+      }
+      cb(null, { options: opts, certs: certs })
+    },
+  })
+  require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
+    appLog.info('Listening', `for ACME http-01 challenges on: ${JSON.stringify(this.address())}`)
+  })
+  require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+    appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
+  })
+} else {
+  /**
+   * Start Express server.
+   */
+  app.listen(app.get('port'), () => {
+    // console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'))
+    // console.log('  Press CTRL-C to stop\n')
+  })
+}
 
 module.exports = app

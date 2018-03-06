@@ -9,7 +9,7 @@ block content
       //- 歌曲名称
       .info
         .name.ellipsis #{article.song.title}
-        a.album(href=`https://m.sogou.com/web/searchList.jsp?keyword=${encodeURIComponent(article.song.artist + ' ' + article.song.album)}`, target='_blank') #{article.song.artist} - #{article.song.album}
+        a.album(href=`/link?url=${encodeURIComponent(`https://m.sogou.com/web/searchList.jsp?keyword=${encodeURIComponent(article.song.artist + ' ' + article.song.album)}`)}`, target='_blank') #{article.song.artist} - #{article.song.album}
       //- 播放暂停按钮
       .player
         a.play#play(data-src=`${article.song.url}`)
@@ -33,8 +33,8 @@ block content
         .browse.left
           i.saidfont.icon-yonghu &nbsp;#{article.info.pv}
       .cc(title='知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议')
-        a(href='https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh', target='_blank')
-          img(src='/static/images/creativecommons-sa.svg')
+        a(href=`/link?url=${encodeURIComponent('https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh')}`, target='_blank')
+          img(src='//static.tasaid.com/media/sa.3e9b6648.svg')
       .module-more
         a(href='/said')
           span 查看更多我的听说
