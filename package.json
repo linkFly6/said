@@ -14,7 +14,6 @@
     "build": "npm run build-ts:production && npm run tslint && npm run copy-static-assets && npm run build-stylus",
     "serve": "nodemon dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"Stylus,Gulp,TypeScript,Node\" -c \"bgMagenta.white.bold,bgCyan.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-stylus\" \"npm run watch-static\" \"npm run watch-ts\" \"npm run serve\"",
-    "test": "jest --forceExit",
     "build-ts": "tsc --locale zh-CN",
     "build-ts:production": "tsc --locale zh-CN --sourceMap false",
     "watch-ts": "tsc -w",
@@ -28,22 +27,6 @@
     "debug": "npm run build && npm run watch-debug",
     "serve-debug": "nodemon --inspect dist/server.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Stylus,TypeScript,Node\" -c \"bgMagenta.white.bold,bgBlue.white.bold,bgGreen.white.bold\" \"npm run watch-stylus\" \"npm run watch-ts\" \"npm run serve-debug\""
-  },
-  "jest": {
-    "globals": {
-      "__TS_CONFIG__": "tsconfig.json"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
-    },
-    "testMatch": [
-      "**/test/**/*.test.(ts|js)"
-    ],
-    "testEnvironment": "node"
   },
   "dependencies": {
     "async": "^2.1.2",
@@ -97,7 +80,6 @@
     "@types/express-session": "0.0.32",
     "@types/fs-extra": "^5.0.0",
     "@types/highlight.js": "^9.12.2",
-    "@types/jest": "^19.2.2",
     "@types/jquery": "^2.0.41",
     "@types/jsonwebtoken": "^7.2.5",
     "@types/lodash": "^4.14.63",
@@ -119,14 +101,11 @@
     "concurrently": "^3.4.0",
     "gulp": "^3.9.1",
     "gulp-watch": "^5.0.0",
-    "jest": "^19.0.2",
     "log4js": "^2.3.11",
-    "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
     "shelljs": "^0.7.7",
     "stylus": "^0.54.5",
     "supertest": "^2.0.1",
-    "ts-jest": "^19.0.8",
     "ts-loader": "^3.5.0",
     "tslint": "^5.0.0",
     "typescript": "^2.6.1",
