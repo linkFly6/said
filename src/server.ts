@@ -264,7 +264,7 @@ if (process.env.NODE_ENV === 'production') {
         opts.domains = certs.altnames
       }
       else {
-        opts.email = 'linkF ly6@live.com'
+        opts.email = 'linkFly6@live.com'
         opts.agreeTos = true
       }
       cb(null, { options: opts, certs: certs })
