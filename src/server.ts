@@ -57,15 +57,14 @@ import { Response } from 'express'
 /**
  * Create Express server.
  */
-const app = express()
-
+const app = express();
 
 
 
 /**
  * Connect to MongoDB.
  */
-// mongoose.Promise = global.Promise;
+(mongoose as any).Promise = global.Promise
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI)
 
 mongoose.connection.on('error', () => {
@@ -87,8 +86,8 @@ app.use(compression())
  * //www.tasaid.com 重定向到 https://tasaid.com
  */
 app.use((req, res, next) => {
-  if (/^www\./.test(req.host)) {
-    const host = req.host.slice(4)
+  if (/^www\./.test(req.hostname)) {
+    const host = req.hostname.slice(4)
     return res.redirect(301, 'https://' + host + req.originalUrl)
   } else {
     next()
