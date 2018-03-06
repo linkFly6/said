@@ -15,9 +15,9 @@ block content
         ul.music-info
           li.name #{article.song.title}
           li
-            a.link(href=`//www.sogou.com/web?query=${encodeURIComponent(article.song.artist)}`, target='_blank') #{article.song.artist}
+            a.link(href=`/link?url=${encodeURIComponent(`//www.sogou.com/web?query=${encodeURIComponent(article.song.artist)}`)}`, target='_blank') #{article.song.artist}
           li
-            a.link(href=`//www.sogou.com/web?query=${encodeURIComponent(article.song.album)}`, target='_blank') #{article.song.album}
+            a.link(href=`link?url=${encodeURIComponent(`//www.sogou.com/web?query=${encodeURIComponent(article.song.album)}`)}`, target='_blank') #{article.song.album}
         .music-player#player(data-src=`${article.song.url}`)
           .palyer-button
             i.saidfont.icon-play_icon
