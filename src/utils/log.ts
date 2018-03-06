@@ -16,7 +16,6 @@ interface ILog {
 
 const env = process.env.NODE_ENV || 'production'
 const isPro = env !== 'development'
-const isDisableLog = process.env.LOG_STATUS === 'off'
 
 if (env === 'development') {
   // const colors = import('colors')
@@ -50,7 +49,7 @@ export class Log implements ILog {
       description = desc
     }
     const msg = `[${namespace.toUpperCase()} - ${title}]:  ${description.replace(/[\r\n]/g, ' ')}`
-    if (isPro || isDisableLog) {
+    if (isPro) {
       logger[fn](msg)
     } else {
       const type: any = `[${fn.toUpperCase()} ${namespace}]`
