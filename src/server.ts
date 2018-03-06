@@ -254,15 +254,16 @@ app.use(homeController.noFound)
 if (process.env.NODE_ENV === 'production') {
   // 线上启用 HTTPS
   const lex = greenlock.create({
-    server: 'staging',
-    email: 'linkFly6@live.com',
-    challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '/tmp/acme-challenges' }) },
-    store: require('le-store-certbot').create({ webrootPath: '/tmp/acme-challenges' }),
+    // server: 'staging',
+    server: 'https://acme-v01.api.letsencrypt.org/directory',
+    email: 'linkF ly6@live.com',
+    challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '~/letsencrypt/var/acme-challenges' }) },
+    store: require('le-store-certbot').create({ webrootPath: '~/letsencrypt/srv/www/:hostname/.well-known/acme-challenge' }),
     agreeTos: true,
     approveDomains: ['tasaid.com', 'www.tasaid.com'],
     // app,
   })
-  require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
+  require('http').createServer(lex.middleware (require('redirect-https')())).listen(80, function () {
     console.log('Listening for ACME http-01 challenges on', this.address())
   })
   require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
