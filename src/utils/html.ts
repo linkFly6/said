@@ -57,7 +57,7 @@ export const convertMarkdown2HTML = (context: string) => {
       return `<a href="${href}" title="${title || ''}">${text}</a>`
     }
     // 跳转的链接，全部补上统计
-    const url = `//tasaid.com/home/sv?url=${encodeURIComponent(href)}`
+    const url = `//tasaid.com/link?url=${encodeURIComponent(href)}`
     return `<a href="${url}" title="${title || ''}" target="_blank">${text}</a>`
   }
 
