@@ -3,7 +3,7 @@
  */
 import * as express from 'express'
 // import * as device from 'express-device'
-const device = require('express-device')
+// const device = require('express-device')
 import * as compression from 'compression'  // compresses requests
 import * as session from 'express-session'
 import * as bodyParser from 'body-parser'
@@ -20,6 +20,7 @@ import router from './middleware/routers'
 import { actionHandler } from './applications/router'
 import * as cookieParser from 'cookie-parser'
 import expressValidator = require('express-validator')
+const letsencryptExpress = require('letsencrypt-express')
 
 
 import * as applications from './applications'
@@ -249,13 +250,23 @@ app.use(homeController.noFound)
 // app.use(errorHandler())
 
 
-
-/**
- * Start Express server.
- */
-app.listen(app.get('port'), () => {
-  // console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'))
-  // console.log('  Press CTRL-C to stop\n')
-})
+if (process.env.NODE_ENV === 'production') {
+  // 线上启用 HTTPS
+  letsencryptExpress.create({
+    server: 'staging',
+    email: 'linkFly6@live.com',
+    agreeTos: true,
+    approveDomains: ['tasaid.com', 'www.tasaid.com'],
+    app,
+  }).listen(80, 443)
+} else {
+  /**
+   * Start Express server.
+   */
+  app.listen(app.get('port'), () => {
+    // console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'))
+    // console.log('  Press CTRL-C to stop\n')
+  })
+}
 
 module.exports = app
