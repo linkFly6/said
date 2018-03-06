@@ -1,3 +1,9 @@
+import * as dotenv from 'dotenv'
+/**
+ * 优先读取全局配置，否则后面有包使用了配置会找不到
+ */
+dotenv.config({ path: '.env.example' })
+
 /**
  * Module dependencies.
  */
@@ -9,7 +15,6 @@ import * as session from 'express-session'
 import * as bodyParser from 'body-parser'
 import * as errorHandler from 'errorhandler'
 import * as lusca from 'lusca'
-import * as dotenv from 'dotenv'
 import * as mongo from 'connect-mongo'
 // import * as flash from 'express-flash'
 import * as path from 'path'
@@ -27,11 +32,6 @@ import * as applications from './applications'
 
 
 const MongoStore = mongo(session)
-
-/**
- * Load environment variables from .env file, where API keys and passwords are configured.
- */
-dotenv.config({ path: '.env.example' })
 
 
 /**

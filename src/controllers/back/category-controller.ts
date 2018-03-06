@@ -84,7 +84,6 @@ export default class {
     }
 
     try {
-      // TODO 这里应该把所有的分类引用都修改，比如 blog 里面的
       let res = await updateCategoryById(params.entity.id, {
         icon: params.entity.icon,
         name: params.entity.name,

@@ -62,7 +62,6 @@ export default class {
         return ERRORS.DENIED
       }
 
-      // TODO article2SimpleArticle
       let res = await queryAllArticleByAdmin(params.admin)
       log.info('res', res)
       return res.map(a => article2SimpleArticle(a))
@@ -184,7 +183,6 @@ export default class {
     let article: ArticleModel | null = null
 
     try {
-      // TODO article2SimpleArticle
       article = await queryArticleById(params.articleId, params.admin)
     } catch (error) {
       if (ServiceError.is(error)) {
