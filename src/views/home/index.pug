@@ -40,7 +40,7 @@ block content
               .detail
                 h2
                   a.ellipsis(title=article.title, href=`/said/${article.key}.html`) #{article.title}
-                time.date #{article.info.createTime}
+                time.date #{article.info.localDate}
       //- blog 模块
       .said-module
         .head
@@ -61,7 +61,7 @@ block content
               .footer
                 i.saidfont.icon-category #{blog.category.name}
                 i.saidfont.icon-yonghu #{blog.info.pv}
-                span #{blog.info.createTime}
+                span #{blog.info.localDate}
       //- 实验室模块，尚未开发
       //- .said-module
       //-   .head
