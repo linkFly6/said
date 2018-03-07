@@ -24,6 +24,7 @@ import * as log from './utils/log'
 import router from './middleware/routers'
 import { actionHandler } from './applications/router'
 import * as cookieParser from 'cookie-parser'
+import * as spdy from 'spdy'
 import expressValidator = require('express-validator')
 // https://github.com/Daplie/greenlock-express
 const greenlock = require('greenlock-express')
@@ -195,7 +196,8 @@ app.use(async (req, res: Response, next) => {
     }
     res.locals.user = userInfo.user
     // 注入到 cookie https://segmentfault.com/a/1190000004139342
-    res.cookie('ut', userInfo.token, { maxAge: 31536E7 }) // 10 years
+    // @TODO secure: true 暂时不设死，确认 HTTPS 没问题才设定
+    res.cookie('ut', userInfo.token, { maxAge: 31536E7, httpOnly: true }) // 10 years
   }
   next()
 })
@@ -218,7 +220,7 @@ app.use((req, res, next) => {
  * app router
  */
 app.get('/', safeRouterHandler(homeController.index))
-app.get('/rebots.txt', safeRouterHandler(homeController.rebots))
+app.get('/robots.txt', safeRouterHandler(homeController.robots))
 app.get('/link', safeRouterHandler(homeController.link))
 // 后台系统
 app.get('/back/?*', safeRouterHandler(homeController.backend))
@@ -283,9 +285,14 @@ if (process.env.NODE_ENV === 'production') {
   require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
     appLog.info('Listening', `for ACME http-01 challenges on: ${JSON.stringify(this.address())}`)
   })
-  require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+
+  // 开启 http2
+  spdy.createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
     appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
   })
+  // require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+  //   appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
+  // })
 } else {
   /**
    * Start Express server.

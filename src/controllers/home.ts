@@ -16,11 +16,16 @@ const log = new Log('router/home')
  * Home page.
  */
 export const index = async (req: Request, res: Response) => {
+  /**
+   * server push 参见： https://segmentfault.com/a/1190000009084692
+   * req.push()
+   */
+
   // const blogCount = await queryAllBlogCount()
   let blogs = await queryAllBlogByPage(3).then(blogs => {
     return blogs.map(blog => {
       let item: IBlog = blog.toJSON() as any
-      item.info.createTime = date2Local(item.info.createTime) as any
+      (item as any).info.localDate = date2Local(item.info.createTime) as any
       return item
     })
   })
@@ -30,7 +35,7 @@ export const index = async (req: Request, res: Response) => {
       // article.poster.
       let item: IArticle = article.toJSON() as any
       item.poster = image2outputImage(item.poster) as any
-      item.info.createTime = date2Local(item.info.createTime) as any
+      (item as any).info.localDate = date2Local(item.info.createTime) as any
       return item
     })
   })
@@ -112,10 +117,10 @@ export const backend = (req: Request, res: Response) => {
 }
 
 /**
- * GET /rebots.txt
+ * GET /robots.txt
  * @param req 
  * @param res 
  */
-export const rebots = (req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, '../rebots.txt'))
+export const robots = (req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, '../robots.txt'))
 }
