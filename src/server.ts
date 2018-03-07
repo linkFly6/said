@@ -24,6 +24,7 @@ import * as log from './utils/log'
 import router from './middleware/routers'
 import { actionHandler } from './applications/router'
 import * as cookieParser from 'cookie-parser'
+import * as spdy from 'spdy'
 import expressValidator = require('express-validator')
 // https://github.com/Daplie/greenlock-express
 const greenlock = require('greenlock-express')
@@ -283,9 +284,14 @@ if (process.env.NODE_ENV === 'production') {
   require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
     appLog.info('Listening', `for ACME http-01 challenges on: ${JSON.stringify(this.address())}`)
   })
-  require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+
+  // 开启 http2
+  spdy.createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
     appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
   })
+  // require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+  //   appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
+  // })
 } else {
   /**
    * Start Express server.
