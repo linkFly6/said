@@ -19,7 +19,6 @@ import * as mongo from 'connect-mongo'
 // import * as flash from 'express-flash'
 import * as path from 'path'
 import * as mongoose from 'mongoose'
-import * as passport from 'passport'
 import * as log from './utils/log'
 import router from './middleware/routers'
 import { actionHandler } from './applications/router'
@@ -46,7 +45,6 @@ import * as saidController from './controllers/article'
 /**
  * API keys and Passport configuration.
  */
-import * as passportConfig from './config/passport'
 import { isMobileDevice } from './utils/device'
 import { DEVICE } from './models/server/enums'
 import { getAdminInfoByToken } from './services/admin-service'
@@ -111,8 +109,7 @@ app.use(session({
     autoReconnect: true,
   }),
 }))
-// app.use(passport.initialize())
-// app.use(passport.session())
+
 // app.use(flash())
 // app.use(lusca.xframe('SAMEORIGIN'))
 // app.use(lusca.xssProtection(true))
