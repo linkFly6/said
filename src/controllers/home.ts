@@ -20,7 +20,7 @@ export const index = async (req: Request, res: Response) => {
   let blogs = await queryAllBlogByPage(3).then(blogs => {
     return blogs.map(blog => {
       let item: IBlog = blog.toJSON() as any
-      item.info.createTime = date2Local(item.info.createTime) as any
+      (item as any).info.localDate = date2Local(item.info.createTime) as any
       return item
     })
   })
@@ -30,7 +30,7 @@ export const index = async (req: Request, res: Response) => {
       // article.poster.
       let item: IArticle = article.toJSON() as any
       item.poster = image2outputImage(item.poster) as any
-      item.info.createTime = date2Local(item.info.createTime) as any
+      (item as any).info.localDate = date2Local(item.info.createTime) as any
       return item
     })
   })

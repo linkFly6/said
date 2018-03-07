@@ -209,10 +209,19 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
     path,
   })
 
-  try {
+  /**
+   * 歌曲 meta 信息，如果读取错误则返回空数据
+   */
+  let metadata: MM.Metadata | null = null
 
-    const metadata = await getAudioMetadata(file.buffer)
+  try {
+    metadata = await getAudioMetadata(file.buffer)
     log.info('uploadSong.getAudioMetadata.metadata', metadata)
+  } catch (error) {
+    log.error('uploadSong.getAudioMetadata.metadata.catch', error)
+  }
+
+  try {
     // 保存到七牛
     const res = await uploadFileToQiniu<QiqniuResBody>(
       path,
@@ -225,8 +234,8 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
     log.info('uploadSong.uploadFileToQiniu', res)
     // 判断格式是否合法
     if (isNaN(+res.respBody.info.format.duration)) {
-      // TODO 要把 7牛云的图片给删掉
-      throw new ServiceError('uploadSong.uploadFileToQiniu.durationNaN', { params, res }, '歌曲文件转存失败')
+      // @TODO 要把 7牛云的图片给删掉
+      throw new ServiceError('uploadSong.uploadFileToQiniu.durationNaN', { params, res }, '歌曲文件信息不正确，歌曲转存失败')
     }
     return {
       // _id: '',
@@ -246,15 +255,15 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
       /**
        * 专辑
        */
-      album: metadata.album,
+      album: metadata ? metadata.album : metadata,
       /**
        * 歌手
        */
-      artist: metadata.artist ? metadata.artist.join('&') : '',
+      artist: metadata && metadata.artist && metadata.artist.length ? metadata.artist.join('&') : '',
       /**
        * 标题
        */
-      title: metadata.title,
+      title: metadata ? metadata.title : '',
       /**
        * 大小 kb
        */
