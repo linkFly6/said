@@ -112,10 +112,10 @@ export const backend = (req: Request, res: Response) => {
 }
 
 /**
- * GET /rebots.txt
+ * GET /robots.txt
  * @param req 
  * @param res 
  */
-export const rebots = (req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, '../rebots.txt'))
+export const robots = (req: Request, res: Response) => {
+  res.sendFile(path.resolve(__dirname, '../robots.txt'))
 }

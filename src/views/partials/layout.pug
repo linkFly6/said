@@ -1,10 +1,12 @@
 doctype html
-html
+html(lang='zh')
   head
-    meta(http-equiv='description', content='听说-linkFly的博客')
+    meta(name='description', content='听说-linkFly的博客')
     meta(name='author', content='linkFly')
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    //- 防止被 iframe 嵌套，目前没有敏感信息无所谓
+    //- meta(http-equiv='X-Frame-Options', content='ALLOW-FROM https://tasaid.com')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
     meta(name='keywords', content='linkfly,said,听说,blog,博客,技术,nodejs,前端,javascript,web')
     //- meta(name='theme-color' content='#4DA5F4')

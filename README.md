@@ -61,7 +61,7 @@ $ sh deploy.sh # 进行部署
 - 测试生产环境下，`express` 对于错误页的处理
 - 确认后台管理员登录失效的逻辑
 - HTTPS
-- 部署脚本中需要 copy `rebots.txt` 到网站根目录下（或者指定 url）
+- 部署脚本中需要 copy `robots.txt` 到网站根目录下（或者指定 url）
 - 从 `www.tasaid.com` 访问的流量全部自动跳转到 `tasaid.com` (不带 `www`)
 - controller 需要支持 render
 - 访问量/阅读量/浏览量：通过 log 文件定期收集(例如 10min)

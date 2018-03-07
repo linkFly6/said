@@ -196,7 +196,8 @@ app.use(async (req, res: Response, next) => {
     }
     res.locals.user = userInfo.user
     // 注入到 cookie https://segmentfault.com/a/1190000004139342
-    res.cookie('ut', userInfo.token, { maxAge: 31536E7 }) // 10 years
+    // @TODO secure: true 暂时不设死，确认 HTTPS 没问题才设定
+    res.cookie('ut', userInfo.token, { maxAge: 31536E7, httpOnly: true }) // 10 years
   }
   next()
 })
@@ -219,7 +220,7 @@ app.use((req, res, next) => {
  * app router
  */
 app.get('/', safeRouterHandler(homeController.index))
-app.get('/rebots.txt', safeRouterHandler(homeController.rebots))
+app.get('/robots.txt', safeRouterHandler(homeController.robots))
 app.get('/link', safeRouterHandler(homeController.link))
 // 后台系统
 app.get('/back/?*', safeRouterHandler(homeController.backend))
