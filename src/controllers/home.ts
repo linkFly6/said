@@ -16,6 +16,11 @@ const log = new Log('router/home')
  * Home page.
  */
 export const index = async (req: Request, res: Response) => {
+  /**
+   * server push 参见： https://segmentfault.com/a/1190000009084692
+   * req.push()
+   */
+
   // const blogCount = await queryAllBlogCount()
   let blogs = await queryAllBlogByPage(3).then(blogs => {
     return blogs.map(blog => {
