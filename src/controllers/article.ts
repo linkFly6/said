@@ -105,7 +105,7 @@ export const index = async (req: Request, res: Response) => {
       return convertArticle2View(articleModel.toJSON() as IArticle)
     })
     res.render('said/said-mobile-index', {
-      title: '听说',
+      title: '听说 - 秋天该很好，你若尚在场',
       articles,
       maxPage,
     })
@@ -119,7 +119,7 @@ export const index = async (req: Request, res: Response) => {
       return convertArticle2View(articleModel.toJSON() as IArticle)
     })
     res.render('said/said-index', {
-      title: '听说',
+      title: '听说 - 秋天该很好，你若尚在场',
       pageIndex: 2,
       articles,
       page: +req.params.page || 1,
@@ -197,13 +197,13 @@ export const detail = async (req: Request, res: Response) => {
 
   if (res.locals.device === DEVICE.MOBILE) {
     res.render('said/said-mobile-detail', {
-      title: '听说',
+      title: `${article.title} - 听说`,
       likeIt,
       article,
     })
   } else {
     res.render('said/said-detail', {
-      title: '听说',
+      title: `${article.title} - 听说`,
       pageIndex: 2,
       likeIt,
       article,

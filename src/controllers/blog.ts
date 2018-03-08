@@ -134,13 +134,13 @@ export const detail = async (req: Request, res: Response) => {
 
   if (res.locals.device === DEVICE.MOBILE) {
     res.render('blog/blog-mobile-detail', {
-      title: 'blog - 每一行代码都恰到好处',
+      title: `${blog.title} - blog`,
       likeIt,
       blog,
     })
   } else {
     res.render('blog/blog-detail', {
-      title: 'blog - 每一行代码都恰到好处',
+      title: `${blog.title} - blog`,
       pageIndex: 1,
       likeIt,
       blog,
