@@ -42,13 +42,13 @@ export const index = async (req: Request, res: Response) => {
   if (res.locals.device === DEVICE.MOBILE) {
     // 移动页面
     res.render('home/index-mobile', {
-      title: '听说',
+      // 默认就是这个标题
+      // title: '听说 - 世界很大，风住过这里',
       blogs,
       articles,
     })
   } else {
     res.render('home/index', {
-      title: '听说',
       blogs,
       articles,
     })
@@ -64,6 +64,7 @@ export const noFound = (req: Request, res: Response) => {
   res.status(404)
   res.render('home/404', {
     // src/views/partials/layout.pug
+    title: '该页未找到，这里一片荒芜 — 听说',
     override: true,
   })
 }
@@ -77,6 +78,7 @@ export const noFound = (req: Request, res: Response) => {
 export const error = (req: Request, res: Response) => {
   res.status(500)
   res.render('home/error', {
+    title: '服务器出了一点小问题 - 听说',
     // src/views/partials/layout.pug
     override: true,
   })
