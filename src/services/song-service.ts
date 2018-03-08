@@ -234,7 +234,7 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
     log.info('uploadSong.uploadFileToQiniu', res)
     // 判断格式是否合法
     if (isNaN(+res.respBody.info.format.duration)) {
-      // @TODO 要把 7牛云的图片给删掉
+      // @TODO 要把 7牛云的歌曲给删掉
       throw new ServiceError('uploadSong.uploadFileToQiniu.durationNaN', { params, res }, '歌曲文件信息不正确，歌曲转存失败')
     }
     return {

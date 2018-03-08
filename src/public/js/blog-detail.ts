@@ -99,9 +99,10 @@ $(() => {
       $title.next().find('li>a').each((j, element) => {
         const $child = $(element)
         const childTop = $child.data('top')
-        titles[i].child[j].height = $child.height()
+        const childHeight = $child.height()
+        titles[i].child[j].height = childHeight
         titles[i].child[j].navTop = navTop
-        navTop += height
+        navTop += childHeight
         $child.on('click', () => {
           $document.stop().animate({ scrollTop: childTop }, 300)
         })
