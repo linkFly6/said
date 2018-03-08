@@ -16,6 +16,11 @@ gulp.task('copy-images', function () {
   gulp.src('./src/public/images/**').pipe(gulp.dest('./dist/public/images/'))
 })
 
+// 字体文件
+gulp.task('copy-fonts', function () {
+  gulp.src('./src/public/fonts/**').pipe(gulp.dest('./dist/public/fonts/'))
+})
+
 // copy 后端文件
 gulp.task('copy-backend-static', function () {
   gulp.src('./src/public/backend/**').pipe(gulp.dest('./dist/public/backend/'))
@@ -172,6 +177,7 @@ gulp.task('build', function () {
   gulp.run('copy-env-file')
   gulp.run('copy-views')
   gulp.run('copy-images')
+  gulp.run('copy-fonts')
   gulp.run('copy-backend-static')
   gulp.run('compile-client-ts')
 })
