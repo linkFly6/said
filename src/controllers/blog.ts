@@ -11,6 +11,10 @@ import { Returns } from '../models/Returns'
 import { createUserLike, userLiked } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
 import { IViewBlog } from '../types/blog'
+import { checkUri, resolveHTTPUri } from '../utils/validate'
+import { createComment } from '../services/comment-service'
+import { updateUserInfo } from '../services/user-service'
+import { IUser } from '../models/user'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -21,6 +25,11 @@ const ERRORS = {
   BLOGNOTFOUND: new Returns(null, {
     code: 2,
     msg: 'invalid',
+    data: null,
+  }),
+  COMMENTERROR: new Returns(null, {
+    code: 3,
+    msg: 'params invalid',
     data: null,
   }),
 }
@@ -156,7 +165,7 @@ export const detail = async (req: Request, res: Response) => {
  * @param res 
  */
 export const userLike = async (req: Request, res: Response) => {
-  log.info('userLike.call', Object.assign(req.query, req.body))
+  log.info('userLike.call', Object.assign({}, req.query, req.body))
   const blogId = req.body.blogId
   if (!blogId || !regMongodbId.test(blogId)) {
     return res.json(ERRORS.BLOGNOTFOUND.toJSON())
@@ -176,6 +185,126 @@ export const userLike = async (req: Request, res: Response) => {
     msg: '',
     // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
     data: likeCounts && (likeCounts as any).nModified,
+  })
+  return res.json(returns.toJSON())
+}
+
+/**
+ * 评论
+ * POST /blog/comment
+ * @param req 
+ * @param res 
+ */
+export const comment = async (req: Request, res: Response) => {
+  const params = Object.assign({}, req.query, req.body)
+  log.info('comment', params)
+
+  // 验证 blog ID
+  const blogId = req.body.blogId
+  if (!blogId || !regMongodbId.test(blogId)) {
+    return res.json(ERRORS.BLOGNOTFOUND.toJSON())
+  }
+
+  // 校验昵称和 email
+  req.check('nickname')
+    .trim()
+    .notEmpty().withMessage('昵称不能为空')
+    .isLength({ max: 30 }).withMessage('昵称不允许超过 30 个字符')
+  req.check('email')
+    .trim()
+    .notEmpty().withMessage('email 不能为空')
+    .isLength({ max: 60 }).withMessage('email 不允许超过 60 个字符')
+  req.check('context')
+    .trim()
+    .notEmpty().withMessage('评论内容不能为空')
+    .isLength({ max: 140 }).withMessage('评论内容不允许超过 140 个字符')
+
+  const errors = req.validationErrors()
+  if (errors) {
+    log.error('params', { params, errors })
+    // 不需要返回太详细的信息，因为前端已经做过校验
+    return res.json(ERRORS.COMMENTERROR.toJSON())
+  }
+
+  /**
+   * 站点
+   */
+  let site = params.site
+  // 传入了站点，则校验站点
+  if (site && site.trim() && !checkUri(site)) {
+    return res.json(ERRORS.COMMENTERROR.toJSON())
+  } else {
+    // 修正站点信息
+    site = resolveHTTPUri(site)
+  }
+
+  const nickname = params.nickname.trim()
+  const email = params.email.trim()
+  /**
+   * @TODO 替换用户输入的链接地址
+   */
+  const context = params.context.trim()
+
+  // 是管理员大大，直接塞进数据库
+  if (res.locals.admin) {
+    const comment = await createComment({
+      user: res.locals.user,
+      context: context,
+      // @TODO 这里要试着做一些格式解析
+      contextHTML: context,
+      replys: [],
+      createTime: Date.now(),
+    })
+    // TODO ，上面应该加一层 try catch
+    log.warn('comment.create.admin', { user: res.locals.user, comment })
+    let returns = new Returns(null, {
+      code: 0,
+      msg: '',
+      // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
+      data: comment
+    })
+    return res.json(returns.toJSON())
+  }
+
+  let updates: {
+    nickName?: string
+    email?: string,
+    site?: string
+  } = {}
+
+  if (nickname !== res.locals.user.nickName) {
+    updates.nickName = nickname
+  }
+  if (email !== res.locals.user.email) {
+    updates.email = email
+  }
+  if (site && site != res.locals.user.site) {
+    updates.site = site
+  }
+
+  // 返回了新用户信息, @TODO 这里是 updateUserInfo 不完善
+  const newUserInfo = await updateUserInfo(res.locals.user, updates)
+  res.locals.user = newUserInfo.toJSON() as IUser
+
+  // 新增评论
+  const comment = await createComment({
+    user: res.locals.user,
+    context: context,
+    // @TODO 这里要试着做一些格式解析
+    contextHTML: context,
+    replys: [],
+    createTime: Date.now(),
+  })
+  // TODO ，上面应该加一层 try catch
+
+
+  log.warn('comment.create', { user: res.locals.user, comment })
+
+  let returns = new Returns(null, {
+    code: 0,
+    msg: '',
+    // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
+    data: comment
   })
   return res.json(returns.toJSON())
 }

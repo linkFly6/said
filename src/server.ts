@@ -16,7 +16,6 @@ import * as bodyParser from 'body-parser'
 import * as errorHandler from 'errorhandler'
 import * as lusca from 'lusca'
 import * as mongo from 'connect-mongo'
-// import * as flash from 'express-flash'
 import * as path from 'path'
 import * as mongoose from 'mongoose'
 import * as log from './utils/log'
@@ -110,7 +109,6 @@ app.use(session({
   }),
 }))
 
-// app.use(flash())
 // app.use(lusca.xframe('SAMEORIGIN'))
 // app.use(lusca.xssProtection(true))
 // app.use((req, res, next) => {
@@ -139,6 +137,9 @@ app.use('/static', express.static(path.join(__dirname, 'public'), { maxAge: 3155
  * 之所以特殊针对 res 写 Response 是因为 src/types/global.d.ts 中针对 Response 进行了扩展
  * 默认参数直接引用了 express 内部的 Response，而 global.d.ts 是针对 express 曝露出来的 Response 进行的扩展
  * 如果去掉则 res.locals 就无法识别 global.d.ts 中定义的类型了
+ * cookie:
+ * token： 管理员的 token
+ * ut(userToken)：普通用户的 token
  */
 app.use(async (req, res: Response, next) => {
   let params = req.method === 'GET'

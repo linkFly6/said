@@ -5,6 +5,26 @@ import { ServiceError } from '../models/server/said-error'
 
 const log = new Log('service/user')
 
+
+/**
+ * 验证评论对象
+ * @param nickname 昵称
+ * @param site 站点
+ * @param email email
+ */
+export const validateInputUser = (nickname: string, site: string, email: string) => {
+  // nickname = String(nickname).trim()
+  // site = String(site).trim()
+  // email = String(email).trim()
+  if (nickname.length > 30) {
+    return {
+      success: false,
+      message: '昵称不允许超过 30 个字符'
+    }
+  }
+}
+
+
 /**
  * 创建一个新用户
  * @param user 
@@ -78,6 +98,26 @@ export const getUserInfoByToken = async (token: string): Promise<IUser | null> =
     }
     throw error
   }
+}
 
+/**
+ * 修改用户信息
+ * @param user - 当前用户
+ * @param newUserinfo - 要修改的用户资料
+ */
+export const updateUserInfo = async (user: IUser, newUserinfo: {
+  nickName?: string
+  email?: string,
+  site?: string
+}) => {
+  log.info('updateUserInfo.updateUserInfo', {
+    before: user,
+    now: newUserinfo,
+  })
+  /**
+   * @TODO 这里应该把所有引用这个用户的地方全部修改
+   * 比如 comment/reply
+   */
+  return userDb.findByIdAndUpdate(user._id, newUserinfo, { new: true }).exec()
 }
 

@@ -12,3 +12,16 @@ export const getFileMd5 = (fileBuffer: Buffer) => {
   fsMd5.update(fileBuffer)
   return fsMd5.digest('hex')
 }
+
+/**
+ * 判断是否是空对象
+ * @example isEmptyObject({})
+ * @param obj 
+ */
+export const isEmptyObject = (obj: any) => {
+  var name
+  for (name in obj) {
+    return false
+  }
+  return true
+}

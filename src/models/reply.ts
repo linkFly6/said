@@ -1,19 +1,19 @@
-import { UserModel, UserSchema } from './user'
+import { UserSchema, IUser } from './user'
 import * as mongoose from 'mongoose'
 
 /**
  * 用户针对评论的回复
  */
-export interface ReplyModel extends mongoose.Document {
-  _id: string
+export interface IReply {
+  _id?: any
   /**
    * 回复评论的用户
    */
-  user: UserModel
+  user: IUser
   /**
    * 针对回复的回复，只有一级回复
    */
-  toReply?: ReplyModel
+  toReply?: IReply
   /**
    * 回复源码
    */
@@ -26,6 +26,12 @@ export interface ReplyModel extends mongoose.Document {
    * 创建时间
    */
   createTime: Number,
+}
+
+
+
+export interface ReplyModel extends IReply, mongoose.Document {
+  _id: any,
 }
 
 export const ReplySchema = new mongoose.Schema({

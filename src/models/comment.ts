@@ -1,17 +1,16 @@
-import { ReplyModel, ReplySchema } from './reply'
-import { UserModel, UserSchema } from './user'
+import { ReplyModel, ReplySchema, IReply } from './reply'
+import { UserModel, UserSchema, IUser } from './user'
 import * as mongoose from 'mongoose'
 
-
 /**
- * 用户评论
+ * 评论对象
  */
-export interface CommentModel extends mongoose.Document {
-  _id: string
+export interface IComment {
+  _id?: any
   /**
    * 用户
    */
-  user: UserModel
+  user: IUser
   /**
    * 评论源码
    */
@@ -23,12 +22,20 @@ export interface CommentModel extends mongoose.Document {
   /**
    * 针对评论的回复
    */
-  replys: ReplyModel[],
+  replys: IReply[],
 
   /**
    * 创建时间
    */
   createTime: number,
+}
+
+
+/**
+ * 用户评论
+ */
+export interface CommentModel extends IComment, mongoose.Document {
+  _id: any
 }
 
 export const CommentSchema = new mongoose.Schema({
