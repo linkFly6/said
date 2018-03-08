@@ -44,6 +44,7 @@ const remoteIcons = {
     'v8.png',
     'vscode.png',
     'vue.png',
+    'https.png',
   ]
 }
 
