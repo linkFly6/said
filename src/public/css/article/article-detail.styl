@@ -103,7 +103,7 @@ $pageBg = #f6f6f1
     position relative
     z-index 2
     // .music
-    .context
+    >.context
       &.said
         padding 2rem 2rem
         background-image linear-gradient(to bottom, #f6f6f1 0%, #ffffff 50%)
@@ -112,6 +112,8 @@ $pageBg = #f6f6f1
         .html
           p
             letter-spacing 1px
+          img
+            cursor default
         // 重写 ./lib/article 里面的部分样式
         .article-other-info
           padding 1rem 0
