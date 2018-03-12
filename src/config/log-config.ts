@@ -15,22 +15,22 @@ const createConfig = function (basePath: string): Configuration {
       access: {
         // 这里应该自定义输出 cookie，参见这里是 tokens: https://log4js-node.github.io/log4js-node/layouts.html
         type: 'dateFile',
-        filename: `${basePath}/access.log`,
+        filename: `${basePath}/access/access.log`,
         category: 'access',
       },
       info: {
         type: 'dateFile',
-        filename: `${basePath}/info.log`,
+        filename: `${basePath}/info/info.log`,
         category: 'info'
       },
       warn: {
         type: 'dateFile',
-        filename: `${basePath}/warn.log`,
+        filename: `${basePath}/warn/warn.log`,
         category: 'warn'
       },
       error: {
         type: 'dateFile',
-        filename: `${basePath}/error.log`,
+        filename: `${basePath}/error/error.log`,
         category: 'error'
       }
     },
