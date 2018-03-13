@@ -272,7 +272,13 @@ if (process.env.NODE_ENV === 'production') {
     approveDomains: (opts: any, certs: any, cb: any) => {
       appLog.info('approveDomains', { opts, certs })
       if (certs) {
-        opts.domains = certs.altnames
+        /*
+         * 注意这里如果是这样写的话，一定要对域名做校验
+         * 否则其他人可以通过将域名指向你的服务器地址，导致你注册了其他域名的证书
+         * 从而造成安全性问题
+         */
+        // opts.domains = certs.altnames
+        opts.domains = ['tasaid.com', 'www.tasaid.com', 'm.tasaid.com']
       } else {
         opts.email = 'linkFly6@live.com'
         opts.agreeTos = true
