@@ -2,6 +2,7 @@ import userDb, { IUser, UserModel, UserSchema, UserRole } from '../models/user'
 import { Log } from '../utils/log'
 import * as jwt from 'jsonwebtoken'
 import { ServiceError } from '../models/server/said-error'
+import { getMd5 } from '../utils'
 
 const log = new Log('service/user')
 
@@ -121,3 +122,24 @@ export const updateUserInfo = async (user: IUser, newUserinfo: {
   return userDb.findByIdAndUpdate(user._id, newUserinfo, { new: true }).exec()
 }
 
+
+/**
+ * 根据当前用户信息加密一组数据
+ * @param user 
+ */
+export const encodeByUser = <T=any>(user: IUser, data: T) => {
+  const md5Id = getMd5(user._id)
+  return jwt.sign(data, md5Id + process.env.JWT_USER_SECRET, {
+    expiresIn: '10y'
+  })
+}
+
+/**
+ * 根据当前用户信息解密一组数据
+ * @param user 
+ * @param token 
+ */
+export const decodeByUser = <T=any>(user: IUser, token: string): T => {
+  const md5Id = getMd5(user._id)
+  return jwt.verify(token, md5Id + process.env.JWT_USER_SECRET) as T
+}

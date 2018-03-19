@@ -5,7 +5,7 @@ import { AdminRule, IAdmin } from '../models/admin'
 import { authentication } from '../services/admin-service'
 import { Express } from 'express'
 import * as path from 'path'
-import { getFileMd5 } from '../utils'
+import { getMd5 } from '../utils'
 import { uploadFileToQiniu, deleteFileForQiniu, getThumbUrlByQiniuImage, getFullUrlByQiniuKey } from '../utils/file'
 import { OutputImage } from '../types/image'
 
@@ -159,7 +159,7 @@ export const uploadImage = async (imageType: ImageType, img: Express.Multer.File
   if (!~filterFileTypes.indexOf(img.mimetype)) {
     throw new ServiceError('uploadImage.mimetype', params, '不支持上传的文件')
   }
-  const md5 = getFileMd5(img.buffer)
+  const md5 = getMd5(img.buffer)
 
   // 通过文件 md5 生成文件名，所以进数据库校验一遍是否重名
   const existsNumer = await imageExistsByName(md5)

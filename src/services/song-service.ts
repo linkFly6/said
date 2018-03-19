@@ -4,7 +4,7 @@ import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
 import { authentication } from './admin-service'
 import { Express } from 'express'
-import { getFileMd5 } from '../utils'
+import { getMd5 } from '../utils'
 import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata, getFullUrlByQiniuKey } from '../utils/file'
 import { queryImageById, image2outputImage } from './image-service'
 import { OutputSong } from '../types/song'
@@ -190,7 +190,7 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
   if (!~acceptSongMimetypes.indexOf(file.mimetype)) {
     throw new ServiceError('uploadSong.mimetype', params, '不支持上传的文件')
   }
-  const md5 = getFileMd5(file.buffer)
+  const md5 = getMd5(file.buffer)
   // 通过文件 md5 生成文件名，所以进数据库校验一遍是否重名
   const existsNumer = await existsByName(md5)
   if (existsNumer) {

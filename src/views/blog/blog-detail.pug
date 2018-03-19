@@ -49,7 +49,7 @@ block content
             i.saidfont.icon-yonghu &nbsp;#{blog.info.pv}
           //- 评论
         section.comments
-          section.comments-list
+          section.comments-list#comment-list
             .item
               .head
                 a(href='#1', title='定位到该评论').hash
@@ -65,13 +65,13 @@ block content
                 span.delete
                   a(href='javascript:;') 删除
                 time 2014/10/08 00:21:51&nbsp;·&nbsp;
-            .comment-bar
+            .comment-bar#comment-bar
               .form
                 .inputs
-                  input.form-control(placeholder='名称')
-                  input.form-control(placeholder='email')
-                  input.form-control(placeholder='你的站点(可略)')
-                textarea.form-control(placeholder='说出你的想法或问题')
+                  input.form-control(placeholder='*名称').form-name
+                  input.form-control(placeholder='*email').form-email
+                  input.form-control(placeholder='你的站点(可略)').form-site
+                textarea.form-control(placeholder='*说出你的想法或问题').form-context
                 .btns
                   a.button(href='javascript:;') 发布评论
       section.blog-detail-nav
