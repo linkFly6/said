@@ -10,6 +10,14 @@ export const checkUri = (uri: string) => {
   return uri && uri.trim().length <= 60 && /^((https:|http:)?\/\/)?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-z_!~*'()-]+\.)*([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.[a-z]{2,6})(:[0-9]{1,4})?((\/?)|(\/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+\/?)$/.test(uri)
 }
 
+/**
+ * 验证 email 格式
+ * @param email 
+ */
+export const checkEmail =  (email: string) => {
+  return email && /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/g.test(email)
+}
+
 
 /**
  * 修正 uri，例如 tasaid.com => http://tasaid.com

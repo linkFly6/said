@@ -9,7 +9,7 @@ const slice = Array.prototype.slice
  * @param object - object - 使用对象的key格式化字符串，模板中使用${name}占位：${data},${value}
  * @param object - Array - 使用数组格式化，模板中使用${Index}占位：${0},${1}
  */
-export const format = function <T=object | Array<any>>(str: string, object: T): string {
+export const format = function (str: string, object: any): string {
   /// <summary>
   /// 1: 
   /// &#10; 1.1 - format(str,object) - 通过对象格式化
@@ -136,4 +136,35 @@ export const removeClass = (element: Element, className: string) => {
  */
 export const checkUri = (uri: string) => {
   return uri && uri.trim().length <= 60 && /^((https:|http:)?\/\/)?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-z_!~*'()-]+\.)*([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.[a-z]{2,6})(:[0-9]{1,4})?((\/?)|(\/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+\/?)$/.test(uri)
+}
+
+/**
+ * 验证 email 格式
+ * @param email 
+ */
+export const checkEmail =  (email: string) => {
+  return email && /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/g.test(email)
+}
+
+const rsurrogate = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g
+const rnoalphanumeric = /([^\#-~| |!])/g
+
+/**
+ * 将可能包含 HTML 文本修正为普通文本显示
+ * @param html 
+ */
+export const escapeHTML = (html: string) => {
+  // 将字符串经过 str 转义得到适合在页面中显示的内容, 例如替换 < 为 &lt  => 摘自avalon
+  return String(html).
+    replace(/&/g, '&amp;').
+    replace(rsurrogate, function (value) {
+      var hi = value.charCodeAt(0)
+      var low = value.charCodeAt(1)
+      return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';'
+    }).
+    replace(rnoalphanumeric, function (value) {
+      return '&#' + value.charCodeAt(0) + ';'
+    }).
+    replace(/</g, '&lt;').
+    replace(/>/g, '&gt;')
 }

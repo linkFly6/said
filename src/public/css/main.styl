@@ -19,6 +19,15 @@ textarea
 html
   &.lock
     overflow hidden
+// blog 页所有的 hash 定位锚点，设置一个高亮提醒
+*:target
+  animation: highlight-target 2s ease-out
+
+@keyframes highlight-target
+    0% 
+      background-color #FFFF66
+    100% 
+      background-color #FFFFFF
 
 .saidfont
   font-size 1rem

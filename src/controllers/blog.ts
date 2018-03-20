@@ -11,10 +11,11 @@ import { Returns } from '../models/Returns'
 import { createUserLike, userLiked } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
 import { IViewBlog } from '../types/blog'
-import { checkUri, resolveHTTPUri } from '../utils/validate'
-import { createComment } from '../services/comment-service'
+import { checkUri, resolveHTTPUri, checkEmail } from '../utils/validate'
+import { createComment, queryCommentsByBlog, queryCommentById } from '../services/comment-service'
 import { updateUserInfo } from '../services/user-service'
 import { IUser } from '../models/user'
+import { IComment } from '../models/comment'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -30,6 +31,11 @@ const ERRORS = {
   COMMENTERROR: new Returns(null, {
     code: 3,
     msg: 'params invalid',
+    data: null,
+  }),
+  COMMENTNOTFOUND: new Returns(null, {
+    code: 3,
+    msg: 'not found',
     data: null,
   }),
 }
@@ -127,6 +133,13 @@ export const detail = async (req: Request, res: Response) => {
     res.redirect('/error', 404)
     return
   }
+  const commentModels = await queryCommentsByBlog(blogModel._id)
+  const comments = commentModels.map(comment => {
+    const item = comment.toJSON() as IComment
+    (item as any).localDate = date2Local(item.createTime)
+    return item
+  })
+
   // 查询用户是否 like 了这篇文章
   const userLike = await userLiked(res.locals.user._id, blogModel._id, LikeType.BLOG)
   let likeIt = false
@@ -146,6 +159,7 @@ export const detail = async (req: Request, res: Response) => {
       title: `${blog.title} - blog`,
       likeIt,
       blog,
+      comments,
     })
   } else {
     res.render('blog/blog-detail', {
@@ -153,6 +167,7 @@ export const detail = async (req: Request, res: Response) => {
       pageIndex: 1,
       likeIt,
       blog,
+      comments,
     })
   }
 }
@@ -192,6 +207,13 @@ export const userLike = async (req: Request, res: Response) => {
 /**
  * 评论
  * POST /blog/comment
+ * blogId - 日志 ID
+ * nickname - 用户昵称
+ * email - 用户 email
+ * site - 用户站点
+ * context - 评论内容
+ * commentId - 针对评论的回复
+ * replyId - 针对回复的回复
  * @param req 
  * @param res 
  */
@@ -235,11 +257,14 @@ export const comment = async (req: Request, res: Response) => {
     return res.json(ERRORS.COMMENTERROR.toJSON())
   } else {
     // 修正站点信息
-    site = resolveHTTPUri(site)
+    site = site ? resolveHTTPUri(site) : site
   }
 
   const nickname = params.nickname.trim()
   const email = params.email.trim()
+  if (!checkEmail(email)) {
+    return res.json(ERRORS.COMMENTERROR.toJSON())
+  }
   /**
    * @TODO 替换用户输入的链接地址
    */
@@ -249,6 +274,7 @@ export const comment = async (req: Request, res: Response) => {
   if (res.locals.admin) {
     const comment = await createComment({
       user: res.locals.user,
+      blogId,
       context: context,
       // @TODO 这里要试着做一些格式解析
       contextHTML: context,
@@ -282,14 +308,37 @@ export const comment = async (req: Request, res: Response) => {
     updates.site = site
   }
 
-  // 返回了新用户信息, @TODO 这里是 updateUserInfo 不完善
+  // 返回了新用户信息, @TODO 这里的 updateUserInfo 不完善
   const newUserInfo = await updateUserInfo(res.locals.user, updates)
   res.locals.user = newUserInfo.toJSON() as IUser
+
+
+  // 开始处理评论，检查评论
+  if (params.commentId) {
+    if (!regMongodbId.test(params.commentId)) {
+      return res.json(ERRORS.COMMENTERROR.toJSON())
+    }
+    // 进入回复逻辑分支
+    const commentModel = await queryCommentById(params.commentId)
+    if (!commentModel) {
+      return res.json(ERRORS.COMMENTNOTFOUND.toJSON())
+    }
+    if (params.replyId) {
+      // 针对评论中回复的回复
+      if (!regMongodbId.test(params.replyId)) {
+        return res.json(ERRORS.COMMENTERROR.toJSON())
+      }
+    }
+    return
+  }
+
+
 
   // 新增评论
   const comment = await createComment({
     user: res.locals.user,
     context: context,
+    blogId,
     // @TODO 这里要试着做一些格式解析
     contextHTML: context,
     replys: [],
@@ -303,8 +352,18 @@ export const comment = async (req: Request, res: Response) => {
   let returns = new Returns(null, {
     code: 0,
     msg: '',
-    // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
-    data: comment
+    data: {
+      commentId: comment._id,
+      blogId,
+      date: comment.createTime,
+      localDate: date2Local(comment.createTime),
+      context,
+      user: {
+        role: res.locals.user.role,
+        nickname: res.locals.user.nickName,
+        site: res.locals.user.site,
+      }
+    }
   })
   return res.json(returns.toJSON())
 }

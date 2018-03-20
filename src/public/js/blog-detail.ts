@@ -61,7 +61,7 @@ $(() => {
       childHTMLs.push('<ul>')
       // 拼接子菜单的 HTML
       childHTMLs.push(title.child.map(child => {
-        return format<TemplateNavItem>(templateNavItem, {
+        return format(templateNavItem, {
           top: child.top,
           text: child.text,
           child: '',
@@ -69,7 +69,7 @@ $(() => {
       }).join(''))
       childHTMLs.push('</ul>')
     }
-    navHTMLs.push(format<TemplateNavItem>(templateNavItem, {
+    navHTMLs.push(format(templateNavItem, {
       top: title.top,
       text: title.text,
       child: childHTMLs.join('')
@@ -238,7 +238,10 @@ $(() => {
   /**
    * 注册用户评论相关事件
    */
-  registerUserCommitEvent((window as any).blogId)
+  registerUserCommitEvent((window as any).blogId,
+  (window as any).nickname,
+  (window as any).email,
+  (window as any).site)
 })
 
 // 目录数据对象

@@ -12,6 +12,10 @@ export interface IComment {
    */
   user: IUser
   /**
+   * blog ID
+   */
+  blogId: string,
+  /**
    * 评论源码
    */
   context: string
@@ -23,7 +27,6 @@ export interface IComment {
    * 针对评论的回复
    */
   replys: IReply[],
-
   /**
    * 创建时间
    */
@@ -40,6 +43,7 @@ export interface CommentModel extends IComment, mongoose.Document {
 
 export const CommentSchema = new mongoose.Schema({
   user: UserSchema as any,
+  blogId: mongoose.SchemaTypes.ObjectId,
   context: String,
   contextHTML: String,
   replys: [ReplySchema],
