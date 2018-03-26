@@ -25,7 +25,7 @@ export interface IReply {
   /**
    * 创建时间
    */
-  createTime: Number,
+  createTime: number,
 }
 
 

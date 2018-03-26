@@ -3,6 +3,7 @@ import { Log } from '../utils/log'
 import * as jwt from 'jsonwebtoken'
 import { ServiceError } from '../models/server/said-error'
 import { getMd5 } from '../utils'
+import { updateCommentsUserInfo } from './comment-service'
 
 const log = new Log('service/user')
 
@@ -119,7 +120,9 @@ export const updateUserInfo = async (user: IUser, newUserinfo: {
    * @TODO 这里应该把所有引用这个用户的地方全部修改
    * 比如 comment/reply
    */
-  return userDb.findByIdAndUpdate(user._id, newUserinfo, { new: true }).exec()
+  const userModel = await userDb.findByIdAndUpdate(user._id, newUserinfo, { new: true }).exec()
+  await updateCommentsUserInfo(userModel.toJSON() as any)
+  return userModel
 }
 
 

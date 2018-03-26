@@ -1,7 +1,7 @@
 import { format, throttle } from './lib/utils'
 import { view } from './lib/image-view'
 import { initUserLikeEvent } from './lib/user-like'
-import { registerUserCommitEvent } from './lib/user-commit'
+import { registerUserCommentEvent } from './lib/user-commit'
 // ts 按需加载会报错（因为 @types 没有声明命名空间），所以只能通过 require 来实现按需加载了
 const once = require('lodash/once')
 
@@ -238,7 +238,7 @@ $(() => {
   /**
    * 注册用户评论相关事件
    */
-  registerUserCommitEvent((window as any).blogId,
+  registerUserCommentEvent((window as any).blogId,
   (window as any).nickname,
   (window as any).email,
   (window as any).site)

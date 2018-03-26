@@ -12,10 +12,12 @@ import { createUserLike, userLiked } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
 import { IViewBlog } from '../types/blog'
 import { checkUri, resolveHTTPUri, checkEmail } from '../utils/validate'
-import { createComment, queryCommentsByBlog, queryCommentById } from '../services/comment-service'
+import { createComment, queryCommentsByBlog, queryCommentById, addCommentReplys, queryReplyByReplyId } from '../services/comment-service'
 import { updateUserInfo } from '../services/user-service'
 import { IUser } from '../models/user'
 import { IComment } from '../models/comment'
+import { IReply } from '../models/reply'
+import * as _ from 'lodash'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -34,7 +36,13 @@ const ERRORS = {
     data: null,
   }),
   COMMENTNOTFOUND: new Returns(null, {
-    code: 3,
+    code: 4,
+    msg: 'not found',
+    data: null,
+  }),
+  // 回复没有找到
+  REPLYNOTFOUND: new Returns(null, {
+    code: 5,
     msg: 'not found',
     data: null,
   }),
@@ -219,7 +227,7 @@ export const userLike = async (req: Request, res: Response) => {
  */
 export const comment = async (req: Request, res: Response) => {
   const params = Object.assign({}, req.query, req.body)
-  log.info('comment', params)
+  log.info('comment.call', params)
 
   // 验证 blog ID
   const blogId = req.body.blogId
@@ -243,7 +251,7 @@ export const comment = async (req: Request, res: Response) => {
 
   const errors = req.validationErrors()
   if (errors) {
-    log.error('params', { params, errors })
+    log.error('comment.params', { params, errors })
     // 不需要返回太详细的信息，因为前端已经做过校验
     return res.json(ERRORS.COMMENTERROR.toJSON())
   }
@@ -309,12 +317,14 @@ export const comment = async (req: Request, res: Response) => {
   }
 
   // 返回了新用户信息, @TODO 这里的 updateUserInfo 不完善
-  const newUserInfo = await updateUserInfo(res.locals.user, updates)
-  res.locals.user = newUserInfo.toJSON() as IUser
-
+  if (!_.isEmpty(updates)) {
+    const newUserInfo = await updateUserInfo(res.locals.user, updates)
+    res.locals.user = newUserInfo.toJSON() as IUser
+  }
 
   // 开始处理评论，检查评论
   if (params.commentId) {
+    let newReply: IReply
     if (!regMongodbId.test(params.commentId)) {
       return res.json(ERRORS.COMMENTERROR.toJSON())
     }
@@ -324,12 +334,52 @@ export const comment = async (req: Request, res: Response) => {
       return res.json(ERRORS.COMMENTNOTFOUND.toJSON())
     }
     if (params.replyId) {
-      // 针对评论中回复的回复
+      // 回复类型 1：针对评论中回复的回复
       if (!regMongodbId.test(params.replyId)) {
         return res.json(ERRORS.COMMENTERROR.toJSON())
       }
+      // 查找对应的回复对象
+      // @TODO 可以直接遍历上面的 commentModel 对象...不用再查数据库了
+      const reply = await queryReplyByReplyId(commentModel._id, params.replyId)
+      if (!reply) {
+        return res.json(ERRORS.REPLYNOTFOUND.toJSON())
+      }
+      newReply = {
+        user: res.locals.user,
+        toReply: reply,
+        context,
+        contextHTML: context,
+        createTime: Date.now(),
+      }
+    } else {
+      // 回复类型 2：针对评论的回复
+      newReply = {
+        user: res.locals.user,
+        context,
+        contextHTML: context,
+        createTime: Date.now(),
+      }
     }
-    return
+    const newReplyModel = await addCommentReplys(commentModel, newReply)
+    log.info('comment.newReplyModel', newReplyModel)
+    let returns = new Returns(null, {
+      code: 0,
+      msg: '',
+      data: {
+        commentId: commentModel._id,
+        replyId: newReply._id,
+        blogId,
+        date: newReply.createTime,
+        localDate: date2Local(newReply.createTime),
+        context,
+        user: {
+          role: res.locals.user.role,
+          nickname: res.locals.user.nickName,
+          site: res.locals.user.site,
+        }
+      }
+    })
+    return res.json(returns.toJSON())
   }
 
 

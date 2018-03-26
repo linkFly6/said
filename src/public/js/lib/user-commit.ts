@@ -120,7 +120,7 @@ class Comment {
       }
       this.submit({
         blogId: this.blogId,
-        commitId: this.commentId,
+        commentId: this.commentId,
         replyId: this.replyId,
         ...data
       })
@@ -225,7 +225,7 @@ class Comment {
   public submit(
     data: {
       blogId: string
-      commitId?: string
+      commentId?: string
       replyId?: string
     } & IComment) {
     if (this.submiting) return
@@ -305,7 +305,7 @@ class Comment {
 /**
  * 用户评论
  */
-export const registerUserCommitEvent = (blogId: string, nickName: string, email: string, site?: string) => {
+export const registerUserCommentEvent = (blogId: string, nickName: string, email: string, site?: string) => {
   // 评论列表容器
   const $commentList = $('#comment-list')
 
@@ -337,5 +337,16 @@ export const registerUserCommitEvent = (blogId: string, nickName: string, email:
     $me.closest('.item').append(reply.$element)
   })
 
+  reply.on('said.submit', (e, data: IReplyInfo) => {
+    // 父级评论(.item) 的楼层
+    const commentIndex = reply.$element.parent().index() + 1
+    // .replys-box
+    const $prev = reply.$element.prev()
+    // 当前评论下的回复，最大楼层
+    let replyIndex = $prev.find('.item').length
+    const html = comment.render(data, `${commentIndex}-${++replyIndex}`)
+    $prev.append(html)
+    reply.clear()
+  })
 }
 
