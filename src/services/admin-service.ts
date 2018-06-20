@@ -34,6 +34,8 @@ export const login = (username: string, password: string, ip: string, headers: s
   // 对密码进行加密
   password = cryptoPassword(password)
 
+  log.info('passowrd', password)
+
   return AdminDb.findOne({ username, password }).exec((err, admin) => {
     if (err) {
       throw new ServiceError('login.findOne', err)

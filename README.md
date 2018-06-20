@@ -33,7 +33,7 @@
 ## 开发和启动
 
 - 安装 [kitematic](https://kitematic.com/)（本地 `docker` 容器）
-- 在 `kitematic` 中安装 `mongodb`
+- 在 `kitematic` 中安装 `mongodb` (搜索 `mongo`)
 - 修改 `.env` 文件中的 `MONGODB_URI` 字段，修改为本地或 `dokcer` 容器中的地址
 - 修改 `.env` 文件中的 `QINIU_ACCESSKEY/QINIU_SECRETKEY`（七牛云存储密匙）
 - 执行命令：
@@ -75,7 +75,7 @@ $ sh deploy.sh # 进行部署
 - 每个页面的样式太集中了，需要拆出模块
 - 后台登录 cookie 设置为 `http-only`
 - ~~用户 like 动作应该写入记录，每个用户针对该文章只能 like 一次~~
-- 评论和报警发送邮件
+- 评论和报警发送邮件[开发中...]
 - 移动端查看文章图片的效果，做成类似 `ios` 系统查看图片那样的效果
 - 一段时间后支持 HTTP严格传输安全(`HSTS`)
 - ~~支持 HTTP/2~~

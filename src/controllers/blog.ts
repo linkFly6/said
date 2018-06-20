@@ -12,9 +12,9 @@ import { createUserLike, userLiked } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
 import { IViewBlog } from '../types/blog'
 import { checkUri, resolveHTTPUri, checkEmail } from '../utils/validate'
-import { createComment, queryCommentsByBlog, queryCommentById, addCommentReplys, queryReplyByReplyId } from '../services/comment-service'
-import { updateUserInfo } from '../services/user-service'
-import { IUser } from '../models/user'
+import { createComment, queryCommentsByBlog, queryCommentById, addCommentReplysByCommentId, queryReplyByReplyId } from '../services/comment-service'
+import { diffUserAndUpdate } from '../services/user-service'
+import { UserRole } from '../models/user'
 import { IComment } from '../models/comment'
 import { IReply } from '../models/reply'
 import * as _ from 'lodash'
@@ -145,6 +145,12 @@ export const detail = async (req: Request, res: Response) => {
   const comments = commentModels.map(comment => {
     const item = comment.toJSON() as IComment
     (item as any).localDate = date2Local(item.createTime)
+    if (item.replys.length) {
+      item.replys = item.replys.map(reply => {
+        (reply as any).localDate = date2Local(reply.createTime)
+        return reply
+      })
+    }
     return item
   })
 
@@ -168,6 +174,7 @@ export const detail = async (req: Request, res: Response) => {
       likeIt,
       blog,
       comments,
+      user: res.locals.user,
     })
   } else {
     res.render('blog/blog-detail', {
@@ -176,6 +183,7 @@ export const detail = async (req: Request, res: Response) => {
       likeIt,
       blog,
       comments,
+      user: res.locals.user,
     })
   }
 }
@@ -278,51 +286,20 @@ export const comment = async (req: Request, res: Response) => {
    */
   const context = params.context.trim()
 
-  // 是管理员大大，直接塞进数据库
-  if (res.locals.admin) {
-    const comment = await createComment({
-      user: res.locals.user,
-      blogId,
-      context: context,
-      // @TODO 这里要试着做一些格式解析
-      contextHTML: context,
-      replys: [],
-      createTime: Date.now(),
-    })
-    // TODO ，上面应该加一层 try catch
-    log.warn('comment.create.admin', { user: res.locals.user, comment })
-    let returns = new Returns(null, {
-      code: 0,
-      msg: '',
-      // mmp mongose 返回的是 {"n":1,"nModified":1,"ok":1} 格式，tsd 却显示 number
-      data: comment
-    })
-    return res.json(returns.toJSON())
+  // 看看用户信息是否有更新，如果有更新，则对整个用户信息进行更新
+  const newUserInfo =  await diffUserAndUpdate(res.locals.user, {
+    // 修正管理员数据
+    role: res.locals.admin ? UserRole.ADMIN : UserRole.NORMAL,
+    nickName: nickname,
+    email,
+    site,
+  })
+  // 有修改，则修正全局引用
+  if (newUserInfo.updated) {
+    res.locals.user = newUserInfo.user
   }
 
-  let updates: {
-    nickName?: string
-    email?: string,
-    site?: string
-  } = {}
-
-  if (nickname !== res.locals.user.nickName) {
-    updates.nickName = nickname
-  }
-  if (email !== res.locals.user.email) {
-    updates.email = email
-  }
-  if (site && site != res.locals.user.site) {
-    updates.site = site
-  }
-
-  // 返回了新用户信息, @TODO 这里的 updateUserInfo 不完善
-  if (!_.isEmpty(updates)) {
-    const newUserInfo = await updateUserInfo(res.locals.user, updates)
-    res.locals.user = newUserInfo.toJSON() as IUser
-  }
-
-  // 开始处理评论，检查评论
+  // ===== 回复逻辑
   if (params.commentId) {
     let newReply: IReply
     if (!regMongodbId.test(params.commentId)) {
@@ -345,7 +322,7 @@ export const comment = async (req: Request, res: Response) => {
         return res.json(ERRORS.REPLYNOTFOUND.toJSON())
       }
       newReply = {
-        user: res.locals.user,
+        user: newUserInfo.user,
         toReply: reply,
         context,
         contextHTML: context,
@@ -354,28 +331,29 @@ export const comment = async (req: Request, res: Response) => {
     } else {
       // 回复类型 2：针对评论的回复
       newReply = {
-        user: res.locals.user,
+        user: newUserInfo.user,
         context,
         contextHTML: context,
         createTime: Date.now(),
       }
     }
-    const newReplyModel = await addCommentReplys(commentModel, newReply)
+    const newReplyModel = await addCommentReplysByCommentId(commentModel._id, newReply)
     log.info('comment.newReplyModel', newReplyModel)
+    // @TODO 发邮件
     let returns = new Returns(null, {
       code: 0,
       msg: '',
       data: {
         commentId: commentModel._id,
-        replyId: newReply._id,
+        replyId: newReplyModel.replys[newReplyModel.replys.length - 1]._id,
         blogId,
         date: newReply.createTime,
         localDate: date2Local(newReply.createTime),
         context,
         user: {
-          role: res.locals.user.role,
-          nickname: res.locals.user.nickName,
-          site: res.locals.user.site,
+          role: newUserInfo.user.role,
+          nickname: newUserInfo.user.nickName,
+          site: newUserInfo.user.site,
         }
       }
     })
@@ -383,10 +361,10 @@ export const comment = async (req: Request, res: Response) => {
   }
 
 
-
-  // 新增评论
+  // ===== 新增评论
+  // @TODO 发邮件
   const comment = await createComment({
-    user: res.locals.user,
+    user: newUserInfo.user,
     context: context,
     blogId,
     // @TODO 这里要试着做一些格式解析
@@ -394,11 +372,9 @@ export const comment = async (req: Request, res: Response) => {
     replys: [],
     createTime: Date.now(),
   })
-  // TODO ，上面应该加一层 try catch
+  // @TODO ，上面应该加一层 try catch
 
-
-  log.warn('comment.create', { user: res.locals.user, comment })
-
+  log.warn('comment.create', { user: newUserInfo.user, comment })
   let returns = new Returns(null, {
     code: 0,
     msg: '',
@@ -409,9 +385,9 @@ export const comment = async (req: Request, res: Response) => {
       localDate: date2Local(comment.createTime),
       context,
       user: {
-        role: res.locals.user.role,
-        nickname: res.locals.user.nickName,
-        site: res.locals.user.site,
+        role: newUserInfo.user.role,
+        nickname: newUserInfo.user.nickName,
+        site: newUserInfo.user.site,
       }
     }
   })

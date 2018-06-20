@@ -1,12 +1,13 @@
-import userDb, { IUser, UserModel, UserSchema, UserRole } from '../models/user'
+import userDb, { IUser, UserModel, UserRole } from '../models/user'
 import { Log } from '../utils/log'
 import * as jwt from 'jsonwebtoken'
 import { ServiceError } from '../models/server/said-error'
 import { getMd5 } from '../utils'
 import { updateCommentsUserInfo } from './comment-service'
+import * as _ from 'lodash'
+import { SimpleAdmin } from '../types/admin'
 
 const log = new Log('service/user')
-
 
 /**
  * 验证评论对象
@@ -102,17 +103,59 @@ export const getUserInfoByToken = async (token: string): Promise<IUser | null> =
   }
 }
 
+type UpdateUser =  {
+  nickName?: string
+  email?: string,
+  site?: string,
+  role?: UserRole,
+}
+
+
+
+/**
+ * 对比两个和 user 类似的对象，增量更新用户信息
+ * @param oldUser 旧的用户对象
+ * @param newUserInfo 新的用户信息对象
+ * @returns { updated: 是否更新, user: 更新后的用户信息 }
+ */
+export const diffUserAndUpdate = async (oldUser: IUser, newUserInfo: UpdateUser) => {
+  log.info('diffUserAndUpdate.update', {
+    before: oldUser,
+    now: newUserInfo,
+  })
+  let updates: UpdateUser = {}
+  if (newUserInfo.nickName !== oldUser.nickName) {
+    updates.nickName = newUserInfo.nickName
+  }
+  if (newUserInfo.email !== oldUser.email) {
+    updates.email = newUserInfo.email
+  }
+  if (newUserInfo.site && newUserInfo.site != oldUser.site) {
+    updates.site = newUserInfo.site
+  }
+  if (newUserInfo.role != null && oldUser.role !== newUserInfo.role) {
+    updates.role = newUserInfo.role
+  }
+  if (!_.isEmpty(updates)) {
+    const newUserInfo = await updateUserInfo(oldUser, updates)
+    return {
+      updated: true,
+      user: newUserInfo.toJSON() as IUser,
+    }
+  }
+  return {
+    updated: false,
+    user: oldUser,
+  }
+}
+
 /**
  * 修改用户信息
  * @param user - 当前用户
  * @param newUserinfo - 要修改的用户资料
  */
-export const updateUserInfo = async (user: IUser, newUserinfo: {
-  nickName?: string
-  email?: string,
-  site?: string
-}) => {
-  log.info('updateUserInfo.updateUserInfo', {
+export const updateUserInfo = async (user: IUser, newUserinfo: UpdateUser) => {
+  log.info('updateUserInfo.update', {
     before: user,
     now: newUserinfo,
   })
@@ -130,7 +173,7 @@ export const updateUserInfo = async (user: IUser, newUserinfo: {
  * 根据当前用户信息加密一组数据
  * @param user 
  */
-export const encodeByUser = <T=any>(user: IUser, data: T) => {
+export const encodeByUser = (user: IUser, data: string | Buffer | object) => {
   const md5Id = getMd5(user._id)
   return jwt.sign(data, md5Id + process.env.JWT_USER_SECRET, {
     expiresIn: '10y'
@@ -144,5 +187,5 @@ export const encodeByUser = <T=any>(user: IUser, data: T) => {
  */
 export const decodeByUser = <T=any>(user: IUser, token: string): T => {
   const md5Id = getMd5(user._id)
-  return jwt.verify(token, md5Id + process.env.JWT_USER_SECRET) as T
+  return jwt.verify(token, md5Id + process.env.JWT_USER_SECRET) as any
 }

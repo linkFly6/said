@@ -1,4 +1,5 @@
 extends ../partials/layout.pug
+include ./modules/comment.pug
 
 block head
   link(rel='stylesheet', href='/static/css/blog-detail.css')
@@ -51,29 +52,37 @@ block content
         section.comments
           section.comments-list#comment-list
             each comment, i in comments
-              .item
-                .head
-                  a(href=`#${i+1}`, title='定位到该评论', name=i+1).hash
-                    i.saidfont.icon-yinyong
-                  if comment.user.role == 1
-                    a(href=`/link?url=${encodeURIComponent(comment.user.site)}`, target='_blank').link
-                      i.saidfont.icon-admin [管理员]#{comment.user.nickName}
-                  else if comment.user.site
-                    a(href=`/link?url=${encodeURIComponent(comment.user.site)}`, target='_blank').link
-                    = comment.user.nickName
-                  else
-                    = comment.user.nickName
-                .body #{comment.context}
-                .footer
-                  span ##{i+1}
-                  span.reply
-                    a(href='javascript:;', data-commentid=comment._id).reply-btn
-                      i.saidfont.icon-reply 回复
-                  if user.role == 1
-                    span.delete
-                      a(href='javascript:;', data-commentid=comment._id) 删除
-                  time #{comment.localDate}&nbsp;·&nbsp;
-                .replys-box
+              //- 从 ./modules/comment.pug 取到的 mixin
+              +commentMixin(comment, i)
+                if comment.replys.length
+                  each reply, j in comment.replys
+                    +replyMixin(reply, i, j)
+              //- .item
+              //-   .head
+              //-     a(href=`#${i+1}`, title='定位到该评论', name=i+1).hash
+              //-       i.saidfont.icon-yinyong
+              //-     if comment.user.role == 1
+              //-       //- a(href=`/link?url=${encodeURIComponent(comment.user.site)}`, target='_blank').link
+              //-       //- 这里不放出 site 是因为管理员可能没有 site，其次是因为管理员可能和 user 信息不同步，所以导致管理员的 email 很环路安
+              //-       i.saidfont.icon-admin [管理员]#{comment.user.nickName}
+              //-     else if comment.user.site
+              //-       a(href=`/link?url=${encodeURIComponent(comment.user.site)}`, target='_blank').link
+              //-       = comment.user.nickName
+              //-     else
+              //-       = comment.user.nickName
+              //-   .body #{comment.context}
+              //-   .footer
+              //-     span ##{i+1}
+              //-     span.reply
+              //-       a(href='javascript:;', data-commentid=comment._id).reply-btn
+              //-         i.saidfont.icon-reply 回复
+              //-     if user.role == 1
+              //-       span.delete
+              //-         a(href='javascript:;', data-commentid=comment._id) 删除
+              //-     time #{comment.localDate}&nbsp;·&nbsp;
+              //-   .replys-box
+              //-     if comment.replys.length
+
             //- .item
             //-   .head
             //-     a(href='#1', title='定位到该评论', name='#1').hash

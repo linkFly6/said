@@ -1,6 +1,6 @@
 import { default as CommentDb, CommentModel, IComment } from '../models/comment'
 import { Log } from '../utils/log'
-import { ServiceError } from '../models/server/said-error'
+// import { ServiceError } from '../models/server/said-error'
 import { IUser } from '../models/user'
 import { IReply, ReplyModel } from '../models/reply'
 
@@ -37,13 +37,16 @@ export const queryCommentById = async (commentId: string) => {
  * 新增评论中的回复对象
  * @param comment 
  */
-export const addCommentReplys = (comment: CommentModel, reply: IReply) => {
- return comment.update({
-    '$push':
+export const addCommentReplysByCommentId = (commentId: string, reply: IReply) => {
+  return CommentDb.findByIdAndUpdate(
+    commentId,
+    {
+      '$push':
       {
         replys: reply
       }
-  }).select({ 'replys': { '$slice': -1 }}).exec()
+    },
+    { new: true }).exec()
 }
 
 /**

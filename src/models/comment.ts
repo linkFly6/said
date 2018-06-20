@@ -1,5 +1,5 @@
-import { ReplyModel, ReplySchema, IReply } from './reply'
-import { UserModel, UserSchema, IUser } from './user'
+import { ReplySchema, IReply } from './reply'
+import { UserSchema, IUser } from './user'
 import * as mongoose from 'mongoose'
 
 /**

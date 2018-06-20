@@ -32,7 +32,7 @@ import { dateFormat } from './format'
  */
 const commentTemplate = `<div class="item">
 <div class="head">
-  <a class="hash" href="#\${hashname}" title="定位到该评论" name="#1">
+  <a class="hash" href="#\${hashname}" title="定位到该评论" name="#\${hashname}">
     <i class="saidfont icon-yinyong"></i>
   </a>
   \${headHTML}
@@ -313,6 +313,8 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   const $commentBar = $('.comment-bar')
   // clone 一份，用于回复评论
   const $replyBar = $commentBar.clone()
+  // 回复框文本设置
+  $replyBar.find('.button.submit').text('回复')
   // 计算 hash
   let hashIndex = $commentList.find('item').length
 
@@ -329,12 +331,15 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     comment.clear()
   })
 
-  // 绑定用户点击评论事件
+  /**
+   * 绑定用户点击评论事件
+   * 评论用户，回复用户
+   */
   $commentList.on('click', '.reply-btn', function () {
     const $me = $(this)
     const commentId = $me.data('commentid')
     reply.setReply(commentId)
-    $me.closest('.item').append(reply.$element)
+    $me.closest('.footer').after(reply.$element)
   })
 
   reply.on('said.submit', (e, data: IReplyInfo) => {

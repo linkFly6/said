@@ -47,7 +47,7 @@ import * as saidController from './controllers/article'
 import { isMobileDevice } from './utils/device'
 import { DEVICE } from './models/server/enums'
 import { getAdminInfoByToken } from './services/admin-service'
-import { createUser, getUserInfoByToken } from './services/user-service'
+import { createUser, getUserInfoByToken, diffUserAndUpdate } from './services/user-service'
 import { IUser, UserRole } from './models/user'
 import { SimpleAdmin } from 'admin'
 import { Response } from 'express'
@@ -169,6 +169,21 @@ app.use(async (req, res: Response, next) => {
       } else {
         // 注入到 user 中
         res.locals.user = userInfo
+        /**
+         * 如果是管理员，则检查下用户信息和管理员信息是否一致
+         * 因为存在 admin 在没有登录的情况下访问，所以这时候生成了 user
+         * 然后 admin 登录后再访问，这时候 user 信息是空的，而 admin 信息已经有了
+         * 从而导致 user 和 admin 不一致
+         * 在评论、回复的时候会出导致显示不一致
+         * 所以在这里修正数据
+         */
+        // 决定修正逻辑，如果是 admin 应该直接采用 admin 数据，而不是把 user 修正为 admin
+        // if (res.locals.admin) {
+        //   const newUserInfo = await diffUserAndUpdate(userInfo, res.locals.admin)
+        //   if (newUserInfo.updated) {
+        //     res.locals.user = newUserInfo.user
+        //   }
+        // }
       }
     } catch (error) {
       userToken = null

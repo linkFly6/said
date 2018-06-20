@@ -36,7 +36,7 @@ export interface ReplyModel extends IReply, mongoose.Document {
 
 export const ReplySchema = new mongoose.Schema({
   user: { type: UserSchema },
-  toReply: [this],
+  toReply: this,
   // or
   // toReply: {
   //   type: mongoose.Schema.Types.ObjectId,
