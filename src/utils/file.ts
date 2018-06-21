@@ -163,6 +163,15 @@ export const getThumbUrlByQiniuImage = (qiniuKey: string) => {
   return `//${process.env.QINIU_DOMAIN}/${qiniuKey}${process.env.QINIU_THUMBNAILNAME}`
 }
 
+/**
+ * 获取七牛存储的 key 专辑封面的完整路径
+ * blog/demo.jpg => //xx.com/blog/demo.jpg!thumb
+ * @param qiniuKey 
+ */
+export const getAlbumUrlByQiniuImage = (qiniuKey: string) => {
+  return `//${process.env.QINIU_DOMAIN}/${qiniuKey}${process.env.QINIU_ALBUMNAME}`
+}
+
 // /**
 //  * 保存缩略图
 //  * @param

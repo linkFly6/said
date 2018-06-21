@@ -6,7 +6,7 @@ import { authentication } from '../services/admin-service'
 import { Express } from 'express'
 import * as path from 'path'
 import { getMd5 } from '../utils'
-import { uploadFileToQiniu, deleteFileForQiniu, getThumbUrlByQiniuImage, getFullUrlByQiniuKey } from '../utils/file'
+import { uploadFileToQiniu, deleteFileForQiniu, getThumbUrlByQiniuImage, getFullUrlByQiniuKey, getAlbumUrlByQiniuImage } from '../utils/file'
 import { OutputImage } from '../types/image'
 
 
@@ -40,7 +40,12 @@ export const image2outputImage = (image: any): OutputImage => {
     size: image.size,
     type: image.type,
     url: getFullUrlByQiniuKey(image.key),
-    thumb: getThumbUrlByQiniuImage(image.key),
+    thumb:
+      /**
+       * 当图片为音乐类型的时候，使用另外一套图片样式（专辑样式）
+       */
+      image.type === ImageType.Music ?
+        getAlbumUrlByQiniuImage(image.key) : getThumbUrlByQiniuImage(image.key),
   }
 }
 
