@@ -30,7 +30,7 @@ mixin commentMixin(comment, i)
 mixin replyMixin(reply, i, j)
   .item
     .head
-      a(href=`#${i+1}`, title='定位到该评论', name=i+1).hash
+      a(href=`#${i+1}-${j+1}`, title='定位到该评论', name=`${i+1}+${j+1}`).hash
         i.saidfont.icon-yinyong
       if reply.user.role == 1
         i.saidfont.icon-admin [管理员]#{reply.user.nickName}
@@ -41,7 +41,7 @@ mixin replyMixin(reply, i, j)
         = reply.user.nickName
     .body #{reply.context}
     .footer
-      span ##{i+1}
+      span ##{i+1}-#{j+1}
       span.reply
         a(href='javascript:;', data-replyid=reply._id).reply-btn
           i.saidfont.icon-reply 回复

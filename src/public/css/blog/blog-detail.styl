@@ -43,6 +43,17 @@
         .comments-list
           .item
             padding 1rem
+            &.highlight
+              @keyframes highlight-item
+                  0% 
+                    background-color #FFFF66
+                  33%
+                    background-color #FFFFFF
+                  66%
+                    background-color #FFFF66
+                  100%
+                    background-color #FFFFFF
+              animation: highlight-item 6s ease-out
             .head
               position relative
               .hash
@@ -109,7 +120,7 @@
                 border-right $width solid transparent
         // 评论框
         .comment-bar
-          border-top 1px solid #eee
+          // border-top 1px solid #eee
           padding 1rem
           .form
             .form-control

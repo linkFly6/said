@@ -142,6 +142,7 @@ export const detail = async (req: Request, res: Response) => {
     return
   }
   const commentModels = await queryCommentsByBlog(blogModel._id)
+  // 为每个评论和回复对象加上 localDate 属性，用于显示本地时间
   const comments = commentModels.map(comment => {
     const item = comment.toJSON() as IComment
     (item as any).localDate = date2Local(item.createTime)

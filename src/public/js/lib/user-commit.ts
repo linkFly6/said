@@ -30,7 +30,7 @@ import { dateFormat } from './format'
 /**
  * 评论模板
  */
-const commentTemplate = `<div class="item">
+const commentTemplate = `<div class="item highlight">
 <div class="head">
   <a class="hash" href="#\${hashname}" title="定位到该评论" name="#\${hashname}">
     <i class="saidfont icon-yinyong"></i>
@@ -41,7 +41,7 @@ const commentTemplate = `<div class="item">
 <div class="footer">
   <span>#\${hashname}</span>
   <span class="reply">
-    <a href="javascript:;">
+    <a href="javascript:;" class="reply-btn">
       <i class="saidfont icon-reply" data-commentid="\${commentId}" data-replyid="\${replyId}">回复</i>
     </a>
   </span>
@@ -50,6 +50,7 @@ const commentTemplate = `<div class="item">
 </div>
 </div>`
 
+const isMacOS = !!~window.navigator.userAgent.indexOf('Mac OS X')
 
 class Comment {
   public blogId: string
@@ -104,26 +105,44 @@ class Comment {
       site,
     })
 
+    this.$element.on('keydown', e => {
+      /**
+       * ctrl+enter
+       * metaKey windows 下是 windows 键，mac 下是 command 键
+       */
+      if ((isMacOS && e.metaKey && e.keyCode === 13) || (e.ctrlKey && e.keyCode === 13)) {
+        e.preventDefault()
+        this.preSubmit()
+      }
+    })
+
     this.$submit = this.$element.find('.submit')
     // 提交评论
     this.$submit.on('click', () => {
-      const data = {
-        nickname: $.trim(this.$name.val()),
-        email: $.trim(this.$email.val()),
-        site: $.trim(this.$site.val()),
-        context: $.trim(this.$context.val())
-      }
-      const errorMsg = this.check(data)
-      if (errorMsg) {
-        this.message(errorMsg)
-        return
-      }
-      this.submit({
-        blogId: this.blogId,
-        commentId: this.commentId,
-        replyId: this.replyId,
-        ...data
-      })
+      this.preSubmit()
+    })
+  }
+
+  /**
+   * 预提交，会尝试获取表单数据，进行检查，然后提交
+   */
+  private preSubmit () {
+    const data = {
+      nickname: $.trim(this.$name.val()),
+      email: $.trim(this.$email.val()),
+      site: $.trim(this.$site.val()),
+      context: $.trim(this.$context.val())
+    }
+    const errorMsg = this.check(data)
+    if (errorMsg) {
+      this.message(errorMsg)
+      return
+    }
+    this.submit({
+      blogId: this.blogId,
+      commentId: this.commentId,
+      replyId: this.replyId,
+      ...data
     })
   }
 
@@ -289,7 +308,7 @@ class Comment {
    */
   private _getUserHTML(user: IReplyUserInfo) {
     const currentTemplate =
-      user.site ?
+      user.site && user.role !== 1 ?
         `<a class="link" href="/link?url=${encodeURIComponent(user.site)}" target="_blank">\${0}</a>`
         : `<span>\${0}</span>`
     return format(currentTemplate,
@@ -346,11 +365,11 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     // 父级评论(.item) 的楼层
     const commentIndex = reply.$element.parent().index() + 1
     // .replys-box
-    const $prev = reply.$element.prev()
+    const $replysBox = reply.$element.next()
     // 当前评论下的回复，最大楼层
-    let replyIndex = $prev.find('.item').length
+    let replyIndex = $replysBox.find('.item').length
     const html = comment.render(data, `${commentIndex}-${++replyIndex}`)
-    $prev.append(html)
+    $replysBox.append(html)
     reply.clear()
   })
 }

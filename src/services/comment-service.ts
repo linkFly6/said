@@ -22,7 +22,11 @@ export const createComment = async (comment: IComment) => {
  * @param blogId 
  */
 export const queryCommentsByBlog = async (blogId: string) => {
-  return CommentDb.find({ blogId }).sort('-_id').exec()
+  // return CommentDb.find({ blogId }).sort('-_id').exec()
+  /**
+   * 评论就按照时间正序来排列吧
+   */
+  return CommentDb.find({ blogId }).sort('_id').exec()
 }
 
 /**
