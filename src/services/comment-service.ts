@@ -75,8 +75,9 @@ export const updateCommentsUserInfo = async (user: IUser) => {
  * @param commentId 评论 ID
  * @param replyId 回复 ID
  */
-export const queryReplyByReplyId = async (commentId: string, replyId: string): Promise<ReplyModel> => {
-  return await CommentDb.findOne({ 'replys._id': replyId, _id: commentId }, { 'replys.$': 1 }).exec()
+export const queryReplyByReplyId = async (commentId: string, replyId: string): Promise<any> => {
+  // @TODO 这个查询有问题!
+  return await CommentDb.find({ 'replys._id': replyId, _id: commentId }).select('replys').exec()
 }
 
 /**

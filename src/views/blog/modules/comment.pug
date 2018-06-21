@@ -1,18 +1,22 @@
+//- 用户昵称渲染
+mixin usernameMixin(user)
+  if user.role == 1
+    //- a(href=`/link?url=${encodeURIComponent(comment.user.site)}`, target='_blank').link
+    //- 这里不放出 site 是因为管理员可能没有 site，其次是因为管理员可能和 user 信息不同步，所以导致管理员的 email 数据不正确
+    i.saidfont.icon-admin(title='管理员') #{user.nickName}
+  else if user.site
+    a(href=`/link?url=${encodeURIComponent(user.site)}`, target='_blank').link
+    = user.nickName
+  else
+    = user.nickName
+
 //- 评论内容 mixin
 mixin commentMixin(comment, i)
   .item
     .head
       a(href=`#${i+1}`, title='定位到该评论', name=i+1).hash
         i.saidfont.icon-yinyong
-      if comment.user.role == 1
-        //- a(href=`/link?url=${encodeURIComponent(comment.user.site)}`, target='_blank').link
-        //- 这里不放出 site 是因为管理员可能没有 site，其次是因为管理员可能和 user 信息不同步，所以导致管理员的 email 很环路安
-        i.saidfont.icon-admin [管理员]#{comment.user.nickName}
-      else if comment.user.site
-        a(href=`/link?url=${encodeURIComponent(comment.user.site)}`, target='_blank').link
-        = comment.user.nickName
-      else
-        = comment.user.nickName
+      +usernameMixin(comment.user)
     .body #{comment.context}
     .footer
       span ##{i+1}
@@ -27,25 +31,22 @@ mixin commentMixin(comment, i)
       block
 
 //- 回复内容 mixin
-mixin replyMixin(reply, i, j)
+mixin replyMixin(comment, reply, i, j)
   .item
     .head
       a(href=`#${i+1}-${j+1}`, title='定位到该评论', name=`${i+1}+${j+1}`).hash
         i.saidfont.icon-yinyong
-      if reply.user.role == 1
-        i.saidfont.icon-admin [管理员]#{reply.user.nickName}
-      else if reply.user.site
-        a(href=`/link?url=${encodeURIComponent(reply.user.site)}`, target='_blank').link
-        = reply.user.nickName
-      else
-        = reply.user.nickName
+      +usernameMixin(reply.user)
+      if reply.toReply
+        span.reply-txt 回复
+        //- +usernameMixin(reply.toReply.user)
     .body #{reply.context}
     .footer
       span ##{i+1}-#{j+1}
       span.reply
-        a(href='javascript:;', data-replyid=reply._id).reply-btn
+        a(href='javascript:;', data-commentid=comment._id, data-replyid=reply._id).reply-btn
           i.saidfont.icon-reply 回复
       if user.role == 1
         span.delete
-          a(href='javascript:;', data-replyid=reply._id) 删除
+          a(href='javascript:;', data-commentid=comment._id, data-replyid=reply._id) 删除
       time #{reply.localDate}&nbsp;·&nbsp;

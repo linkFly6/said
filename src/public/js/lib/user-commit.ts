@@ -41,13 +41,14 @@ const commentTemplate = `<div class="item highlight">
 <div class="footer">
   <span>#\${hashname}</span>
   <span class="reply">
-    <a href="javascript:;" class="reply-btn">
-      <i class="saidfont icon-reply" data-commentid="\${commentId}" data-replyid="\${replyId}">回复</i>
+    <a href="javascript:;" class="reply-btn" data-commentid="\${commentId}" data-replyid="\${replyId}">
+      <i class="saidfont icon-reply">回复</i>
     </a>
   </span>
   \${deleteHTML}
   <time>\${localDate}&nbsp;·&nbsp;</time>
 </div>
+<div class="replys-box"></div>
 </div>`
 
 const isMacOS = !!~window.navigator.userAgent.indexOf('Mac OS X')
@@ -313,7 +314,7 @@ class Comment {
         : `<span>\${0}</span>`
     return format(currentTemplate,
       user.role === 1 ?
-        `<i class="saidfont icon-admin"></i>[管理员]${escapeHTML(user.nickname)}` :
+        `<i class="saidfont icon-admin" title="管理员">${escapeHTML(user.nickname)}</i>` :
         escapeHTML(user.nickname)
     )
   }
@@ -356,8 +357,11 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
    */
   $commentList.on('click', '.reply-btn', function () {
     const $me = $(this)
+    // 评论 id
     const commentId = $me.data('commentid')
-    reply.setReply(commentId)
+    // 回复 id (如果有的话)
+    const replyid = $me.data('replyid')
+    reply.setReply(commentId, replyid)
     $me.closest('.footer').after(reply.$element)
   })
 
@@ -365,7 +369,11 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     // 父级评论(.item) 的楼层
     const commentIndex = reply.$element.parent().index() + 1
     // .replys-box
-    const $replysBox = reply.$element.next()
+    let $replysBox = reply.$element.next()
+    // 如果是针对回复的回复，则修正查找位置
+    if (!$replysBox.length) {
+      $replysBox =  reply.$element.closest('.replys-box')
+    }
     // 当前评论下的回复，最大楼层
     let replyIndex = $replysBox.find('.item').length
     const html = comment.render(data, `${commentIndex}-${++replyIndex}`)

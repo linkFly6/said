@@ -56,7 +56,7 @@ block content
               +commentMixin(comment, i)
                 if comment.replys.length
                   each reply, j in comment.replys
-                    +replyMixin(reply, i, j)
+                    +replyMixin(comment, reply, i, j)
           //- 评论框，用于评论文章
           .comment-bar#comment-bar
             .form
