@@ -44,7 +44,7 @@ block content
             a(href=`/link?url=${encodeURIComponent('https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh')}`, target='_blank')
               img(src='//static.tasaid.com/media/sa.3e9b6648.svg')
           .comments-sum
-            span 评论(#{blog.comments.length})
+            span 评论(#{comments.length})
           time 发布于 #{blog.info.createTimeString}
           .browse(title='浏览量')
             i.saidfont.icon-yonghu &nbsp;#{blog.info.pv}

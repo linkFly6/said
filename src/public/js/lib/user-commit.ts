@@ -127,7 +127,7 @@ class Comment {
   /**
    * 预提交，会尝试获取表单数据，进行检查，然后提交
    */
-  private preSubmit () {
+  private preSubmit() {
     const data = {
       nickname: $.trim(this.$name.val()),
       email: $.trim(this.$email.val()),
@@ -289,8 +289,8 @@ class Comment {
     /**
      * 针对回复的回复
      */
-    if (data.reply && data.reply.replyId) {
-      headHTMLs.push('<span class="reply-txt">回复</span>', this._getUserHTML(data.reply.user))
+    if (data.toReply && data.toReply.replyId) {
+      headHTMLs.push('<span class="reply-txt">回复</span>', this._getUserHTML(data.toReply.user))
     }
     return format(commentTemplate, {
       hashname,
@@ -336,7 +336,7 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   // 回复框文本设置
   $replyBar.find('.button.submit').text('回复')
   // 计算 hash
-  let hashIndex = $commentList.find('item').length
+  let hashIndex = $commentList.children('.item').length
 
   // 从服务器返回的数据初始化
   const comment = new Comment($commentBar[0], blogId, nickName, email, site)
@@ -365,14 +365,22 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     $me.closest('.footer').after(reply.$element)
   })
 
+  /**
+   * 用户回复评论
+   */
   reply.on('said.submit', (e, data: IReplyInfo) => {
     // 父级评论(.item) 的楼层
-    const commentIndex = reply.$element.parent().index() + 1
+    let commentIndex: number
     // .replys-box
-    let $replysBox = reply.$element.next()
+    let $replysBox: JQuery
     // 如果是针对回复的回复，则修正查找位置
-    if (!$replysBox.length) {
-      $replysBox =  reply.$element.closest('.replys-box')
+    if (data.toReply) {
+      $replysBox = reply.$element.closest('.replys-box')
+      commentIndex = reply.$element.closest('.comments-list>.item').index() + 1
+    } else {
+      $replysBox = reply.$element.next()
+      commentIndex = reply.$element.parent().index() + 1
+      // @TODO 修正页面上线是的评论数
     }
     // 当前评论下的回复，最大楼层
     let replyIndex = $replysBox.find('.item').length
@@ -380,5 +388,18 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     $replysBox.append(html)
     reply.clear()
   })
+
+
+  // 如果有 hash，则对 hash 命中的评论进行高亮
+  const hash = window.location.hash
+  /**
+   * match:
+   * #1
+   * #1-1
+   */
+  if (/^#\d+(-\d+)?$/.test(hash)) {
+    // 高亮对应评论的楼层
+    $commentList.find(`[href='${hash}']`).closest('.item').addClass('highlight')
+  }
 }
 

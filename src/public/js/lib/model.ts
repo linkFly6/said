@@ -14,6 +14,7 @@ export interface IReplyUserInfo {
 }
 
 /**
+ * server 接口返回
  * 回复对象
  */
 export interface IReplyInfo {
@@ -48,11 +49,7 @@ export interface IReplyInfo {
   /**
    * 被回复的回复
    */
-  reply?: {
-    /**
-     * 被回复的回复 ID
-     */
-    commentId: string
+  toReply?: {
     /**
      * 被回复的回复 ID
      */

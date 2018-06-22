@@ -12,7 +12,7 @@ import { createUserLike, userLiked } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
 import { IViewBlog } from '../types/blog'
 import { checkUri, resolveHTTPUri, checkEmail } from '../utils/validate'
-import { createComment, queryCommentsByBlog, queryCommentById, addCommentReplysByCommentId, queryReplyByReplyId } from '../services/comment-service'
+import { createComment, queryCommentsByBlog, queryCommentById, addCommentReplysByCommentId, queryCommentByReplyId } from '../services/comment-service'
 import { diffUserAndUpdate } from '../services/user-service'
 import { UserRole } from '../models/user'
 import { IComment } from '../models/comment'
@@ -288,7 +288,7 @@ export const comment = async (req: Request, res: Response) => {
   const context = params.context.trim()
 
   // 看看用户信息是否有更新，如果有更新，则对整个用户信息进行更新
-  const newUserInfo =  await diffUserAndUpdate(res.locals.user, {
+  const newUserInfo = await diffUserAndUpdate(res.locals.user, {
     // 修正管理员数据
     role: res.locals.admin ? UserRole.ADMIN : UserRole.NORMAL,
     nickName: nickname,
@@ -317,10 +317,24 @@ export const comment = async (req: Request, res: Response) => {
         return res.json(ERRORS.COMMENTERROR.toJSON())
       }
       // 查找对应的回复对象
-      // @TODO 可以直接遍历上面的 commentModel 对象...不用再查数据库了
-      const reply = await queryReplyByReplyId(commentModel._id, params.replyId)
+      // const comment = await queryCommentByReplyId(commentModel._id, params.replyId)
+      let reply: IReply
+      // 可以直接遍历上面的 commentModel 对象...不用再查数据库了
+      if (commentModel.replys.length) {
+        reply = commentModel.replys.find(reply => {
+          // 数据库中是 _id，为什么这里是 id 呢？
+          return (reply as any).id === params.replyId
+        })
+      }
       if (!reply) {
         return res.json(ERRORS.REPLYNOTFOUND.toJSON())
+      }
+      /**
+       * 这个被回复的对象，也是别人回复的
+       */
+      if (reply.toReply) {
+        // 为了防止回复对象层次太深
+        reply.toReply = undefined
       }
       newReply = {
         user: newUserInfo.user,
@@ -338,15 +352,16 @@ export const comment = async (req: Request, res: Response) => {
         createTime: Date.now(),
       }
     }
-    const newReplyModel = await addCommentReplysByCommentId(commentModel._id, newReply)
-    log.info('comment.newReplyModel', newReplyModel)
+    const newCommentModel = await addCommentReplysByCommentId(commentModel._id, newReply)
+    log.info('comment.newCommentModel', newCommentModel)
+    const newReplyModel = newCommentModel.replys[newCommentModel.replys.length - 1]
     // @TODO 发邮件
     let returns = new Returns(null, {
       code: 0,
       msg: '',
       data: {
         commentId: commentModel._id,
-        replyId: newReplyModel.replys[newReplyModel.replys.length - 1]._id,
+        replyId: newReplyModel._id,
         blogId,
         date: newReply.createTime,
         localDate: date2Local(newReply.createTime),
@@ -355,7 +370,18 @@ export const comment = async (req: Request, res: Response) => {
           role: newUserInfo.user.role,
           nickname: newUserInfo.user.nickName,
           site: newUserInfo.user.site,
-        }
+        },
+        // 如果有被回复对象
+        toReply: newReplyModel.toReply ? 
+         {
+           replyId: newReplyModel.toReply._id,
+           user: {
+            // 获取被回复对象的信息
+            role: newReplyModel.toReply.user.role,
+            nickname: newReplyModel.toReply.user.nickName,
+            site: newReplyModel.toReply.user.site,
+          },
+         } : null,
       }
     })
     return res.json(returns.toJSON())

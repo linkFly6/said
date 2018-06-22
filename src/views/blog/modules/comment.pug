@@ -34,12 +34,12 @@ mixin commentMixin(comment, i)
 mixin replyMixin(comment, reply, i, j)
   .item
     .head
-      a(href=`#${i+1}-${j+1}`, title='定位到该评论', name=`${i+1}+${j+1}`).hash
+      a(href=`#${i+1}-${j+1}`, title='定位到该评论', name=`${i+1}-${j+1}`).hash
         i.saidfont.icon-yinyong
       +usernameMixin(reply.user)
       if reply.toReply
         span.reply-txt 回复
-        //- +usernameMixin(reply.toReply.user)
+        +usernameMixin(reply.toReply.user)
     .body #{reply.context}
     .footer
       span ##{i+1}-#{j+1}
