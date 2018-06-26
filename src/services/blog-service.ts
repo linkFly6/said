@@ -254,11 +254,11 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
 }
 
 /**
- * 查询 Blog
+ * 查询 Blog，会鉴权，后台使用
  * @param blogId 
  * @param admin 
  */
-export const queryBlogById = async (blogId: string, admin: IAdmin) => {
+export const queryBlogByIdInBack = async (blogId: string, admin: IAdmin) => {
   log.info('queryBlogById.call', { blogId, admin })
   if (!authentication(admin, AdminRule.BLOG)) {
     throw new ServiceError('queryBlogById.authentication.denied', { blogId, admin }, '您没有权限访问该模块')
@@ -272,6 +272,14 @@ export const queryBlogById = async (blogId: string, admin: IAdmin) => {
     throw new ServiceError('queryBlogById.checkBlog.empty', { blogId, admin }, '无法访问该日志')
   }
   return blog
+}
+
+/**
+ * 根据 ID 查询 blog
+ * @param blogId 
+ */
+export const queryBlogById = async (blogId: string) => {
+  return BlogDb.findById(blogId).exec()
 }
 
 
@@ -347,3 +355,4 @@ export const queryAllBlogByPage = (limit = 10, offset = 0) => {
 export const queryBlogByPageAndWhere = (where: any, limit = 10, offset = 0) => {
   return BlogDb.find(where).sort('-_id').limit(limit).skip(offset).exec()
 }
+

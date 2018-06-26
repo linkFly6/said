@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { DEVICE } from '../models/server/enums'
 import * as moment from 'moment'
 import { Log } from '../utils/log'
-import { getBlogByKey, updateBlogPV, queryAllBlog, queryBlogsByByCategoryName, updateBlogLike } from '../services/blog-service'
+import { getBlogByKey, updateBlogPV, queryAllBlog, queryBlogsByByCategoryName, updateBlogLike, queryBlogById } from '../services/blog-service'
 import { IBlog, BlogModel } from '../models/blog'
 import { date2Local, date2day } from '../utils/format'
 import { checkCategoryName, queryCategoryAll } from '../services/category-service'
@@ -12,12 +12,20 @@ import { createUserLike, userLiked } from '../services/user-like-service'
 import { LikeType } from '../models/user-like'
 import { IViewBlog } from '../types/blog'
 import { checkUri, resolveHTTPUri, checkEmail } from '../utils/validate'
-import { createComment, queryCommentsByBlog, queryCommentById, addCommentReplysByCommentId, queryCommentByReplyId } from '../services/comment-service'
+import {
+  createComment,
+  queryCommentsByBlog,
+  queryCommentById,
+  addCommentReplysByCommentId,
+  commentToBlog,
+  replyToComment,
+  replyToReply,
+} from '../services/comment-service'
 import { diffUserAndUpdate } from '../services/user-service'
 import { UserRole } from '../models/user'
 import { IComment } from '../models/comment'
-import { IReply } from '../models/reply'
-import * as _ from 'lodash'
+import { IReply, ReplyModel } from '../models/reply'
+import { sendReplyEmail } from '../services/email-service'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -35,6 +43,7 @@ const ERRORS = {
     msg: 'params invalid',
     data: null,
   }),
+  // 评论未找到
   COMMENTNOTFOUND: new Returns(null, {
     code: 4,
     msg: 'not found',
@@ -287,8 +296,16 @@ export const comment = async (req: Request, res: Response) => {
    */
   const context = params.context.trim()
 
+  /**
+   * 查找对应的 blog
+   */
+  const blog = await queryBlogById(blogId)
+  if (!blog) {
+    return res.json(ERRORS.BLOGNOTFOUND.toJSON())
+  }
+
   // 看看用户信息是否有更新，如果有更新，则对整个用户信息进行更新
-  const newUserInfo = await diffUserAndUpdate(res.locals.user, {
+  const userInfo = await diffUserAndUpdate(res.locals.user, {
     // 修正管理员数据
     role: res.locals.admin ? UserRole.ADMIN : UserRole.NORMAL,
     nickName: nickname,
@@ -296,13 +313,13 @@ export const comment = async (req: Request, res: Response) => {
     site,
   })
   // 有修改，则修正全局引用
-  if (newUserInfo.updated) {
-    res.locals.user = newUserInfo.user
+  if (userInfo.updated) {
+    res.locals.user = userInfo.user
   }
 
   // ===== 回复逻辑
   if (params.commentId) {
-    let newReply: IReply
+    let newReplyModel: IReply
     if (!regMongodbId.test(params.commentId)) {
       return res.json(ERRORS.COMMENTERROR.toJSON())
     }
@@ -312,7 +329,7 @@ export const comment = async (req: Request, res: Response) => {
       return res.json(ERRORS.COMMENTNOTFOUND.toJSON())
     }
     if (params.replyId) {
-      // 回复类型 1：针对评论中回复的回复
+      // ==== 回复类型 1：针对评论中回复的回复
       if (!regMongodbId.test(params.replyId)) {
         return res.json(ERRORS.COMMENTERROR.toJSON())
       }
@@ -322,40 +339,23 @@ export const comment = async (req: Request, res: Response) => {
       // 可以直接遍历上面的 commentModel 对象...不用再查数据库了
       if (commentModel.replys.length) {
         reply = commentModel.replys.find(reply => {
-          // 数据库中是 _id，为什么这里是 id 呢？
+          // _id 是 ObjectId 对象类型，id 才是字符串类型
           return (reply as any).id === params.replyId
         })
       }
       if (!reply) {
         return res.json(ERRORS.REPLYNOTFOUND.toJSON())
       }
-      /**
-       * 这个被回复的对象，也是别人回复的
-       */
-      if (reply.toReply) {
-        // 为了防止回复对象层次太深
-        reply.toReply = undefined
-      }
-      newReply = {
-        user: newUserInfo.user,
-        toReply: reply,
-        context,
-        contextHTML: context,
-        createTime: Date.now(),
-      }
+      newReplyModel = await replyToReply(context, userInfo.user, blog, commentModel, reply as ReplyModel)
     } else {
-      // 回复类型 2：针对评论的回复
-      newReply = {
-        user: newUserInfo.user,
-        context,
-        contextHTML: context,
-        createTime: Date.now(),
-      }
+      newReplyModel = await replyToComment(context, userInfo.user, blog, commentModel)
     }
-    const newCommentModel = await addCommentReplysByCommentId(commentModel._id, newReply)
-    log.info('comment.newCommentModel', newCommentModel)
-    const newReplyModel = newCommentModel.replys[newCommentModel.replys.length - 1]
-    // @TODO 发邮件
+    // ===== 回复类型 2：针对评论的回复
+
+    log.info('comment.newReplyModel', {
+      reply: newReplyModel,
+      user: userInfo.user,
+     })
     let returns = new Returns(null, {
       code: 0,
       msg: '',
@@ -363,25 +363,25 @@ export const comment = async (req: Request, res: Response) => {
         commentId: commentModel._id,
         replyId: newReplyModel._id,
         blogId,
-        date: newReply.createTime,
-        localDate: date2Local(newReply.createTime),
+        date: newReplyModel.createTime,
+        localDate: date2Local(newReplyModel.createTime),
         context,
         user: {
-          role: newUserInfo.user.role,
-          nickname: newUserInfo.user.nickName,
-          site: newUserInfo.user.site,
+          role: userInfo.user.role,
+          nickname: userInfo.user.nickName,
+          site: userInfo.user.site,
         },
         // 如果有被回复对象
-        toReply: newReplyModel.toReply ? 
-         {
-           replyId: newReplyModel.toReply._id,
-           user: {
-            // 获取被回复对象的信息
-            role: newReplyModel.toReply.user.role,
-            nickname: newReplyModel.toReply.user.nickName,
-            site: newReplyModel.toReply.user.site,
-          },
-         } : null,
+        toReply: newReplyModel.toReply ?
+          {
+            replyId: newReplyModel.toReply._id,
+            user: {
+              // 获取被回复对象的信息
+              role: newReplyModel.toReply.user.role,
+              nickname: newReplyModel.toReply.user.nickName,
+              site: newReplyModel.toReply.user.site,
+            },
+          } : null,
       }
     })
     return res.json(returns.toJSON())
@@ -389,19 +389,9 @@ export const comment = async (req: Request, res: Response) => {
 
 
   // ===== 新增评论
-  // @TODO 发邮件
-  const comment = await createComment({
-    user: newUserInfo.user,
-    context: context,
-    blogId,
-    // @TODO 这里要试着做一些格式解析
-    contextHTML: context,
-    replys: [],
-    createTime: Date.now(),
-  })
-  // @TODO ，上面应该加一层 try catch
+  const comment = await commentToBlog(context, userInfo.user, blog)
 
-  log.warn('comment.create', { user: newUserInfo.user, comment })
+  log.warn('comment.newCommentModel', { user: userInfo.user, comment })
   let returns = new Returns(null, {
     code: 0,
     msg: '',
@@ -412,9 +402,9 @@ export const comment = async (req: Request, res: Response) => {
       localDate: date2Local(comment.createTime),
       context,
       user: {
-        role: newUserInfo.user.role,
-        nickname: newUserInfo.user.nickName,
-        site: newUserInfo.user.site,
+        role: comment.user.role,
+        nickname: comment.user.nickName,
+        site: comment.user.site,
       }
     }
   })

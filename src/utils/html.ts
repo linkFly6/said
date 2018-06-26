@@ -87,3 +87,12 @@ export const convertMarkdown2HTML = (context: string) => {
 export const convertSummaryToHTML = (summary: string, className = '') => {
   return summary.split('\n').map(txt => `<p class="${className}">${txt}</p>`).join('')
 }
+
+
+/**
+ * 转换评论内容到 HTML
+ * @param context 
+ */
+export const convertCommentToHTML = (context: string) => {
+  return context
+}

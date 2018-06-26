@@ -3,7 +3,7 @@ import { admin } from '../../filters/backend'
 import { Log } from '../../utils/log'
 import { SimpleBlog } from '../../types/blog'
 import { ServiceError } from '../../models/server/said-error'
-import { queryAllBlogByAdmin, createBlog, updateBlog, removeBlog, queryBlogById } from '../../services/blog-service'
+import { queryAllBlogByAdmin, createBlog, updateBlog, removeBlog, queryBlogByIdInBack } from '../../services/blog-service'
 import { RouterError } from '../../middleware/routers/models'
 import { createRecordNoError } from '../../services/admin-record-service'
 import { Request } from 'express'
@@ -185,7 +185,7 @@ export default class {
     // 编辑模式
     if (params.blogId) {
       try {
-        blog = await queryBlogById(params.blogId, params.admin)
+        blog = await queryBlogByIdInBack(params.blogId, params.admin)
       } catch (error) {
         if (ServiceError.is(error)) {
           log.error((error as ServiceError).title, (error as ServiceError).data)
