@@ -88,13 +88,19 @@ block content
               //-         a(href='#03-02') Promise.constructor
               //-   li
               //-     a(href='#04') 参考和引用
+      form#blogForm(style="display:none")
+        input.blogId(value=blog._id)
+        input.nickname(value=user.nickName)
+        input.email(value=user.email)
+        input.site(value=user.site)
 
 block script
-  script.
-    window.blogId = '#{blog._id}';
-    window.nickname = '#{user.nickName}';
-    window.email = '#{user.email}';
-    window.site = '#{user.site}';
+  //- 考虑到安全，不注入到 script，而是注入到 input 里
+  //- script.
+  //-   window.blogId = '#{blog._id}';
+  //-   window.nickname = '#{user.nickName}';
+  //-   window.email = '#{user.email}';
+  //-   window.site = '#{user.site}';
   script(src='/static/js/blog-detail.js')
   script(type='text/template')#tmp-nav-item
     li

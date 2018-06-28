@@ -43,6 +43,10 @@ export interface IReplyInfo {
    */
   context: string
   /**
+   * 评论内容解析过后的 HTML
+   */
+  contextHTML: string
+  /**
    * 用户信息
    */
   user: IReplyUserInfo

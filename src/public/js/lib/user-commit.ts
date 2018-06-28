@@ -234,7 +234,7 @@ class Comment {
     if (!data.context) {
       return '评论内容不能为空'
     }
-    if (data.context.length > 30) {
+    if (data.context.length > 140) {
       return '评论内容不允许超过 140 个字符'
     }
   }
@@ -265,6 +265,7 @@ class Comment {
     }).fail(err => {
       this.message('网络异常，提交信息失败')
       // @TODO 打 log
+      window.Umeng.event('blog', 'comment-error', JSON.stringify(err), this.blogId , this.$element[0].id)
     }).always(() => {
       this.submiting = false
       this.$submit.removeClass('disabled').text('发布评论')
@@ -296,7 +297,7 @@ class Comment {
       hashname,
       commentId: data.commentId,
       replyId: data.replyId || '',
-      context: data.context,
+      context: data.contextHTML,
       headHTML: headHTMLs.join(''),
       deleteHTML,
       localDate: data.localDate,
@@ -333,6 +334,10 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   const $commentBar = $('.comment-bar')
   // clone 一份，用于回复评论
   const $replyBar = $commentBar.clone()
+  /**
+   * 设置不同的 ID，用于统计
+   */
+  $replyBar.attr('id', 'reply-bar')
   // 回复框文本设置
   $replyBar.find('.button.submit').text('回复')
   // 计算 hash

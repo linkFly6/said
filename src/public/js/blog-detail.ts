@@ -236,12 +236,18 @@ $(() => {
     })
 
   /**
+   * 为了防止用户昵称或者 email 之类的有 xss，所以把数据放到 form 里
+   * 然后从 form 里面获取（因为 pug 直接注入到 script 变量中会有 xss 的风险）
+   */
+  const $blogForm = $('#blogForm')
+  const blogId = $blogForm.find('.blogId').val()
+  const nickname = $blogForm.find('.nickname').val()
+  const email = $blogForm.find('.email').val()
+  const site = $blogForm.find('.site').val()
+  /**
    * 注册用户评论相关事件
    */
-  registerUserCommentEvent((window as any).blogId,
-  (window as any).nickname,
-  (window as any).email,
-  (window as any).site)
+  registerUserCommentEvent(blogId, nickname, email, site)
 })
 
 // 目录数据对象
@@ -260,6 +266,3 @@ type Title = {
 
 // 目录 HTML 模板 format 使用的格式
 type TemplateNavItem = { top: number, text: string, child: string }
-
-
-

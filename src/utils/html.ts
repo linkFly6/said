@@ -1,5 +1,18 @@
 import * as marked from 'marked'
 import * as hljs from 'highlight.js'
+import * as _ from 'lodash'
+import * as url from 'url'
+/**
+ * https://github.com/SoapBox/linkifyjs
+ * 解析文本链接
+ */
+const linkifyjs = require('linkifyjs/html')
+/**
+ * 载入 hashtag 插件，用于解析 #xxx 格式的文本
+ */
+require('linkifyjs/plugins/hashtag')(require('linkifyjs'))
+
+
 /**
  * UTF-8 转 ASCII
  * @example hello, code => hello-code
@@ -16,6 +29,13 @@ const transliteration = require('transliteration')
  * https://tasaid.com/home/cv?url=https%3A%2F%2Fmicrosoft.github.io%2FTypeSearch%2F
  */
 const regSelfHref = /^((https?:)?\/\/tasaid.com)|^\/[^\/]/
+
+/**
+ * 匹配 url
+ * https://baidu.com
+ * 
+ */
+const regUrl = /(https:|http:)\/\/?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?(([0-9]{1,3}\.){3}[0-9]{1,3}|([0-9a-z_!~*'()-]+\.)*([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.[a-z]{2,6})(:[0-9]{1,4})?((\/?)|(\/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+\/?)/
 
 /**
  * markdown to html
@@ -48,18 +68,7 @@ export const convertMarkdown2HTML = (context: string) => {
   }
 
   // 重写 <a> 标签，跳转的逻辑修改
-  renderer.link = (href: string, title: string, text: string) => {
-    // 本页锚点
-    if (!href) {
-      href = ''
-    }
-    if (href.startsWith('#') || regSelfHref.test(href)) {
-      return `<a href="${href}" title="${title || ''}">${text}</a>`
-    }
-    // 跳转的链接，全部补上统计
-    const url = `//tasaid.com/link?url=${encodeURIComponent(href)}`
-    return `<a href="${url}" title="${title || ''}" target="_blank">${text}</a>`
-  }
+  renderer.link = createLink
 
   renderer.code = (code: string, language: string) => {
     return `<pre class="hljs"><code class="${language}">${
@@ -80,6 +89,39 @@ export const convertMarkdown2HTML = (context: string) => {
 }
 
 /**
+ * 根据参数生成 <a /> 标签
+ */
+export const createLink = (href: string, title: string, text: string) => {
+  // 本页锚点
+  if (!href) {
+    href = ''
+  }
+  // 修正链接
+  const url = fixeHref(href)
+  if (url === href) {
+    // 如果 url 和 href 相等，证明适合在当前页面跳转，详情参见 fixeLink
+    return `<a href="${url}" title="${title || ''}">${text || ''}</a>`
+  }
+  // 跳转的链接，全部补上统计
+  return `<a href="${url}" title="${title || ''}" target="_blank">${text || ''}</a>`
+}
+
+/**
+ * 修正 href 链接
+ * #abc => 直接返回
+ * //tasaid.com => 直接返回
+ * https://sogou.com => //tasaid.com/link?url=${url}
+ */
+export const fixeHref = (href: string) => {
+  if (!href || href.startsWith('#') || regSelfHref.test(href)) {
+    return href
+  }
+  // 跳转的链接，全部补上统计
+  const url = `//tasaid.com/link?url=${encodeURIComponent(href)}`
+  return href
+}
+
+/**
  * 转换 Blog/Article 的简述
  * @param summary 
  * @param className 
@@ -94,5 +136,50 @@ export const convertSummaryToHTML = (summary: string, className = '') => {
  * @param context 
  */
 export const convertCommentToHTML = (context: string) => {
-  return context
+  const html = _.escape(context) // 将 HTML 内容转义 (防止 xss)
+    .split('\n') // 换行符进行切割
+    /**
+     * @TODO 这里 length 为 1 也会包装
+     */
+    .map(txt => `<p>${txt}/</p>`) // 每行用 <p /> 包装
+    .join('')
+  return linkifyjs(html, {
+    /**
+     * a 标签里面显示的文本，可以在这里做截断
+     * 全部 type 类型参考这里：http://soapbox.github.io/linkifyjs/docs/linkify.html#linkifyfind-str--type
+     * 这里只会命中 url 和 hashtag，因为 email 在 validate 禁掉了
+     */
+    // format: function (value: string, type: 'url' | 'hashtag') {
+    //   return value
+    // },
+    /**
+     * a 标签的 href
+     */
+    formatHref: function (href: string, type: 'url' | 'hashtag') {
+      // console.log('2', type)
+      return fixeHref(href)
+    },
+    /**
+     * a 标签的 target
+     */
+    target: (href: string, type: 'url' | 'hashtag') => {
+      /**
+       * 这里的 href 是修正前的 href
+       * @TODO 上次编写到这里
+       */
+      return '_blank'
+    },
+    /**
+     * 对 url 进行校验
+     */
+    validate: {
+      email: false,
+      url: (value: string) => {
+        /**
+         * 过滤 ftp/email 格式的 url，只接受 http 的
+         */
+        return /^http(s)?:\/\//.test(value)
+      }
+    }
+  })
 }

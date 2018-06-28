@@ -261,6 +261,7 @@ export const comment = async (req: Request, res: Response) => {
   req.check('email')
     .trim()
     .notEmpty().withMessage('email 不能为空')
+    .isEmail().withMessage('email 格式不正确')
     .isLength({ max: 60 }).withMessage('email 不允许超过 60 个字符')
   req.check('context')
     .trim()
@@ -273,7 +274,6 @@ export const comment = async (req: Request, res: Response) => {
     // 不需要返回太详细的信息，因为前端已经做过校验
     return res.json(ERRORS.COMMENTERROR.toJSON())
   }
-
   /**
    * 站点
    */
@@ -292,9 +292,10 @@ export const comment = async (req: Request, res: Response) => {
     return res.json(ERRORS.COMMENTERROR.toJSON())
   }
   /**
-   * @TODO 替换用户输入的链接地址
+   * 用户评论内容
    */
   const context = params.context.trim()
+
 
   /**
    * 查找对应的 blog
@@ -365,9 +366,13 @@ export const comment = async (req: Request, res: Response) => {
         blogId,
         date: newReplyModel.createTime,
         localDate: date2Local(newReplyModel.createTime),
-        context,
+        context: newReplyModel.context,
+        contextHTML: newReplyModel.contextHTML,
         user: {
           role: userInfo.user.role,
+          /**
+           * 注意这里返回的是 nickname
+           */
           nickname: userInfo.user.nickName,
           site: userInfo.user.site,
         },
@@ -400,9 +405,13 @@ export const comment = async (req: Request, res: Response) => {
       blogId,
       date: comment.createTime,
       localDate: date2Local(comment.createTime),
-      context,
+      context: comment.context,
+      contextHTML: comment.contextHTML,
       user: {
         role: comment.user.role,
+        /**
+         * 注意这里返回的是 nickname
+         */
         nickname: comment.user.nickName,
         site: comment.user.site,
       }

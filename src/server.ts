@@ -78,6 +78,10 @@ app.set('port', process.env.PORT || 3000)
 app.set('views', path.join(__dirname, './views'))
 app.set('view engine', 'pug')
 
+// app.locals.encodeHTML = (str: string) => {
+//   return _.escape(str)
+// }
+
 app.use(compression())
 
 /**

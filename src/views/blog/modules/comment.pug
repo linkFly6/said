@@ -17,7 +17,7 @@ mixin commentMixin(comment, i)
       a(href=`#${i+1}`, title='定位到该评论', name=i+1).hash
         i.saidfont.icon-yinyong
       +usernameMixin(comment.user)
-    .body #{comment.context}
+    .body!=comment.contextHTML
     .footer
       span ##{i+1}
       span.reply
