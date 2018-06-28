@@ -371,6 +371,7 @@ export const comment = async (req: Request, res: Response) => {
         localDate: date2Local(newReplyModel.createTime),
         context: newReplyModel.context,
         contextHTML: newReplyModel.contextHTML,
+        hash: newReplyModel.hash,
         user: {
           role: userInfo.user.role,
           /**
@@ -410,6 +411,7 @@ export const comment = async (req: Request, res: Response) => {
       localDate: date2Local(comment.createTime),
       context: comment.context,
       contextHTML: comment.contextHTML,
+      hash: comment.hash,
       user: {
         role: comment.user.role,
         /**
