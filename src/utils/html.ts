@@ -126,8 +126,7 @@ export const fixeHref = (href: string) => {
     return href
   }
   // 跳转的链接，全部补上统计
-  const url = `//tasaid.com/link?url=${encodeURIComponent(href)}`
-  return href
+  return `//tasaid.com/link?url=${encodeURIComponent(href)}`
 }
 
 /**
@@ -142,6 +141,10 @@ export const convertSummaryToHTML = (summary: string, className = '') => {
 
 /**
  * 转换评论内容到 HTML
+ * 将 HTML 敏感字符干掉
+ * 将每行内容包装为 <p />
+ * 识别 context 中的链接，然后包装 <a /> 标签
+ * @todo 后续可以考虑是否识别 @ 标签，因为 linkifyjs 支持识别
  * @param context 
  */
 export const convertCommentToHTML = (context: string) => {
