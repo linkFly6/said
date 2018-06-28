@@ -47,6 +47,10 @@ export interface IReplyInfo {
    */
   contextHTML: string
   /**
+   * 评论/回复的 hash
+   */
+  hash: string
+  /**
    * 用户信息
    */
   user: IReplyUserInfo

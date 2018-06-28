@@ -1,4 +1,9 @@
 import * as moment from 'moment'
+/**
+ * 用来生成评论楼层的 hash (否则 #1、#2 这种 hash 会经常变动)
+ * @see https://github.com/dylang/shortid
+ */
+import * as shortid from 'shortid'
 
 export function pad(num: string | number, length: number, fill: string | number = '0') {
   var len = ('' + num).length
@@ -163,4 +168,17 @@ export const date2day = (date: string | number) => {
     return moment(date).format('前天')
   }
   return moment(date).format('DD日')
+}
+
+/**
+ * 默认 shortid 是包含 "-" 的，这对于 url 来说没有必要
+ * 默认值：0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_
+ */
+shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_')
+
+/**
+ * 生成短 ID
+ */
+export const shortId = () => {
+  return shortid.generate()
 }

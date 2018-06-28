@@ -153,7 +153,7 @@ export const convertCommentToHTML = (context: string) => {
     /**
      * @TODO 这里 length 为 1 也会包装
      */
-    .map(txt => `<p>${txt}/</p>`) // 每行用 <p /> 包装
+    .map(txt => `<p>${txt}</p>`) // 每行用 <p /> 包装
     .join('')
   return linkifyjs(html, {
     /**

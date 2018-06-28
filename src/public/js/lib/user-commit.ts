@@ -1,6 +1,6 @@
 import { checkUri, format, escapeHTML, checkEmail } from './utils'
 import { IReplyInfo, IComment, IReplyUserInfo } from './model'
-import { dateFormat } from './format'
+// import { dateFormat } from './format'
 
 /**
 <div class="item">
@@ -264,7 +264,7 @@ class Comment {
       }
     }).fail(err => {
       this.message('网络异常，提交信息失败')
-      // @TODO 打 log
+      // 打 log
       window.Umeng.event('blog', 'comment-error', JSON.stringify(err), this.blogId , this.$element[0].id)
     }).always(() => {
       this.submiting = false
@@ -293,6 +293,9 @@ class Comment {
     if (data.toReply && data.toReply.replyId) {
       headHTMLs.push('<span class="reply-txt">回复</span>', this._getUserHTML(data.toReply.user))
     }
+    /**
+     * @TODO hash 处理 
+     */
     return format(commentTemplate, {
       hashname,
       commentId: data.commentId,

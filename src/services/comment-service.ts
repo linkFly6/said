@@ -6,6 +6,8 @@ import { IReply, ReplyModel } from '../models/reply'
 import { BlogModel } from '../models/blog'
 import { convertCommentToHTML } from '../utils/html'
 import { sendReplyEmail } from './email-service'
+import { shortId } from '../utils/format'
+
 
 const log = new Log('service/comment')
 
@@ -110,6 +112,10 @@ export const commentToBlog = async (context: string, user: IUser, blog: BlogMode
     blogId: blog.id,
     contextHTML,
     replys: [],
+    /**
+     * 生成一个
+     */
+    hash: shortId(),
     createTime: Date.now(),
   })
   /**
@@ -148,6 +154,7 @@ export const replyToComment = async (context: string, user: IUser, blog: BlogMod
     user,
     context,
     contextHTML,
+    hash: shortId(),
     createTime: Date.now(),
   })
   log.info('replyToComment.newCommentModel', newCommentModel)
@@ -201,6 +208,7 @@ export const replyToReply = async (
     toReply: replyModel,
     context,
     contextHTML,
+    hash: shortId(),
     createTime: Date.now(),
   })
   log.info('replyToReply.newCommentModel', newCommentModel)

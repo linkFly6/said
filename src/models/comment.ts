@@ -24,13 +24,17 @@ export interface IComment {
    */
   contextHTML: string
   /**
+   * 评论 hash（每个 blog 下不重复）
+   */
+  hash: string
+  /**
    * 针对评论的回复
    */
-  replys: IReply[],
+  replys: IReply[]
   /**
    * 创建时间
    */
-  createTime: number,
+  createTime: number
 }
 
 
@@ -46,6 +50,7 @@ export const CommentSchema = new mongoose.Schema({
   blogId: mongoose.SchemaTypes.ObjectId,
   context: String,
   contextHTML: String,
+  hash: String,
   replys: [ReplySchema],
   createTime: Number
 })

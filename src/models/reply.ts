@@ -23,9 +23,13 @@ export interface IReply {
    */
   contextHTML: string
   /**
+   * 回复 hash（每个 blog 下不重复）
+   */
+  hash: string
+  /**
    * 创建时间
    */
-  createTime: number,
+  createTime: number
 }
 
 
@@ -37,6 +41,7 @@ export interface ReplyModel extends IReply, mongoose.Document {
 export const ReplySchema = new mongoose.Schema({
   user: { type: UserSchema },
   toReply: this,
+  hash: String,
   // or
   // toReply: {
   //   type: mongoose.Schema.Types.ObjectId,

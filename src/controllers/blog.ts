@@ -317,6 +317,9 @@ export const comment = async (req: Request, res: Response) => {
   if (userInfo.updated) {
     res.locals.user = userInfo.user
   }
+  /**
+   * hash
+   */
 
   // ===== 回复逻辑
   if (params.commentId) {
