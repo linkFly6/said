@@ -107,13 +107,22 @@ export const createLink = (href: string, title: string, text: string) => {
 }
 
 /**
+ * 检查一个 url 是否是 said 域名下
+ * 主要匹配 hash(#) 和 said 开头的域名
+ * @param href 
+ */
+export const urlMatchSaid = (href: string) => {
+  return href.startsWith('#') || regSelfHref.test(href)
+}
+
+/**
  * 修正 href 链接
  * #abc => 直接返回
  * //tasaid.com => 直接返回
  * https://sogou.com => //tasaid.com/link?url=${url}
  */
 export const fixeHref = (href: string) => {
-  if (!href || href.startsWith('#') || regSelfHref.test(href)) {
+  if (!href || urlMatchSaid(href)) {
     return href
   }
   // 跳转的链接，全部补上统计
@@ -164,10 +173,10 @@ export const convertCommentToHTML = (context: string) => {
      */
     target: (href: string, type: 'url' | 'hashtag') => {
       /**
-       * 这里的 href 是修正前的 href
-       * @TODO 上次编写到这里
+       * 这里的 href 是修正前的 href (尚未经过 formatHref())
+       * 在这里根据 href 决定 <a /> 的 target 属性（页面跳转方式）
        */
-      return '_blank'
+      return type === 'hashtag' || urlMatchSaid(href) ?  null : '_blank'
     },
     /**
      * 对 url 进行校验
