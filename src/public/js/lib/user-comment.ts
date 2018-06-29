@@ -293,9 +293,6 @@ class Comment {
     if (data.toReply && data.toReply.replyId) {
       headHTMLs.push('<span class="reply-txt">回复</span>', this._getUserHTML(data.toReply.user))
     }
-    /**
-     * @TODO hash 处理 
-     */
     return format(commentTemplate, {
       hashname: data.hash,
       floor,
