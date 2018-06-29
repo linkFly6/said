@@ -68,7 +68,7 @@ export const updateCommentsUserInfo = async (user: IUser) => {
     {
       '$set': {
         user,
-        'replys.$.user': user
+        // 'replys.$.user': user
       },
     })
   await CommentDb.update({ 'replys.user._id': user._id }, { '$set': { 'replys.$.user': user } })
@@ -167,9 +167,9 @@ export const replyToComment = async (context: string, user: IUser, blog: BlogMod
       data: {
         nickname: commentModel.user.nickName,
         title: blog.title,
-        titleHref: `https://tasaid.com/blog/${blog.key}.html`,
+        titleHref: `https://tasaid.com/blog/${blog.key}.html?sv=email&hash=${commentModel.hash}`,
         body: contextHTML,
-        moreHref: `https://tasaid.com/blog/${blog.key}.html`,
+        moreHref: `https://tasaid.com/blog/${blog.key}.html?sv=email&#${commentModel.hash}`,
       }
     })
   }
@@ -220,9 +220,9 @@ export const replyToReply = async (
     data: {
       nickname: newReplyModel.toReply.user.nickName,
       title: blog.title,
-      titleHref: `https://tasaid.com/blog/${blog.key}.html`,
+      titleHref: `https://tasaid.com/blog/${blog.key}.html?sv=email&hash=${newReplyModel.hash}`,
       body: context,
-      moreHref: `https://tasaid.com/blog/${blog.key}.html`,
+      moreHref: `https://tasaid.com/blog/${blog.key}.html?sv=email#hash=${newReplyModel.hash}`,
     }
   })
   return newReplyModel

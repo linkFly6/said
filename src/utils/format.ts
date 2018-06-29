@@ -171,14 +171,13 @@ export const date2day = (date: string | number) => {
 }
 
 /**
- * 默认 shortid 是包含 "-" 的，这对于 url 来说没有必要
- * 默认值：0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_
- */
-shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_')
-
-/**
  * 生成短 ID
  */
 export const shortId = () => {
+  /**
+   * 默认是从这些值里面生成的（64位值）
+   * 生成的值满足这些条件：7-14 位、A-Z, a-z, 0-9, _-
+   * 默认值：0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_
+   */
   return shortid.generate()
 }

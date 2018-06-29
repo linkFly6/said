@@ -39,7 +39,7 @@ const commentTemplate = `<div class="item highlight">
 </div>
 <div class="body">\${context}</div>
 <div class="footer">
-  <span>#\${hashname}</span>
+  <span>#\${floor}</span>
   <span class="reply">
     <a href="javascript:;" class="reply-btn" data-commentid="\${commentId}" data-replyid="\${replyId}">
       <i class="saidfont icon-reply">回复</i>
@@ -277,14 +277,14 @@ class Comment {
   /**
    * 渲染评论内容
    */
-  render(data: IReplyInfo, hashname: string) {
+  render(data: IReplyInfo, floor: string) {
     const headHTMLs = []
     let deleteHTML = ''
+    headHTMLs.push(this._getUserHTML(data.user))
     /**
      * 管理员
      */
     if (data.user.role === 1) {
-      headHTMLs.push(this._getUserHTML(data.user))
       deleteHTML = `<span class="delete"><a href="javascript:;" data-commentid="${data.commentId}">删除</a></span>`
     }
     /**
@@ -297,7 +297,8 @@ class Comment {
      * @TODO hash 处理 
      */
     return format(commentTemplate, {
-      hashname,
+      hashname: data.hash,
+      floor,
       commentId: data.commentId,
       replyId: data.replyId || '',
       context: data.contextHTML,
@@ -380,13 +381,13 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     // 父级评论(.item) 的楼层
     let commentIndex: number
     // .replys-box
-    let $replysBox: JQuery
+    let $replysBox: JQuery = reply.$element.next()
     // 如果是针对回复的回复，则修正查找位置
-    if (data.toReply) {
+    if (data.toReply || !$replysBox.length) {
       $replysBox = reply.$element.closest('.replys-box')
       commentIndex = reply.$element.closest('.comments-list>.item').index() + 1
     } else {
-      $replysBox = reply.$element.next()
+      // 回复评论
       commentIndex = reply.$element.parent().index() + 1
       // @TODO 修正页面上线是的评论数
     }
@@ -401,13 +402,16 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   // 如果有 hash，则对 hash 命中的评论进行高亮
   const hash = window.location.hash
   /**
-   * match:
-   * #1
-   * #1-1
+   * 评论区的 hash 是基于 shortid 生成的
+   * 满足这些条件：7-14 位、A-Z, a-z, 0-9, _-
    */
-  if (/^#\d+(-\d+)?$/.test(hash)) {
-    // 高亮对应评论的楼层
-    $commentList.find(`[href='${hash}']`).closest('.item').addClass('highlight')
+  const matchs = /^#[0-9a-zA-Z_-]{7,14}/.exec(hash)
+  if (matchs && matchs[0]) {
+    /**
+     * 高亮对应评论/回复的楼层，不用管定位到评论的问题，因为 hash 会自动定位过去
+     * @TODO 确认 .body highlight 样式
+     */
+    $commentList.find(`[href='${matchs[0]}']`).closest('.item').children('.body').addClass('highlight')
   }
 }
 

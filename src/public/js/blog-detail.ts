@@ -1,7 +1,7 @@
 import { format, throttle } from './lib/utils'
 import { view } from './lib/image-view'
 import { initUserLikeEvent } from './lib/user-like'
-import { registerUserCommentEvent } from './lib/user-commit'
+import { registerUserCommentEvent } from './lib/user-comment'
 // ts 按需加载会报错（因为 @types 没有声明命名空间），所以只能通过 require 来实现按需加载了
 const once = require('lodash/once')
 

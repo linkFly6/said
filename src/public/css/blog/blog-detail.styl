@@ -43,7 +43,8 @@
         .comments-list
           .item
             padding 1rem
-            &.highlight
+            // 评论高亮
+            .highlight
               @keyframes highlight-item
                   0% 
                     background-color #FFFF66
@@ -63,6 +64,7 @@
                 left -1rem
                 top 0
                 opacity 0
+                transition .3s
               .reply-txt
                 padding 0 .5rem
                 color #999
@@ -97,11 +99,13 @@
                   color #f5222d
                   &:hover
                     color #e3111c
+            // 评论下面的回复
             .replys-box
-              // 评论下面的回复
               >.item:first-child
-                border-top 1px dotted #eee
+                border-top 1px solid #eee
                 margin-top 1rem 
+              .item
+                border-bottom 1px dotted #eee
             // 评论里的回复框
             .comment-bar
               position relative

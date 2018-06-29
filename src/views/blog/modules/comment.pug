@@ -6,7 +6,7 @@ mixin usernameMixin(user)
     i.saidfont.icon-admin(title='管理员') #{user.nickName}
   else if user.site
     a(href=`/link?url=${encodeURIComponent(user.site)}`, target='_blank').link
-    = user.nickName
+      = user.nickName
   else
     = user.nickName
 
@@ -14,7 +14,7 @@ mixin usernameMixin(user)
 mixin commentMixin(comment, i)
   .item
     .head
-      a(href=`#${i+1}`, title='定位到该评论', name=i+1).hash
+      a(href=`#${comment.hash}`, title='定位到该评论', name=comment.hash).hash
         i.saidfont.icon-yinyong
       +usernameMixin(comment.user)
     .body!=comment.contextHTML
@@ -34,7 +34,7 @@ mixin commentMixin(comment, i)
 mixin replyMixin(comment, reply, i, j)
   .item
     .head
-      a(href=`#${i+1}-${j+1}`, title='定位到该评论', name=`${i+1}-${j+1}`).hash
+      a(href=`#${reply.hash}`, title='定位到该评论', name=reply.hash).hash
         i.saidfont.icon-yinyong
       +usernameMixin(reply.user)
       if reply.toReply
