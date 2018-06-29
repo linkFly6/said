@@ -45,6 +45,39 @@ code(overrideScrollbar = true)
     border-radius 6px
     padding 1em
     margin 1em 0
+    position relative
+    // 在代码块前面显示语言
+    &::before
+      content: ''
+      position absolute
+      top -2px
+      left 0
+      color #ddd
+      font-size 20px
+      font-weight 600
+      opacity .3
+    &.lang-typescript::before, &.lang-ts::before
+      content 'typescript'
+    &.lang-shell::before
+      content 'shell'
+    &.lang-bash::before
+      content 'bash'
+    &.lang-stylus::before
+      content 'stylus'
+    &.lang-javascript::before, &.lang-js::before
+      content 'javascript'
+    &.lang-vue::before
+      content 'vue'
+    &.lang-jsx::before
+      content 'jsx'
+    &.lang-tsx::before
+      content 'tsx'
+    &.lang-css::before
+      content 'css'
+    &.lang-swift::before
+      content 'swift'
+    &.lang-html::before
+      content 'html'
     // 表示重写 chrome 滚动条
     if overrideScrollbar
       // chrome 横向滚动条重写

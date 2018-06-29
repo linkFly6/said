@@ -71,7 +71,7 @@ export const convertMarkdown2HTML = (context: string) => {
   renderer.link = createLink
 
   renderer.code = (code: string, language: string) => {
-    return `<pre class="hljs"><code class="${language}">${
+    return `<pre class="hljs lang-${language}"><code class="${language}">${
       // 如果在支持的语言列表里面就用该语言渲染，否则使用默认语言渲染
       hljs.getLanguage(language) ?
         hljs.highlight(language, code).value :

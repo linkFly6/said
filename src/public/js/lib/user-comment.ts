@@ -335,6 +335,8 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   const $commentBar = $('.comment-bar')
   // clone 一份，用于回复评论
   const $replyBar = $commentBar.clone()
+  // 评论数显示
+  const $commentSum = $('#comment-sum')
   /**
    * 设置不同的 ID，用于统计
    */
@@ -354,6 +356,9 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   comment.on('said.submit', (e, data: IReplyInfo) => {
     const html = comment.render(data, ++hashIndex as any)
     $commentList.append(html)
+    // 累加显示评论数
+    const sum = $commentSum.data('sum') + 1
+    $commentSum.data('sum', sum).text(sum)
     comment.clear()
   })
 
@@ -386,7 +391,6 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     } else {
       // 回复评论
       commentIndex = reply.$element.parent().index() + 1
-      // @TODO 修正页面上线是的评论数
     }
     // 当前评论下的回复，最大楼层
     let replyIndex = $replysBox.find('.item').length
