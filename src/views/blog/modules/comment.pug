@@ -25,7 +25,7 @@ mixin commentMixin(comment, i)
           i.saidfont.icon-reply 回复
       if user.role == 1
         span.delete
-          a(href='javascript:;', data-commentid=comment._id) 删除
+          a.reply-delete(href='javascript:;', data-commentid=comment._id) 删除
       time #{comment.localDate}&nbsp;·&nbsp;
     .replys-box
       block
@@ -48,5 +48,5 @@ mixin replyMixin(comment, reply, i, j)
           i.saidfont.icon-reply 回复
       if user.role == 1
         span.delete
-          a(href='javascript:;', data-commentid=comment._id, data-replyid=reply._id) 删除
+          a.reply-delete(href='javascript:;', data-commentid=comment._id, data-replyid=reply._id) 删除
       time #{reply.localDate}&nbsp;·&nbsp;

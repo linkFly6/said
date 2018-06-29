@@ -246,6 +246,7 @@ app.get('/blog/:key.html', safeRouterHandler(blogController.detail))
 app.get('/blog', safeRouterHandler(blogController.index))
 app.get('/blog/cate/:category', safeRouterHandler(blogController.index))
 app.post('/blog/comment', safeRouterHandler(blogController.comment))
+app.post('/blog/comment/delete', safeRouterHandler(blogController.commentDelete))
 
 app.post('/blog/like', safeRouterHandler(blogController.userLike))
 

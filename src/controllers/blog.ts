@@ -20,6 +20,8 @@ import {
   commentToBlog,
   replyToComment,
   replyToReply,
+  deleteReply,
+  deleteComment,
 } from '../services/comment-service'
 import { diffUserAndUpdate } from '../services/user-service'
 import { UserRole } from '../models/user'
@@ -53,6 +55,12 @@ const ERRORS = {
   REPLYNOTFOUND: new Returns(null, {
     code: 5,
     msg: 'not found',
+    data: null,
+  }),
+  // 没有访问权限
+  PERMISSIONDENIED: new Returns(null, {
+    code: 6,
+    msg: 'invalid',
     data: null,
   }),
 }
@@ -231,14 +239,14 @@ export const userLike = async (req: Request, res: Response) => {
 }
 
 /**
- * 评论
+ * 评论/回复
  * POST /blog/comment
  * blogId - 日志 ID
  * nickname - 用户昵称
  * email - 用户 email
  * site - 用户站点
  * context - 评论内容
- * commentId - 针对评论的回复
+ * commentId - 评论 ID
  * replyId - 针对回复的回复
  * @param req 
  * @param res 
@@ -359,7 +367,7 @@ export const comment = async (req: Request, res: Response) => {
     log.info('comment.newReplyModel', {
       reply: newReplyModel,
       user: userInfo.user,
-     })
+    })
     let returns = new Returns(null, {
       code: 0,
       msg: '',
@@ -423,4 +431,52 @@ export const comment = async (req: Request, res: Response) => {
     }
   })
   return res.json(returns.toJSON())
+}
+
+/**
+ * 删除评论/回复
+ * POST /blog/comment/delete
+ * blogId - 日志 ID
+ * commentId - 评论 ID
+ * replyId - 回复 ID
+ * @param req 
+ * @param res 
+ */
+export const commentDelete = async (req: Request, res: Response) => {
+  const params = Object.assign({}, req.query, req.body)
+  log.warn('commentDelete.call', params)
+  if (!res.locals.admin) {
+    return res.json(ERRORS.PERMISSIONDENIED.toJSON())
+  }
+  const blogId = req.body.blogId
+  const commentId = req.body.commentId
+  const replyId = req.body.replyId
+
+  // 基础校验
+  if (!blogId || !regMongodbId.test(blogId)) {
+    return res.json(ERRORS.BLOGNOTFOUND.toJSON())
+  }
+  if (!commentId || !regMongodbId.test(commentId)) {
+    return res.json(ERRORS.COMMENTNOTFOUND.toJSON())
+  }
+
+  // 如果有回复 ID，则检测回复 ID 是否正确
+  if (replyId && !regMongodbId.test(replyId)) {
+    return res.json(ERRORS.REPLYNOTFOUND.toJSON())
+  }
+  /**
+   * 查找对应的 blog
+   */
+  const blog = await queryBlogById(blogId)
+  if (!blog) {
+    return res.json(ERRORS.BLOGNOTFOUND.toJSON())
+  }
+
+  const comment = replyId ? await deleteReply(blog, commentId, replyId, res.locals.admin) : await deleteComment(blog, commentId, res.locals.admin)
+  let returns = new Returns(null, {
+    code: 0,
+    msg: '',
+    data: true,
+  })
+  res.json(returns.toJSON())
 }

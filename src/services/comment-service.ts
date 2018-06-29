@@ -7,6 +7,7 @@ import { BlogModel } from '../models/blog'
 import { convertCommentToHTML } from '../utils/html'
 import { sendReplyEmail } from './email-service'
 import { shortId } from '../utils/format'
+import { SimpleAdmin } from '../types/admin'
 
 
 const log = new Log('service/comment')
@@ -226,4 +227,51 @@ export const replyToReply = async (
     }
   })
   return newReplyModel
+}
+
+/**
+ * 删除评论
+ * @param blog 
+ * @param commentId 
+ */
+export const deleteComment = async (blog: BlogModel, commentId: string, admin: SimpleAdmin) => {
+  log.warn('deleteComment.call', { blog, commentId, admin })
+  const comment = await CommentDb.findById(commentId)
+  log.warn('deleteComment.comment', {
+    comment,
+    admin,
+  })
+  return comment.remove()
+}
+
+/**
+ * 删除回复
+ * @param blog 
+ * @param commentId 
+ * @param replyId 
+ */
+export const deleteReply = async (blog: BlogModel, commentId: string, replyId: string, admin: SimpleAdmin) => {
+  log.warn('deleteReply.call', { blog, commentId, replyId, admin })
+  const comment = await queryCommentByReplyId(commentId, replyId)
+  if (!comment) {
+    throw `deleteReply.error: ${JSON.stringify({ blog, commentId, replyId, admin })}`
+  }
+  /**
+   * 前面的查询主要是为了这个 log，因为有这个 log 才可以还原
+   */
+  log.warn('deleteReply.reply', {
+    comment,
+    admin,
+  })
+  /**
+   * 这个 updateInfo 其实只是一个修改行数，不是 model
+   */
+  const updateInfo = await CommentDb.update({ _id: commentId }, {
+    $pull: {
+      'replys': {
+        _id: replyId,
+      }
+    }
+  })
+  return updateInfo
 }

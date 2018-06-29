@@ -21,7 +21,7 @@ import { IReplyInfo, IComment, IReplyUserInfo } from './model'
       </a>
     </span>
     <span class="delete">
-      <a href="javascript:;">删除</a>
+      <a href="javascript:;" class="reply-delete">删除</a>
     </span>
     <time>2014/10/08 00:21:51&nbsp;·&nbsp;</time>
   </div>
@@ -265,7 +265,7 @@ class Comment {
     }).fail(err => {
       this.message('网络异常，提交信息失败')
       // 打 log
-      window.Umeng.event('blog', 'comment-error', JSON.stringify(err), this.blogId , this.$element[0].id)
+      window.Umeng.event('blog', 'comment-error', JSON.stringify(err), this.blogId, this.$element[0].id)
     }).always(() => {
       this.submiting = false
       this.$submit.removeClass('disabled').text('发布评论')
@@ -285,7 +285,7 @@ class Comment {
      * 管理员
      */
     if (data.user.role === 1) {
-      deleteHTML = `<span class="delete"><a href="javascript:;" data-commentid="${data.commentId}">删除</a></span>`
+      deleteHTML = `<span class="delete"><a href="javascript:;" class="reply-delete" data-commentid="${data.commentId}" data-replyid="${data.replyId}">删除</a></span>`
     }
     /**
      * 针对回复的回复
@@ -350,6 +350,7 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   const comment = new Comment($commentBar[0], blogId, nickName, email, site)
   const reply = new Comment($replyBar[0], blogId, nickName, email, site)
 
+
   /**
    * 评论成功事件
    */
@@ -363,21 +364,7 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   })
 
   /**
-   * 绑定用户点击评论事件
-   * 评论用户，回复用户
-   */
-  $commentList.on('click', '.reply-btn', function () {
-    const $me = $(this)
-    // 评论 id
-    const commentId = $me.data('commentid')
-    // 回复 id (如果有的话)
-    const replyid = $me.data('replyid')
-    reply.setReply(commentId, replyid)
-    $me.closest('.footer').after(reply.$element)
-  })
-
-  /**
-   * 用户回复评论
+   * 用户回复评论成功
    */
   reply.on('said.submit', (e, data: IReplyInfo) => {
     // 父级评论(.item) 的楼层
@@ -397,6 +384,56 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
     const html = comment.render(data, `${commentIndex}-${++replyIndex}`)
     $replysBox.append(html)
     reply.clear()
+  })
+
+  /**
+   * 绑定用户点击评论事件
+   * 评论用户，回复用户
+   */
+  $commentList.on('click', '.reply-btn', function () {
+    const $me = $(this)
+    // 评论 id
+    const commentId = $me.data('commentid')
+    // 回复 id (如果有的话)
+    const replyid = $me.data('replyid')
+    reply.setReply(commentId, replyid)
+    $me.closest('.footer').after(reply.$element)
+  })
+
+  /**
+   * 删除评论
+   */
+  $commentList.on('click', '.reply-delete', function () {
+    const $me = $(this)
+    if (!confirm('请确认是否删除评论！')) {
+      return
+    }
+    if ($me.data('loading')) return
+
+    $me.data('loading', true).text('删除中...')
+
+    $.ajax({
+      url: '/blog/comment/delete',
+      type: 'post',
+      dataType: 'json',
+      data: {
+        blogId,
+        commentId: $me.data('commentid'),
+        replyId: $me.data('replyid'),
+      },
+    }).done(data => {
+      if (data.code === 0) {
+        // 删除 DOM
+        $me.closest('.item').remove()
+        alert('删除成功')
+        // 因为是管理员操作，所以什么评论数、楼层显示之类的的就不修正了
+      }
+    }).fail(err => {
+      $me.data('loading', false).text('删除')
+      alert('删除失败')
+      // 打 log
+      window.Umeng.event('blog', 'comment-delete-error', JSON.stringify(err), blogId, $me.data('commentid'))
+    })
   })
 
 
