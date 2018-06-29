@@ -19,6 +19,8 @@ block content
       section.context.blog#article-context
         h1.title #{blog.title}
         article.article
+          if blog.info.tips
+            section.notice.warning #{blog.info.tips}
           section.html
             //- 文章内容
             != blog.other.html

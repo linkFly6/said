@@ -239,6 +239,7 @@ app.use((req, res, next) => {
 app.get('/', safeRouterHandler(homeController.index))
 app.get('/robots.txt', safeRouterHandler(homeController.robots))
 app.get('/link', safeRouterHandler(homeController.link))
+app.get('/about', safeRouterHandler(homeController.about))
 // 后台系统
 app.get('/back/?*', safeRouterHandler(homeController.backend))
 

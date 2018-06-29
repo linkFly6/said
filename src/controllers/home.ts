@@ -84,6 +84,16 @@ export const error = (req: Request, res: Response) => {
   })
 }
 
+/**
+ * 关于页
+ * GET - /about
+ * @param req 
+ * @param res 
+ */
+export const about = (req: Request, res: Response) => {
+  res.render('home/about')
+}
+
 
 
 

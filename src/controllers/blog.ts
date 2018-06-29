@@ -186,6 +186,11 @@ export const detail = async (req: Request, res: Response) => {
   (blog as IViewBlog).info.createTimeString = moment(blog.info.createTime).format('YYYY-MM-DD HH:mm')
   blog.info.pv++
 
+  // 如果文章一年没更新，页面显示提示
+  if (Date.now() - blog.info.updateTime > 31536E6) {
+    (blog as IViewBlog).info.tips = `文章最后一次更新于 ${(blog as IViewBlog).info.createTimeString}，技术更迭频繁，请注意相关技术是否已经更新`
+  }
+
   if (res.locals.device === DEVICE.MOBILE) {
     res.render('blog/blog-mobile-detail', {
       title: `${blog.title} - blog`,
@@ -472,7 +477,9 @@ export const commentDelete = async (req: Request, res: Response) => {
     return res.json(ERRORS.BLOGNOTFOUND.toJSON())
   }
 
-  const comment = replyId ? await deleteReply(blog, commentId, replyId, res.locals.admin) : await deleteComment(blog, commentId, res.locals.admin)
+  replyId ?
+    await deleteReply(blog, commentId, replyId, res.locals.admin) :
+    await deleteComment(blog, commentId, res.locals.admin)
   let returns = new Returns(null, {
     code: 0,
     msg: '',

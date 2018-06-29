@@ -43,5 +43,9 @@ interface IViewBlog extends IBlog {
      * YYYY年MM月
      */
     tag: string
+    /**
+     * 文章的提示文案，例如文章太久没更新做提示
+     */
+    tips?: string
   }
 }

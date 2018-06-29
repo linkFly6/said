@@ -17,6 +17,17 @@ $layoutWidth = 825px
         color #666
       // 文章内容
       .article
+        // 提示（提示文章很久没更新）
+        .notice
+          position relative
+          padding .75rem 1.25rem
+          margin-bottom 1rem
+          border 1px solid transparent
+          border-radius .25rem
+          &.warning
+            color #856404
+            background-color #fff3cd
+            border-color #ffeeba
         .html
           html()
           // padding-bottom 2rem

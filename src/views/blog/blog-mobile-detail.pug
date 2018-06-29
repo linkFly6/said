@@ -7,6 +7,8 @@ block content
     article.context
       h1.title #{blog.title}
       section.html
+        if blog.info.tips
+          section.notice.warning #{blog.info.tips}
         //- 文章内容
         != blog.other.html
     .info
