@@ -406,7 +406,6 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
   if (matchs && matchs[0]) {
     /**
      * 高亮对应评论/回复的楼层，不用管定位到评论的问题，因为 hash 会自动定位过去
-     * @TODO 确认 .body highlight 样式
      */
     $commentList.find(`[href='${matchs[0]}']`).closest('.item').children('.body').addClass('highlight')
   }
