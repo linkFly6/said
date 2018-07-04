@@ -40,6 +40,7 @@ var createWebpackEntry = () => {
     'main': ['./src/public/js/main.ts'],
     'blog-index': ['./src/public/js/blog-index.ts'],
     'said-detail': ['./src/public/js/said-detail.ts'],
+    'home-about': ['./src/public/js/home-about.ts'],
     // 移动页面
     './mobile/app-mobile': ['./src/public/js/mobile/app-mobile.ts'],
     './mobile/said-mobile-index': ['./src/public/js/mobile/said-mobile-index.ts'],

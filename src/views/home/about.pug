@@ -4,17 +4,23 @@ block head
   link(rel='stylesheet', href='/static/css/about.css')
 
 block content
-  .banner-bg
+  .banner-bg(data-0="top:5.7%;", data-73="top:0%", data-1000="top:0%", data-2000="top:-100%")
+    //- (data-0="transform: scale(1);filter:blur(0px)", data-500="transform: scale(1.2);filter:blur(5px)")
     ul.banner
       li.banner-item.white(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
-        .banner-content
+        .banner-content(data-200="opacity: 1;display:block;", data-300="opacity: 0;display:none;")
           h3.title 关于听说
           .context
             p @linkFly
-            //- p 这是我的孤城
-            //- p 嘘，轻敲我的心
-            //- p 这里锈迹斑斑
-            //- p 住着雨、魔鬼、和老去的秘密
+        .banner-content(data-400="opacity: 0;", data-500="opacity:1;display:block;")
+          .context
+            p 这是我的孤城
+            p 嘘，轻敲我的心
+            p 这里锈迹斑斑
+            p 住着雨、魔鬼、和老去的秘密
   //- .triangle
   section#content
     .said-content
+
+block script
+  script(src='/static/js/home-about.js')

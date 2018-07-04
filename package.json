@@ -64,6 +64,7 @@
     "reflect-metadata": "^0.1.10",
     "request": "^2.78.0",
     "shortid": "^2.2.8",
+    "skrollr": "^0.6.26",
     "spdy": "^3.4.7",
     "transliteration": "^1.6.2"
   },
