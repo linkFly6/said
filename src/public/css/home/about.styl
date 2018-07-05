@@ -1,15 +1,74 @@
 // banner
 .container
   position relative
-  .banner-bg
+  .bg-one
+    overflow hidden
+    width 100%
+    text-align center
+    z-index 1
     position fixed
-    .banner-content
-      .title
-        font-size 3rem!important
-      .context
-        // p
-        //   padding-top 1rem
-
+    .bg
+      padding 0
+      margin 0
+      height 45rem
+    .content
+      position absolute
+      z-index 2
+      top 0
+      left 0
+      bottom 0
+      right 0
+      .item
+        position absolute
+        top 50%
+        left 50%
+        color white
+        transform translate(-50%, -50%)
+        text-shadow 1px 1px 1px rgba(0,0,0,0.6)
+        font-size 1.8rem
+        // background url('//static.tasaid.com/images/focus_bg.6a71bfc9.png') 100%
+        .title
+          .ting, .shuo
+            font-size 5rem
+            line-height 5rem
+            position relative
+          .ting
+            animation ting-left 2s 1s
+            animation-fill-mode forwards
+            @keyframes ting-left
+              0%
+                left 0rem
+              100%
+                left -2rem
+          .shuo
+            animation ting-right 2s 1s
+            animation-fill-mode forwards
+            @keyframes ting-right
+              0%
+                left 0rem
+              100%
+                left 2rem
+          .dian
+            font-size 5rem
+            line-height 5rem
+            // position absolute
+            opacity 0
+            animation dian-in 2s 2s
+            animation-fill-mode forwards
+            @keyframes dian-in
+              0%
+                opacity 0
+              100%
+                opacity 1
+        .fade-in
+          opacity 0
+          animation dian-in 2s 2s
+          animation-fill-mode forwards
+          @keyframes dian-in
+            0%
+              opacity 0
+            100%
+              opacity 1
 .triangle
     position: absolute;
     z-index 10
