@@ -4,10 +4,11 @@ block head
   link(rel='stylesheet', href='/static/css/about.css')
 
 block content
-  .bg-one(data-0="top:5.7%;", data-73="top:0%", data-1000="top:0%", data-2000="top:-100%")
-    .bg(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
+  .bg-one(data-0="top:5.7%;", data-73="top:0%", data-1000="top:0%", data-2243="top:-100%")
+    //- .bg(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
+    .bg(style='background-image:url(/static/images/bg/bg.eff70420.jpg)', data-72="filter:blur(0px)", data-1000="filter:blur(10px)")
     .content
-      .item(data-200="opacity: 1;display:block;", data-300="opacity: 0;display:none;")
+      .item(data-300="opacity: 1;display:block;", data-600="opacity: 0;display:none;")
         p.fade-in 关于
         .title 
           span.ting 听
@@ -15,7 +16,7 @@ block content
           span.shuo 说
         .context.fade-in
           p @linkFly
-      .item(data-0="display:none", data-400="opacity: 0;display:block;", data-500="opacity:1;display:block;")
+      .item.text(data-0="display:none", data-600="opacity: 0;display:block;", data-1000="opacity:1;display:block;")
         .context
           p 这是我的孤城
           p 嘘，轻敲我的心
