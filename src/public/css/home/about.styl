@@ -1,62 +1,84 @@
 // banner
 .container
   position relative
-  .bg-one
-    overflow hidden
-    width 100%
-    text-align center
-    z-index 1
-    position fixed
-    .bg
-      padding 0
-      margin 0
-      height 80rem
-      background no-repeat center bottom
-      background-size 1808px 1827px
-    .content
-      position absolute
-      z-index 2
-      top 0
-      left 0
-      bottom 0
-      right 0
-      .item
+  .content-one
+    $contentHeight = 80rem
+    /*
+      第一栏最外层容器，要包上滚动的距离
+      默认高度是 80 rem
+      2243px（滚动距离）/14px == 80rem
+      80rem（滚动距离） + 80rem（背景高度） = 容器高度
+      容器高度 - 5rem（顶部导航的高度） = 最终高度
+     */
+    height $contentHeight + 80rem - 5rem
+    .bg-one
+      overflow hidden
+      width 100%
+      text-align center
+      z-index 1
+      position fixed
+      height $contentHeight
+      .bg
+        padding 0
+        margin 0
+        height 100%
+        background no-repeat center bottom
+        background-size 1808px 1827px
+        @media only screen and (min-width: 1442px)
+          background-size 2560px 2587px
+      .content
         position absolute
-        top 50%
-        left 50%
-        color white
-        transform translate(-50%, -50%)
-        text-shadow 1px 1px 1px rgba(0,0,0,0.6)
-        font-size 1.8rem
-        &.text
-          font-size 1.4rem
-          line-height 1
-        // background url('//static.tasaid.com/images/focus_bg.6a71bfc9.png') 100%
-        .title
-          .ting, .shuo
-            font-size 5rem
-            line-height 5rem
-            position relative
-          .ting
-            animation ting-left 2s 1s
-            animation-fill-mode forwards
-            @keyframes ting-left
-              0%
-                left 0rem
-              100%
-                left -2rem
-          .shuo
-            animation ting-right 2s 1s
-            animation-fill-mode forwards
-            @keyframes ting-right
-              0%
-                left 0rem
-              100%
-                left 2rem
-          .dian
-            font-size 5rem
-            line-height 5rem
-            // position absolute
+        z-index 2
+        top 0
+        left 0
+        bottom 0
+        right 0
+        .item
+          position absolute
+          top 50%
+          left 50%
+          color white
+          transform translate(-50%, -50%)
+          text-shadow 1px 1px 1px rgba(0,0,0,0.6)
+          font-size 1.8rem
+          &.text
+            font-size 1.4rem
+            line-height 1
+          // background url('//static.tasaid.com/images/focus_bg.6a71bfc9.png') 100%
+          .title
+            .ting, .shuo
+              font-size 5rem
+              line-height 5rem
+              position relative
+            .ting
+              animation ting-left 2s 1s
+              animation-fill-mode forwards
+              @keyframes ting-left
+                0%
+                  left 0rem
+                100%
+                  left -2rem
+            .shuo
+              animation ting-right 2s 1s
+              animation-fill-mode forwards
+              @keyframes ting-right
+                0%
+                  left 0rem
+                100%
+                  left 2rem
+            .dian
+              font-size 5rem
+              line-height 5rem
+              // position absolute
+              opacity 0
+              animation dian-in 2s 2s
+              animation-fill-mode forwards
+              @keyframes dian-in
+                0%
+                  opacity 0
+                100%
+                  opacity 1
+          .fade-in
             opacity 0
             animation dian-in 2s 2s
             animation-fill-mode forwards
@@ -65,15 +87,6 @@
                 opacity 0
               100%
                 opacity 1
-        .fade-in
-          opacity 0
-          animation dian-in 2s 2s
-          animation-fill-mode forwards
-          @keyframes dian-in
-            0%
-              opacity 0
-            100%
-              opacity 1
 .triangle
     position: absolute;
     z-index 10
@@ -84,7 +97,76 @@
     bottom -100px
     transform: rotate(-3deg);
 
-#content
-  .said-content
+// 居中的内容块容器，设置一些通用的样式
+.section-content
+  width 825px
+  margin 0 auto
+  // 正文
+  .header
+    padding-top 5rem
+    // 横线动画
+    .line
+      .gradient
+        background linear-gradient(to right, #00b8ff 0%, #0084ff 50%, #00b8ff 100%)
+        // transition-timing-function cubic-bezier(0.165, 0.84, 0.44, 1)
+        height 2px
+        transform scale(0, 1)
+        // 动画结束后的状态
+        &.animation-complete
+          transform scale(1, 1)
+    // 大标题文字
+    .title
+      margin-top 2rem
+      margin 2rem auto 0
+      text-align center
+      opacity 0
+      transform translateY(3rem)
+      // 动画结束后的状态
+      &.animation-complete
+          opacity 1
+          transform translateY(0)
+    .font-medium
+      font-size 2.2rem
+      font-weight 200
+      letter-spacing 0.3rem
+      line-height 1.2
+    // 当内容滚动到视窗内（或 skrollr 设置的位置）后追加的样式
+    &.view-show
+      .line
+        .gradient
+          animation fade-in 1s 0s
+      @keyframes fade-in
+        0%
+          transform scale(0, 1)
+        100%
+          transform scale(1, 1)
+      .title
+        animation up 1s .5s
+        @keyframes up
+          0%
+            opacity 0
+            transform translateY(3rem)
+          100%
+            opacity 1
+            transform translateY(0)
+  .content
+    &.text-des
+      animation up 1s 1s
+      opacity 0
+      text-align center
+      // 动画结束后的状态
+      &.animation-complete
+        opacity 1
+        transform translateY(0)
+      @keyframes up
+        0%
+          opacity 0
+          transform translateY(3rem)
+        100%
+          opacity 1
+          transform translateY(0)
+.content-two
+  .content
     position relative
     height 300rem
+      

@@ -4,27 +4,40 @@ block head
   link(rel='stylesheet', href='/static/css/about.css')
 
 block content
-  .bg-one(data-0="top:5.7%;", data-73="top:0%", data-1000="top:0%", data-2243="top:-100%")
-    //- .bg(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
-    .bg(style='background-image:url(/static/images/bg/bg.eff70420.jpg)', data-72="filter:blur(0px)", data-1000="filter:blur(10px)")
-    .content
-      .item(data-300="opacity: 1;display:block;", data-600="opacity: 0;display:none;")
-        p.fade-in 关于
-        .title 
-          span.ting 听
-          span.dian ·
-          span.shuo 说
-        .context.fade-in
-          p @linkFly
-      .item.text(data-0="display:none", data-600="opacity: 0;display:block;", data-1000="opacity:1;display:block;")
-        .context
-          p 这是我的孤城
-          p 嘘，轻敲我的心
-          p 这里锈迹斑斑
-          p 住着雨、魔鬼、和老去的秘密
+  section.content-one
+    //- data-smooth-scrolling 关掉默认的缓动动画
+    .bg-one(data-0="top:5.185rem;", data-73="top:0rem", data-1000="top:0rem", data-2243="top:-80rem", data-smooth-scrolling="off")
+      //- .bg(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
+      .bg(style='background-image:url(/static/images/bg/bg.eff70420.jpg)', data-72="filter:blur(0px)", data-1000="filter:blur(10px)")
+      .content
+        .item(data-300="opacity: 1;display:block;", data-600="opacity: 0;display:none;")
+          p.fade-in 关于
+          .title 
+            span.ting 听
+            span.dian ·
+            span.shuo 说
+          .context.fade-in
+            p @linkFly
+        .item.text(data-0="display:none", data-600="opacity: 0;display:block;", data-900="opacity:1;display:block;")
+          .context
+            p 这是我的孤城
+            p 嘘，轻敲我的心
+            p 这里锈迹斑斑
+            p 住着雨、魔鬼、和老去的秘密
   //- .triangle
-  section#content
-    .said-content
-
+  section.content-two.section-content
+    .header(data-emit-events, data-class="view-show", data-300-center-top, data-forwards)
+      .line
+        //- data-animation-end 设置的是是动画结束后追加的值
+        .gradient(data-animation-end="animation-complete")
+      h1.title.font-medium(data-animation-end="animation-complete") 关于听说
+    .content.text-des(data-animation-end="animation-complete")
+      p 这是我的孤城
+      p 简单中满足着我的贪婪
+      p 我私藏了一些歌曲，只是喜欢的乐队都解散或者老了
+      p 一度想过放弃
+      p 一个久未联系的妹子给我留言
+      p “因为歌我记住了你，你可别哪天就让人忘记了”
+      p 就突然觉得应该把它继续开发下去
 block script
   script(src='/static/js/home-about.js')
