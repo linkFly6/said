@@ -1,6 +1,14 @@
 // banner
 .container
   position relative
+  // 底部说明的占位符块（没有任何内容）
+  .place-bottom
+    margin-bottom 371px
+  // 文字阴影
+  .shadow-text
+    text-shadow 1px 1px 1px rgba(0,0,0,0.6)
+    &.white-shadow
+      color white
   .content-one
     $contentHeight = 80rem
     /*
@@ -37,9 +45,7 @@
           position absolute
           top 50%
           left 50%
-          color white
           transform translate(-50%, -50%)
-          text-shadow 1px 1px 1px rgba(0,0,0,0.6)
           font-size 1.8rem
           &.text
             font-size 1.4rem
@@ -101,7 +107,7 @@
 .section-content
   width 825px
   margin 0 auto
-  // 正文
+  // 顶部 title
   .header
     padding-top 5rem
     // 横线动画
@@ -123,41 +129,43 @@
       transform translateY(3rem)
       // 动画结束后的状态
       &.animation-complete
-          opacity 1
-          transform translateY(0)
+        opacity 1
+        transform translateY(0)
     .font-medium
       font-size 2.2rem
       font-weight 200
       letter-spacing 0.3rem
       line-height 1.2
-    // 当内容滚动到视窗内（或 skrollr 设置的位置）后追加的样式
-    &.view-show
-      .line
-        .gradient
-          animation fade-in 1s 0s
-      @keyframes fade-in
-        0%
-          transform scale(0, 1)
-        100%
-          transform scale(1, 1)
-      .title
-        animation up 1s .5s
-        @keyframes up
-          0%
-            opacity 0
-            transform translateY(3rem)
-          100%
-            opacity 1
-            transform translateY(0)
+  // 正文
   .content
-    &.text-des
-      animation up 1s 1s
+    &.box
+      margin-top 2rem
+    &.fade-in-up
       opacity 0
-      text-align center
       // 动画结束后的状态
       &.animation-complete
         opacity 1
         transform translateY(0)
+    .text-des
+      font-size 1.214rem
+      line-height 1.8
+      text-align center
+      p
+        margin 0
+  // 当内容滚动到视窗内（或 skrollr 设置的位置）后追加的样式
+  &.view-show
+    .line
+      .gradient
+        animation fade-in 1s 0s
+        animation-fill-mode forwards
+    @keyframes fade-in
+      0%
+        transform scale(0, 1)
+      100%
+        transform scale(1, 1)
+    .title
+      animation up 1s .5s
+      animation-fill-mode forwards
       @keyframes up
         0%
           opacity 0
@@ -165,8 +173,48 @@
         100%
           opacity 1
           transform translateY(0)
+    .content
+      &.fade-in-up
+        animation up 1s cubic-bezier(0.77, 0, 0.175, 1) 1s
+        animation-fill-mode forwards
+        @keyframes up
+          0%
+            opacity 0
+            transform translateY(3rem)
+          100%
+            opacity 1
+            transform translateY(0)
 .content-two
+  height 300rem
   .content
     position relative
-    height 300rem
+    height 83rem
+    &.bg-coldplay
+      background url('/static/images/bg/bg.682409d8.jpg') no-repeat
+      overflow hidden
+      width 100%
+    .text-des
+      opacity 0
+      text-align right
+      padding 2rem
+      line-height 2
+      position absolute
+      right 0
+      top 0
+      // 动画结束后的状态
+      &.animation-complete
+        opacity 1
+        transform translateX(0)
+  &.view-show
+    .content
+      .text-des
+        animation left-to-right 1s ease-in-out 2s
+        animation-fill-mode forwards
+        @keyframes left-to-right
+          0%
+            opacity 0
+            transform translateX(-3rem)
+          100%
+            opacity 1
+            transform translateX(0)
       
