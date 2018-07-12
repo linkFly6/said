@@ -9,6 +9,8 @@
     text-shadow 1px 1px 1px rgba(0,0,0,0.6)
     &.white-shadow
       color white
+  .color-white
+    color rgba(255,255,255,.8)
   .content-one
     $contentHeight = 80rem
     /*
@@ -107,6 +109,7 @@
 .section-content
   width 825px
   margin 0 auto
+  padding-bottom 5rem
   // 顶部 title
   .header
     padding-top 5rem
@@ -184,11 +187,14 @@
           100%
             opacity 1
             transform translateY(0)
+/*
+  第二个内容快
+*/
 .content-two
-  height 300rem
   .content
     position relative
     height 83rem
+    box-shadow  0 10px 6px -6px #777
     &.bg-coldplay
       background url('/static/images/bg/bg.682409d8.jpg') no-repeat
       overflow hidden
@@ -217,4 +223,20 @@
           100%
             opacity 1
             transform translateX(0)
-      
+.content-three
+  .header
+    // 横线动画
+    .line
+      .gradient
+        background linear-gradient(to right, #7d58e2 0%, #f8420c 100%)
+  .content
+    .write-txt
+      font-size 3rem
+      font-weight 400
+      // letter-spacing .1rem
+      font-family Consolas,Segoe UI Light, Calibri,Lucida Sans Unicode,Verdana,Arial,Helvetica
+      line-height 2
+      text-align center
+.black-bg
+  background #000
+  
