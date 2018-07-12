@@ -40,15 +40,61 @@ block content
         p 一个久未联系的妹子给我留言
         p “因为歌我记住了你，你可别哪天就让人忘记了”
         p 就突然觉得应该把它继续开发下去
-  section.black-bg
-    section.content-three.section-content(data-emit-events, data-class="view-show", data-300-center-top, data-forwards)
+  section.black-bg.content-three
+    section.section-content(data-emit-events, data-class="view-show", data-300-center-top, data-forwards)
       .header
         .line
           //- data-animation-end 设置的是是动画结束后追加的值
           .gradient(data-animation-end="animation-complete")
         h1.title.font-medium.color-white(data-animation-end="animation-complete") 关于·技术
       .content.box
-        .write-txt TypeScript
+        .write-txt#typed-fade
+          p#typewrite.write-box
+    section.projects
+      .project
+        .info
+          h3.title X.js
+          .context 
+            p 移动端解析 XML 的精致 JS 库
+            p 性能、体积、优雅度，一个都不能少
+            p 简单的 API 做不简单的事
+          .buttom
+            span.tips 仅支持移动端设备
+            a.source.link(href="javascript:;") 在 Github 查看
+      .project
+        .info
+          h3.title X.js
+          .context 
+            p 移动端解析 XML 的精致 JS 库
+            p 性能、体积、优雅度，一个都不能少
+            p 简单的 API 做不简单的事
+          .buttom
+            span.tips 仅支持移动端设备
+            a.source.link(href="javascript:;") 在 Github 查看
+      .project
+        .info
+          h3.title X.js
+          .context 
+            p 移动端解析 XML 的精致 JS 库
+            p 性能、体积、优雅度，一个都不能少
+            p 简单的 API 做不简单的事
+          .buttom
+            span.tips 仅支持移动端设备
+            a.source.link(href="javascript:;") 在 Github 查看
+      .project
+        .info
+          h3.title X.js
+          .context 
+            p 移动端解析 XML 的精致 JS 库
+            p 性能、体积、优雅度，一个都不能少
+            p 简单的 API 做不简单的事
+          .buttom
+            span.tips 仅支持移动端设备
+            a.source.link(href="javascript:;") 在 Github 查看
+    section.bg-keywords
+      span.font-10 TypeScript
+      span.font-3 JavaScript
+      span.font-4 NodeJs
   .place-bottom
 block script
   script(src='/static/js/home-about.js')

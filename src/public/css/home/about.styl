@@ -1,3 +1,9 @@
+// 动态打字效果的光标生成函数
+@require './lib/typed'
+
+font-code()
+  font-family Consolas,Segoe UI Light, Calibri,Lucida Sans Unicode,Verdana,Arial,Helvetica
+
 // banner
 .container
   position relative
@@ -159,13 +165,13 @@
   &.view-show
     .line
       .gradient
-        animation fade-in 1s 0s
+        animation line-fade-in 1s 0s
         animation-fill-mode forwards
-    @keyframes fade-in
-      0%
-        transform scale(0, 1)
-      100%
-        transform scale(1, 1)
+        @keyframes line-fade-in
+          0%
+            transform scale(0, 1)
+          100%
+            transform scale(1, 1)
     .title
       animation up 1s .5s
       animation-fill-mode forwards
@@ -214,7 +220,7 @@
   &.view-show
     .content
       .text-des
-        animation left-to-right 1s ease-in-out 2s
+        animation left-to-right 1s ease-in-out 1.5s
         animation-fill-mode forwards
         @keyframes left-to-right
           0%
@@ -224,19 +230,131 @@
             opacity 1
             transform translateX(0)
 .content-three
-  .header
-    // 横线动画
-    .line
-      .gradient
-        background linear-gradient(to right, #7d58e2 0%, #f8420c 100%)
-  .content
-    .write-txt
-      font-size 3rem
-      font-weight 400
-      // letter-spacing .1rem
-      font-family Consolas,Segoe UI Light, Calibri,Lucida Sans Unicode,Verdana,Arial,Helvetica
-      line-height 2
-      text-align center
+  .section-content
+    position relative
+    z-index 2
+    .header
+      // 横线动画
+      .line
+        .gradient
+          background linear-gradient(to right, #7d58e2 0%, #f8420c 100%)
+    .content
+      // 动态显示打字
+      .write-txt
+        font-size 3rem
+        font-weight 400
+        // letter-spacing .1rem
+        font-code()
+        height 8rem
+        text-align center
+        opacity 0
+        // 动画结束后的状态
+        &.animation-complete
+          opacity 1
+        .write-box
+          display inline
+          line-height 2
+          overflow hidden
+          span
+            position relative
+            &::after
+              content ''
+              position absolute
+              display block
+              width 100%
+              height 1px
+              bottom -5px
+              left 0
+              background-color currentColor
+            &.linkfly
+              color #33b5e5
+            &.ts
+              color #3073BB
+            &.js
+              color #EDDB68
+            &.nodejs
+              color #729D6A
+            &.react
+              color #80D8F7
+            &.vue
+              color #63B587
+            // &.stylus
+            //   color #EE6D51
+            &.electron
+              color #9feaf9
+          // ./lib/typed 引入的动态打字光标
+        .typed-cursor
+          line-height 2
+        typed-cursor(#fff)
+    &.view-show
+      .write-txt
+        animation write-txt-fade-in 1s ease-in-out 1s
+        animation-fill-mode forwards
+        @keyframes write-txt-fade-in
+          0%
+            opacity 0
+          100%
+            opacity 1
+  .projects
+    padding 0rem 5rem 5rem
+    width 3000px
+    overflow hidden
+    .project
+      background #101010
+      float left
+      margin-right 5rem
+      width 500px
+      padding 2rem
+      border-radius 4px
+      color #fafafa
+      border 1px solid #444
+      box-shadow 0 10px 10px -6px #222
+      transform translateY(10rem)
+      opacity 0
+      .title
+        font-size 3rem
+        line-height 1
+        margin 0
+        font-weight 400
+      .context
+        padding 2rem 0
+        height 15rem
+        p
+          margin 0
+          font-size 1.4rem
+          line-height 1.5
+      .buttom
+        .tips
+          font-size .7rem
+          color #ccc
+        .source
+          float right
+          &:hover
+            color #59c6ff
+      @keyframes project-fade-in-up
+        0%
+          opacity 0
+          transform translateY(10rem) rotate(-20deg)
+        100%
+          opacity 1
+          transform translateY(0rem) rotate(0deg)
+      for value in 1 2 3 4
+        &:nth-child({value})
+          animation project-fade-in-up 1.5s ease-in-out (value * .3s)
+          animation-fill-mode forwards
 .black-bg
   background #000
-  
+  position relative
+  overflow hidden
+  .bg-keywords
+    font-code()
+    span
+      font-size 10rem
+      line-height 1
+      position absolute
+      top 0
+      color rgba(68, 68, 68, .4)
+      // 生成不同字体大小的类
+      for size in 1 2 3 4 5 6 7 8 9 10
+        &.font-{size}
+          font-size size * 1rem

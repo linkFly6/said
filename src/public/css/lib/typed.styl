@@ -1,0 +1,16 @@
+/*
+  typed.js（动态显示打字）的光标样式
+*/
+typed-cursor($color)
+  .typed-cursor
+    opacity 1
+    if $color
+      color $color
+    animation typed-cursor-blink 1s infinite
+    @keyframes typed-cursor-blink
+      0%
+        opacity 1
+      50%
+        opacity 0
+      100%
+        opacity 1

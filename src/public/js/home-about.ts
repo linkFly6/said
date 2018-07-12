@@ -1,4 +1,5 @@
 const skrollr = require('skrollr')
+import Typed from 'typed.js'
 
 skrollr.init({
   // 默认会有缓动动画，设置 smoothScrolling 为 false 可以禁用缓动动画
@@ -41,3 +42,46 @@ $(document.body).on('animationend transitionend', e => {
   const className = $element.data('animationEnd')
   $element.addClass(className)
 })
+
+
+/**
+ * typed.js 打字动画
+ * @inheritDoc https://blog.csdn.net/weixin_41000111/article/details/78725784
+ */
+const typed = new Typed('#typewrite', {
+  strings: [
+    '<span class="linkfly">@linkFly</span>',
+    '<span class="ts">TypeScript</span>', 
+    '<span class="js">JavaScript</span>', 
+    '<span class="nodejs">NodeJs</span>',
+    '<span class="react">React</span>',
+    '<span class="vue">Vue</span>',
+    '<span class="electron">electron</span>'
+    ],
+  // 打字速度
+  typeSpeed: 100,
+  // 回退速度
+  backSpeed: 100,
+  // 回退延迟
+  backDelay: 2000,  
+  // 开始前的延迟
+  startDelay: 0,
+  // 是否循环
+  loop: true,
+  // 无限循环
+  loopCount: Infinity,
+  // 是否是 HTML
+  contentType: 'html',
+})
+
+// 默认暂停
+typed.stop()
+
+// 打字动画的 DOM
+const $elemTypeWrite = $('#typed-fade')
+// 当打字动画的 DOM 显示完毕后才开始显示打字
+$elemTypeWrite.on('animationend transitionend', () => {
+  typed.start()
+})
+
+
