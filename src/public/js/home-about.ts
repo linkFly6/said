@@ -63,7 +63,7 @@ const typed = new Typed('#typewrite', {
   // 回退速度
   backSpeed: 100,
   // 回退延迟
-  backDelay: 2000,  
+  backDelay: 1500,  
   // 开始前的延迟
   startDelay: 0,
   // 是否循环

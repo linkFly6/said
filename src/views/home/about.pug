@@ -33,13 +33,17 @@ block content
       h1.title.font-medium(data-animation-end="animation-complete") 关于·听说
     #one-content.content.box.fade-in-up.bg-coldplay(data-animation-end="animation-complete", data-bottom="filter:grayscale(0%)", data--581-top="filter:grayscale(100%)")
       .text-des.white-shadow.shadow-text(data-animation-end="animation-complete", data-top="top:0%;", data--716-top="top:72%;", data-anchor-target="#one-content", data-smooth-scrolling="off")
+        p 一个久未联系的妹子给我留言
+        p “因为歌我记住了你，你可别哪天就让人忘记了”
         p 这是我的孤城
         p 简单中满足着我的贪婪
         p 我私藏了一些歌曲，只是喜欢的乐队都解散或者老了
-        p 一度想过放弃
-        p 一个久未联系的妹子给我留言
-        p “因为歌我记住了你，你可别哪天就让人忘记了”
-        p 就突然觉得应该把它继续开发下去
+        p 我还听说过一些故事，只是觉得讲起来过于单调
+        p 于是放上一首应景的歌
+        p 让整个故事，恰到好处。
+    .des
+      p 本站所发布的音乐、图片、视听播放等，均来自互联网的链接，听说网站自身不存储、控制、修改被链接的内容，且不提供下载链接。
+      p 听说高度重视知识产权保护。当权利人发现本网站发布的信息包含有侵犯其著作权的链接内容时，请权利人向听说发出“权利通知”，本网站将依法采取措施移除相关内容或屏蔽相关链接。
   section.black-bg.content-three
     section.section-content(data-emit-events, data-class="view-show", data-300-center-top, data-forwards)
       .header
@@ -50,51 +54,63 @@ block content
       .content.box
         .write-txt#typed-fade
           p#typewrite.write-box
-    section.projects
+    section.projects(data-emit-events, data-class="view-show", data-300-center-top, data-forwards, data-animation-end="animation-complete")
       .project
-        .info
+        .info.x
           h3.title X.js
           .context 
             p 移动端解析 XML 的精致 JS 库
+            p 支持使用 XPath 操作 XML
             p 性能、体积、优雅度，一个都不能少
             p 简单的 API 做不简单的事
           .buttom
-            span.tips 仅支持移动端设备
-            a.source.link(href="javascript:;") 在 Github 查看
+            span.tips 仅支持 Mobile 设备
+            a.source.link(href=`/link?url=${encodeURIComponent('https://github.com/linkFly6/X')}&sv=about`, target='_blank') 在 Github 查看
       .project
-        .info
-          h3.title X.js
+        .info.said
+          h3.title Said
           .context 
-            p 移动端解析 XML 的精致 JS 库
-            p 性能、体积、优雅度，一个都不能少
-            p 简单的 API 做不简单的事
+            p Said 本身就是开源的
+            p 汇聚了众多技术，化繁为简
+            p 以我所学，做以极致
           .buttom
-            span.tips 仅支持移动端设备
-            a.source.link(href="javascript:;") 在 Github 查看
+            span.tips 兼容 PC/Mobile
+            a.source.link(href=`/link?url=${encodeURIComponent('https://github.com/linkFly6/said')}&sv=about`, target='_blank') 在 Github 查看
       .project
-        .info
-          h3.title X.js
+        .info.mand
+          h3.title Mand-mobile
           .context 
-            p 移动端解析 XML 的精致 JS 库
-            p 性能、体积、优雅度，一个都不能少
-            p 简单的 API 做不简单的事
+            p 面向金融场景的 Vue 移动端 UI 组件库
+            p 丰富、灵活、实用
+            p 快速搭建优质的金融类产品
+            p 让复杂的金融场景变简单
           .buttom
-            span.tips 仅支持移动端设备
-            a.source.link(href="javascript:;") 在 Github 查看
-      .project
-        .info
-          h3.title X.js
-          .context 
-            p 移动端解析 XML 的精致 JS 库
-            p 性能、体积、优雅度，一个都不能少
-            p 简单的 API 做不简单的事
-          .buttom
-            span.tips 仅支持移动端设备
-            a.source.link(href="javascript:;") 在 Github 查看
+            span.tips 仅支持 Mobile 设备
+            a.source.link(href=`/link?url=${encodeURIComponent('https://didi.github.io/mand-mobile')}&sv=about`, target='_blank') 了解更多
+    section.section-content
+      .des
+        p Web / NodeJs 开发
+        p 偏爱 TypeScript 和 JavaScript
+        p 探索和架构型技术选手
+        p React / Vue 共用
+        p Express 和相关技术
+        p 了解一些 Mongodb、SQL
+        p 主导开发
+        p 还有一些零碎而又实用的技术，例如：
+        p stylus / electron / docker / linux / immutable / flux 等...
     section.bg-keywords
-      span.font-10 TypeScript
-      span.font-3 JavaScript
-      span.font-4 NodeJs
+      span.font-10(style="top: 2%") TypeScript
+      span.font-3(style="right: 30%; top: 30%") JavaScript
+      span.font-4(style="top: 40%; left: 10%") NodeJs
+      span.font-4(style="top: 68%;right:10%") Vue
+      span.font-6(style="top: 40%;right:30%") Bootstrap
+      span.font-4(style="bottom: 1%;right: 10%") Material Design
+      span.font-8(style="top: 15%;right: 20%") React
+      span.font-2(style="top: 80%;left: 25%") Immutable
+      span.font-3(style="bottom: 24%;right: 24%") Flux
+      span.font-5(style="top: 50%; right: 10%") Webpack
+      span.font-6(style="top: 68%; left: 18%") jQuery
+      span.font-4(style="top: 20%;right:10%") Stylus
   .place-bottom
 block script
   script(src='/static/js/home-about.js')

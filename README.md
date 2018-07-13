@@ -1,6 +1,6 @@
 # Said - 听说
 
-[![Scrutinizer Build](https://img.shields.io/scrutinizer/build/g/filp/whoops.svg)](https://tasaid.com/)
+[![Scrutinizer Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://tasaid.com/)
 [![License](https://img.shields.io/badge/license-GPL%2C%20CC%20BY--NC%203.0-green.svg)](https://github.com/linkFly6/said)
 [![TypeScript](https://img.shields.io/badge/typescript-%3E%3D2.6.1-blue.svg)](https://www.typescriptlang.org/)
 [![Nodejs](https://img.shields.io/badge/node-%3E%3D8.2.1-blue.svg)](https://nodejs.org/en/)

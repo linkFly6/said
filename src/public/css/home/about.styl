@@ -295,64 +295,125 @@ font-code()
             opacity 0
           100%
             opacity 1
+  // 项目列表
   .projects
-    padding 0rem 5rem 5rem
-    width 3000px
+    zoom-top()
+      position relative
+      z-index 2
+    padding 0 0 5rem
+    width 1284px
+    margin 0 auto
+    zoom-top()
     overflow hidden
     .project
-      background #101010
+      background rgba(60, 60, 60, .3)
       float left
-      margin-right 5rem
-      width 500px
+      margin-right 2rem
+      width 400px
       padding 2rem
       border-radius 4px
       color #fafafa
       border 1px solid #444
       box-shadow 0 10px 10px -6px #222
-      transform translateY(10rem)
+      transition border-color ease-in-out 0.2s, box-shadow ease-in-out 0.2s
       opacity 0
+      &:hover
+        border 1px solid #3b99fc
+        box-shadow 0px 0px 10px 0px #a2cfff
+      // 项目标题
       .title
-        font-size 3rem
+        zoom-top()
+        font-size 2.2rem
         line-height 1
         margin 0
         font-weight 400
+      // 项目介绍
       .context
+        zoom-top()
         padding 2rem 0
-        height 15rem
+        height 10rem
         p
           margin 0
-          font-size 1.4rem
+          font-size 1.1rem
           line-height 1.5
       .buttom
+        zoom-top()
         .tips
           font-size .7rem
           color #ccc
         .source
           float right
+          &:visited
+            color #4078c0
           &:hover
             color #59c6ff
+          &::after
+            bottom -1px
+      .info
+        opacity 0
+        position relative
+        overflow hidden
+        &::after
+          content ''
+          position absolute
+          right 0
+          bottom -9%
+          display block
+          font-size 10rem
+          line-height 1
+          color rgba(88,88,88,0.1)
+          font-weight 500
+        &.x::after
+          content 'XML'
+        &.said::after
+          content 'Said'
+        &.mand::after
+          content 'Mand'
+      // 动画结束后的状态
+      &.animation-complete
+        opacity 1
+        transform translateX(0rem) rotate(1, 1)
       @keyframes project-fade-in-up
         0%
           opacity 0
-          transform translateY(10rem) rotate(-20deg)
+          transform translateX(-5rem) scale(0, 0)
+        30%
+          opacity .5
+          transform translateX(-3.5rem) scale(1, .1)
         100%
           opacity 1
-          transform translateY(0rem) rotate(0deg)
-      for value in 1 2 3 4
-        &:nth-child({value})
-          animation project-fade-in-up 1.5s ease-in-out (value * .3s)
-          animation-fill-mode forwards
+          transform translateX(0rem) rotate(1, 1)
+      @keyframes project-info-fade-in
+        0%
+          opacity 0
+        100%
+          opacity 1
+      // 滚动到页面才显示
+    &.view-show
+      .project
+        for value in 1 2 3 4
+          &:nth-child({value})
+            animation project-fade-in-up 1.5s ease-in-out (value * .3s)
+            animation-fill-mode forwards
+            .info
+              animation project-info-fade-in 1s ease (value * .3s + 1.5s)
+              animation-fill-mode forwards
 .black-bg
   background #000
   position relative
   overflow hidden
+  .section-content
+    .des
+      text-align center
+      color #fafafa
+      font-size 1.1rem
   .bg-keywords
     font-code()
+    user-select none
     span
       font-size 10rem
       line-height 1
       position absolute
-      top 0
       color rgba(68, 68, 68, .4)
       // 生成不同字体大小的类
       for size in 1 2 3 4 5 6 7 8 9 10
