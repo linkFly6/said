@@ -7,6 +7,7 @@ font-code()
 // banner
 .container
   position relative
+  // background steelblue linear-gradient(to right bottom, skyblue, steelblue, teal, lightseagreen)
   // 底部说明的占位符块（没有任何内容）
   .place-bottom
     margin-bottom 371px
@@ -406,6 +407,48 @@ font-code()
     text-align center
     color #fafafa
     font-size 1.1rem
+    display flex
+    justify-content space-between
+    .des
+      width 50%
+      padding-top 2.2rem
+      text-align left
+    .qr
+      width 50%
+      p
+        margin 1rem 0
+    .qq-team
+      width 80%
+      margin 0 auto
+      padding 2px
+      background #fff
+      border-radius 2px
+      display block
+      transition background-color ease-in-out 0.2s
+      &:hover
+        background #3b99fc
+      img
+        width 100%
+        height 100%
+        display block
+        margin 0 auto
+  .n-code
+    text-align center
+    padding-bottom 10rem
+    span
+      display inline-block
+      font-size 1.2rem
+      color #fafafa
+      position relative
+      &::before
+        content ''
+        display block
+        width 100%
+        position absolute
+        bottom -.5rem
+        left 0
+        height 1px
+        background linear-gradient(to right, #544ebe 0%, #105ce0 100%)
   .bg-keywords
     font-code()
     user-select none
