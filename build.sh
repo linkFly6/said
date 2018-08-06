@@ -17,14 +17,14 @@ echo '============= npm build ============='
 
 
 # 环境检查
-gulp_bin=`command -v gulp`
+# gulp_bin=`command -v gulp`
 
-if [ ! "$gulp_bin" -o ]; then
-  echo '请全局安装 gulp'
-  exit 1
-else
-  echo "gulp 版本=`$gulp_bin  --version`"
-fi
+# if [ ! "$gulp_bin" -o ]; then
+#   echo '请全局安装 gulp'
+#   exit 1
+# else
+#   echo "gulp 版本=`$gulp_bin  --version`"
+# fi
 
 
 # package.json
@@ -38,7 +38,8 @@ cp -r ./deploy.sh ./dist/
 cp -r ./src/robots.txt ./dist/
 
 # 运行 gulp 任务，将资源进行合并
-gulp build-production
+# gulp build-production
+npm run gulp:build-client-js
 
 rm -r ./said
 rm -r ./said.tar.gz
