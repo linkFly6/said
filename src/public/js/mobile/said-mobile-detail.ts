@@ -1,6 +1,5 @@
 import { Player } from '../lib/player'
 import { addClass, removeClass } from '../lib/utils'
-import { ajax } from '../lib/ajax'
 import { initMobileUserLikeEvent } from '../lib/user-like'
 
 

@@ -91,7 +91,11 @@ export const error = (req: Request, res: Response) => {
  * @param res 
  */
 export const about = (req: Request, res: Response) => {
-  res.render('home/about')
+  if (res.locals.device === DEVICE.MOBILE) {
+    res.render('home/about-mobile')
+  } else {
+    res.render('home/about')
+  }
 }
 
 

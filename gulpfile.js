@@ -23,6 +23,8 @@ var createWebpackEntry = () => {
     './mobile/said-mobile-index': ['./src/public/js/mobile/said-mobile-index.ts'],
     './mobile/said-mobile-detail': ['./src/public/js/mobile/said-mobile-detail.ts'],
     './mobile/blog-mobile-detail': ['./src/public/js/mobile/blog-mobile-detail.ts'],
+    './mobile/blog-mobile-detail': ['./src/public/js/mobile/blog-mobile-detail.ts'],
+    './mobile/home-about-mobile': ['./src/public/js/mobile/home-about-mobile.ts'],
   }
 }
 

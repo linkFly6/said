@@ -1,0 +1,19 @@
+extends ../partials/layout-mobile.pug
+
+block content
+  .banner
+    section.banner-bg(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
+  .home-about
+    .section-content.section-one
+      .header
+        .line
+          //- data-animation-end 设置的是是动画结束后追加的值
+          .gradient(data-animation-end="animation-complete")
+        h1.title.font-medium(data-animation-end="animation-complete") 关于·听说
+      .context
+        p 这是我的孤城
+        p 嘘，轻敲我的心
+        p 这里锈迹斑斑
+        p 住着雨、魔鬼、和老去的秘密
+block script
+  script(type='text/javascript', charset='utf-8', src='/static/js/mobile/home-about-mobile.js')

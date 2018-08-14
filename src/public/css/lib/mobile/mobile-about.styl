@@ -1,0 +1,57 @@
+.home-about
+  background #1a1a1a
+  .section-content
+    &.inset
+      padding 1rem
+    // 顶部 title
+    .header
+      padding-top 1rem
+      // 横线动画
+      .line
+        .gradient
+          background linear-gradient(to right, #00b8ff 0%, #0084ff 50%, #00b8ff 100%)
+          // transition-timing-function cubic-bezier(0.165, 0.84, 0.44, 1)
+          height 2px
+          transform scale(0, 1)
+          // 动画结束后的状态
+          &.animation-complete
+            transform scale(1, 1)
+      // 大标题文字
+      .title
+        text-align center
+        opacity 0
+        transform translateY(3rem)
+        // 动画结束后的状态
+        &.animation-complete
+          opacity 1
+          transform translateY(0)
+      .font-medium
+        color #fff
+        font-size 1.6rem
+        font-weight 200
+        letter-spacing 0.3rem
+        line-height 1.2
+    // 当内容滚动到视窗内（或 skrollr 设置的位置）后追加的样式
+    &.view-show
+      .line
+        .gradient
+          animation line-fade-in 1s 0s
+          animation-fill-mode forwards
+          @keyframes line-fade-in
+            0%
+              transform scale(0, 1)
+            100%
+              transform scale(1, 1)
+      .title
+        animation up 1s .5s
+        animation-fill-mode forwards
+        @keyframes up
+          0%
+            opacity 0
+            transform translateY(3rem)
+            99%
+              opacity 1
+              transform translateY(0)
+            100%
+              opacity 1
+              transform none!important

@@ -166,7 +166,7 @@ font-code()
       text-align center
       p
         margin 0
-  // 当内容滚动到视窗内（或 skrollr 设置的位置）后追加的样式
+  // 当内容滚动到视窗内后追加的样式
   &.view-show
     .line
       .gradient
@@ -424,6 +424,16 @@ font-code()
       width 50%
       padding-top 2.2rem
       text-align left
+      opacity 0
+      animation text-des-fade-in 1.5s ease-in-out 2s
+      animation-fill-mode forwards
+      &.animation-complete
+        opacity 1
+      @keyframes text-des-fade-in
+        0%
+          opacity 0
+        100%
+          opacity 1
     .qr
       width 50%
       p
