@@ -1,6 +1,7 @@
 // 使用 gulp 将 src/view 中的 pug copy 到 dist 目录中
 // 只用与开发环境，因为发生产在打包的时候直接 copy view 到 dist 就可以了，只有开发环境需要 watch 变动
 
+const path = require('path')
 const gulp = require('gulp')
 const watch = require('gulp-watch')
 const webpack = require('webpack')
@@ -25,6 +26,13 @@ var createWebpackEntry = () => {
   }
 }
 
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
+function resolveNodeModules () {
+  return path.join(__dirname, path.join.apply(path, arguments))
+}
+
 var webpackConfig = {
   watch: false,
   // devtool: '#cheap-module-eval-source-map',
@@ -37,7 +45,17 @@ var webpackConfig = {
     // chunkFilename: '[name].[chunkHash:7].js'
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      // sb 的 scrollmagic 和 gsap 包管理
+      'TweenLite': resolveNodeModules('node_modules', 'gsap/src/uncompressed/TweenLite.js'),
+      'TweenMax': resolveNodeModules('node_modules', 'gsap/src/uncompressed/TweenMax.js'),
+      'TimelineLite': resolveNodeModules('node_modules', 'gsap/src/uncompressed/TimelineLite.js'),
+      'TimelineMax': resolveNodeModules('node_modules', 'gsap/src/uncompressed/TimelineMax.js'),
+      'ScrollMagic': resolveNodeModules('node_modules', 'scrollmagic/scrollmagic/uncompressed/ScrollMagic.js'),
+      'scrollmagic.animation.gsap': resolveNodeModules('node_modules', 'scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js'),
+      'debug.addIndicators': resolveNodeModules('node_modules', 'scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js'),
+    }
   },
   module: {
     rules: [

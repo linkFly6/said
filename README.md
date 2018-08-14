@@ -46,7 +46,7 @@
 
 ```bash
 $ npm i --d # 安装依赖包
-$ npm run dev # 启动服务
+$ npm start # 启动开发服务
 ```
 
 ## 部署

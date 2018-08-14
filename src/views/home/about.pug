@@ -6,11 +6,11 @@ block head
 block content
   section.content-one
     //- data-smooth-scrolling 关掉默认的缓动动画
-    .bg-one(data-0="top:5.185rem;", data-73="top:0rem", data-1000="top:0rem", data-2243="top:-80rem", data-smooth-scrolling="off")
+    .bg-one
       //- .bg(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
-      .bg(style='background-image:url(/static/images/bg/bg.eff70420.jpg)', data-72="filter:blur(0px)", data-1000="filter:blur(10px)")
+      .bg(style='background-image:url(/static/images/bg/bg.eff70420.jpg);filter: blur(0px)')
       .content
-        .item.shadow-text.white-shadow(data-300="opacity: 1;display:block;", data-600="opacity: 0;display:none;")
+        .item.item-1.shadow-text.white-shadow
           p.fade-in 关于
           .title 
             span.ting 听
@@ -18,21 +18,21 @@ block content
             span.shuo 说
           .context.fade-in
             p @linkFly
-        .item.text.shadow-text.white-shadow(data-0="display:none", data-600="opacity: 0;display:block;", data-900="opacity:1;display:block;")
+        .item.item-2.text.shadow-text.white-shadow(style="display:none;opacity:0")
           .context
             p 这是我的孤城
             p 嘘，轻敲我的心
             p 这里锈迹斑斑
             p 住着雨、魔鬼、和老去的秘密
   //- .triangle
-  section.content-two.section-content(data-emit-events, data-class="view-show", data-300-center-top, data-forwards)
+  section.content-two.section-content
     .header
       .line
         //- data-animation-end 设置的是是动画结束后追加的值
         .gradient(data-animation-end="animation-complete")
       h1.title.font-medium(data-animation-end="animation-complete") 关于·听说
-    #one-content.content.box.fade-in-up.bg-coldplay(data-animation-end="animation-complete", data-bottom="filter:grayscale(0%)", data--581-top="filter:grayscale(100%)")
-      .text-des.white-shadow.shadow-text(data-animation-end="animation-complete", data-top="top:0%;", data--716-top="top:72%;", data-anchor-target="#one-content", data-smooth-scrolling="off")
+    #two-content.content.box.fade-in-up.bg-coldplay(data-animation-end="animation-complete", style="filter:grayscale(0%)")
+      .text-des.white-shadow.shadow-text(data-animation-end="animation-complete")
         p 一个久未联系的妹子给我留言
         p “因为歌我记住了你，你可别哪天就让人忘记了”
         p 这是我的孤城
@@ -45,7 +45,7 @@ block content
       p 本站所发布的音乐、图片、视听播放等，均来自互联网的链接，听说网站自身不存储、控制、修改被链接的内容，且不提供下载链接。
       p 听说高度重视知识产权保护。当权利人发现本网站发布的信息包含有侵犯其著作权的链接内容时，请权利人向听说发出“权利通知”，本网站将依法采取措施移除相关内容或屏蔽相关链接。
   section.black-bg.content-three
-    section.section-content(data-emit-events, data-class="view-show", data-300-center-top, data-forwards)
+    section.section-content
       .header
         .line
           //- data-animation-end 设置的是是动画结束后追加的值
@@ -54,7 +54,7 @@ block content
       .content.box
         .write-txt#typed-fade
           p#typewrite.write-box
-    section.projects(data-emit-events, data-class="view-show", data-300-center-top, data-forwards, data-animation-end="animation-complete")
+    section.projects(data-animation-end="animation-complete")
       .project
         .info.x
           h3.title X.js
