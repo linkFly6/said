@@ -69,8 +69,13 @@ font-code()
               line-height 5rem
               position relative
               opacity 0
+              @keyframes fade-in-txt
+                0%
+                  opacity 0
+                100%
+                  opacity 1
             .ting
-              animation ting-left 2s 1s
+              animation fade-in-txt 2s, ting-left 2s 2s
               animation-fill-mode forwards
               @keyframes ting-left
                 0%
@@ -78,7 +83,7 @@ font-code()
                 100%
                   left -2rem
             .shuo
-              animation ting-right 2s 1s
+              animation fade-in-txt 2s, ting-right 2s 2s
               animation-fill-mode forwards
               @keyframes ting-right
                 0%
@@ -90,7 +95,7 @@ font-code()
               line-height 5rem
               // position absolute
               opacity 0
-              animation dian-in 2s 2s
+              animation dian-in 2s 3s
               animation-fill-mode forwards
               @keyframes dian-in
                 0%
@@ -99,7 +104,7 @@ font-code()
                   opacity 1
           .fade-in
             opacity 0
-            animation dian-in 2s 2s
+            animation dian-in 2s 3s
             animation-fill-mode forwards
             @keyframes dian-in
               0%
@@ -210,11 +215,11 @@ font-code()
 .content-two
   .content
     position relative
-    height 83rem
     box-shadow  0 10px 6px -6px #777
-    &.bg-coldplay
+    .bg-coldplay
       background url('/static/images/bg/bg.682409d8.jpg') no-repeat
       overflow hidden
+      height 83rem
       width 100%
     .text-des
       opacity 0

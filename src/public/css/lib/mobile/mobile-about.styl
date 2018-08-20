@@ -11,7 +11,7 @@
         .gradient
           background linear-gradient(to right, #00b8ff 0%, #0084ff 50%, #00b8ff 100%)
           // transition-timing-function cubic-bezier(0.165, 0.84, 0.44, 1)
-          height 2px
+          height 1px
           transform scale(0, 1)
           // 动画结束后的状态
           &.animation-complete
@@ -20,7 +20,7 @@
       .title
         text-align center
         opacity 0
-        transform translateY(3rem)
+        transform translateY(1rem)
         // 动画结束后的状态
         &.animation-complete
           opacity 1
@@ -48,10 +48,36 @@
         @keyframes up
           0%
             opacity 0
-            transform translateY(3rem)
+            transform translateY(1rem)
             99%
               opacity 1
               transform translateY(0)
             100%
               opacity 1
               transform none!important
+      .fade-in
+        animation fade-in 2s 1s
+        opacity 0
+        animation-fill-mode forwards
+        @keyframes fade-in
+          0%
+            opacity 0
+            100%
+              opacity 1
+    &.section-one
+      .context p
+        text-align center
+    .text
+      color #CCC
+      p
+        padding 0
+        margin 0
+    &.section-two
+      background url(//s3.didiyunapi.com/said/u=2588114331,486441665&fm=27&gp=0.jpg)
+      // background url(//s3.didiyunapi.com/said/timg.jpg)
+body
+  // background #101010
+  background #292929
+
+#footer .menus a
+  color #ccc

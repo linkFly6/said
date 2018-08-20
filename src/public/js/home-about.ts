@@ -186,7 +186,7 @@ function bgTwoAmination(controller: any) {
     duration: 716,
   })
     //文字跟随图片滚动
-    .setPin('#two-content .text-des')
+    .setPin('.content-two .text-des')
     // 图片逐渐灰度
     .setTween('.bg-coldplay', { filter: 'grayscale(100%)' })
     // 追加到页面控制器中
