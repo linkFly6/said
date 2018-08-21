@@ -173,12 +173,12 @@ const regMatchKey = /^\d{10,20}$/
  */
 export const detail = async (req: Request, res: Response) => {
   if (!regMatchKey.test(req.params.key)) {
-    res.redirect('/error', 404)
+    res.redirect('/404')
     return
   }
   const articleModel = await getArticleByKey(req.params.key)
   if (!articleModel) {
-    res.redirect('/error', 404)
+    res.redirect('/404')
     return
   }
 

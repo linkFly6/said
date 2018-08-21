@@ -208,7 +208,7 @@ app.use(async (req, res: Response, next) => {
     const userInfo = await createUser(user)
     if (!userInfo) {
       // 跳转到服务器异常
-      res.redirect('/error', 500)
+      res.redirect('/500')
       return
     }
     res.locals.user = userInfo.user

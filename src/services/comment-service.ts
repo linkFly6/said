@@ -168,9 +168,9 @@ export const replyToComment = async (context: string, user: IUser, blog: BlogMod
       data: {
         nickname: commentModel.user.nickName,
         title: blog.title,
-        titleHref: `https://tasaid.com/blog/${blog.key}.html?sv=email&hash=${commentModel.hash}`,
+        titleHref: `https://tasaid.com/blog/${blog.key}.html?sv=email#${commentModel.hash}`,
         body: contextHTML,
-        moreHref: `https://tasaid.com/blog/${blog.key}.html?sv=email&#${commentModel.hash}`,
+        moreHref: `https://tasaid.com/blog/${blog.key}.html?sv=email#${commentModel.hash}`,
       }
     })
   }
@@ -221,9 +221,9 @@ export const replyToReply = async (
     data: {
       nickname: newReplyModel.toReply.user.nickName,
       title: blog.title,
-      titleHref: `https://tasaid.com/blog/${blog.key}.html?sv=email&hash=${newReplyModel.hash}`,
+      titleHref: `https://tasaid.com/blog/${blog.key}.html?sv=email#${newReplyModel.hash}`,
       body: context,
-      moreHref: `https://tasaid.com/blog/${blog.key}.html?sv=email#hash=${newReplyModel.hash}`,
+      moreHref: `https://tasaid.com/blog/${blog.key}.html?sv=email#${newReplyModel.hash}`,
     }
   })
   return newReplyModel

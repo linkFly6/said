@@ -13,10 +13,8 @@ import { LikeType } from '../models/user-like'
 import { IViewBlog } from '../types/blog'
 import { checkUri, resolveHTTPUri, checkEmail } from '../utils/validate'
 import {
-  createComment,
   queryCommentsByBlog,
   queryCommentById,
-  addCommentReplysByCommentId,
   commentToBlog,
   replyToComment,
   replyToReply,
@@ -27,7 +25,6 @@ import { diffUserAndUpdate } from '../services/user-service'
 import { UserRole } from '../models/user'
 import { IComment } from '../models/comment'
 import { IReply, ReplyModel } from '../models/reply'
-import { sendReplyEmail } from '../services/email-service'
 
 const ERRORS = {
   SERVER: new Returns(null, {
@@ -150,12 +147,12 @@ const regMatchKey = /^\d{10,20}$/
  */
 export const detail = async (req: Request, res: Response) => {
   if (!regMatchKey.test(req.params.key)) {
-    res.redirect('/error', 404)
+    res.redirect('/404')
     return
   }
   const blogModel = await getBlogByKey(req.params.key)
   if (!blogModel) {
-    res.redirect('/error', 404)
+    res.redirect('/404')
     return
   }
   const commentModels = await queryCommentsByBlog(blogModel._id)
