@@ -83,7 +83,7 @@ export const sendReplyEmail = (address: IAddress) => {
     /**
      * 发件人，email 必须和 user 一致
      */
-    from: `Said <${process.env.QQSMTPUSER}>`, // sender address
+    from: `Said <${process.env.QQSMTP_USER}>`, // sender address
     /**
      * 收件人，多个人使用 , 号分割
      * mailer@nodemailer.com, Mailer <mailer2@nodemailer.com>
