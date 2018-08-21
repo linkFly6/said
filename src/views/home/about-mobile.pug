@@ -4,24 +4,19 @@ block content
   .banner
     section.banner-bg(style='background-image:url(//static.tasaid.com/images/bg/paperman.8f57624d.jpg)')
   .home-about
-    .section-content.section-one.inset
+    .section-content.section-one.inset.section-animation
       .header
         .line
           //- data-animation-end 设置的是是动画结束后追加的值
           .gradient(data-animation-end="animation-complete")
-        h1.title.font-medium(data-animation-end="animation-complete") 关于·听说
-      .context.text.fade-in
+        h1.title.animate-fade-up.font-medium(data-animation-end="animation-complete") 关于·听说
+      .context.text.animate-fade-in(data-animation-end="animation-complete")
         p 这是我的孤城
         p 嘘，轻敲我的心
         p 这里锈迹斑斑
         p 住着雨、魔鬼、和老去的秘密
-    .section-content.section-two.inset
-      .header
-        .line
-          //- data-animation-end 设置的是是动画结束后追加的值
-          .gradient(data-animation-end="animation-complete")
-        h1.title.font-medium(data-animation-end="animation-complete") 关于·听说
-      .context.text.fade-in
+    .section-content.section-two.inset.section-animation(style='background-image:url(/static/images/bg/westlife.5c6db1.jpg)')
+      .context.text.animate-fade-right.text-shadow(data-animation-end="animation-complete")
         p 一个久未联系的妹子给我留言
         p “因为歌我记住了你，你可别哪天就让人忘记了”
         p 这是我的孤城
@@ -29,6 +24,72 @@ block content
         p 我私藏了一些歌曲，只是喜欢的乐队都解散或者老了
         p 我还听说过一些故事，只是觉得讲起来过于单调
         p 于是放上一首应景的歌
-        p 让整个故事，恰到好处。
+        p 让整个故事，恰到好处
+    .section-content.section-three.section-animation
+      .header.inset
+        .line
+          //- data-animation-end 设置的是是动画结束后追加的值
+          .gradient(data-animation-end="animation-complete")
+        h1.title.animate-fade-up.font-medium(data-animation-end="animation-complete") 关于·技术
+      .context.text.animate-fade-in(data-animation-end="animation-complete")
+        p Web 前端 / NodeJs 开发
+        p 偏爱 TypeScript 和 JavaScript
+        p 探索、架构和主导开发型技术选手
+        p React / Vue 花式炫技
+        p 服务器相关应用技术
+        p 了解一些 Mongodb、SQL
+        p 还有一些零碎而又实用的技术，例如：
+        p stylus / electron / docker / linux / flux 等...
+      section.projects
+        .project.bg-black.section-animation(data-animation-end="animation-complete")
+          .info.x
+            h3.title X.js
+            .description 
+              p 移动端解析 XML 的精致 JS 库
+              p 支持使用 XPath 操作 XML
+              p 性能、体积、优雅度，一个都不能少
+              p 简单的 API 做不简单的事
+            .buttom
+              a.source.link(href=`/link?url=${encodeURIComponent('https://github.com/linkFly6/X')}&sv=about-m`, target="_blank") 在 Github 查看
+        .project.section-animation(data-animation-end="animation-complete")
+          .info.said
+            h3.title Said
+            .description 
+              p 汇聚了众多技术，化繁为简
+              p 推敲出 Said 的每一行代码
+              p 以我所学，做以极致
+            .buttom
+              a.source.link(href=`/link?url=${encodeURIComponent('https://github.com/linkFly6/said')}&sv=about-m`, target="_blank") 在 Github 查看
+        .project.bg-black.section-animation(data-animation-end="animation-complete")
+          .info.mand
+            h3.title Mand-mobile
+            .description 
+              p 面向金融场景的 Vue 移动端 UI 组件库
+              p 丰富、灵活、实用
+              p 快速搭建优质的金融类产品
+              p 让复杂的金融场景变简单
+            .buttom
+              a.source.link(href=`/link?url=${encodeURIComponent('https://didi.github.io/mand-mobile')}&sv=about-m`, target="_blank") 了解更多
+      section.bg-keywords
+        span.font-8(style="top: 2%") TypeScript
+        span.font-3(style="right: 30%; top: 30%") JavaScript
+        span.font-4(style="top: 40%; left: 10%") NodeJs
+        span.font-4(style="top: 68%;right:10%") Vue
+        span.font-5(style="top: 40%;right:30%") Bootstrap
+        span.font-3(style="bottom: 5%;right: 10%") Material Design
+        span.font-6(style="top: 15%;right: 25%") React
+        span.font-2(style="top: 22%;left: 30%") Immutable
+        span.font-3(style="bottom: 24%;right: 24%") Flux
+        span.font-5(style="top: 50%; right: 10%") Webpack
+        span.font-3(style="top: 68%; left: 18%") jQuery
+        span.font-4(style="top: 20%;right:10%") Stylus
+        span.font-6(style="top: 70%;left:30%") ECMAScript
+        span.font-3(style="bottom: 2%;left:10%") Babel
+        span.font-2(style="top: 50%;left:45%") DOM
+        span.font-3(style="top: 20%;left:10%") Mongodb
+        span.font-2(style="top: 10%;right:10%") Electron
+        span.font-2(style="top: 80%;left: 25%") C#
+    .show-code
+      span (46840404742).toString(36)
 block script
   script(type='text/javascript', charset='utf-8', src='/static/js/mobile/home-about-mobile.js')

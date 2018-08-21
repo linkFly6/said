@@ -229,6 +229,11 @@ router({
 app.use((req, res, next) => {
   const ua = req.headers['user-agent']
   res.locals.device = isMobileDevice(ua) ? DEVICE.MOBILE : DEVICE.DESKTOP
+  // 如果是移动端访问，并且 url 上加了 debug=said 的参数，则在页面中注入 vConsole 用于 debug
+  if (res.locals.device === DEVICE.MOBILE && req.query.debug == 'said') {
+    // 注入 vconsole 的逻辑参见 layout-mobile
+    res.locals.vconsoleDebug = true
+  }
   return next()
 })
 

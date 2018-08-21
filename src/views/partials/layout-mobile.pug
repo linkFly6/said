@@ -11,14 +11,17 @@ html
     meta(name='apple-mobile-web-app-capable', content='yes')
     meta(name='apple-touch-fullscreen', content='yes')
     block meta
-    title #{title || '听说 -  - 世界很大，风住过这里'}
+    title #{title || '听说 - 世界很大，风住过这里'}
     link(rel='shortcut icon', href='//static.tasaid.com/images/said/favicon.ico', type='image/x-icon')
     link(rel='icon', href='//static.tasaid.com/images/said/favicon.ico', type='image/x-icon')
     link(rel='bookmark', href='//static.tasaid.com/images/said/favicon.ico')
     link(rel='stylesheet', href='//at.alicdn.com/t/font_566817_xt1grr1jmnpqr529.css')
     link(rel='stylesheet', href='/static/css/main-mobile.css')
+    //- 加载 vconsole
+    if (vconsoleDebug)
+      script(type='text/javascript', charset='utf-8', src='//static.tasaid.com/js/do1_xF9e45BZnaIBp3iwPPIB_3.1.0.js')
     block head
-  body
+  body(class=`${bodyClassName}`)
     .page#page
       include ../partials/header-mobile.pug
       .container
@@ -26,3 +29,8 @@ html
       include ../partials/footer-mobile.pug
     script(type='text/javascript', charset='utf-8', src='/static/js/mobile/app-mobile.js')
     block script
+    script.
+      //- 如果页面中有注入 vConsole，则执行，用于 debug
+      if (typeof window.VConsole === 'function') {
+        new VConsole();
+      }

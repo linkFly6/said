@@ -10,19 +10,6 @@ const slice = Array.prototype.slice
  * @param object - Array - 使用数组格式化，模板中使用${Index}占位：${0},${1}
  */
 export const format = function (str: string, object: any): string {
-  /// <summary>
-  /// 1: 
-  /// &#10; 1.1 - format(str,object) - 通过对象格式化
-  /// &#10; 1.2 - format(str,Array) - 通过数组格式化
-  /// </summary>
-  /// <param name="str" type="String">
-  /// 格式化模板(字符串模板)
-  /// </param>
-  /// <param name="object" type="Object">
-  /// Object:使用对象的key格式化字符串，模板中使用${name}占位：${data},${value}
-  /// Array:使用数组格式化，模板中使用${Index}占位：${0},${1}
-  /// </param>
-  /// <returns type="String" />
   if (typeof str !== 'string') return ''
   var array = slice.call(arguments, 1)
   //可以被\符转义

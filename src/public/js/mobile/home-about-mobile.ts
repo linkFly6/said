@@ -1,30 +1,68 @@
+import { addClass } from '../lib/utils'
 /**
- * 获取一个元素距离页面顶部的的位置
+ * 获取一个元素在页面中的位置
+ * top: 顶部距离页面顶部的位置
+ * bottom: 底部距离页面顶部的位置
  * @param elem 
  */
-const getOffsetTop = (elem: Element) => {
-  // window + getBoundingClientRect().top
-  return elem.ownerDocument.defaultView.pageYOffset + elem.getBoundingClientRect().top
+const getViewPosition = (elem: HTMLElement) => {
+  const domRect = elem.getBoundingClientRect()
+  const pageYOffset = elem.ownerDocument.defaultView.pageYOffset
+  // 半个屏幕的高度
+  // const halfScreenHeight = elem.ownerDocument.defaultView.innerHeight / 2
+  const screenHeight = window.innerHeight
+  return {
+    /**
+     * 元素距离页面顶部的距离 - 半个屏幕的距离
+     */
+    top: Math.max((pageYOffset + domRect.top) - screenHeight * 0.7, 0),
+    /**
+     * 【元素的底部】距离页面顶部的距离 + 半个屏幕的距离
+     */
+    bottom: (pageYOffset + domRect.bottom) - screenHeight / 3
+  }
+}
+
+/**
+ * 计算页面中需要设定滚动动画的元素位置并范围
+ */
+const computeElementPosition = () => {
+  // 页面元素
+  const $animationElements = document.querySelectorAll('.section-animation')
+  // 经过计算后的页面元素，元素对应的位置，元素是否已经追加过 class 动画
+  const animationArrs: Array<{ top: number, bottom: number, elem: HTMLElement, added: boolean }> = []
+  for (let index = 0; index < $animationElements.length; index++) {
+    const element = $animationElements[index] as HTMLElement
+    const position = getViewPosition(element)
+    // 逐渐从前面插入，这样循环的时候会从最大循环往前循环
+    animationArrs.push({
+      top: position.top,
+      bottom: position.bottom,
+      elem: element,
+      added: false,
+    })
+  }
+  return animationArrs
 }
 
 
-
 window.addEventListener('DOMContentLoaded', () => {
-  const $one = document.querySelector('.section-one')
-  const val = getOffsetTop($one)
+  const animationArrs = computeElementPosition()
   const compute = () => {
     const scrollY = window.scrollY
-    if (val >= scrollY) {
-      $one.classList.add('view-show')
+    for (let index = 0; index < animationArrs.length; index++) {
+      const position = animationArrs[index]
+      if (scrollY >= position.top && scrollY <= position.bottom && !position.added) {
+        // 标记已经执行过动画
+        position.added = true
+        addClass(position.elem, 'view-show')
+      }
     }
   }
-
   window.addEventListener('scroll', () => {
     compute()
   })
   compute()
-
-
 })
 
 const animationend = (e: Event) => {

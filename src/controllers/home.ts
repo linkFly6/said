@@ -92,9 +92,14 @@ export const error = (req: Request, res: Response) => {
  */
 export const about = (req: Request, res: Response) => {
   if (res.locals.device === DEVICE.MOBILE) {
-    res.render('home/about-mobile')
+    res.render('home/about-mobile', {
+      title: '关于听说 - 世界很大，风住过这里',
+      bodyClassName: 'body-home-about'
+    })
   } else {
-    res.render('home/about')
+    res.render('home/about', {
+      title: '关于听说 - 世界很大，风住过这里',
+    })
   }
 }
 
