@@ -40,7 +40,7 @@ mixin replyMixin(comment, reply, i, j)
       if reply.toReply
         span.reply-txt 回复
         +usernameMixin(reply.toReply.user)
-    .body #{reply.context}
+    .body!=reply.contextHTML
     .footer
       span ##{i+1}-#{j+1}
       span.reply
