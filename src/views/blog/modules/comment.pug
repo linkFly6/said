@@ -1,3 +1,5 @@
+//- 渲染用户评论和用户回复
+
 //- 用户昵称渲染
 mixin usernameMixin(user)
   if user.role == 1
@@ -50,3 +52,39 @@ mixin replyMixin(comment, reply, i, j)
         span.delete
           a.reply-delete(href='javascript:;', data-commentid=comment._id, data-replyid=reply._id) 删除
       time #{reply.localDate}&nbsp;·&nbsp;
+
+
+//-  ============================== 移动端渲染
+mixin mobileUsernameMixin(user)
+  if user.role == 1
+    span #{user.nickName}&nbsp;
+    i.saidfont.icon-admin
+  else if user.site
+    a(href=`/link?url=${encodeURIComponent(user.site)}`, target='_blank')
+      = user.nickName + ' '
+  else
+    span #{user.nickName}&nbsp;
+
+
+
+//- 手机端评论内容 mixin
+mixin mobileCommentMixin(comment)
+  li
+    .title.ellipsis 
+      +mobileUsernameMixin(comment.user)
+      = '评论:'
+    .context!=comment.contextHTML
+    if block
+      block
+
+//- 手机端回复内容 mixin
+mixin mobileReplyMixin(comment, reply)
+  li
+    .title.ellipsis 
+      +mobileUsernameMixin(reply.user)
+      = '回复: '
+      if reply.toReply
+        +mobileUsernameMixin(reply.toReply.user)
+    .context!=reply.contextHTML
+    if block
+      block

@@ -1,4 +1,5 @@
 extends ../partials/layout-mobile.pug
+include ./modules/comment.pug
 
 block content
   .banner
@@ -31,7 +32,16 @@ block content
         a(href='/blog')
           span 查看更多我的文章
   section.comments
-    span.label 共 #{blog.comments.length} 条评论
+    span.label 共 #{comments.length} 条评论
+    if comments.length
+      ul.comments-list
+        each comment, i in comments
+          //- 从 ./modules/comment.pug 取到的 mixin
+          +mobileCommentMixin(comment, i)
+            if comment.replys.length
+              ul
+                each reply, j in comment.replys
+                  +mobileReplyMixin(comment, reply, i, j)
     //- ul.comments-list
     //-   li
     //-     .title.ellipsis 
