@@ -227,7 +227,7 @@ router({
 
 // 判断是否来自移动设备中间件
 app.use((req, res, next) => {
-  const ua = req.headers['user-agent']
+  const ua = req.get('User-Agent') || req.headers['user-agent'] as string
   res.locals.device = isMobileDevice(ua) ? DEVICE.MOBILE : DEVICE.DESKTOP
   // 如果是移动端访问，并且 url 上加了 debug=said 的参数，则在页面中注入 vConsole 用于 debug
   if (res.locals.device === DEVICE.MOBILE && req.query.debug == 'said') {
