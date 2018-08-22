@@ -24,7 +24,11 @@ import { actionHandler } from './applications/router'
 import * as cookieParser from 'cookie-parser'
 import * as spdy from 'spdy'
 import expressValidator = require('express-validator')
-// https://github.com/Daplie/greenlock-express
+
+/**
+ * https://github.com/Daplie/greenlock-express
+ * 注意，greenlock-express 依赖 ursa 
+ */
 const greenlock = require('greenlock-express')
 
 
@@ -292,8 +296,10 @@ app.use(homeController.noFound)
 if (process.env.NODE_ENV === 'production') {
   // 线上启用 HTTPS
   const lex = greenlock.create({
+    // 
+    version: 'draft-11',
     // server: 'staging', // 测试
-    server: 'https://acme-v01.api.letsencrypt.org/directory', // 生产
+    server: 'https://acme-v02.api.letsencrypt.org/directory', // 生产
     challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '~/letsencrypt/var/acme-challenges' }) },
     store: require('le-store-certbot').create({ webrootPath: '~/letsencrypt/srv/www/:hostname/.well-known/acme-challenge' }),
     approveDomains: (opts: any, certs: any, cb: any) => {
