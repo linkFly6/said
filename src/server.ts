@@ -27,7 +27,8 @@ import expressValidator = require('express-validator')
 
 /**
  * https://github.com/Daplie/greenlock-express
- * 注意，greenlock-express 依赖 ursa 
+ * 注意，greenlock-express 依赖 ursa/le-challenge-fs/le-store-certbot
+ * spdy 的 http2 跳转依赖 redirect-https
  */
 const greenlock = require('greenlock-express')
 
