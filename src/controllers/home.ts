@@ -98,6 +98,7 @@ export const about = (req: Request, res: Response) => {
     })
   } else {
     res.render('home/about', {
+      pageIndex: 3,
       title: '关于听说 - 世界很大，风住过这里',
     })
   }
