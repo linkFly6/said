@@ -13,8 +13,8 @@ import * as express from 'express'
 import * as compression from 'compression'  // compresses requests
 import * as session from 'express-session'
 import * as bodyParser from 'body-parser'
-import * as errorHandler from 'errorhandler'
-import * as lusca from 'lusca'
+// import * as errorHandler from 'errorhandler'
+// import * as lusca from 'lusca'
 import * as mongo from 'connect-mongo'
 import * as path from 'path'
 import * as mongoose from 'mongoose'
@@ -22,7 +22,12 @@ import * as log from './utils/log'
 import router from './middleware/routers'
 import { actionHandler } from './applications/router'
 import * as cookieParser from 'cookie-parser'
-import * as spdy from 'spdy'
+/**
+ * spdy 会导致 log4js 无法写 access 日志，因为 HTTP/2 会使用长连接
+ * log4js/lib/connect-logger.js 里面通过监听 express 的 finish 事件来写 access 日志
+ * 但是 HTTP/2 在浏览器下不会触发 finish 事件
+ */
+// import * as spdy from 'spdy'
 import expressValidator = require('express-validator')
 
 /**
@@ -296,7 +301,7 @@ app.use(homeController.noFound)
 
 if (process.env.NODE_ENV === 'production') {
   // 线上启用 HTTPS
-  const lex = greenlock.create({
+  const glx = greenlock.create({
     // 
     version: 'draft-11',
     // server: 'staging', // 测试
@@ -320,15 +325,22 @@ if (process.env.NODE_ENV === 'production') {
       cb(null, { options: opts, certs: certs })
     },
   })
-  require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
+
+  // http redirect https
+  require('http').createServer(glx.middleware(require('redirect-https')())).listen(80, function () {
     appLog.info('Listening', `for ACME http-01 challenges on: ${JSON.stringify(this.address())}`)
   })
 
-  // 开启 http2
-  spdy.createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
-    appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
+  // https
+  require('https').createServer(glx.httpsOptions, app).listen(443, () => {
+    appLog.info('Listening https', `Listening for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
   })
-  // require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+
+  // 开启 http2
+  // spdy.createServer(glx.httpsOptions, glx.middleware(app)).listen(443, function () {
+  //   appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
+  // })
+  // require('https').createServer(glx.httpsOptions, glx.middleware(app)).listen(443, function () {
   //   appLog.info('Listening https', `for ACME tls-sni-01 challenges and serve app on: ${JSON.stringify(this.address())}`)
   // })
 } else {
