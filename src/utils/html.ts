@@ -69,6 +69,8 @@ export const convertMarkdown2HTML = (context: string) => {
 
   // 重写 <a> 标签，跳转的逻辑修改
   renderer.link = createLink
+  // 重写 <hr /> 标签，默认样式太丑了
+  renderer.hr = createHr
 
   renderer.code = (code: string, language: string) => {
     return `<pre class="hljs lang-${language}"><code class="${language}">${
@@ -86,6 +88,10 @@ export const convertMarkdown2HTML = (context: string) => {
     // },
 
   })
+}
+
+export const createHr = () => {
+  return '<div class="html-hr"></div>'
 }
 
 /**

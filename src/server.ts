@@ -146,7 +146,17 @@ app.use(session({
 app.use('/static', express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 
+router({
+  app: app,
+  handler: actionHandler,
+  root: path.join(__dirname, 'controllers'),
+})
+
+
 /**
+ * 要放在 controller 生成之后，因为如果命中了 backend 后台逻辑的话，直接走后台的管理员身份验证，直接处理逻辑即可
+ * 如果这个中间件放在 controller 生成之前的话，会导致 getAdminInfoByToken() 执行两遍
+ * 
  * 获取用户 token 和 基本信息
  * 之所以特殊针对 res 写 Response 是因为 src/types/global.d.ts 中针对 Response 进行了扩展
  * 默认参数直接引用了 express 内部的 Response，而 global.d.ts 是针对 express 曝露出来的 Response 进行的扩展
@@ -227,12 +237,6 @@ app.use(async (req, res: Response, next) => {
     res.cookie('ut', userInfo.token, { maxAge: 31536E7, httpOnly: true }) // 10 years
   }
   next()
-})
-
-router({
-  app: app,
-  handler: actionHandler,
-  root: path.join(__dirname, 'controllers'),
 })
 
 // 判断是否来自移动设备中间件

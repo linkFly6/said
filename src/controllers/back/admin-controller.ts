@@ -1,9 +1,8 @@
-import { get } from '../../filters/http'
+import { get, post } from '../../filters/http'
 import { path } from '../../filters/backend'
 import { Log } from '../../utils/log'
 import { Request } from 'express'
 import { login, getAdminInfoById, getAdminInfoByToken } from '../../services/admin-service'
-import { ServiceError } from '../../models/server/said-error'
 import { RouterError } from '../../middleware/routers/models'
 
 
@@ -17,7 +16,7 @@ const ERRORS: { [prop: string]: RouterError } = {
 }
 
 export default class {
-  @get
+  @post
   @path('/back/api/login')
   public async login({ username, password }: { username: string, password: string }, { log, req }: { log: Log, req: Request }) {
     req.assert('username')
