@@ -87,9 +87,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   /**
-   * 当前页码
+   * 下一页页码
    */
-  let currenPage = 1
+  let nextPage = 2
 
   $a.addEventListener('click', () => {
     $a.style.display = 'none'
@@ -97,7 +97,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // 发送 ajax
     get({
-      url: `/said/get/${currenPage}`,
+      url: `/said/get/${nextPage}`,
       callback: (err, returns) => {
         if (err || (returns && returns.code !== 0)) {
           $text.innerHTML = '加载失败，点击重新加载'
@@ -106,8 +106,8 @@ window.addEventListener('DOMContentLoaded', () => {
           return
         }
         // 有下一页，可以继续加载
-        if (currenPage < maxPage) {
-          currenPage++
+        if (nextPage < maxPage) {
+          nextPage++
           $a.style.display = ''
         }
         $span.style.display = 'none'
