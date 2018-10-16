@@ -87,7 +87,7 @@ $ sh deploy.sh # 进行部署
 - ~~支持 HTTP/2~~
 - ~~文章很久没更新要加 tips~~
 - 删除 `package.json` 中无用的包
-- `marked` 中针对语言的解析，要把语言显示出来
+- ~~`marked` 中针对语言的解析，要把语言显示出来~~
 
 ### 关于 controller 设计
 
