@@ -61,8 +61,7 @@ export const index = async (req: Request, res: Response) => {
  * @param res 
  */
 export const noFound = (req: Request, res: Response) => {
-  res.status(404)
-  res.render('home/404', {
+  res.status(404).render('home/404', {
     // src/views/partials/layout.pug
     title: '该页未找到，这里一片荒芜 — 听说',
     override: true,
@@ -76,8 +75,7 @@ export const noFound = (req: Request, res: Response) => {
  * @param res 
  */
 export const error = (req: Request, res: Response) => {
-  res.status(500)
-  res.render('home/error', {
+  res.status(500).render('home/error', {
     title: '服务器出了一点小问题 - 听说',
     // src/views/partials/layout.pug
     override: true,
