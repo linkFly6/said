@@ -10,7 +10,7 @@ block content
   .content
     .module-title
       span 探索
-    .lists#lists
+    .lists.view-said#lists
       for article in articles
         a.module-item(href=`/said/${article.key}.html`)
           .item-bg(style=`background-image:url(${article.poster.thumb})`)

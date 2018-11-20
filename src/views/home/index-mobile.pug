@@ -10,7 +10,7 @@ block content
   .content
     .module-title
       span 听·说
-    .lists
+    .lists.view-said
       each article in articles
         a.module-item(href=`/said/${article.key}.html`)
           .item-bg(style=`background-image:url(${article.poster.thumb})`)
@@ -32,7 +32,7 @@ block content
           span 查看更多听说
     .module-title
       span blog
-    .lists
+    .lists.view-blog
       for blog in blogs
         a.module-item(href=`/blog/${blog.key}.html`)
           .item-context
