@@ -111,7 +111,6 @@ window.addEventListener('DOMContentLoaded', () => {
           $a.style.display = ''
         }
         $span.style.display = 'none'
-        console.log(returns)
         if (returns && returns.data && returns.data.lists && returns.data.lists.length) {
           // 填充数据
           const html = returns.data.lists.map((article: IViewArticle) => {

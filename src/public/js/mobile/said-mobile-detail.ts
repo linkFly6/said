@@ -27,11 +27,11 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
   player.on('error', err => {
-    window.Umeng.event('article', 'play', `${(window as any).articleId} play error: ${err}`)
+    // window.Umeng.event('article', 'play', `${(window as any).articleId} play error: ${err}`)
   })
 
   $play.addEventListener('click', () => {
-    window.Umeng.event('article', 'play', `${(window as any).articleId} playing: `)
+    // window.Umeng.event('article', 'play', `${(window as any).articleId} playing: `)
     if (isPlay) {
       // 停止播放
       removeClass($ico, 'icon-tingzhi')
@@ -52,6 +52,7 @@ window.addEventListener('DOMContentLoaded', () => {
     '/said/like',
     { articleId: (window as any).articleId },
     (err, data, element) => {
+      // 移动端没有 umeng
       // window.Umeng.event('article', 'like', '用户点赞', (window as any).articleId, element.id)
     })
 })
