@@ -26,7 +26,12 @@ window.addEventListener('DOMContentLoaded', () => {
     isPlay = false
   })
 
+  player.on('error', err => {
+    window.Umeng.event('article', 'play', `${(window as any).articleId} play error: ${err}`)
+  })
+
   $play.addEventListener('click', () => {
+    window.Umeng.event('article', 'play', `${(window as any).articleId} playing: `)
     if (isPlay) {
       // 停止播放
       removeClass($ico, 'icon-tingzhi')

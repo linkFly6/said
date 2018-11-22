@@ -161,6 +161,7 @@ export class Player {
     } else if (!this.$elem.src) { // 还没有设置 src
       this.$elem.src = this.src
     }
+    this.$elem.load()
     this.$elem.play()
     return this
   }

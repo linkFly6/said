@@ -265,7 +265,7 @@ class Comment {
     }).fail(err => {
       this.message('网络异常，提交信息失败')
       // 打 log
-      window.Umeng.event('blog', 'comment-error', JSON.stringify(err), this.blogId, this.$element[0].id)
+      window.Umeng.event('blog', 'comment-error', `${this.blogId}: ${JSON.stringify(err)}`, 0, this.$element[0].id)
     }).always(() => {
       this.submiting = false
       this.$submit.removeClass('disabled').text('发布评论')
@@ -432,7 +432,7 @@ export const registerUserCommentEvent = (blogId: string, nickName: string, email
       $me.data('loading', false).text('删除')
       alert('删除失败')
       // 打 log
-      window.Umeng.event('blog', 'comment-delete-error', JSON.stringify(err), blogId, $me.data('commentid'))
+      window.Umeng.event('blog', 'comment-delete-error', `${blogId}: ${JSON.stringify(err)}`, 0, $me.data('commentid'))
     })
   })
 

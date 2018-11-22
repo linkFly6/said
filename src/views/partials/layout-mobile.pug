@@ -21,16 +21,16 @@ html(lang='zh-CN', xml:lang="zh-CN")
     if (vconsoleDebug)
       script(type='text/javascript', charset='utf-8', src='//static.tasaid.com/js/do1_xF9e45BZnaIBp3iwPPIB_3.1.0.js')
     block head
-  body(class=`${bodyClassName}`)
+  body(class=`${bodyClassName || ''}`)
     .page#page
       include ../partials/header-mobile.pug
       .container
         block content
       include ../partials/footer-mobile.pug
-    script(type='text/javascript', charset='utf-8', src='/static/js/mobile/app-mobile.js')
-    block script
     script.
       //- 如果页面中有注入 vConsole，则执行，用于 debug
       if (typeof window.VConsole === 'function') {
         new VConsole();
       }
+    script(type='text/javascript', charset='utf-8', src='/static/js/mobile/app-mobile.js')
+    block script

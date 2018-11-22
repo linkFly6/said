@@ -34,7 +34,7 @@ $(() => {
   czc.push(['_setAccount', '1260021113'])
   window.Umeng = {
     // 发送友盟统计事件
-    event: function (category, action, label, value, classId) {
+    event: function (category: string, action: string, label: string, value: number, classId: any) {
       window._czc.push(['_trackEvent', category, action, label, value, classId])
     }
   }
