@@ -3,7 +3,6 @@
 
 const path = require('path')
 const gulp = require('gulp')
-const watch = require('gulp-watch')
 const webpack = require('webpack')
 const PluginError = require('plugin-error');
 const log = require('fancy-log');
@@ -154,74 +153,65 @@ const devCompiler = webpack(webpackConfig)
 
 // copy pug 文件
 gulp.task('copy-views', function () {
-  gulp.src('./src/views/**').pipe(gulp.dest('./dist/views/'))
+  return gulp.src('./src/views/**').pipe(gulp.dest('./dist/views/'))
 })
 
 // copy 图片资源
 gulp.task('copy-images', function () {
-  gulp.src('./src/public/images/**').pipe(gulp.dest('./dist/public/images/'))
+  return gulp.src('./src/public/images/**').pipe(gulp.dest('./dist/public/images/'))
 })
 
 // 字体文件
 gulp.task('copy-fonts', function () {
-  gulp.src('./src/public/fonts/**').pipe(gulp.dest('./dist/public/fonts/'))
+  return gulp.src('./src/public/fonts/**').pipe(gulp.dest('./dist/public/fonts/'))
 })
 
 // copy 后端文件
 gulp.task('copy-backend-static', function () {
-  gulp.src('./src/public/backend/**').pipe(gulp.dest('./dist/public/backend/'))
+  return gulp.src('./src/public/backend/**').pipe(gulp.dest('./dist/public/backend/'))
 })
 
 // .env
 gulp.task('copy-env-file', function () {
-  gulp.src('./.env').pipe(gulp.dest('./dist/'))
+  return gulp.src('./.env').pipe(gulp.dest('./dist/'))
 })
 
 
 // 编译客户端 js
-gulp.task('compile-client-ts', function () {
+gulp.task('compile-client-ts', function (cb) {
   // return gulp.src('./src/public/js/*.ts')
   //   .pipe(devCompiler.run())
   //   .pipe(gulp.dest('./dist/public/js/'))
   devCompiler.run(function (err, status) {
     if (err) {
+      cb(err)
       throw PluginError('webpack:build', err, { showStack: true });
     }
     log('[webpack:build-dev]', status.toString({
       colors: true
     }));
+    cb()
   })
 })
 
-gulp.task('default', function () {
-  watch('src/views/**', function () {
-    gulp.run('copy-views')
-  })
-  watch('src/public/images/**', function () {
-    gulp.run('copy-images')
-  })
-  watch('./src/public/backend/**', function () {
-    gulp.run('copy-backend-static')
-  })
-  watch('./src/public/js/**', function () {
-    gulp.run('compile-client-ts')
-  })
-  gulp.run('build')
-})
+function watch () {
+  gulp.watch('src/views/**', gulp.series('copy-views'))
+  gulp.watch('src/public/images/**', gulp.series('copy-images'))
+  gulp.watch('./src/public/backend/**', gulp.series('copy-backend-static'))
+  gulp.watch('./src/public/js/**', gulp.series('compile-client-ts'))
+}
 
+gulp.task('build', gulp.series(
+  'copy-env-file',
+  'copy-views',
+  'copy-images',
+  'copy-fonts',
+  'copy-backend-static',
+  'compile-client-ts'))
 
-gulp.task('build', function () {
-  gulp.run('copy-env-file')
-  gulp.run('copy-views')
-  gulp.run('copy-images')
-  gulp.run('copy-fonts')
-  gulp.run('copy-backend-static')
-  gulp.run('compile-client-ts')
-})
+gulp.task('default', gulp.series('build', watch))
 
 /**
  * production 版的打包
  */
-gulp.task('build-production', function () {
-  gulp.run('build')
-})
+gulp.task('build-production', gulp.series('build'))
