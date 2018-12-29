@@ -195,6 +195,7 @@ gulp.task('compile-client-ts', function (cb) {
 })
 
 function watch () {
+  // gulp 升级到 v4 了
   gulp.watch('src/views/**', gulp.series('copy-views'))
   gulp.watch('src/public/images/**', gulp.series('copy-images'))
   gulp.watch('./src/public/backend/**', gulp.series('copy-backend-static'))
