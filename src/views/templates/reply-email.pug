@@ -21,7 +21,7 @@ html(lang='zh',xmlns='http://www.w3.org/1999/xhtml')
           a(href=titleHref, target='_blank', style='color:#0070c9;') #{title}
           ='》'
           | &nbsp; 中您收到一条新的回复：
-          p(style='background-color:#f2f2f2;margin-top:1em;margin-bottom:1em;padding-top:1em;padding-right:1em;padding-bottom:1em;padding-left:1em;') #{body}
+          p(style='background-color:#f2f2f2;margin-top:1em;margin-bottom:1em;padding-top:1em;padding-right:1em;padding-bottom:1em;padding-left:1em;')!= body
       tr
         td(colspan='2', align='center')
           a(href=moreHref, target='_blank', style='color:#0070c9;') 点击查看详情
