@@ -62,7 +62,7 @@ $(() => {
    */
   const typed = new Typed('#typewrite', {
     strings: [
-      '<span class="linkfly">@linkFly</span>',
+      '<span class="linkfly">linkFly</span>',
       '<span class="ts">TypeScript</span>',
       '<span class="js">JavaScript</span>',
       '<span class="nodejs">NodeJs</span>',
