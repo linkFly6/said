@@ -1,14 +1,15 @@
-import SongDb, { ISong, SongSchema, SongModel } from '../models/song'
+import SongDb, { ISong } from '../models/song'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
 import { authentication } from './admin-service'
-import { Express } from 'express'
 import { getMd5 } from '../utils'
 import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata, getFullUrlByQiniuKey } from '../utils/file'
 import { queryImageById, image2outputImage } from './image-service'
 import { OutputSong } from '../types/song'
 import { queryArticlesBySong } from './article-service'
+import { IAudioMetadata } from 'music-metadata'
+import * as _ from 'lodash'
 
 
 
@@ -212,7 +213,7 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
   /**
    * 歌曲 meta 信息，如果读取错误则返回空数据
    */
-  let metadata: MM.Metadata | null = null
+  let metadata: IAudioMetadata | null = null
 
   try {
     metadata = await getAudioMetadata(file.buffer)
@@ -255,15 +256,16 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
       /**
        * 专辑
        */
-      album: metadata ? metadata.album : metadata,
+      album: _.get(metadata, 'common.album', ''),
       /**
        * 歌手
        */
-      artist: metadata && metadata.artist && metadata.artist.length ? metadata.artist.join('&') : '',
+      // artist: metadata && metadata.common.artist && metadata.common.artist.length ? metadata.common.artist.join('&') : '',
+      artist: _.get(metadata, 'common.artist', ''),
       /**
        * 标题
        */
-      title: metadata ? metadata.title : '',
+      title: _.get(metadata, 'common.title', ''),
       /**
        * 大小 kb
        */

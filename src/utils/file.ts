@@ -1,8 +1,7 @@
-import * as fs from 'fs'
 import * as qiniu from 'qiniu'
-import * as musicmetadata from 'musicmetadata'
+// import * as musicmetadata from 'musicmetadata'
+import * as mm from 'music-metadata'
 import * as Stream from 'stream'
-import { Readable } from 'stream'
 
 /**
  * 七牛云存储 key
@@ -126,6 +125,24 @@ function buffer2stream(buf: any, chunkSize?: any) {
   return reader
 }
 
+// /**
+//  * 获取音频文件的 metadata
+//  * 这个库不能获取经过裁剪过后音频 duration（会卡着进程不懂），所以 duration 还要单独部署
+//  * 可以通过七牛云上传后帮助获取这些信息： duration
+//  * @param path
+//  */
+// export const getAudioMetadata = (buffer: Buffer) => {
+//   return new Promise<MM.Metadata>((resolve, reject) => {
+//     musicmetadata(buffer2stream(buffer) as Readable, (err, metadata) => {
+//       if (err) {
+//         reject(err)
+//       } else {
+//         resolve(metadata)
+//       }
+//     })
+//   })
+// }
+
 /**
  * 获取音频文件的 metadata
  * 这个库不能获取经过裁剪过后音频 duration（会卡着进程不懂），所以 duration 还要单独部署
@@ -133,17 +150,8 @@ function buffer2stream(buf: any, chunkSize?: any) {
  * @param path
  */
 export const getAudioMetadata = (buffer: Buffer) => {
-  return new Promise<MM.Metadata>((resolve, reject) => {
-    musicmetadata(buffer2stream(buffer) as Readable, (err, metadata) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(metadata)
-      }
-    })
-  })
+  return mm.parseBuffer(buffer)
 }
-
 
 /**
  * 根据七牛存储的 key ，获取完整 Url 路径
