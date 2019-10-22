@@ -61,7 +61,7 @@
     "shortid": "^2.2.8",
     "spdy": "^3.4.7",
     "transliteration": "^1.6.2",
-    "ursa": "^0.9.4"
+    "ursa-optional": "^0.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",
