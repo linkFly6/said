@@ -1,10 +1,9 @@
-import image, { default as ImageDb, ImageModel, IImage, ImageType } from '../models/image'
+import { default as ImageDb, ImageType } from '../models/image'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
 import { authentication } from '../services/admin-service'
 import { Express } from 'express'
-import * as path from 'path'
 import { getMd5 } from '../utils'
 import { uploadFileToQiniu, deleteFileForQiniu, getThumbUrlByQiniuImage, getFullUrlByQiniuKey, getAlbumUrlByQiniuImage } from '../utils/file'
 import { OutputImage } from '../types/image'
@@ -59,8 +58,8 @@ export const queryImagesByType = (imageType: ImageType) => {
 
 /**
  * 删除图片
- * @param imageId 
- * @param admin 
+ * @param imageId
+ * @param admin
  */
 export const deleteImage = async (imageId: string, admin: IAdmin) => {
   if (!authentication(admin, AdminRule.GLOBAL)) {
@@ -84,7 +83,7 @@ export const deleteImage = async (imageId: string, admin: IAdmin) => {
 
 /**
  * 根据图片类型获取图片访问路径 => /blog/demo.jpg
- * @param imageType 
+ * @param imageType
  */
 export const getImagePath = (imageType: ImageType, filename: string) => {
   let folderName = ''
@@ -127,7 +126,7 @@ export const getImagePath = (imageType: ImageType, filename: string) => {
 
 /**
  * 查找数据库中是否存在同名的图片 (name 就是文件 md5)
- * @param name 
+ * @param name
  */
 export const imageExistsByName = (name: string) => {
   return ImageDb.count({ name }).exec()
@@ -135,7 +134,7 @@ export const imageExistsByName = (name: string) => {
 
 /**
  * 根据图片 ID 查找图片
- * @param imageId 
+ * @param imageId
  */
 export const queryImageById = (imageId: string) => {
   return ImageDb.findById(imageId).exec()

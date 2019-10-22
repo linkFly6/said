@@ -1,16 +1,16 @@
-import { default as BlogDb, BlogModel, IBlog } from '../models/blog'
+import { default as BlogDb } from '../models/blog'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
-import { authentication } from '../services/admin-service'
-import { SimpleBlog } from '../types/blog'
-import { queryCategoryById } from '../services/category-service'
+import { authentication } from './admin-service'
+import { SimpleBlog } from 'blog'
+import { queryCategoryById } from './category-service'
 import { CategoryModel } from '../models/category'
 import { TagModel, ITag } from '../models/tag'
-import { queryByTagNames, createTags } from '../services/tag-service'
+import { queryByTagNames, createTags } from './tag-service'
 import * as moment from 'moment'
 import { convertMarkdown2HTML, convertSummaryToHTML } from '../utils/html'
-import { IUser } from '../models/User'
+import { IUser } from '../models/user'
 
 
 const log = new Log('service/blog')
@@ -26,7 +26,7 @@ export const queryAllBlog = () => {
 
 /**
  * 根据管理员信息查列表
- * @param adminId 
+ * @param adminId
  */
 export const queryAllBlogByAdmin = (admin: IAdmin) => {
   log.info('queryAllBlogByAdminId.call', admin)
@@ -43,7 +43,7 @@ export const queryAllBlogByAdmin = (admin: IAdmin) => {
 
 /**
  * 根据 key 检查是否存在对应的 Blog
- * @param blogKey 
+ * @param blogKey
  */
 export const existsByBlogKey = (blogKey: string) => {
   log.info('existsByBlogKey.call', { blogKey })
@@ -162,8 +162,8 @@ export const createBlog = async (blog: SimpleBlog, admin: IAdmin) => {
 
 /**
  * 修改
- * @param blog 
- * @param admin 
+ * @param blog
+ * @param admin
  */
 export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
   log.info('updateBlogById.call', { blog, admin })
@@ -216,7 +216,7 @@ export const updateBlog = async (blog: SimpleBlog, admin: IAdmin) => {
 
 /**
  * 批量修改 blog 中的类型
- * @param category 
+ * @param category
  */
 export const updateBlogsCategory = async (category: CategoryModel) => {
   return BlogDb.find({ 'category._id': category._id }).update({ category }).exec()
@@ -255,8 +255,8 @@ export const removeBlog = async (blogId: string, admin: IAdmin) => {
 
 /**
  * 查询 Blog，会鉴权，后台使用
- * @param blogId 
- * @param admin 
+ * @param blogId
+ * @param admin
  */
 export const queryBlogByIdInBack = async (blogId: string, admin: IAdmin) => {
   log.info('queryBlogById.call', { blogId, admin })
@@ -276,7 +276,7 @@ export const queryBlogByIdInBack = async (blogId: string, admin: IAdmin) => {
 
 /**
  * 根据 ID 查询 blog
- * @param blogId 
+ * @param blogId
  */
 export const queryBlogById = async (blogId: string) => {
   return BlogDb.findById(blogId).exec()
@@ -285,7 +285,7 @@ export const queryBlogById = async (blogId: string) => {
 
 /**
  * 根据 key 查找文章
- * @param key 
+ * @param key
  */
 export const getBlogByKey = (key: string) => {
   return BlogDb.findOne({ key }).exec()
@@ -303,7 +303,7 @@ export const updateBlogPV = (id: string) => {
 
 /**
  * 用户 Like 了日志
- * @param key 
+ * @param key
  */
 export const updateBlogLike = (id: string, user: IUser) => {
   log.info('updateBlogLike.call', { id, user })
@@ -315,14 +315,14 @@ export const updateBlogLike = (id: string, user: IUser) => {
 
 /**
  * 根据分类查询
- * @param categoryName 
+ * @param categoryName
  */
 export const queryBlogsByByCategoryName = (categoryName: string) => {
   return BlogDb.find({ 'category.name': categoryName }).exec()
 }
 
 
-/** 
+/**
  * 查询所有 blog 的个数
  */
 export const queryAllBlogCount = () => {
@@ -331,7 +331,7 @@ export const queryAllBlogCount = () => {
 
 /**
  * 根据条件查询 blog 个数
- * @param where 
+ * @param where
  */
 export const queryBlogCountByWhere = (where: any) => {
   return BlogDb.find(where).count().exec()
