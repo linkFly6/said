@@ -5,11 +5,11 @@ import { AdminRule, IAdmin } from '../models/admin'
 import { authentication } from './admin-service'
 import { Express } from 'express'
 import { getMd5 } from '../utils'
-import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata, getFullUrlByQiniuKey } from '../utils/file'
+import { uploadFileToQiniu, deleteFileForQiniu, getFullUrlByQiniuKey } from '../utils/file'
 import { queryImageById, image2outputImage } from './image-service'
 import { OutputSong } from 'song'
 import { queryArticlesBySong } from './article-service'
-
+import * as musicMetadata from 'music-metadata'
 
 
 const log = new Log('service/image')
@@ -212,10 +212,10 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
   /**
    * 歌曲 meta 信息，如果读取错误则返回空数据
    */
-  let metadata: MM.Metadata | null = null
+  let metadata: musicMetadata.IAudioMetadata = null
 
   try {
-    metadata = await getAudioMetadata(file.buffer)
+    metadata = await musicMetadata.parseFile(filename, {duration: true})
     log.info('uploadSong.getAudioMetadata.metadata', metadata)
   } catch (error) {
     log.error('uploadSong.getAudioMetadata.metadata.catch', error)
@@ -255,15 +255,15 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
       /**
        * 专辑
        */
-      album: metadata ? metadata.album : metadata,
+      album: metadata ? metadata.common.album : '',
       /**
        * 歌手
        */
-      artist: metadata && metadata.artist && metadata.artist.length ? metadata.artist.join('&') : '',
+      artist: metadata && metadata.common.artist ? metadata.common.artist : '',
       /**
        * 标题
        */
-      title: metadata ? metadata.title : '',
+      title: metadata ? metadata.common.title : '',
       /**
        * 大小 kb
        */
