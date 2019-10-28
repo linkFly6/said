@@ -1,16 +1,16 @@
-import { default as AriticleDb, ArticleModel, IArticle } from '../models/article'
+import { default as AriticleDb } from '../models/article'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
-import { authentication } from '../services/admin-service'
+import { authentication } from './admin-service'
 import * as moment from 'moment'
 import { convertMarkdown2HTML, convertSummaryToHTML } from '../utils/html'
-import { OutputArticle, SimpleArticle } from '../types/article'
+import { OutputArticle, SimpleArticle } from 'article'
 import { SongModel } from '../models/song'
 import { ImageModel } from '../models/image'
 import { querySongById, song2outputSong } from '../services/song-service'
 import { queryImageById, image2outputImage } from '../services/image-service'
-import { IUser } from '../models/User'
+import { IUser } from '../models/user'
 
 const log = new Log('service/article')
 
@@ -18,7 +18,7 @@ const log = new Log('service/article')
  * 将 mongoose 返回的 model 进行处理
  * mongoDB 返回的对象无法改结构，而且附带了其他乱七八糟的属性，所以对外输出要经过这个函数处理
  * 当然，源查出来的 Mongoose Doc 对象也可以自行通过 toObject() 来处理
- * @param article 
+ * @param article
  */
 export const article2SimpleArticle = (article: any): OutputArticle => {
   return {
@@ -49,7 +49,7 @@ export const article2SimpleArticle = (article: any): OutputArticle => {
 
 /**
  * 查询全部
- * @param admin 
+ * @param admin
  */
 export const queryAllArticles = (admin: IAdmin) => {
   log.info('queryAllArticles.call', admin)
@@ -59,7 +59,7 @@ export const queryAllArticles = (admin: IAdmin) => {
 
 /**
  * 根据管理员信息查列表
- * @param adminId 
+ * @param adminId
  */
 export const queryAllArticleByAdmin = (admin: IAdmin) => {
   log.info('queryAllArticleByAdmin.call', admin)
@@ -76,7 +76,7 @@ export const queryAllArticleByAdmin = (admin: IAdmin) => {
 
 /**
  * 根据 key 检查是否存在对应的文章
- * @param articleKey 文章 key 
+ * @param articleKey 文章 key
  */
 export const existsByArticleKey = (articleKey: string) => {
   log.info('existsByArticleKey.call', { articleKey })
@@ -86,8 +86,8 @@ export const existsByArticleKey = (articleKey: string) => {
 
 /**
  * 根据歌曲 ID 查询文章列表
- * @param songId 
- * @param admin 
+ * @param songId
+ * @param admin
  */
 export const queryArticlesBySong = (songId: string, admin: IAdmin) => {
   log.info('queryArticleBySong', { songId, admin })
@@ -96,8 +96,8 @@ export const queryArticlesBySong = (songId: string, admin: IAdmin) => {
 
 /**
  * 验证文章附属的歌曲和图片是否有效
- * @param article 
- * @param admin 
+ * @param article
+ * @param admin
  */
 const validateArticle = async (article: SimpleArticle, admin: IAdmin) => {
   let song: SongModel
@@ -128,7 +128,7 @@ const validateArticle = async (article: SimpleArticle, admin: IAdmin) => {
 /**
  * 新增文章，要求 article 参数已经做过非空校验
  * @param article 要新增的文章对象，要求已经做过非空校验
- * @param admin 
+ * @param admin
  */
 export const createArticle = async (article: SimpleArticle, admin: IAdmin) => {
   log.info('createArticle.call', { article, admin })
@@ -194,7 +194,7 @@ export const createArticle = async (article: SimpleArticle, admin: IAdmin) => {
 /**
  * 修改，要求 article 参数已经做过非空校验
  * @param article 要求已经做过非空校验
- * @param admin 
+ * @param admin
  */
 export const updateArtice = async (article: SimpleArticle, admin: IAdmin) => {
   log.info('updateArtice.call', { article, admin })
@@ -251,8 +251,8 @@ export const updateArtice = async (article: SimpleArticle, admin: IAdmin) => {
 
 /**
  * 删除文章
- * @param articleId 
- * @param admin 
+ * @param articleId
+ * @param admin
  */
 export const removeArticle = async (articleId: string, admin: IAdmin) => {
   log.warn('removeArticle.call', { articleId, admin })
@@ -285,8 +285,8 @@ export const removeArticle = async (articleId: string, admin: IAdmin) => {
 
 /**
  * 查询文章
- * @param articleId 
- * @param admin 
+ * @param articleId
+ * @param admin
  */
 export const queryArticleById = async (articleId: string, admin: IAdmin) => {
   log.info('queryArticleById.call', { articleId, admin })
@@ -307,7 +307,7 @@ export const queryArticleById = async (articleId: string, admin: IAdmin) => {
 
 /**
  * 根据 key 查找文章
- * @param key 
+ * @param key
  */
 export const getArticleByKey = (key: string) => {
   return AriticleDb.findOne({ key }).exec()
@@ -325,7 +325,7 @@ export const updateArticlePV = (id: string) => {
 
 /**
  * 累加 Like 了文章
- * @param id 
+ * @param id
  */
 export const updateArticleLike = (id: string, user: IUser) => {
   log.info('updateArticleLike.call', { id, user })
@@ -334,7 +334,7 @@ export const updateArticleLike = (id: string, user: IUser) => {
   }).exec()
 }
 
-/** 
+/**
  * 查询所有文章个数
  */
 export const queryAllArticleCount = () => {
@@ -343,7 +343,7 @@ export const queryAllArticleCount = () => {
 
 /**
  * 根据条件查询文章个数
- * @param where 
+ * @param where
  */
 export const queryArticleCountByWhere = (where: any) => {
   return AriticleDb.find(where).count().exec()

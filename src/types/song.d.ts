@@ -1,5 +1,5 @@
 import { ISong } from '../models/song'
-import { OutputImage } from './image'
+import { OutputImage } from 'image'
 
 /**
  * 输出给前端的歌曲
