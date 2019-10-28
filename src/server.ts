@@ -15,7 +15,6 @@ import * as session from 'express-session'
 import * as bodyParser from 'body-parser'
 // import * as errorHandler from 'errorhandler'
 // import * as lusca from 'lusca'
-import * as mongo from 'connect-mongo'
 import * as path from 'path'
 import * as mongoose from 'mongoose'
 import * as log from './utils/log'
@@ -29,6 +28,7 @@ import * as cookieParser from 'cookie-parser'
  */
 // import * as spdy from 'spdy'
 import expressValidator = require('express-validator')
+const mongo = require('connect-mongo')
 
 /**
  * https://github.com/Daplie/greenlock-express

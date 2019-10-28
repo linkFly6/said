@@ -7,3 +7,4 @@ dist/
 logs/
 said.tar.gz
 /said/
+yarn-error.log
