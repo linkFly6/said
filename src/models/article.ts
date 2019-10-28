@@ -1,8 +1,6 @@
 import { AdminSchema, IAdmin } from './admin'
-import { CategoryModel, CategorySchema } from './category'
-import { CommentModel, CommentSchema } from './comment'
-import { SongModel, SongSchema, ISong } from './song'
-import { ImageSchema, ImageModel, IImage } from './image'
+import { SongSchema, ISong } from './song'
+import { ImageSchema, IImage } from './image'
 import * as mongoose from 'mongoose'
 
 

@@ -1,4 +1,4 @@
-import SongDb, { ISong, SongSchema, SongModel } from '../models/song'
+import SongDb, { ISong } from '../models/song'
 import { Log } from '../utils/log'
 import { ServiceError } from '../models/server/said-error'
 import { AdminRule, IAdmin } from '../models/admin'
@@ -7,7 +7,7 @@ import { Express } from 'express'
 import { getMd5 } from '../utils'
 import { uploadFileToQiniu, deleteFileForQiniu, getAudioMetadata, getFullUrlByQiniuKey } from '../utils/file'
 import { queryImageById, image2outputImage } from './image-service'
-import { OutputSong } from '../types/song'
+import { OutputSong } from 'song'
 import { queryArticlesBySong } from './article-service'
 
 
@@ -106,7 +106,7 @@ export const acceptSongMimetypes = [
 
 /**
  * 获取资源访问路径 (7牛存储路径)
- * @param imageType 
+ * @param imageType
  */
 export const getPath = (filename: string) => {
   /**
@@ -147,8 +147,8 @@ export const queryAll = (admin: IAdmin) => {
 
 /**
  * 根据 ID 查询
- * @param songId 
- * @param admin 
+ * @param songId
+ * @param admin
  */
 export const querySongById = (songId: string, admin: IAdmin) => {
   log.info('querySongById.call', { songId, admin })
@@ -158,7 +158,7 @@ export const querySongById = (songId: string, admin: IAdmin) => {
 
 /**
  * 查找数据库中是否存在同名的图片 (name 就是文件 md5)
- * @param name 
+ * @param name
  */
 export const existsByName = (name: string) => {
   return SongDb.count({ name }).exec()
@@ -167,7 +167,7 @@ export const existsByName = (name: string) => {
 /**
  * 保存并解析得到歌曲文件信息，这里只是将歌曲文件上传并解析对应的歌曲信息（时长/歌手/专辑等）
  * 将歌曲保存到数据库需要调用 save()
- * @param file 
+ * @param file
  */
 export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
   const params = {
@@ -290,7 +290,7 @@ export const uploadSong = async (file: Express.Multer.File): Promise<ISong> => {
 
 /**
  * 保存歌曲信息，上传歌曲文件请参阅 uploadSong() 接口
- * @param song 
+ * @param song
  */
 export const saveSong = async (song: ISong, admin: IAdmin) => {
   log.info('save.call', { song, admin })
@@ -315,8 +315,8 @@ export const saveSong = async (song: ISong, admin: IAdmin) => {
  * 2. 检查是否被文章引用
  * 3. 从七牛云删除文件
  * 4. 删除歌曲
- * @param songId 
- * @param admin 
+ * @param songId
+ * @param admin
  */
 export const removeSong = async (songId: string, admin: IAdmin) => {
   const denied = authentication(admin, AdminRule.GLOBAL)

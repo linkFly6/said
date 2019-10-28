@@ -43,8 +43,8 @@ const qiniuConfig = new qiniu.conf.Config({
 
 /**
  * 上传文档：https://developer.qiniu.com/kodo/sdk/1289/nodejs
- * @param filename 
- * @param file 
+ * @param filename
+ * @param file
  */
 export const uploadFileToQiniu = <B = any, I =any>(filename: string, file: Buffer, returnBody?: string) => {
   return new Promise<{ respBody: B, respInfo: I }>((resolve, reject) => {
@@ -89,8 +89,8 @@ export const deleteFileForQiniu = (key: string) => {
 
 /**
  * buffer 转 steam，从 https://github.com/creeperyang/buffer-to-stream 上找的代码
- * @param buf 
- * @param chunkSize 
+ * @param buf
+ * @param chunkSize
  */
 function buffer2stream(buf: any, chunkSize?: any) {
   if (typeof buf === 'string') {
@@ -148,16 +148,16 @@ export const getAudioMetadata = (buffer: Buffer) => {
 /**
  * 根据七牛存储的 key ，获取完整 Url 路径
  * blog/demo.jpg => //xx.com/blog/demo.jpg
- * @param qiniuKey 
+ * @param qiniuKey
  */
-export const getFullUrlByQiniuKey = (qiniuKey: string) => {
+export const getFullUrlByQiniuKey = (qiniuKey: string): string => {
   return `//${process.env.QINIU_DOMAIN}/${qiniuKey}`
 }
 
 /**
  * 获取七牛存储的 key 缩略图的完整路径
  * blog/demo.jpg => //xx.com/blog/demo.jpg!thumb
- * @param qiniuKey 
+ * @param qiniuKey
  */
 export const getThumbUrlByQiniuImage = (qiniuKey: string) => {
   return `//${process.env.QINIU_DOMAIN}/${qiniuKey}${process.env.QINIU_THUMBNAILNAME}`
@@ -166,7 +166,7 @@ export const getThumbUrlByQiniuImage = (qiniuKey: string) => {
 /**
  * 获取七牛存储的 key 专辑封面的完整路径
  * blog/demo.jpg => //xx.com/blog/demo.jpg!thumb
- * @param qiniuKey 
+ * @param qiniuKey
  */
 export const getAlbumUrlByQiniuImage = (qiniuKey: string) => {
   return `//${process.env.QINIU_DOMAIN}/${qiniuKey}${process.env.QINIU_ALBUMNAME}`
