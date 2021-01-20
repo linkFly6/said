@@ -3303,9 +3303,9 @@ greenlock@^2.4.1:
     le-store-certbot "^2.1.7"
     rsa-compat "^1.5.0"
 
-gsap@^2.0.1:
-  version "2.0.1"
-  resolved "http://registry.npm.taobao.org/gsap/download/gsap-2.0.1.tgz#c784500e80dc7591131478f0787b67bacc9a8c52"
+gsap@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npm.taobao.org/gsap/download/gsap-3.6.0.tgz#925f25370c698ce0f6ea563522da8f6b5ed21b0a"
 
 gulp-cli@^2.2.0:
   version "2.2.0"
