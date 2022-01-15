@@ -119,7 +119,7 @@
     "nodemon": "^1.11.0",
     "plugin-error": "^1.0.1",
     "scrollmagic": "^2.0.5",
-    "shelljs": "^0.7.7",
+    "shelljs": "^0.8.5",
     "stylus": "^0.54.5",
     "ts-loader": "^3.5.0",
     "tslint": "^5.0.0",
