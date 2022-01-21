@@ -57,7 +57,7 @@
     "le-store-certbot": "^2.0.5",
     "linkifyjs": "^2.1.6",
     "lodash": "^4.17.4",
-    "log4js": "^3.0.5",
+    "log4js": "^6.4.0",
     "marked": "^0.3.12",
     "moment": "^2.20.1",
     "mongoose": "^4.6.6",
