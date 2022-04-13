@@ -38,7 +38,7 @@
     }
   },
   "dependencies": {
-    "async": "^2.1.2",
+    "async": "^3.2.2",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
