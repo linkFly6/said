@@ -75,7 +75,7 @@
     "ursa-optional": "^0.10.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.40",
+    "@babel/core": "^7.20.7",
     "@babel/plugin-transform-runtime": "^7.0.0-beta.40",
     "@babel/preset-env": "^7.0.0-beta.40",
     "@babel/runtime": "^7.0.0-beta.40",
@@ -107,7 +107,7 @@
     "@types/shortid": "0.0.29",
     "@types/spdy": "^3.4.4",
     "@types/typed.js": "^2.0.0",
-    "babel-loader": "^8.0.0-beta.0",
+    "babel-loader": "^8.3.0",
     "colors": "^1.1.2",
     "commitizen": "3.1.1",
     "concurrently": "^3.4.0",
@@ -121,11 +121,11 @@
     "scrollmagic": "^2.0.5",
     "shelljs": "^0.7.7",
     "stylus": "^0.54.5",
-    "ts-loader": "^3.5.0",
+    "ts-loader": "^9.4.2",
     "tslint": "^5.0.0",
     "typed.js": "^2.0.8",
     "typescript": "^2.9.2",
-    "webpack": "^3.12.0"
+    "webpack": "^5.75.0"
   },
   "private": true
 }
